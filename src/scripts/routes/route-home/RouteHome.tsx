@@ -1,3 +1,5 @@
+import './RouteHome.scss';
+
 import * as React from 'react';
 
 import { ThreeSence, AntdRow, AntdCol } from '@/components';

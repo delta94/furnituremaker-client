@@ -53,7 +53,7 @@ export class ThreeSenceBase extends React.PureComponent<ThreeSenceBaseProps> {
         this.aspectRatio = 1;
         this.scene = null;
         this.cameraDefaults = {
-            posCamera: new THREE.Vector3(0, 70, 300.0),
+            posCamera: new THREE.Vector3(0, 70, 250.0),
             posCameraTarget: new THREE.Vector3(0, 0, 0),
             near: 0.1,
             far: 10000,
@@ -96,8 +96,8 @@ export class ThreeSenceBase extends React.PureComponent<ThreeSenceBaseProps> {
         this.renderSence();
 
         window.addEventListener('resize', resizeWindow, false);
-        window.addEventListener('mousemove', this.onTouchMove.bind(this));
-        window.addEventListener('touchmove', this.onTouchMove.bind(this));
+        this.container.onmousemove = this.onTouchMove.bind(this);
+        this.container.ontouchmove = this.onTouchMove.bind(this);
 
         setInterval(() => {
             this.scene.traverse((o: THREE.Mesh) => {
@@ -122,9 +122,10 @@ export class ThreeSenceBase extends React.PureComponent<ThreeSenceBaseProps> {
         ThreeSenceBase.composer.setSize(this.container.clientWidth, this.container.clientHeight);
 
         // * SSAA Render
-        const renderPass = new THREE.RenderPass(this.scene, this.camera);
+        const renderPass = new THREE.SSAARenderPass(this.scene, this.camera);
         renderPass.clearColor = 0xdcdde1;
         renderPass.clearAlpha = 1;
+        renderPass.sampleLevel = 2;
         ThreeSenceBase.composer.addPass(renderPass);
 
         // * Outline
@@ -138,8 +139,8 @@ export class ThreeSenceBase extends React.PureComponent<ThreeSenceBaseProps> {
 
         // * SSAO
         const ssaoPass = new THREE.SSAOPass(this.scene, this.camera);
-        ssaoPass.aoClamp = .4;
-        // ssaoPass.lumInfluence = 1;
+        ssaoPass.aoClamp = .8;
+        ssaoPass.lumInfluence = 1;
         ThreeSenceBase.composer.addPass(ssaoPass);
 
         const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
@@ -182,13 +183,13 @@ export class ThreeSenceBase extends React.PureComponent<ThreeSenceBaseProps> {
         this.controls = new THREE.OrbitControls(this.camera, ThreeSenceBase.renderer.domElement);
         this.controls.maxAzimuthAngle = 1.141592653589793;
         this.controls.minAzimuthAngle = -1.141592653589793;
-        this.controls.minDistance = 300;
-        this.controls.maxDistance = 300;
+        this.controls.minDistance = 250;
+        this.controls.maxDistance = 350;
         this.controls.maxPolarAngle = Math.PI / 2.4;
         this.controls.minPolarAngle = Math.PI / 2.4;
 
         this.controls.enablePan = false;
-        this.controls.enableZoom = false;
+        this.controls.enableZoom = true;
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.07;
         this.controls.rotateSpeed = 0.07;
@@ -234,6 +235,7 @@ export class ThreeSenceBase extends React.PureComponent<ThreeSenceBaseProps> {
                 for (const mesh of event.detail.loaderRootNode.children) {
                     mesh.castShadow = true;
                     mesh.receiveShadow = true;
+                    mesh.position.y = -20;
                 }
 
                 event.detail.loaderRootNode.receiveShadow = true;
@@ -330,8 +332,9 @@ export class ThreeSenceBase extends React.PureComponent<ThreeSenceBaseProps> {
             x = event.changedTouches[0].pageX;
             y = event.changedTouches[0].pageY;
         } else {
-            x = event.clientX;
-            y = event.clientY;
+            const bounds = event.target['getBoundingClientRect']();
+            x = event.clientX - bounds.left;
+            y = event.clientY - bounds.top;
         }
         ThreeSenceBase.mouse.x = (x / this.container.clientWidth) * 2 - 1;
         ThreeSenceBase.mouse.y = - (y / this.container.clientHeight) * 2 + 1;
