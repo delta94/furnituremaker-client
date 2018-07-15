@@ -57,6 +57,7 @@
         "file-loader": "^1.1.6",
         "html-webpack-plugin": "^3.1.0",
         "mini-css-extract-plugin": "^0.4.0",
+        "ncp": "^2.0.0",
         "node-sass": "^4.7.2",
         "postcss": "^6.0.21",
         "postcss-loader": "^2.1.5",
@@ -83,8 +84,11 @@
     "scripts": {
         "lint": "tslint --fix --project tsconfig.json",
         "start": "node devServer.js",
-        "build": "npm run clean && npm run build:test",
-        "build:test": "cross-env NODE_ENV=production webpack --display=errors-only --progress --colors --config webpack.config.test.js"
+        "clean": "rimraf ./dist",
+        "build": "npm run clean && npm run build:test && npm run build:copy-static && npm run build:copy-bin",
+        "build:test": "cross-env NODE_ENV=production webpack --display=errors-only --progress --colors --config webpack.config.test.js",
+        "build:copy-static": "ncp ./static ./dist/static",
+        "build:copy-bin": "ncp ./bin ./dist"
     },
     "version": "1.0.0"
 }
