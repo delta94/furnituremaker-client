@@ -181,8 +181,8 @@ export class ThreeSenceBase extends React.PureComponent<ThreeSenceBaseProps> {
 
     initControls() {
         this.controls = new THREE.OrbitControls(this.camera, ThreeSenceBase.renderer.domElement);
-        this.controls.maxAzimuthAngle = 1.141592653589793;
-        this.controls.minAzimuthAngle = -1.141592653589793;
+        // this.controls.maxAzimuthAngle = 1.141592653589793;
+        // this.controls.minAzimuthAngle = -1.141592653589793;
         this.controls.minDistance = 250;
         this.controls.maxDistance = 350;
         this.controls.maxPolarAngle = Math.PI / 2.4;
