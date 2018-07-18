@@ -4,8 +4,9 @@
 import './ThreeSence.scss';
 
 import * as React from 'react';
-import { ThreeSenceBase } from './ThreeSenceBase';
+import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 import { FurnutureComponent, FurnutureMaterial } from '@/resources';
+import { withStoreValues, WithStoreValuesProps } from '@/app';
 
 const { THREE } = window;
 
@@ -14,29 +15,20 @@ interface ProductPiece {
     material: FurnutureMaterial;
 }
 
-interface ThreeSenceProps {
-    productPieces: ProductPiece[];
+interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesProps {
+    productPieces?: ProductPiece[];
+    selectedObject?: THREE.Mesh;
 }
 
+@withStoreValues('selectedObject', 'productPieces')
 export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
     componentDidMount() {
         this.initSence();
         this.initContent();
+    }
 
-        const texture = new THREE.TextureLoader();
-        // texture.load('/static/models/sofa/maps/1701.jpg', (map) => {
-        //     setTimeout(() => {
-        //         this.scene.traverse((mesh: THREE.Mesh) => {
-        //             if (mesh instanceof THREE.Mesh) {
-        //                 if (mesh.material['map']) {
-        //                     mesh.material['map'].image = map.image;
-        //                     mesh.material['map'].needsUpdate = true;
-        //                 }
-        //             }
-        //         });
-        //     // tslint:disable-next-line:align
-        //     }, 500);
-        // });
+    componentDidUpdate() {
+        this.selectObject(this.props.selectedObject);
     }
 
     componentWillUnmount() {
@@ -107,7 +99,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
         for (let key = 50; key <= 500; key += 50) {
             setTimeout(() => {
                 mesh.material['opacity'] = mesh.material['opacity'] + 0.1;
-            // tslint:disable-next-line:align
+                // tslint:disable-next-line:align
             }, key);
         }
     }

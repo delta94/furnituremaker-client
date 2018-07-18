@@ -1,0 +1,17 @@
+.three-material-list {
+    &-backbtn {
+        font-size: 20px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+    &-material {
+        cursor: pointer;
+        img {
+            max-width: 100%;
+        }
+        &.selected {
+            border: 2px solid blue;
+        }
+    }
+}

@@ -1,6 +1,10 @@
 import { Dispatch, Action } from 'redux';
 import { connect } from 'react-redux';
 
+export interface WithStoreValuesProps {
+    setStore?: (values: object) => void;
+}
+
 interface StoreValuesRecuder extends Action {
     values: object;
 }
@@ -42,7 +46,8 @@ export const setStoreValuesAction = (values, source) => {
     };
 };
 
-export function withStoreValues(...keys: string[]) {
+// tslint:disable-next-line:no-any
+export function withStoreValues(...keys: string[]): any {
     return (Component) => {
         const mapStateToProps = ({ values }) => {
             const keysReducer = (reducerValue, currentKey) => {

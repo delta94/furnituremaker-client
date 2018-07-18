@@ -1,1 +1,2 @@
-export * from '@/components/three-controls/ThreeSence';
+export * from './ThreeSence';
+export * from './ThreeMaterialList';

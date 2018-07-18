@@ -5,6 +5,7 @@
     },
     "dependencies": {
         "antd": "3.6.1",
+        "autobind-decorator": "^2.1.0",
         "bootstrap": "4.1.1",
         "classnames": "2.2.6",
         "compass-mixins": "^0.12.10",

@@ -17,7 +17,7 @@ export function startup() {
             store: createStore(
                 combineReducers({
                     form: formReducer,
-                    app: storeValuesRecuder
+                    values: storeValuesRecuder
                 })
             ),
             routes: [

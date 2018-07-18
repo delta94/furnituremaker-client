@@ -1,5 +1,6 @@
 // tslint:disable:no-string-literal
 // tslint:disable:no-console
+// tslint:disable:align
 
 import * as React from 'react';
 
@@ -10,7 +11,11 @@ interface ReportProgressEvent {
     text: string;
 }
 
-export class ThreeSenceBase<TProps> extends React.PureComponent<TProps> {
+export interface ThreeSenceBaseProps {
+    onObjectSelect: (object: THREE.Mesh | null) => void;
+}
+
+export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.PureComponent<TProps> {
     animationFrameId: number;
     renderer: THREE.WebGLRenderer;
     composer: THREE.EffectComposer;
@@ -23,7 +28,7 @@ export class ThreeSenceBase<TProps> extends React.PureComponent<TProps> {
     camera: THREE.PerspectiveCamera;
     cameraTarget: THREE.Vector3;
     cameraDefaults = {
-        posCamera: new THREE.Vector3(0, 70, 250.0),
+        posCamera: new THREE.Vector3(0, 70, 200.0),
         posCameraTarget: new THREE.Vector3(0, 0, 0),
         near: 0.1,
         far: 10000,
@@ -36,6 +41,8 @@ export class ThreeSenceBase<TProps> extends React.PureComponent<TProps> {
     selectedObject: THREE.Object3D;
 
     highlightTimeout: number;
+    mouseHoldTimeout: number;
+    isMouseHold: boolean;
 
     static reportProgress = function (event: ReportProgressEvent) {
         console.log('Progress: ' + Validator.verifyInput(event.text, ''));
@@ -74,7 +81,17 @@ export class ThreeSenceBase<TProps> extends React.PureComponent<TProps> {
         window.addEventListener('resize', resizeWindow, false);
         this.container.onmousemove = this.onTouchMove.bind(this);
         this.container.ontouchmove = this.onTouchMove.bind(this);
-        this.container.onclick = this.onClick.bind(this);
+
+        this.container.onmousedown = () => {
+            this.mouseHoldTimeout = setTimeout(() => {
+                this.isMouseHold = true;
+            }, 250);
+        };
+        this.container.onmouseup = () => {
+            this.onClick();
+            clearTimeout(this.mouseHoldTimeout);
+            this.isMouseHold = false;
+        };
     }
 
     initComposer() {
@@ -93,7 +110,7 @@ export class ThreeSenceBase<TProps> extends React.PureComponent<TProps> {
             new THREE.Vector2(this.container.clientWidth, this.container.clientHeight),
             this.scene,
             this.camera);
-        this.outlinePass.edgeStrength = 10;
+        this.outlinePass.edgeStrength = 3;
         this.outlinePass.pulsePeriod = 1;
         this.composer.addPass(this.outlinePass);
 
@@ -135,12 +152,12 @@ export class ThreeSenceBase<TProps> extends React.PureComponent<TProps> {
     initControls() {
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.minDistance = 0;
-        this.controls.maxDistance = Infinity;
+        this.controls.maxDistance = 500;
         this.controls.maxPolarAngle = Math.PI / 2.4;
         this.controls.minPolarAngle = Math.PI / 2.4;
 
         this.controls.enablePan = false;
-        this.controls.enableZoom = true;
+        this.controls.enableZoom = false;
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.07;
         this.controls.rotateSpeed = 0.07;
@@ -243,6 +260,10 @@ export class ThreeSenceBase<TProps> extends React.PureComponent<TProps> {
     }
 
     onTouchMove(event: MouseEvent & TouchEvent) {
+        if (this.isMouseHold) {
+            return;
+        }
+        
         let x, y;
         if (event.changedTouches) {
             x = event.changedTouches[0].pageX;
@@ -258,17 +279,28 @@ export class ThreeSenceBase<TProps> extends React.PureComponent<TProps> {
     }
 
     onClick() {
+        if (this.isMouseHold) {
+            return;
+        }
+
         this.raycaster.setFromCamera(this.mouse, this.camera);
         var intersects = this.raycaster.intersectObjects([this.scene], true);
         if (intersects.length > 0) {
-            if (intersects[0].object === this.selectedObject) {
-                this.selectedObject = null;
-                this.outlinePass.selectedObjects = [];
-            } else {
-                this.selectedObject = intersects[0].object;
-                this.outlinePass.selectedObjects = [this.selectedObject];
+            let selectedObject = intersects[0].object;
+            if (selectedObject === this.selectedObject) {
+                selectedObject = null;
             }
+            this.selectObject(selectedObject);
+            this.props.onObjectSelect(selectedObject as THREE.Mesh || null);
+        } else {
+            this.selectObject(null);
+            this.props.onObjectSelect(null);
         }
+    }
+
+    selectObject(object: THREE.Object3D) {
+        this.selectedObject = object;
+        this.outlinePass.selectedObjects = object ? [object] : [];
     }
 
     clearScene() {
