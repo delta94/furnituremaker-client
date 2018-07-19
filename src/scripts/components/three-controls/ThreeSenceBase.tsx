@@ -29,7 +29,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     cameraTarget: THREE.Vector3;
     cameraDefaults = {
         posCamera: new THREE.Vector3(0, 70, 200.0),
-        posCameraTarget: new THREE.Vector3(0, 0, 0),
+        posCameraTarget: new THREE.Vector3(0, 20, 0),
         near: 0.1,
         far: 10000,
         fov: 45
@@ -54,8 +54,6 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * Function binds
         this.renderSence = this.renderSence.bind(this);
-
-        this.cameraTarget = this.cameraDefaults.posCameraTarget;
 
         this.recalcAspectRatio();
         const resizeWindow = () => {
@@ -146,11 +144,15 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             this.cameraDefaults.near,
             this.cameraDefaults.far
         );
+        
+        this.cameraTarget = this.cameraDefaults.posCameraTarget;
         this.resetCamera();
     }
 
     initControls() {
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.target = this.cameraTarget;
+        
         this.controls.minDistance = 0;
         this.controls.maxDistance = 500;
         this.controls.maxPolarAngle = Math.PI / 2.4;
@@ -220,10 +222,8 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         if (!this.renderer.autoClear) {
             this.renderer.clear();
         }
-
         this.controls.update();
         this.composer.render();
-
     }
 
     checkIntersection() {

@@ -4,6 +4,7 @@ export interface FurnutureComponent {
     name: string;
     obj: string;
     mtl: string;
+    thumb: string;
 }
 
 export interface FurnutureMaterial {

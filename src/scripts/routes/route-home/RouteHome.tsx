@@ -3,20 +3,11 @@ import './RouteHome.scss';
 import * as React from 'react';
 import autobind from 'autobind-decorator';
 
-import { ThreeSence, AntdRow, AntdCol, ThreeMaterialList } from '@/components';
+import { ThreeSence, AntdRow, AntdCol, ThreeMaterialList, ThreeComponentList } from '@/components';
 import { FurnutureMaterial } from '@/resources';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
 
-const components = [
-    'sofa_design1_base1',
-    'sofa_design1_base2',
-    'sofa_design1_back1',
-    'sofa_design1_back2',
-    'sofa_design1_hands1',
-    'sofa_design1_foots1',
-    'sofa_design1_pillow1',
-    'sofa_design1_pillow2'
-];
+import { initComponents, avaliableComponents, allComponents } from './data';
 
 const materials = [
     '1701',
@@ -35,16 +26,6 @@ const materialSource: FurnutureMaterial[] = materials.map((material) => {
     };
 });
 
-const productPieces = components.map(o => ({
-    component: {
-        id: o,
-        name: o,
-        obj: `/static/models/sofa/${o}.obj`,
-        mtl: `/static/models/sofa/${o}.mtl`
-    },
-    material: materialSource[0]
-}));
-
 interface RouteHomeProps extends WithStoreValuesProps {
     avaliableMaterials: FurnutureMaterial[];
     selectedObject: THREE.Mesh | null;
@@ -61,7 +42,13 @@ export class RouteHome extends React.Component<RouteHomeProps> {
         super(props);
 
         this.props.setStore({
-            productPieces: productPieces
+            components: avaliableComponents,
+            productPieces: initComponents.map(o => ({
+                component: o,
+                material: {
+                    texture: '/static/models/sofa/maps/1701.jpg'
+                }
+            }))
         });
     }
 
@@ -75,6 +62,7 @@ export class RouteHome extends React.Component<RouteHomeProps> {
                     <AntdCol span={8}>
                         <div className="three-sence-control">
                             {this.props.selectedObject && (<ThreeMaterialList />)}
+                            {this.props.selectedObject && (<ThreeComponentList />)}
                         </div>
                     </AntdCol>
                 </AntdRow>
@@ -87,14 +75,21 @@ export class RouteHome extends React.Component<RouteHomeProps> {
         if (!object) {
             return this.props.setStore({
                 materials: [],
+                components: [],
                 selectedObject: object,
                 selectedTexture: null
             });
         }
+
+        const componentData = allComponents.find(o => o.id === object.name);
+        const sameTypeComponents = allComponents.filter(o => o.componentType.id === componentData.componentType.id);
+
         return this.props.setStore({
             materials: materialSource,
             selectedObject: object,
-            selectedTexture: object.material['map'].image.src.replace(location.origin, '')
+            // tslint:disable-next-line:no-string-literal
+            selectedTexture: object.material['map'].image.src.replace(location.origin, ''),
+            components: sameTypeComponents
         });
     }
 }

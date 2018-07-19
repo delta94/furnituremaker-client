@@ -29,6 +29,9 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
 
     componentDidUpdate() {
         this.selectObject(this.props.selectedObject);
+        this.props.setStore({
+            sence: this.scene
+        });
     }
 
     componentWillUnmount() {
@@ -51,6 +54,8 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                 for (const mesh of event.detail.loaderRootNode.children) {
                     mesh.castShadow = true;
                     mesh.receiveShadow = true;
+                    mesh.name = piece.component.id;
+                    mesh.scale.set(0.1, 0.1, 0.1);
                     this.fadeIn(mesh);
                 }
                 this.scene.add(event.detail.loaderRootNode);
