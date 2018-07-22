@@ -1,0 +1,3 @@
+[submodule "react-restful"]
+	path = react-restful
+	url = https://github.com/kenkz447/react-restful.git
