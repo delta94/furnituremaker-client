@@ -32,7 +32,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListP
                                 { selected: selectedObject.name === component.id }
                             )}
                         >
-                            <img src={component.thumb} onClick={() => this.onComponentSelect(component)} />
+                            <img src={component.thumbnail} onClick={() => this.onComponentSelect(component)} />
                         </div>
                     </AntdList.Item>
                 )}

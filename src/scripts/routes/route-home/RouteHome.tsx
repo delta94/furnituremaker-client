@@ -61,8 +61,18 @@ export class RouteHome extends React.Component<RouteHomeProps> {
                     </AntdCol>
                     <AntdCol span={8}>
                         <div className="three-sence-control">
-                            {this.props.selectedObject && (<ThreeMaterialList />)}
-                            {this.props.selectedObject && (<ThreeComponentList />)}
+                            {
+                                this.props.selectedObject ? (
+                                    <React.Fragment>
+                                        <ThreeMaterialList />
+                                        <ThreeComponentList />
+                                    </React.Fragment>
+                                ) : (
+                                        <div>
+                                            
+                                        </div>
+                                    )
+                            }
                         </div>
                     </AntdCol>
                 </AntdRow>
@@ -84,11 +94,13 @@ export class RouteHome extends React.Component<RouteHomeProps> {
         const componentData = allComponents.find(o => o.id === object.name);
         const sameTypeComponents = allComponents.filter(o => o.componentType.id === componentData.componentType.id);
 
+        const material = object.material as THREE.MeshPhongMaterial;
+        const currentTexturePathWithOrigin = material.map.image.src;
         return this.props.setStore({
             materials: materialSource,
             selectedObject: object,
             // tslint:disable-next-line:no-string-literal
-            selectedTexture: object.material['map'].image.src.replace(location.origin, ''),
+            selectedTexture: currentTexturePathWithOrigin.replace(location.origin, ''),
             components: sameTypeComponents
         });
     }
