@@ -22,7 +22,13 @@ const materialSource: FurnutureMaterial[] = materials.map((material) => {
     return {
         id: material,
         name: material,
-        texture: `/static/models/sofa/maps/${material}.jpg`
+        texture: `/static/models/sofa/maps/${material}.jpg`,
+        materialType: {
+            id: 'farbic',
+            name: 'farbic'
+        },
+        price: 0,
+        inStock: true,
     };
 });
 
@@ -69,7 +75,7 @@ export class RouteHome extends React.Component<RouteHomeProps> {
                                     </React.Fragment>
                                 ) : (
                                         <div>
-                                            
+                                            a
                                         </div>
                                     )
                             }

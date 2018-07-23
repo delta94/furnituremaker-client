@@ -31,7 +31,7 @@ export const avaliableComponents = [{
     name: 'fm1_design1_back2',
     obj: `/static/models/sofa/fm1_design1/fm1_design1_back2.obj`,
     mtl: `/static/models/sofa/fm1_design1/fm1_design1_back2.mtl`,
-    thumb: '/static/assets/no-image.png',
+    thumbnail: '/static/assets/no-image.png',
     componentType: componentTypes.back,
     design: design1
 }, {
@@ -39,7 +39,7 @@ export const avaliableComponents = [{
     name: 'fm1_design1_hands2',
     obj: `/static/models/sofa/fm1_design1/fm1_design1_hands2.obj`,
     mtl: `/static/models/sofa/fm1_design1/fm1_design1_hands2.mtl`,
-    thumb: '/static/assets/no-image.png',
+    thumbnail: '/static/assets/no-image.png',
     componentType: componentTypes.hand,
     design: design1,
     productType: productTypeSofa
@@ -50,7 +50,7 @@ export const initComponents = [{
     name: 'fm1_design1_body1',
     obj: `/static/models/sofa/fm1_design1/fm1_design1_body1.obj`,
     mtl: `/static/models/sofa/fm1_design1/fm1_design1_body1.mtl`,
-    thumb: '/static/assets/no-image.png',
+    thumbnail: '/static/assets/no-image.png',
     componentType: componentTypes.body,
     design: design1,
     productType: productTypeSofa
@@ -59,7 +59,7 @@ export const initComponents = [{
     name: 'fm1_design1_foots1',
     obj: `/static/models/sofa/fm1_design1/fm1_design1_foots1.obj`,
     mtl: `/static/models/sofa/fm1_design1/fm1_design1_foots1.mtl`,
-    thumb: '/static/assets/no-image.png',
+    thumbnail: '/static/assets/no-image.png',
     componentType: componentTypes.foot,
     design: design1,
     productType: productTypeSofa
@@ -68,7 +68,7 @@ export const initComponents = [{
     name: 'fm1_design1_hands1',
     obj: `/static/models/sofa/fm1_design1/fm1_design1_hands1.obj`,
     mtl: `/static/models/sofa/fm1_design1/fm1_design1_hands1.mtl`,
-    thumb: '/static/assets/no-image.png',
+    thumbnail: '/static/assets/no-image.png',
     componentType: componentTypes.hand,
     design: design1,
     productType: productTypeSofa
@@ -77,7 +77,7 @@ export const initComponents = [{
     name: 'fm1_design1_back1',
     obj: `/static/models/sofa/fm1_design1/fm1_design1_back1.obj`,
     mtl: `/static/models/sofa/fm1_design1/fm1_design1_back1.mtl`,
-    thumb: '/static/assets/no-image.png',
+    thumbnail: '/static/assets/no-image.png',
     componentType: componentTypes.back,
     design: design1,
     productType: productTypeSofa

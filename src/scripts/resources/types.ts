@@ -48,7 +48,7 @@ export interface FurnutureMaterial {
     name: string;
     texture: string;
     materialType: MaterialType;
-    price: string;
+    price: number;
     inStock: boolean;
 }
 
