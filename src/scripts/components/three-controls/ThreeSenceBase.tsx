@@ -98,8 +98,9 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * SSAA Render
         const renderPass = new THREE.SSAARenderPass(this.scene, this.camera);
-        renderPass.clearColor = 0xdcdde1;
+        renderPass.clearColor = '#f9f9f9';
         renderPass.clearAlpha = 1;
+        
         renderPass.sampleLevel = 2;
         this.composer.addPass(renderPass);
 
@@ -126,14 +127,16 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     initRenderer() {
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer({
+            alpha: true
+        });
         this.renderer.autoClear = false;
         this.renderer.gammaInput = true;
         this.renderer.gammaOutput = true;
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-
+        this.renderer.setClearColor( 0x000000, 0 );
         this.container.appendChild(this.renderer.domElement);
     }
 

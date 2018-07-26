@@ -1,1 +1,1 @@
-export * from '@/routes/route-home/RouteHome';
+export * from './RouteHome';

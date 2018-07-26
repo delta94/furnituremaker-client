@@ -1,16 +1,8 @@
 #home {
     .three-sence {
         &-container {
-            background: #D8D9DD;
-        }
-        &-control {
-            background: #fff;
-            padding: 30px;
-            overflow: auto;
-            height: 100%;
-            .ant-list-header {
-                margin-bottom: 15px;
-            }
+            max-width: 1200px;
+            margin: 0 auto;
         }
     }
 }

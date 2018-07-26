@@ -2,6 +2,7 @@ import './ThreeMaterialList.scss';
 
 import * as React from 'react';
 import * as classNames from 'classnames';
+import styled from 'styled-components';
 
 import { AntdList, AntdIcon } from '@/components';
 import { FurnutureMaterial } from '@/restful';
@@ -27,8 +28,8 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                 >
                     <AntdIcon type="arrow-left" />
                 </div>
+                <ListHeader>Vật liệu khả dụng</ListHeader>
                 <AntdList
-                    header={<div>Vật liệu khả dụng</div>}
                     dataSource={materials}
                     grid={{ gutter: 16, column: 3 }}
                     renderItem={(material: FurnutureMaterial) => (
@@ -70,3 +71,7 @@ export const ThreeMaterialList = withStoreValues(
     'selectedTexture',
     'materials'
 )(ThreeMaterialListComponent);
+
+const ListHeader = styled.div`
+    margin: 15px 0;
+`;

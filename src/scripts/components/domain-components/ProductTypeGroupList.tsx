@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import Slider, { Settings } from 'react-slick';
 
 import { ProductTypeGroup } from '@/restful';
-import { withStoreValues, WithStoreValuesProps } from '@/app';
+import { withStoreValues } from '@/app';
+import { CommonStoreProps } from '@/configs';
 
-interface ProductTypeGroupListProps extends WithStoreValuesProps {
+interface ProductTypeGroupListProps extends CommonStoreProps {
     productTypeGroups: ProductTypeGroup[];
-    selectedProductTypeGroup?: string;
 }
 
 @withStoreValues('selectedProductTypeGroup')
@@ -20,15 +20,14 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
         dots: true,
         infinite: false,
         speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 3,
-        variableWidth: true,
+        slidesToShow: 10,
+        slidesToScroll: 1
     };
 
     render() {
         const { selectedProductTypeGroup, setStore } = this.props;
         return (
-            <Wrapper>
+            <Wrapper itemLength={this.props.productTypeGroups.length}>
                 <Slider {...ProductTypeGroupList.slickSettings}>
                     {
                         this.props.productTypeGroups.map(productTypeGroup => {
@@ -52,8 +51,10 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
     }
 }
 
-const Wrapper = styled.div`
-    cursor: pointer;
+type WrapperProps = React.ComponentType<React.DOMAttributes<{}> & { itemLength: number }>;
+const Wrapper: WrapperProps = styled.div`
+    background-color: #fff;
+    margin: 0 auto;
 `;
 
 type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { isSelected: boolean }>;
@@ -62,6 +63,7 @@ const Item: ItemProps = styled.div`
     padding: 10px;
     border-radius: 10px 10px 0 0;
     transition: all .3s;
+    cursor: pointer;
     background-color: ${(props) => props.isSelected && '#F6F5F6'};
 `;
 
@@ -72,5 +74,5 @@ const ThumbnailWrapper = styled.div`
 `;
 
 const Label = styled.span`
-    font-weight: bold;
+    font-size: 14px;
 `;

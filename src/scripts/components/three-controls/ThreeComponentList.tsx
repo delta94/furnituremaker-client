@@ -1,8 +1,9 @@
 import './ThreeComponentList.scss';
 import * as React from 'react';
 import * as classNames from 'classnames';
+import styled from 'styled-components';
 
-import { AntdList, AntdIcon } from '@/components';
+import { AntdList } from '@/components';
 import { FurnutureComponent } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
 
@@ -20,23 +21,25 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListP
         const { selectedObject, components } = this.props;
 
         return (
-            <AntdList
-                header={<div>Cấu kiện thay thế</div>}
-                dataSource={components}
-                grid={{ gutter: 16, column: 3 }}
-                renderItem={(component: FurnutureComponent) => (
-                    <AntdList.Item>
-                        <div
-                            className={classNames(
-                                'three-component-list-component',
-                                { selected: selectedObject.name === component.id }
-                            )}
-                        >
-                            <img src={component.thumbnail} onClick={() => this.onComponentSelect(component)} />
-                        </div>
-                    </AntdList.Item>
-                )}
-            />
+            <React.Fragment>
+                <ListHeader>Cấu kiện thay thế</ListHeader>
+                <AntdList
+                    dataSource={components}
+                    grid={{ gutter: 16, column: 3 }}
+                    renderItem={(component: FurnutureComponent) => (
+                        <AntdList.Item>
+                            <div
+                                className={classNames(
+                                    'three-component-list-component',
+                                    { selected: selectedObject.name === component.id }
+                                )}
+                            >
+                                <img src={component.thumbnail} onClick={() => this.onComponentSelect(component)} />
+                            </div>
+                        </AntdList.Item>
+                    )}
+                />
+            </React.Fragment>
         );
     }
 
@@ -72,3 +75,7 @@ export const ThreeComponentList = withStoreValues(
     'selectedObject',
     'components'
 )(ThreeComponentListComponent);
+
+const ListHeader = styled.div`
+    margin: 15px 0;
+`;

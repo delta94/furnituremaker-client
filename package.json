@@ -72,6 +72,8 @@
         "sass-loader": "^7.0.1",
         "style-loader": "^0.21.0",
         "ts-loader": "^4.3.0",
+        "ts-nameof": "^1.0.0",
+        "ts-nameof-loader": "^1.0.1",
         "tslint": "^5.11.0",
         "tslint-language-service": "^0.9.9",
         "typescript": "^2.9.2",

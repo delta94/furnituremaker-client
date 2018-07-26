@@ -7,7 +7,16 @@
 // @import "~bootstrap/scss/bootstrap-reboot";
 @import "~bootstrap/scss/utilities";
 
-#root,
+html, body {
+    width: initial!important;
+    height: initial!important;
+}
+
+#root {
+    min-height: 100vh;
+    background: #F7F7F7;
+}
+
 .page {
     height: 100%;
 }

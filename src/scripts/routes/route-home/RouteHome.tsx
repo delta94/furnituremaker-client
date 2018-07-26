@@ -2,14 +2,16 @@ import './RouteHome.scss';
 
 import * as React from 'react';
 import autobind from 'autobind-decorator';
+import styled from 'styled-components';
 
 import { ThreeSence, AntdRow, AntdCol, ThreeMaterialList, ThreeComponentList } from '@/components';
-import { FurnutureMaterial, productType, productTypeGroupResources, restfulStore, resfulFetcher } from '@/restful';
+import { FurnutureMaterial, productTypeGroupResources, restfulStore, resfulFetcher } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
-
-import { initComponents, avaliableComponents, allComponents } from './data';
-import { ProductTypeGroupList } from '@/components/domain-components';
+import { ProductTypeGroupList } from '@/components';
 import { RestfulRender } from 'react-restful';
+
+import { ProductTypeContainer, ProductDesignContainer } from './containers';
+import { initComponents, avaliableComponents, allComponents } from './data';
 
 const materials = [
     '1701',
@@ -75,13 +77,22 @@ export class RouteHome extends React.Component<RouteHomeProps> {
                         return null;
                     }}
                 />
+                <ProductTypeContainer />
+                <ProductDesignContainer />
+                {this.render3DSence()}
+            </div>
+        );
+    }
 
-                <AntdRow className="h-100" type="flex">
+    render3DSence() {
+        return (
+            <Wrapper>
+                <AntdRow type="flex">
                     <AntdCol className="three-sence-container" span={16}>
                         <ThreeSence onObjectSelect={this.onObjectSelect} />
                     </AntdCol>
                     <AntdCol span={8}>
-                        <div className="three-sence-control">
+                        <ProductInfo>
                             {
                                 this.props.selectedObject ? (
                                     <React.Fragment>
@@ -94,11 +105,11 @@ export class RouteHome extends React.Component<RouteHomeProps> {
                                         </div>
                                     )
                             }
-                        </div>
+                        </ProductInfo>
                     </AntdCol>
                 </AntdRow>
-            </div>
-        );
+            </Wrapper>
+        )
     }
 
     @autobind
@@ -126,3 +137,15 @@ export class RouteHome extends React.Component<RouteHomeProps> {
         });
     }
 }
+
+const Wrapper = styled.div`
+    max-width: 1200px;
+    margin: 0 auto;
+`;
+
+const ProductInfo = styled.div`
+    border: 1px solid #DADADA;
+    background: #fff;
+    padding: 30px;
+    overflow: auto;
+`;
