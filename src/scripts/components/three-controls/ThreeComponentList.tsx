@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 
 import { AntdList, AntdIcon } from '@/components';
-import { FurnutureComponent } from '@/resources';
+import { FurnutureComponent } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
 
 const { THREE } = window;

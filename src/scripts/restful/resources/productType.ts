@@ -1,4 +1,5 @@
 import { ResourceType, Resource, RecordType } from 'react-restful';
+import { apiEntry } from '../apiEntry';
 
 export interface ProductType extends RecordType {
     id: string;
@@ -16,7 +17,7 @@ export const productType = new ResourceType({
 export const productTypeResources = {
     find: new Resource<ProductType[]>({
         resourceType: productType,
-        url: 'http://locahost:3000/api/customer',
+        url: apiEntry('/producttypegroup'),
         method: 'GET',
         mapDataToStore: (customers, resourceType, store) => {
             for (const customer of customers) {

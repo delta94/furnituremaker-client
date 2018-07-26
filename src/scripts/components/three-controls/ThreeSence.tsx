@@ -5,7 +5,7 @@ import './ThreeSence.scss';
 
 import * as React from 'react';
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
-import { FurnutureComponent, FurnutureMaterial } from '@/resources';
+import { FurnutureComponent, FurnutureMaterial } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
 
 const { THREE } = window;

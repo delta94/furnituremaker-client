@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 
 import { AntdList, AntdIcon } from '@/components';
-import { FurnutureMaterial } from '@/resources';
+import { FurnutureMaterial } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
 
 const { THREE } = window;

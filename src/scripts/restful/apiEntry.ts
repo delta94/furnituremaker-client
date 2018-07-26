@@ -1,0 +1,1 @@
+export const apiEntry = (api: string) => `http://localhost:1337${api}`;

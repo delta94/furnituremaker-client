@@ -4,10 +4,12 @@ import * as React from 'react';
 import autobind from 'autobind-decorator';
 
 import { ThreeSence, AntdRow, AntdCol, ThreeMaterialList, ThreeComponentList } from '@/components';
-import { FurnutureMaterial } from '@/resources';
+import { FurnutureMaterial, productType, productTypeGroupResources, restfulStore, resfulFetcher } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
 
 import { initComponents, avaliableComponents, allComponents } from './data';
+import { ProductTypeGroupList } from '@/components/domain-components';
+import { RestfulRender } from 'react-restful';
 
 const materials = [
     '1701',
@@ -61,6 +63,19 @@ export class RouteHome extends React.Component<RouteHomeProps> {
     render() {
         return (
             <div id="home" className="page">
+                <RestfulRender
+                    fetcher={resfulFetcher}
+                    store={restfulStore}
+                    resource={productTypeGroupResources.find}
+                    parameters={[]}
+                    render={(renderProps) => {
+                        if (renderProps.data) {
+                            return <ProductTypeGroupList productTypeGroups={renderProps.data} />;
+                        }
+                        return null;
+                    }}
+                />
+
                 <AntdRow className="h-100" type="flex">
                     <AntdCol className="three-sence-container" span={16}>
                         <ThreeSence onObjectSelect={this.onObjectSelect} />
