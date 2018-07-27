@@ -4,13 +4,13 @@ import * as classNames from 'classnames';
 import styled from 'styled-components';
 
 import { AntdList } from '@/components';
-import { FurnutureComponent } from '@/restful';
+import { FurnitureComponent } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
 
 const { THREE } = window;
 
 interface ThreeMaterialListProps extends WithStoreValuesProps {
-    components: FurnutureComponent[];
+    components: FurnitureComponent[];
     selectedObject: THREE.Mesh;
     selectedTexture: string;
     sence: THREE.Scene;
@@ -26,7 +26,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListP
                 <AntdList
                     dataSource={components}
                     grid={{ gutter: 16, column: 3 }}
-                    renderItem={(component: FurnutureComponent) => (
+                    renderItem={(component: FurnitureComponent) => (
                         <AntdList.Item>
                             <div
                                 className={classNames(
@@ -43,7 +43,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListP
         );
     }
 
-    onComponentSelect(component: FurnutureComponent) {
+    onComponentSelect(component: FurnitureComponent) {
         const { selectedObject, setStore } = this.props;
 
         if (component.id === selectedObject.name) {

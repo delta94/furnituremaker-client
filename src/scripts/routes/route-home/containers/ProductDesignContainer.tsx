@@ -22,7 +22,7 @@ export class ProductDesignContainer extends React.Component<CommonStoreProps> {
                 resource={productDesignResources.find}
                 parameters={[{
                     type: 'query',
-                    parameter: nameof<ProductDesign>(o => o.productType).toLowerCase(),
+                    parameter: nameof<ProductDesign>(o => o.productType),
                     value: selectedProductType
                 }]}
                 render={(renderProps) => {

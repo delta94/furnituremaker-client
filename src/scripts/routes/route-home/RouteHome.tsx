@@ -1,13 +1,14 @@
 
 import * as React from 'react';
-import styled from 'styled-components';
 
-import { FurnutureMaterial, productTypeGroupResources, restfulStore, resfulFetcher } from '@/restful';
-import { withStoreValues, WithStoreValuesProps } from '@/app';
-import { ProductTypeGroupList, Page } from '@/components';
-import { RestfulRender } from 'react-restful';
+import { Page } from '@/components';
 
-import { ProductTypeContainer, ProductDesignContainer, ProductComponentsContainer } from './containers';
+import {
+    ProductTypeContainer,
+    ProductDesignContainer,
+    ProductContainer,
+    ProductTypeGroupContainer
+} from './containers';
 
 export class RouteHome extends React.Component {
     static routeProps = {
@@ -17,21 +18,10 @@ export class RouteHome extends React.Component {
     render() {
         return (
             <Page>
-                <RestfulRender
-                    fetcher={resfulFetcher}
-                    store={restfulStore}
-                    resource={productTypeGroupResources.find}
-                    parameters={[]}
-                    render={(renderProps) => {
-                        if (renderProps.data) {
-                            return <ProductTypeGroupList productTypeGroups={renderProps.data} />;
-                        }
-                        return null;
-                    }}
-                />
+                <ProductTypeGroupContainer />
                 <ProductTypeContainer />
                 <ProductDesignContainer />
-                <ProductComponentsContainer />
+                <ProductContainer />
             </Page>
         );
     }
