@@ -12,7 +12,11 @@ interface ProductDesignListProps extends
     RestfulComponentRenderProps<ProductDesign[]> {
 }
 
-@withStoreValues(nameof<CommonStoreProps>(o => o.selectedProductDesign))
+@withStoreValues(
+    nameof<CommonStoreProps>(o => o.selectedProductType),
+    nameof<CommonStoreProps>(o => o.selectedProductDesign),
+    nameof<CommonStoreProps>(o => o.selectedProductDesignGroup),
+)
 export class ProductDesignList extends React.Component<ProductDesignListProps> {
     static slickSettings: Settings = {
         dots: true,
@@ -23,17 +27,21 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
     };
 
     render() {
-        const { data, selectedProductDesign, setStore } = this.props;
+        const { data, selectedProductType, selectedProductDesign, selectedProductDesignGroup, setStore } = this.props;
 
-        if (!data) {
+        if (!data || !selectedProductType) {
             return null;
         }
+
+        const filterdDesigns = selectedProductDesignGroup ?
+            data.filter(o => o.designGroup.id === selectedProductDesignGroup) :
+            data;
 
         return (
             <Wrapper>
                 <Slider {...ProductDesignList.slickSettings}>
                     {
-                        data.map((productDesign: ProductDesign) => {
+                        filterdDesigns.map((productDesign: ProductDesign) => {
                             return (
                                 <Item
                                     key={productDesign.id}

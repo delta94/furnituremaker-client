@@ -31,11 +31,24 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
                 <Slider {...ProductTypeGroupList.slickSettings}>
                     {
                         this.props.productTypeGroups.map(productTypeGroup => {
+                            const onItemClick = () => {
+                                if (selectedProductTypeGroup === productTypeGroup.id) {
+                                    return;
+                                }
+                                
+                                setStore({
+                                    [nameof<CommonStoreProps>(o => o.selectedProductTypeGroup)]: productTypeGroup.id,
+                                    [nameof<CommonStoreProps>(o => o.selectedProductType)]: null,
+                                    [nameof<CommonStoreProps>(o => o.selectedProductDesignGroup)]: null,
+                                    [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: null
+                                });
+                            };
+
                             return (
                                 <Item
                                     key={productTypeGroup.id}
                                     isSelected={selectedProductTypeGroup === productTypeGroup.id}
-                                    onClick={() => setStore({ selectedProductTypeGroup: productTypeGroup.id })}
+                                    onClick={onItemClick}
                                 >
                                     <ThumbnailWrapper>
                                         <img src={productTypeGroup.thumbnail.url} />

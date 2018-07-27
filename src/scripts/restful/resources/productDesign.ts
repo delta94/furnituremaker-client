@@ -12,7 +12,7 @@ export interface ProductDesign extends RecordType {
     name: string;
     thumbnail: UploadedFile;
     productType: ProductType;
-    productGroup: ProductDesignGroup;
+    designGroup: ProductDesignGroup;
 }
 
 export const productDesign = new ResourceType({
