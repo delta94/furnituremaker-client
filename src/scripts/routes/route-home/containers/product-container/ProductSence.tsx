@@ -32,7 +32,7 @@ const materialSource: FurnutureMaterial[] = materials.map((material) => {
 });
 
 interface RouteHomeProps extends WithStoreValuesProps {
-    selectedObject?: THREE.Mesh | null;
+    readonly selectedObject?: THREE.Mesh | null;
 }
 
 @withStoreValues('selectedObject')

@@ -10,10 +10,10 @@ import { withStoreValues, WithStoreValuesProps } from '@/app';
 const { THREE } = window;
 
 interface ThreeMaterialListProps extends WithStoreValuesProps {
-    components: FurnitureComponent[];
-    selectedObject: THREE.Mesh;
-    selectedTexture: string;
-    sence: THREE.Scene;
+    readonly components: FurnitureComponent[];
+    readonly selectedObject: THREE.Mesh;
+    readonly selectedTexture: string;
+    readonly sence: THREE.Scene;
 }
 
 class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListProps> {
@@ -34,7 +34,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListP
                                     { selected: selectedObject.name === component.id }
                                 )}
                             >
-                                <img src={component.thumbnail} onClick={() => this.onComponentSelect(component)} />
+                                <img src={component.thumbnail.url} onClick={() => this.onComponentSelect(component)} />
                             </div>
                         </AntdList.Item>
                     )}

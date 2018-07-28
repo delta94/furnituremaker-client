@@ -5,11 +5,11 @@ import { FurnitureComponentType } from './furnitureComponentType';
 import { MaterialType } from './materialType';
 
 export interface Product {
-    id?: string;
-    design: ProductDesign;
-    productType: ProductType;
-    modules: ProductModule[];
-    totalPrice: number;
+    readonly id?: string;
+    readonly design: ProductDesign;
+    readonly productType: ProductType;
+    readonly modules: ProductModule[];
+    readonly totalPrice: number;
 }
  
 export const productUtils = {

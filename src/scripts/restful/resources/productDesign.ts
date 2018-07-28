@@ -1,18 +1,18 @@
 
 import { ResourceType, Resource, RecordType } from 'react-restful';
 
-import { UploadedFile, completeFileUrl } from './uploadedFile';
-import { apiEntry } from '@/restful/apiEntry';
+import { apiEntry } from '../apiEntry';
 
 import { ProductType } from './productType';
 import { ProductDesignGroup } from './productDesignGroup';
+import { UploadedFile } from './uploadedFile';
 
 export interface ProductDesign extends RecordType {
-    id: string;
-    name: string;
-    thumbnail: UploadedFile;
-    productType: ProductType;
-    designGroup: ProductDesignGroup;
+    readonly id: string;
+    readonly name: string;
+    readonly thumbnail: UploadedFile;
+    readonly productType: ProductType;
+    readonly designGroup: ProductDesignGroup;
 }
 
 export const productDesign = new ResourceType({
@@ -30,7 +30,6 @@ export const productDesignResources = {
         method: 'GET',
         mapDataToStore: (items, resourceType, store) => {
             for (const item of items) {
-                item.thumbnail = completeFileUrl(item.thumbnail);
                 store.dataMapping(resourceType, item);
             }
         }

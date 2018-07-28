@@ -1,10 +1,10 @@
 import { MaterialType } from './materialType';
 
 export interface FurnutureMaterial {
-    id: string;
-    name: string;
-    texture: string;
-    materialType: MaterialType;
-    price: number;
-    inStock: boolean;
+    readonly id: string;
+    readonly name: string;
+    readonly texture: string;
+    readonly materialType: MaterialType;
+    readonly price: number;
+    readonly inStock: boolean;
 }

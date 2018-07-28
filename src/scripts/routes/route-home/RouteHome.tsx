@@ -11,7 +11,7 @@ import {
 } from './containers';
 
 export class RouteHome extends React.Component {
-    static routeProps = {
+    static readonly routeProps = {
         path: '/'
     };
 

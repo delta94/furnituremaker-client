@@ -1,12 +1,18 @@
 import { ProductDesign } from './productDesign';
 
 export interface ProductDesignGroup {
-    id?: string;
-    name: string;
-    productDesigns: ProductDesign[];
+    readonly id?: string;
+    readonly name: string;
+    readonly productDesigns: ProductDesign[];
 }
 
 export const productDesignGroupUtils = {
+    createDesignList: (productDesignGroup: ProductDesignGroup, listInitItems: ProductDesign[]): ProductDesignGroup => {
+        return {
+            ...productDesignGroup,
+            productDesigns: listInitItems
+        };
+    },
     fromDesigns: (productDesigns: ProductDesign[]): ProductDesignGroup[] => {
         const productDesignGroups: ProductDesignGroup[] = [];
 
@@ -15,15 +21,13 @@ export const productDesignGroupUtils = {
 
             const existingProductDesignGroup = productDesignGroups.find(o => o.id === productDesignGroup.id);
             if (existingProductDesignGroup) {
-                if (!existingProductDesignGroup.productDesigns) {
-                    existingProductDesignGroup.productDesigns = [];
-                }
                 existingProductDesignGroup.productDesigns.push(productDesign);
                 continue;
             } else {
-                productDesignGroup.productDesigns = [];
-                productDesignGroup.productDesigns.push(productDesign);
-                productDesignGroups.push(productDesignGroup);
+                const productDesingGroupWithDesigns =
+                    productDesignGroupUtils.createDesignList(productDesignGroup, [productDesign]);
+
+                productDesignGroups.push(productDesingGroupWithDesigns);
             }
         }
 

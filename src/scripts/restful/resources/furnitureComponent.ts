@@ -5,19 +5,19 @@ import { apiEntry } from '../apiEntry';
 import { FurnitureComponentType } from './furnitureComponentType';
 import { QuotaUnit } from './quotaUnit';
 import { ProductDesign } from './productDesign';
-import { completeFileUrl, UploadedFile } from './uploadedFile';
+import { UploadedFile } from './uploadedFile';
 
 export interface FurnitureComponent extends RecordType {
-    id: string;
-    name: string;
-    obj: string;
-    mtl: string;
-    thumbnail: UploadedFile;
-    componentType: FurnitureComponentType;
-    quotaValue: number;
-    quotaUnit: QuotaUnit;
-    design: ProductDesign;
-    price: number;
+    readonly id: string;
+    readonly name: string;
+    readonly obj: string;
+    readonly mtl: string;
+    readonly thumbnail: UploadedFile;
+    readonly componentType: FurnitureComponentType;
+    readonly quotaValue: number;
+    readonly quotaUnit: QuotaUnit;
+    readonly design: ProductDesign;
+    readonly price: number;
 }
 
 export const furnitureComponentResourceType = new ResourceType({
@@ -35,7 +35,6 @@ export const furnitureComponentResources = {
         method: 'GET',
         mapDataToStore: (items, resourceType, store) => {
             for (const item of items) {
-                item.thumbnail = completeFileUrl(item.thumbnail);
                 store.dataMapping(resourceType, item);
             }
         }

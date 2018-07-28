@@ -1,5 +1,5 @@
 {
-    "extends": ["tslint-react"],
+    "extends": ["tslint-react", "tslint-immutable"],
     "rules": {
         "align": [
             true,
@@ -94,6 +94,11 @@
             "check-separator",
             "check-type",
             "check-typecast"
-        ]
+        ],
+        // tslint-immutable
+        "readonly-keyword": true,
+        "no-let": true,
+        "no-array-mutation": true,
+        "no-method-signature": true
     }
 }

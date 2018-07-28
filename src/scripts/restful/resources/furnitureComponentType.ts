@@ -2,9 +2,9 @@ import { ResourceType } from 'react-restful';
 import { FurnitureComponent } from './furnitureComponent';
 
 export interface FurnitureComponentType {
-    id: string;
-    name: string;
-    furnitureComponents: FurnitureComponent[];
+    readonly id: string;
+    readonly name: string;
+    readonly furnitureComponents: FurnitureComponent[];
 }
 
 export const furnitureComponentTypeResourceType = new ResourceType({
@@ -24,17 +24,16 @@ export const furnitureComponentTypeUtils = {
 
             const existingFurnitureComponentType =
                 furnitureComponentTypes.find(o => o.id === furnitureComponentType.id);
-            
+
             if (existingFurnitureComponentType) {
-                if (!existingFurnitureComponentType.furnitureComponents) {
-                    existingFurnitureComponentType.furnitureComponents = [];
-                }
                 existingFurnitureComponentType.furnitureComponents.push(furnitureComponent);
                 continue;
             } else {
-                furnitureComponentType.furnitureComponents = [];
-                furnitureComponentType.furnitureComponents.push(furnitureComponent);
-                furnitureComponentTypes.push(furnitureComponentType);
+                const furnitureComponentTypeWithComponent: FurnitureComponentType = {
+                    ...furnitureComponentType,
+                    furnitureComponents: [furnitureComponent]
+                };
+                furnitureComponentTypes.push(furnitureComponentTypeWithComponent);
             }
         }
 
