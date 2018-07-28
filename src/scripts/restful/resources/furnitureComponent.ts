@@ -1,18 +1,18 @@
-import { ResourceType, Resource } from 'react-restful';
+import { ResourceType, Resource, RecordType } from 'react-restful';
 
 import { apiEntry } from '../apiEntry';
 
 import { FurnitureComponentType } from './furnitureComponentType';
 import { QuotaUnit } from './quotaUnit';
 import { ProductDesign } from './productDesign';
-import { completeFileUrl } from './uploadedFile';
+import { completeFileUrl, UploadedFile } from './uploadedFile';
 
-export interface FurnitureComponent {
+export interface FurnitureComponent extends RecordType {
     id: string;
     name: string;
     obj: string;
     mtl: string;
-    thumbnail: string;
+    thumbnail: UploadedFile;
     componentType: FurnitureComponentType;
     quotaValue: number;
     quotaUnit: QuotaUnit;
@@ -29,7 +29,7 @@ export const furnitureComponentResourceType = new ResourceType({
 });
 
 export const furnitureComponentResources = {
-    find: new Resource<ProductDesign[]>({
+    find: new Resource<FurnitureComponent[]>({
         resourceType: furnitureComponentResourceType,
         url: apiEntry('/components'),
         method: 'GET',

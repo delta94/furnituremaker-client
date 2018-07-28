@@ -7,7 +7,8 @@ import {
     restfulStore,
     resfulFetcher,
     furnitureComponentResources,
-    FurnitureComponent
+    FurnitureComponent,
+    furnitureComponentTypeUtils
 } from '@/restful';
 
 import { initComponents, avaliableComponents } from '../data';
@@ -48,7 +49,12 @@ export class ProductContainer extends React.Component<CommonStoreProps> {
                 }]}
                 resource={furnitureComponentResources.find}
                 render={(renderProps) => {
-                    return <ProductLayout />;
+                    if (renderProps.data) {
+                        const componentTypes = furnitureComponentTypeUtils.fromFurnitureComponents(renderProps.data);
+                        return <ProductLayout furnitureTypes={componentTypes} />;
+                    }
+
+                    return null;
                 }}
             />
         );

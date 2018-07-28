@@ -7,8 +7,13 @@ import {
 
 import { ProductSence } from './ProductSence';
 import { ProductInfo } from './ProductInfo';
+import { FurnitureComponentType } from '@/restful';
 
-export class ProductLayout extends React.Component {
+interface ProductLayoutProps {
+    furnitureTypes: FurnitureComponentType[];
+}
+
+export class ProductLayout extends React.Component<ProductLayoutProps> {
     render() {
         return (
             <Container>
@@ -22,5 +27,9 @@ export class ProductLayout extends React.Component {
                 </AntdRow>
             </Container>
         );
+    }
+
+    getDefaultProductFormComponentTypes() {
+        
     }
 }
