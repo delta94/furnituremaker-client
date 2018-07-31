@@ -5,17 +5,20 @@ import * as classNames from 'classnames';
 import styled from 'styled-components';
 
 import { AntdList, AntdIcon } from '@/components';
-import { FurnutureMaterial } from '@/restful';
+import { FurnutureMaterial, uploadedFileUtils, withMaterials, restfulStore, WithMaterialProps } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
+import { Img } from '@/components/domain-components';
+import { CommonStoreProps } from '@/configs';
 
 const { THREE } = window;
 
-interface ThreeMaterialListProps extends WithStoreValuesProps {
-    materials: FurnutureMaterial[];
-    selectedObject: THREE.Mesh;
-    selectedTexture: string;
+interface ThreeMaterialListProps extends WithStoreValuesProps, WithMaterialProps {
+    readonly materials: FurnutureMaterial[];
+    readonly selectedObject: THREE.Mesh;
+    readonly selectedTexture: string;
 }
 
+@withMaterials(restfulStore)
 class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListProps> {
     render() {
         const { selectedTexture, materials } = this.props;
@@ -37,10 +40,13 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                             <div
                                 className={classNames(
                                     'three-material-list-material',
-                                    { selected: selectedTexture === material.texture }
+                                    { selected: selectedTexture === uploadedFileUtils.getUrl(material.texture) }
                                 )}
                             >
-                                <img src={material.texture} onClick={() => this.onMaterialSelect(material)} />
+                                <Img
+                                    file={material.texture}
+                                    onClick={() => this.onMaterialSelect(material)}
+                                />
                             </div>
                         </AntdList.Item>
                     )}
@@ -52,8 +58,8 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
     onMaterialSelect(material: FurnutureMaterial) {
         const { selectedObject } = this.props;
         const texture = new THREE.TextureLoader();
-
-        texture.load(material.texture, (map) => {
+        const textureFile = uploadedFileUtils.getUrl(material.texture);
+        texture.load(textureFile, (map) => {
             // tslint:disable-next-line:no-string-literal
             selectedObject.material['map'].image = map.image;
             // tslint:disable-next-line:no-string-literal
@@ -61,7 +67,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
             // tslint:disable-next-line:no-string-literal
             selectedObject.material['needsUpdate'] = true;
 
-            this.props.setStore({ selectedTexture: material.texture });
+            this.props.setStore({ selectedTexture: textureFile });
         });
     }
 }
@@ -69,7 +75,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
 export const ThreeMaterialList = withStoreValues(
     'selectedObject',
     'selectedTexture',
-    'materials'
+    nameof<CommonStoreProps>(o => o.selectedMaterialType)
 )(ThreeMaterialListComponent);
 
 const ListHeader = styled.div`

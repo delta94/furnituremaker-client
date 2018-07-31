@@ -1,8 +1,8 @@
-import { Product } from './Product';
+import { Product } from './_product';
 import { Customer } from './customer';
 
 export interface Cart {
-    id: string;
-    products: Product[];
-    customer: Customer;
+    readonly id: string;
+    readonly products: Product[];
+    readonly customer: Customer;
 }

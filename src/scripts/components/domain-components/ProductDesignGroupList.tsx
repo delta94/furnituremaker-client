@@ -10,7 +10,7 @@ import { AntdButton } from '@/components/antd-component';
 interface ProductDesignListProps extends
     CommonStoreProps,
     RestfulComponentRenderProps<ProductDesign[]> {
-    productDesignGroups: ProductDesignGroup[];
+    readonly productDesignGroups: ProductDesignGroup[];
 }
 
 @withStoreValues(
@@ -44,9 +44,11 @@ export class ProductDesignGroupList extends React.Component<ProductDesignListPro
                 </ProductDesignGroup>
 
                 {productDesignGroups.map(productDesignGroup => {
-                    const isSelected = productDesignGroup.id === selectedProductDesignGroup;
+                    const isSelected = selectedProductDesignGroup &&
+                        selectedProductDesignGroup.id === productDesignGroup.id;
+                    
                     const onClick = () => setStore({
-                        [nameof<CommonStoreProps>(o => o.selectedProductDesignGroup)]: productDesignGroup.id
+                        [nameof<CommonStoreProps>(o => o.selectedProductDesignGroup)]: productDesignGroup
                     });
                     return (
                         <ProductDesignGroup key={productDesignGroup.id}>

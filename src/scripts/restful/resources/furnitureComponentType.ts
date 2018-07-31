@@ -1,10 +1,13 @@
-import { ResourceType } from 'react-restful';
+import { ResourceType, Resource, RecordType } from 'react-restful';
+
+import { apiEntry } from '../apiEntry';
+
 import { FurnitureComponent } from './furnitureComponent';
 
-export interface FurnitureComponentType {
+export interface FurnitureComponentType extends RecordType {
     readonly id: string;
     readonly name: string;
-    readonly furnitureComponents: FurnitureComponent[];
+    readonly components: FurnitureComponent[];
 }
 
 export const furnitureComponentTypeResourceType = new ResourceType({
@@ -14,6 +17,19 @@ export const furnitureComponentTypeResourceType = new ResourceType({
         type: 'PK'
     }]
 });
+
+export const furnitureComponentTypeResources = {
+    find: new Resource<FurnitureComponentType[]>({
+        resourceType: furnitureComponentTypeResourceType,
+        url: apiEntry('/componenttype'),
+        method: 'GET',
+        mapDataToStore: (items, resourceType, store) => {
+            for (const item of items) {
+                store.dataMapping(resourceType, item);
+            }
+        }
+    })
+};
 
 export const furnitureComponentTypeUtils = {
     fromFurnitureComponents: (furnitureComponents: FurnitureComponent[]): FurnitureComponentType[] => {
@@ -26,12 +42,12 @@ export const furnitureComponentTypeUtils = {
                 furnitureComponentTypes.find(o => o.id === furnitureComponentType.id);
 
             if (existingFurnitureComponentType) {
-                existingFurnitureComponentType.furnitureComponents.push(furnitureComponent);
+                existingFurnitureComponentType.components.push(furnitureComponent);
                 continue;
             } else {
                 const furnitureComponentTypeWithComponent: FurnitureComponentType = {
                     ...furnitureComponentType,
-                    furnitureComponents: [furnitureComponent]
+                    components: [furnitureComponent]
                 };
                 furnitureComponentTypes.push(furnitureComponentTypeWithComponent);
             }

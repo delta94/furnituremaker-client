@@ -5,22 +5,16 @@ import './ThreeSence.scss';
 
 import * as React from 'react';
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
-import { FurnitureComponent, FurnutureMaterial } from '@/restful';
-import { withStoreValues, WithStoreValuesProps } from '@/app';
+import { ProductModule, uploadedFileUtils } from '@/restful';
+import { WithStoreValuesProps } from '@/app';
 
 const { THREE } = window;
 
-interface ProductPiece {
-    component: FurnitureComponent;
-    material: FurnutureMaterial;
-}
-
 interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesProps {
-    productPieces?: ProductPiece[];
-    selectedObject?: THREE.Mesh;
+    readonly productModules: ProductModule[];
+    readonly selectedObject: THREE.Mesh;
 }
 
-@withStoreValues('selectedObject', 'productPieces')
 export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
     componentDidMount() {
         this.initSence();
@@ -29,9 +23,6 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
 
     componentDidUpdate() {
         this.selectObject(this.props.selectedObject);
-        this.props.setStore({
-            sence: this.scene
-        });
     }
 
     componentWillUnmount() {
@@ -45,35 +36,37 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
     }
 
     initContent() {
-        const { productPieces } = this.props;
-        for (const piece of productPieces) {
-            const objLoader = new THREE.OBJLoader2();
+        const { productModules } = this.props;
+        for (const productModule of productModules) {
+            if (!productModule.material || !productModule.component) {
+                continue;
+            }
 
-            // tslint:disable-next-line:typedef
-            const callbackOnLoad = (event) => {
-                for (const mesh of event.detail.loaderRootNode.children) {
-                    mesh.castShadow = true;
-                    mesh.receiveShadow = true;
-                    mesh.name = piece.component.id;
-                    mesh.scale.set(0.1, 0.1, 0.1);
-                    this.fadeIn(mesh);
-                }
-                this.scene.add(event.detail.loaderRootNode);
-            };
+            if (productModule.component.mtl) {
+                const objLoader = new THREE.OBJLoader2();
 
-            // tslint:disable-next-line:typedef
-            const onLoadMtl = (mtl) => {
-                const texture = new THREE.TextureLoader();
-                texture.load(piece.material.texture, (map) => {
+                const callbackOnLoadObj = (event) => {
+                    for (const child of event.detail.loaderRootNode.children) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                        child.name = productModule.component.id;
+                        // child.scale.set(0.1, 0.1, 0.1);
+                        this.fadeIn(child);
+                    }
+                    this.scene.add(event.detail.loaderRootNode);
+                };
+
+                const onLoadMtl = (mtl) => {
+                    const textureFile = uploadedFileUtils.getUrl(productModule.material.texture);
                     for (const materialInfoKey in mtl.materialsInfo) {
                         if (mtl.materialsInfo.hasOwnProperty(materialInfoKey)) {
                             const materialInfo = mtl.materialsInfo[materialInfoKey];
 
-                            materialInfo.map_ka = piece.material.texture;
-                            materialInfo.map_kd = piece.material.texture;
+                            materialInfo.map_ka = textureFile;
+                            materialInfo.map_kd = textureFile;
                         }
                     }
-
+                    mtl.crossOrigin = '';
                     mtl.preload();
                     const materials = mtl.materials;
 
@@ -90,13 +83,30 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                     }
                     objLoader.setLogging(false, false);
                     objLoader.setMaterials(materials);
-                    objLoader.setModelName(piece.component.name);
-                    objLoader.load(piece.component.obj, callbackOnLoad, null, null, null, false);
-                });
-            };
+                    objLoader.setModelName(productModule.component.name);
 
-            const mtlLoader = new THREE.MTLLoader();
-            mtlLoader.load(piece.component.mtl, onLoadMtl);
+                    const objFile = uploadedFileUtils.getUrl(productModule.component.obj);
+                    objLoader.load(objFile, callbackOnLoadObj, null, null, null, false);
+                };
+
+                const mtlLoader = new THREE.MTLLoader();
+                const mtlFile = uploadedFileUtils.getUrl(productModule.component.mtl);
+                mtlLoader.load(mtlFile, onLoadMtl);
+            } else if (productModule.component.fbx) {
+                const callbackOnLoadFBX = (object) => {
+                    for (const child of object.children) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                        child.name = productModule.component.id;
+                        this.fadeIn(child);
+                    }
+                    this.scene.add(object);
+                }
+
+                const fbxLoader = new THREE.FBXLoader();
+                const fbxFile = uploadedFileUtils.getUrl(productModule.component.fbx)
+                fbxLoader.load(fbxFile, callbackOnLoadFBX)
+            }
         }
     }
 
@@ -104,7 +114,6 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
         for (let key = 50; key <= 500; key += 50) {
             setTimeout(() => {
                 mesh.material['opacity'] = mesh.material['opacity'] + 0.1;
-                // tslint:disable-next-line:align
             }, key);
         }
     }

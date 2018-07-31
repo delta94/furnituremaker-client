@@ -97,8 +97,11 @@
         ],
         // tslint-immutable
         "readonly-keyword": true,
-        "no-let": true,
         "no-array-mutation": true,
         "no-method-signature": true
-    }
+    },
+    "exclude":[
+        "node_modules",
+        "**/dist/**",
+    ]
 }

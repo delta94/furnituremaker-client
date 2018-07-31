@@ -1,4 +1,4 @@
-import { ResourceType, Resource, RecordType } from 'react-restful';
+import { ResourceType, Resource, RecordType, Store, restfulDataContainer } from 'react-restful';
 
 import { apiEntry } from '../apiEntry';
 
@@ -6,18 +6,21 @@ import { FurnitureComponentType } from './furnitureComponentType';
 import { QuotaUnit } from './quotaUnit';
 import { ProductDesign } from './productDesign';
 import { UploadedFile } from './uploadedFile';
+import { MaterialType } from '@/restful/resources/materialType';
 
 export interface FurnitureComponent extends RecordType {
     readonly id: string;
     readonly name: string;
-    readonly obj: string;
-    readonly mtl: string;
+    readonly obj: UploadedFile;
+    readonly mtl: UploadedFile;
     readonly thumbnail: UploadedFile;
     readonly componentType: FurnitureComponentType;
+    readonly materialType: MaterialType;
     readonly quotaValue: number;
     readonly quotaUnit: QuotaUnit;
     readonly design: ProductDesign;
     readonly price: number;
+    readonly fbx: UploadedFile;
 }
 
 export const furnitureComponentResourceType = new ResourceType({
@@ -40,3 +43,17 @@ export const furnitureComponentResources = {
         }
     })
 };
+
+export interface WithComponentsProps {
+    readonly components?: FurnitureComponent[];
+}
+
+export const withComponents = (store: Store) =>
+    // tslint:disable-next-line:no-any 
+    (Component: React.ComponentType<WithComponentsProps>): any => {
+        return restfulDataContainer<FurnitureComponent, WithComponentsProps>({
+            resourceType: furnitureComponentResourceType,
+            store: store,
+            mapToProps: (data) => ({ components: data })
+        })(Component);
+    };

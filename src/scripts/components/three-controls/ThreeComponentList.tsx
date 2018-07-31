@@ -4,8 +4,9 @@ import * as classNames from 'classnames';
 import styled from 'styled-components';
 
 import { AntdList } from '@/components';
-import { FurnitureComponent } from '@/restful';
+import { FurnitureComponent, uploadedFileUtils } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
+import { Img } from '@/components/domain-components';
 
 const { THREE } = window;
 
@@ -19,7 +20,7 @@ interface ThreeMaterialListProps extends WithStoreValuesProps {
 class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListProps> {
     render() {
         const { selectedObject, components } = this.props;
-
+        selectedObject.material['map'].needsUpdate = true;
         return (
             <React.Fragment>
                 <ListHeader>Cấu kiện thay thế</ListHeader>
@@ -34,7 +35,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListP
                                     { selected: selectedObject.name === component.id }
                                 )}
                             >
-                                <img src={component.thumbnail.url} onClick={() => this.onComponentSelect(component)} />
+                                <Img file={component.thumbnail} onClick={() => this.onComponentSelect(component)} />
                             </div>
                         </AntdList.Item>
                     )}
@@ -56,7 +57,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListP
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
                 mesh.name = component.id;
-                mesh.scale.set(0.1, 0.1, 0.1);
+                // mesh.scale.set(0.1, 0.1, 0.1);
                 mesh.material = selectedObject.material;
 
                 const selectedObjectParent = selectedObject.parent;
@@ -67,7 +68,8 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListP
                 });
             }
         };
-        objLoader.load(component.obj, callbackOnLoad);
+        const objFile = uploadedFileUtils.getUrl(component.obj);
+        objLoader.load(objFile, callbackOnLoad);
     }
 }
 

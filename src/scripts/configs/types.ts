@@ -1,10 +1,12 @@
-import { WithStoreValuesProps, ExtendWithStoreValuesProps } from '@/app';
+import { ExtendWithStoreValuesProps } from '@/app';
+import { ProductTypeGroup, ProductType, ProductDesignGroup, ProductDesign, MaterialType } from '@/restful';
 
 export interface CommonStoreValues {
-    selectedProductTypeGroup?: string;
-    selectedProductType?: string;
-    selectedProductDesignGroup?: string;
-    selectedProductDesign?: string;
+    readonly selectedProductTypeGroup?: ProductTypeGroup;
+    readonly selectedProductType?: ProductType;
+    readonly selectedProductDesignGroup?: ProductDesignGroup;
+    readonly selectedProductDesign?: ProductDesign;
+    readonly selectedMaterialType?: MaterialType;
 }
 
 export type CommonStoreProps = ExtendWithStoreValuesProps<CommonStoreValues>;

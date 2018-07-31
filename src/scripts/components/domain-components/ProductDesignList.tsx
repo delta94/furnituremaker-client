@@ -6,6 +6,7 @@ import { CommonStoreProps } from '@/configs';
 import { ProductDesign } from '@/restful';
 import Slider, { Settings } from 'react-slick';
 import { withStoreValues } from '@/app';
+import { Img } from './generic';
 
 interface ProductDesignListProps extends
     CommonStoreProps,
@@ -18,7 +19,7 @@ interface ProductDesignListProps extends
     nameof<CommonStoreProps>(o => o.selectedProductDesignGroup),
 )
 export class ProductDesignList extends React.Component<ProductDesignListProps> {
-    static slickSettings: Settings = {
+    static readonly slickSettings: Settings = {
         dots: true,
         infinite: false,
         speed: 500,
@@ -34,7 +35,7 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
         }
 
         const filterdDesigns = selectedProductDesignGroup ?
-            data.filter(o => o.designGroup.id === selectedProductDesignGroup) :
+            data.filter(o => o.designGroup.id === selectedProductDesignGroup.id) :
             data;
 
         return (
@@ -45,11 +46,13 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
                             return (
                                 <Item
                                     key={productDesign.id}
-                                    isSelected={selectedProductDesign === productDesign.id}
-                                    onClick={() => setStore({ selectedProductDesign: productDesign.id })}
+                                    isSelected={selectedProductDesign && selectedProductDesign.id === productDesign.id}
+                                    onClick={() => setStore({
+                                        [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: productDesign
+                                    })}
                                 >
                                     <ThumbnailWrapper>
-                                        <img className="mw-100" src={productDesign.thumbnail.url} />
+                                        <Img className="mw-100" file={productDesign.thumbnail}/>
                                     </ThumbnailWrapper>
                                     <Label>{productDesign.name}</Label>
                                 </Item>
@@ -68,7 +71,7 @@ const Wrapper = styled.div`
     padding: 10px 0;
 `;
 
-type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { isSelected: boolean }>;
+type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { readonly isSelected: boolean }>;
 const Item: ItemProps = styled.div`
     text-align: center;
     padding: 10px;

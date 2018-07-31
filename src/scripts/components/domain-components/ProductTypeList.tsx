@@ -5,6 +5,7 @@ import { RestfulComponentRenderProps } from 'react-restful';
 import { ProductType } from '@/restful';
 import Slider, { Settings } from 'react-slick';
 import { withStoreValues } from '@/app';
+import { Img } from './generic';
 
 interface ProductTypeListProps extends
     CommonStoreProps,
@@ -13,7 +14,7 @@ interface ProductTypeListProps extends
 
 @withStoreValues(nameof<CommonStoreProps>(o => o.selectedProductType))
 export class ProductTypeList extends React.Component<ProductTypeListProps> {
-    static slickSettings: Settings = {
+    static readonly slickSettings: Settings = {
         dots: true,
         infinite: false,
         speed: 500,
@@ -36,11 +37,11 @@ export class ProductTypeList extends React.Component<ProductTypeListProps> {
                             return (
                                 <Item
                                     key={productType.id}
-                                    isSelected={selectedProductType === productType.id}
-                                    onClick={() => setStore({ selectedProductType: productType.id })}
+                                    isSelected={selectedProductType && selectedProductType.id === productType.id}
+                                    onClick={() => setStore({ selectedProductType: productType })}
                                 >
                                     <ThumbnailWrapper>
-                                        <img src={productType.thumbnail.url} />
+                                        <Img className="mw-100" file={productType.thumbnail} />
                                     </ThumbnailWrapper>
                                     <Label>{productType.name}</Label>
                                 </Item>
@@ -59,7 +60,7 @@ const Wrapper = styled.div`
     padding: 10px 0;
 `;
 
-type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { isSelected: boolean }>;
+type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { readonly isSelected: boolean }>;
 const Item: ItemProps = styled.div`
     text-align: center;
     padding: 10px;

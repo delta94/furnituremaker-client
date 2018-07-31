@@ -2,7 +2,7 @@ import { ProductDesign } from './productDesign';
 import { ProductType } from './productType';
 import { ProductModule } from './productModule';
 import { FurnitureComponentType } from './furnitureComponentType';
-import { MaterialType } from './materialType';
+import { MaterialType, materialTypeUtils } from './materialType';
 
 export interface Product {
     readonly id?: string;
@@ -11,7 +11,7 @@ export interface Product {
     readonly modules: ProductModule[];
     readonly totalPrice: number;
 }
- 
+
 export const productUtils = {
     getTotalPriceFromModules: (productModules: ProductModule[], startValue: number) => {
         const reducer = (currentTotalPrice, currentModule) => {
@@ -20,21 +20,29 @@ export const productUtils = {
         };
         return productModules.reduce(reducer, startValue);
     },
-    getDefaultProductFromComponentTypes: (
+    createDefaultProduct: (
         design: ProductDesign,
         productType: ProductType,
         furnitureComponentTypes: FurnitureComponentType[],
-        materialTypes: MaterialType
+        materialTypes: MaterialType[]
     ): Product => {
         const modules: ProductModule[] = [];
 
         for (const furnitureComponentType of furnitureComponentTypes) {
-            const defaultComponent = furnitureComponentType.furnitureComponents[0];
+            const defaultComponent = furnitureComponentType.components[0];
+            const defaultComponentMaterialType = defaultComponent.materialType;
+
+            const defaultMaterialType = defaultComponentMaterialType &&
+                materialTypes.find(o => o.id === defaultComponentMaterialType.id);
+
+            const defaultMaterial = defaultMaterialType &&
+                materialTypeUtils.getDefaultMaterial(defaultMaterialType);
+
             modules.push({
                 component: defaultComponent,
                 componentPrice: defaultComponent.price,
-                material: null,
-                materialPrice: 0
+                material: defaultMaterial,
+                materialPrice: defaultMaterial ? defaultMaterial.price : 0
             });
         }
         const product: Product = {

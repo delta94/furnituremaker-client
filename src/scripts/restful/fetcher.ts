@@ -16,17 +16,16 @@ class RestfulFetcher extends Fetcher {
             if (!response.ok) {
                 const responseText = await response.text();
                 throw responseText;
-            } else {
-                const responseContentType = response.headers.get('content-type');
-                if (responseContentType && responseContentType.startsWith('application/json')) {
-                    const json = await response.json();
-                    if (resource.mapDataToStore) {
-                        resource.mapDataToStore(json, resource.recordType, this.store);
-                    }
-                    return json;
-                }
-                return await response.text();
             }
+            const responseContentType = response.headers.get('content-type');
+            if (responseContentType && responseContentType.startsWith('application/json')) {
+                const json = await response.json();
+                if (resource.mapDataToStore) {
+                    resource.mapDataToStore(json, resource.recordType, this.store);
+                }
+                return json;
+            }
+            return await response.text();
         } catch (error) {
             throw new Error(error);
         }

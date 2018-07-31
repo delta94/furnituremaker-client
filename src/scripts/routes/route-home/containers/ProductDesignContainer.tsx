@@ -23,7 +23,7 @@ export class ProductDesignContainer extends React.Component<CommonStoreProps> {
                 parameters={[{
                     type: 'query',
                     parameter: nameof<ProductDesign>(o => o.productType),
-                    value: selectedProductType
+                    value: selectedProductType.id
                 }]}
                 render={(renderProps) => {
                     const { data } = renderProps;

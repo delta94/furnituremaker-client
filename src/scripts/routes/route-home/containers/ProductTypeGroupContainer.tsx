@@ -1,12 +1,12 @@
 
 import * as React from 'react';
+import { RestfulRender } from 'react-restful';
 
 import { productTypeGroupResources, restfulStore, resfulFetcher } from '@/restful';
 import { ProductTypeGroupList } from '@/components';
-import { RestfulRender } from 'react-restful';
 
 export class ProductTypeGroupContainer extends React.Component {
-    render() {
+    render() { 
         return (
             <RestfulRender
                 fetcher={resfulFetcher}

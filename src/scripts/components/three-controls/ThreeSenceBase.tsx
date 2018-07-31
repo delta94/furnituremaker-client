@@ -1,6 +1,7 @@
 // tslint:disable:no-string-literal
 // tslint:disable:no-console
 // tslint:disable:align
+// tslint:disable:readonly-keyword
 
 import * as React from 'react';
 
@@ -100,7 +101,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         const renderPass = new THREE.SSAARenderPass(this.scene, this.camera);
         renderPass.clearColor = '#f9f9f9';
         renderPass.clearAlpha = 1;
-        
+
         renderPass.sampleLevel = 2;
         this.composer.addPass(renderPass);
 
@@ -136,7 +137,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-        this.renderer.setClearColor( 0x000000, 0 );
+        this.renderer.setClearColor(0x000000, 0);
         this.container.appendChild(this.renderer.domElement);
     }
 
@@ -147,7 +148,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             this.cameraDefaults.near,
             this.cameraDefaults.far
         );
-        
+
         this.cameraTarget = this.cameraDefaults.posCameraTarget;
         this.resetCamera();
     }
@@ -155,7 +156,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     initControls() {
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.target = this.cameraTarget;
-        
+
         this.controls.minDistance = 0;
         this.controls.maxDistance = 500;
         this.controls.maxPolarAngle = Math.PI / 2.4;
@@ -266,7 +267,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         if (this.isMouseHold) {
             return;
         }
-        
+
         let x, y;
         if (event.changedTouches) {
             x = event.changedTouches[0].pageX;

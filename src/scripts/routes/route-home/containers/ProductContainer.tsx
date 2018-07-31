@@ -6,37 +6,25 @@ import { CommonStoreValues, CommonStoreProps } from '@/configs';
 import {
     restfulStore,
     resfulFetcher,
-    furnitureComponentResources,
     FurnitureComponent,
-    furnitureComponentTypeUtils
+    furnitureComponentResources,
+    furnitureComponentTypeUtils,
+    WithMaterialTypesProps,
+    withMaterialTypes
 } from '@/restful';
-
-import { initComponents, avaliableComponents } from '../data';
 
 import { ProductLayout } from './product-container';
 
+type ProductContainerProps = CommonStoreProps & WithMaterialTypesProps;
+
+@withMaterialTypes(restfulStore)
 @withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductDesign))
-export class ProductContainer extends React.Component<CommonStoreProps> {
-    // tslint:disable-next-line:typedef
-    constructor(props) {
-        super(props);
-
-        this.props.setStore({
-            components: avaliableComponents,
-            productPieces: initComponents.map(o => ({
-                component: o,
-                material: {
-                    texture: '/static/models/sofa/maps/1701.jpg'
-                }
-            }))
-        });
-    }
-
+export class ProductContainer extends React.Component<ProductContainerProps> {
     render() {
-        const { selectedProductDesign } = this.props;
+        const { materialTypes, selectedProductDesign } = this.props;
         if (!selectedProductDesign) {
             return null;
-        }
+        } 
 
         return (
             <RestfulRender
@@ -45,15 +33,21 @@ export class ProductContainer extends React.Component<CommonStoreProps> {
                 parameters={[{
                     type: 'query',
                     parameter: nameof<FurnitureComponent>(o => o.design),
-                    value: selectedProductDesign
+                    value: selectedProductDesign.id
                 }]}
                 resource={furnitureComponentResources.find}
                 render={(renderProps) => {
-                    if (renderProps.data) {
-                        const componentTypes = furnitureComponentTypeUtils.fromFurnitureComponents(renderProps.data);
-                        return <ProductLayout furnitureTypes={componentTypes} />;
+                    if (renderProps.data && !renderProps.fetching) {
+                        const furnitureComponentTypes =
+                            furnitureComponentTypeUtils.fromFurnitureComponents(renderProps.data);
+                        return (
+                            <ProductLayout
+                                furnitureComponentTypes={furnitureComponentTypes}
+                                materialTypes={materialTypes}
+                                selectedProductDesign={selectedProductDesign}
+                            />
+                        );
                     }
-
                     return null;
                 }}
             />

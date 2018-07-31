@@ -22,7 +22,7 @@ export class ProductTypeContainer extends React.Component<CommonStoreProps> {
                 parameters={[{
                     type: 'query',
                     parameter: nameof<ProductType>(o => o.productTypeGroup),
-                    value: selectedProductTypeGroup
+                    value: selectedProductTypeGroup.id
                 }]}
                 render={ProductTypeList}
             />

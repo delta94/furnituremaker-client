@@ -15,7 +15,7 @@ import { FurnutureMaterial } from '@/restful';
 import { withStoreValues, WithStoreValuesProps } from '@/app';
 
 interface RouteHomeProps extends WithStoreValuesProps {
-    selectedObject?: THREE.Mesh | null;
+    readonly selectedObject?: THREE.Mesh | null;
 }
 
 @withStoreValues('selectedObject')

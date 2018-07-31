@@ -2,21 +2,22 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Slider, { Settings } from 'react-slick';
 
-import { ProductTypeGroup } from '@/restful';
+import { ProductTypeGroup, productTypeGroupUtils } from '@/restful';
 import { withStoreValues } from '@/app';
 import { CommonStoreProps } from '@/configs';
+import { Img } from './generic';
 
 interface ProductTypeGroupListProps extends CommonStoreProps {
-    productTypeGroups: ProductTypeGroup[];
+    readonly productTypeGroups: ProductTypeGroup[];
 }
 
 @withStoreValues('selectedProductTypeGroup')
 export class ProductTypeGroupList extends React.Component<ProductTypeGroupListProps> {
-    static defaultProps: ProductTypeGroupListProps = {
+    static readonly defaultProps: ProductTypeGroupListProps = {
         productTypeGroups: []
     };
 
-    static slickSettings: Settings = {
+    static readonly slickSettings: Settings = {
         dots: true,
         infinite: false,
         speed: 500,
@@ -24,20 +25,30 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
         slidesToScroll: 1
     };
 
+    constructor(props: ProductTypeGroupListProps) {
+        super(props);
+
+        const { productTypeGroups } = props;
+        const defaulTypeGroup = productTypeGroupUtils.getDefaultProductType(productTypeGroups);
+        
+    }
+
     render() {
         const { selectedProductTypeGroup, setStore } = this.props;
+
         return (
             <Wrapper itemLength={this.props.productTypeGroups.length}>
                 <Slider {...ProductTypeGroupList.slickSettings}>
                     {
                         this.props.productTypeGroups.map(productTypeGroup => {
                             const onItemClick = () => {
-                                if (selectedProductTypeGroup === productTypeGroup.id) {
+                                if (selectedProductTypeGroup &&
+                                    selectedProductTypeGroup.id === productTypeGroup.id) {
                                     return;
                                 }
-                                
+
                                 setStore({
-                                    [nameof<CommonStoreProps>(o => o.selectedProductTypeGroup)]: productTypeGroup.id,
+                                    [nameof<CommonStoreProps>(o => o.selectedProductTypeGroup)]: productTypeGroup,
                                     [nameof<CommonStoreProps>(o => o.selectedProductType)]: null,
                                     [nameof<CommonStoreProps>(o => o.selectedProductDesignGroup)]: null,
                                     [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: null
@@ -47,11 +58,12 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
                             return (
                                 <Item
                                     key={productTypeGroup.id}
-                                    isSelected={selectedProductTypeGroup === productTypeGroup.id}
+                                    isSelected={selectedProductTypeGroup ?
+                                        selectedProductTypeGroup.id === productTypeGroup.id : undefined}
                                     onClick={onItemClick}
                                 >
                                     <ThumbnailWrapper>
-                                        <img src={productTypeGroup.thumbnail.url} />
+                                        <Img file={productTypeGroup.thumbnail} />
                                     </ThumbnailWrapper>
                                     <Label>{productTypeGroup.name}</Label>
                                 </Item>
@@ -64,13 +76,13 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
     }
 }
 
-type WrapperProps = React.ComponentType<React.DOMAttributes<{}> & { itemLength: number }>;
+type WrapperProps = React.ComponentType<React.DOMAttributes<{}> & { readonly itemLength: number }>;
 const Wrapper: WrapperProps = styled.div`
     background-color: #fff;
     margin: 0 auto;
 `;
 
-type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { isSelected: boolean }>;
+type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { readonly isSelected: boolean }>;
 const Item: ItemProps = styled.div`
     text-align: center;
     padding: 10px;
