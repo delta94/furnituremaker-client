@@ -2,10 +2,10 @@ import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
 import { withStoreValues } from '@/app';
-import { resfulFetcher, restfulStore, ProductDesign, productDesignResources, productDesignGroupUtils } from '@/restful';
-import { ProductDesignList } from '@/components';
+import { resfulFetcher, restfulStore, ProductDesign, productDesignResources } from '@/restful';
 import { CommonStoreValues, CommonStoreProps } from '@/configs';
-import { ProductDesignGroupList } from '@/components/domain-components/ProductDesignGroupList';
+
+import { DesignModal } from './product-design-container';
 
 @withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductType))
 export class ProductDesignContainer extends React.Component<CommonStoreProps> {
@@ -26,25 +26,9 @@ export class ProductDesignContainer extends React.Component<CommonStoreProps> {
                     value: selectedProductType.id
                 }]}
                 render={(renderProps) => {
-                    const { data } = renderProps;
-                    if (data) {
-                        if (!data) {
-                            return null;
-                        }
-
-                        const productDesignGroups = productDesignGroupUtils.fromDesigns(data);
-                        if (!productDesignGroups.length) {
-                            return null;
-                        }
-
-                        return (
-                            <React.Fragment>
-                                <ProductDesignGroupList productDesignGroups={productDesignGroups} />
-                                <ProductDesignList data={data} />
-                            </React.Fragment>
-                        );
+                    if (renderProps.data) {
+                        return (<DesignModal productDesigns={renderProps.data} />);
                     }
-                    
                     return null;
                 }}
             />

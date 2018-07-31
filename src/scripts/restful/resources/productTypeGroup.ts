@@ -31,5 +31,5 @@ export const productTypeGroupResources = {
 };
 
 export const productTypeGroupUtils = {
-    getDefaultProductType: (productTypeGroups: ProductTypeGroup[]) => productTypeGroups[0]
+    getDefaultProductTypeGroup: (productTypeGroups: ProductTypeGroup[]) => productTypeGroups[0]
 }

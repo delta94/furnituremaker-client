@@ -28,9 +28,13 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
     constructor(props: ProductTypeGroupListProps) {
         super(props);
 
-        const { productTypeGroups } = props;
-        const defaulTypeGroup = productTypeGroupUtils.getDefaultProductType(productTypeGroups);
-        
+        const { productTypeGroups, setStore } = props;
+
+        // * Set default product type group
+        const defaulTypeGroup = productTypeGroupUtils.getDefaultProductTypeGroup(productTypeGroups);
+        setStore({
+            [nameof<CommonStoreProps>(o => o.selectedProductTypeGroup)]: defaulTypeGroup
+        })
     }
 
     render() {

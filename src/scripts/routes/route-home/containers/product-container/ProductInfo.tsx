@@ -24,10 +24,10 @@ export class ProductInfo extends React.Component<RouteHomeProps> {
         return (
             <ComponentsInfoWrapper>
                 <Condition condition={this.props.selectedObject}>
-                    <Condition.If>
+                    <Condition.Then>
                         <ThreeMaterialList />
                         <ThreeComponentList />
-                    </Condition.If>
+                    </Condition.Then>
                     <Condition.Else>
                         <div>a</div>
                     </Condition.Else>

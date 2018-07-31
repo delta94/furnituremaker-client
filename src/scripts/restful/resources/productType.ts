@@ -31,3 +31,7 @@ export const productTypeResources = {
         }
     })
 };
+
+export const productTypeUtils = {
+    getDefaultProductType: (productTypes: ProductType[]) => productTypes[0]
+};

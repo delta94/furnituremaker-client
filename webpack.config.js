@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -22,6 +23,7 @@ module.exports = {
         new webpack.DefinePlugin({
             '__DEV__': true
         }),
+        new ErrorOverlayPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
         new HtmlWebpackPlugin({

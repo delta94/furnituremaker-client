@@ -35,3 +35,7 @@ export const productDesignResources = {
         }
     })
 };
+
+export const productDesignUtils = {
+    getDefaultProductDesigns: (productDesigns: ProductDesign[]) => productDesigns[0]
+};

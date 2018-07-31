@@ -6,10 +6,12 @@ import { resfulFetcher, restfulStore, productTypeResources, ProductType } from '
 import { ProductTypeList } from '@/components';
 import { CommonStoreValues, CommonStoreProps } from '@/configs';
 
+import { DesignModalProps } from './product-design-container';
+
 @withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductTypeGroup))
 export class ProductTypeContainer extends React.Component<CommonStoreProps> {
     render() {
-        const { selectedProductTypeGroup } = this.props;
+        const { selectedProductTypeGroup, setStore } = this.props;
         if (!selectedProductTypeGroup) {
             return true;
         }
@@ -24,7 +26,22 @@ export class ProductTypeContainer extends React.Component<CommonStoreProps> {
                     parameter: nameof<ProductType>(o => o.productTypeGroup),
                     value: selectedProductTypeGroup.id
                 }]}
-                render={ProductTypeList}
+                render={(renderProps) => {
+                    if (renderProps.data) {
+                        return (
+                            <ProductTypeList
+                                productTypes={renderProps.data}
+                                onTypeClick={(productType) =>
+                                    setStore({
+                                        [nameof<DesignModalProps>(o => o.showDesignsModal)]: true,
+                                        [nameof<CommonStoreProps>(o => o.selectedProductType)]: productType
+                                    })
+                                }
+                            />
+                        );
+                    }
+                    return null;
+                }}
             />
         );
     }

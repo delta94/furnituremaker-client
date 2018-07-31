@@ -13,6 +13,16 @@ interface ProductDesignListProps extends
     readonly productDesignGroups: ProductDesignGroup[];
 }
 
+const ProductDesignGroupWrapper = styled.div`
+    text-align: center;
+    padding: 10px 0;
+`;
+
+const ProductDesignGroup = styled.div`
+    margin-right: 15px;
+    display: inline-block;
+`;
+
 @withStoreValues(
     nameof<CommonStoreProps>(o => o.selectedProductType),
     nameof<CommonStoreProps>(o => o.selectedProductDesignGroup)
@@ -65,13 +75,3 @@ export class ProductDesignGroupList extends React.Component<ProductDesignListPro
         );
     }
 }
-
-const ProductDesignGroupWrapper = styled.div`
-    text-align: center;
-    padding: 10px 0;
-`;
-
-const ProductDesignGroup = styled.div`
-    margin-right: 15px;
-    display: inline-block;
-`;

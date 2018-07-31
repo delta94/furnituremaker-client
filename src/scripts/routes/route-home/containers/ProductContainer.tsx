@@ -14,17 +14,29 @@ import {
 } from '@/restful';
 
 import { ProductLayout } from './product-container';
+import { PageLoadingProps } from '@/components';
 
 type ProductContainerProps = CommonStoreProps & WithMaterialTypesProps;
 
 @withMaterialTypes(restfulStore)
 @withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductDesign))
 export class ProductContainer extends React.Component<ProductContainerProps> {
+
+    constructor(props: ProductContainerProps) {
+        super(props);
+
+        const { setStore } = props;
+        setTimeout(
+            () => setStore({ [nameof<PageLoadingProps>(o => o.showPageLoading)]: false }),
+            500
+        );
+    }
+
     render() {
         const { materialTypes, selectedProductDesign } = this.props;
         if (!selectedProductDesign) {
             return null;
-        } 
+        }
 
         return (
             <RestfulRender
