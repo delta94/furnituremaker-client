@@ -5,12 +5,16 @@ import styled from 'styled-components';
 
 import { AntdList } from '@/components';
 import { FurnitureComponent, uploadedFileUtils } from '@/restful';
-import { withStoreValues, WithStoreValuesProps } from '@/app';
+import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
 import { Img } from '@/components/domain-components';
+
+const ListHeader = styled.div`
+    margin: 15px 0;
+`;
 
 const { THREE } = window;
 
-interface ThreeMaterialListProps extends WithStoreValuesProps {
+interface ThreeMaterialListProps extends WithStoreValuesDispatchs {
     readonly components: FurnitureComponent[];
     readonly selectedObject: THREE.Mesh;
     readonly selectedTexture: string;
@@ -20,7 +24,7 @@ interface ThreeMaterialListProps extends WithStoreValuesProps {
 class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListProps> {
     render() {
         const { selectedObject, components } = this.props;
-        selectedObject.material['map'].needsUpdate = true;
+        (selectedObject.material as THREE.MeshPhongMaterial).map.needsUpdate = true;
         return (
             <React.Fragment>
                 <ListHeader>Cấu kiện thay thế</ListHeader>
@@ -77,7 +81,3 @@ export const ThreeComponentList = withStoreValues(
     'selectedObject',
     'components'
 )(ThreeComponentListComponent);
-
-const ListHeader = styled.div`
-    margin: 15px 0;
-`;

@@ -110,15 +110,9 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             new THREE.Vector2(this.container.clientWidth, this.container.clientHeight),
             this.scene,
             this.camera);
-        this.outlinePass.edgeStrength = 3;
+        this.outlinePass.edgeStrength = 2;
         this.outlinePass.pulsePeriod = 1;
         this.composer.addPass(this.outlinePass);
-
-        // * SSAO
-        const ssaoPass = new THREE.SSAOPass(this.scene, this.camera);
-        ssaoPass.aoClamp = .8;
-        ssaoPass.lumInfluence = 1;
-        this.composer.addPass(ssaoPass);
 
         // * FXAA
         const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);

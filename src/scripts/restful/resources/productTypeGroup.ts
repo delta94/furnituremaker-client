@@ -1,15 +1,18 @@
 import { ResourceType, Resource, RecordType } from 'react-restful';
 
-import { UploadedFile } from './uploadedFile';
 import { apiEntry } from '../apiEntry';
+
+import { UploadedFile } from './uploadedFile';
+import { ProductType } from './productType';
 
 export interface ProductTypeGroup extends RecordType {
     readonly id?: string;
     readonly name: string;
     readonly thumbnail: UploadedFile;
+    readonly productTypes: ProductType[];
 }
 
-export const productTypeGroup = new ResourceType({
+export const productTypeGroupResourceType = new ResourceType({
     name: 'product-type-group',
     schema: [{
         field: 'id',
@@ -19,7 +22,7 @@ export const productTypeGroup = new ResourceType({
 
 export const productTypeGroupResources = {
     find: new Resource<ProductTypeGroup[]>({
-        resourceType: productTypeGroup,
+        resourceType: productTypeGroupResourceType,
         url: apiEntry('/producttypegroup'),
         method: 'GET',
         mapDataToStore: (productTypeGroups, resourceType, store) => {
@@ -32,4 +35,4 @@ export const productTypeGroupResources = {
 
 export const productTypeGroupUtils = {
     getDefaultProductTypeGroup: (productTypeGroups: ProductTypeGroup[]) => productTypeGroups[0]
-}
+};

@@ -8,12 +8,11 @@ import {
     resfulFetcher,
     FurnitureComponent,
     furnitureComponentResources,
-    furnitureComponentTypeUtils,
     WithMaterialTypesProps,
     withMaterialTypes
 } from '@/restful';
 
-import { ProductLayout } from './product-container';
+import { ProductController } from './product-container';
 import { PageLoadingProps } from '@/components';
 
 type ProductContainerProps = CommonStoreProps & WithMaterialTypesProps;
@@ -24,12 +23,6 @@ export class ProductContainer extends React.Component<ProductContainerProps> {
 
     constructor(props: ProductContainerProps) {
         super(props);
-
-        const { setStore } = props;
-        setTimeout(
-            () => setStore({ [nameof<PageLoadingProps>(o => o.showPageLoading)]: false }),
-            500
-        );
     }
 
     render() {
@@ -50,11 +43,9 @@ export class ProductContainer extends React.Component<ProductContainerProps> {
                 resource={furnitureComponentResources.find}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
-                        const furnitureComponentTypes =
-                            furnitureComponentTypeUtils.fromFurnitureComponents(renderProps.data);
                         return (
-                            <ProductLayout
-                                furnitureComponentTypes={furnitureComponentTypes}
+                            <ProductController
+                                furnitureComponents={renderProps.data}
                                 materialTypes={materialTypes}
                                 selectedProductDesign={selectedProductDesign}
                             />

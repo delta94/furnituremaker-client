@@ -2,13 +2,15 @@ import { ResourceType, Resource, RecordType } from 'react-restful';
 import { apiEntry } from '../apiEntry';
 
 import { UploadedFile } from './uploadedFile';
-import { ProductTypeGroup } from '@/restful/resources/productTypeGroup';
+import { ProductTypeGroup } from './productTypeGroup';
+import { DiscountByQuantities } from './discountByQuantities';
 
 export interface ProductType extends RecordType {
     readonly id: string;
     readonly name: string;
     readonly thumbnail: UploadedFile;
-    readonly productTypeGroup: ProductTypeGroup;
+    readonly productTypeGroup: ProductTypeGroup | string;
+    readonly discountByQuantities?: DiscountByQuantities[];
 }
 
 export const productType = new ResourceType({

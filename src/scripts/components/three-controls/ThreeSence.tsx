@@ -6,11 +6,11 @@ import './ThreeSence.scss';
 import * as React from 'react';
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 import { ProductModule, uploadedFileUtils } from '@/restful';
-import { WithStoreValuesProps } from '@/app';
+import { WithStoreValuesDispatchs } from '@/app';
 
 const { THREE } = window;
 
-interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesProps {
+interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesDispatchs {
     readonly productModules: ProductModule[];
     readonly selectedObject: THREE.Mesh;
 }
@@ -101,20 +101,23 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                         this.fadeIn(child);
                     }
                     this.scene.add(object);
-                }
+                };
 
                 const fbxLoader = new THREE.FBXLoader();
-                const fbxFile = uploadedFileUtils.getUrl(productModule.component.fbx)
-                fbxLoader.load(fbxFile, callbackOnLoadFBX)
+                const fbxFile = uploadedFileUtils.getUrl(productModule.component.fbx);
+                fbxLoader.load(fbxFile, callbackOnLoadFBX);
             }
         }
     }
 
     fadeIn(mesh: THREE.Mesh) {
         for (let key = 50; key <= 500; key += 50) {
-            setTimeout(() => {
-                mesh.material['opacity'] = mesh.material['opacity'] + 0.1;
-            }, key);
+            setTimeout(
+                () => {
+                    mesh.material['opacity'] = mesh.material['opacity'] + 0.1;
+                },
+                key
+            );
         }
     }
 }

@@ -10,13 +10,32 @@ const ModalWrapper: ModalWrapperType = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, );
     display: flex;
     justify-content:center;
     align-items: center;
     z-index: 9;
     overflow: auto;
-    display: ${(props) => props.visibled ? 'block' : 'none'};
+    transition: visibility 0s, opacity 0.5s;
+    visibility : ${(props) => props.visibled ? 'visible' : 'hidden'};
+    opacity : ${(props) => props.visibled ? 1 : 0};
+`;
+
+const ModalContent = styled.div`
+    background-color: #fff;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 20px;
+`;
+
+const ModalOverlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2 );
 `;
 
 export interface FullScreenModalProps {
@@ -32,11 +51,11 @@ export class FullScreenModal extends React.Component<FullScreenModalProps> {
 
     render() {
         return (
-            <ModalWrapper
-                visibled={this.props.visibled}
-                onClick={this.props.onClose}
-            >
-                {this.props.children}
+            <ModalWrapper visibled={this.props.visibled}>
+                <ModalOverlay onClick={this.props.onClose} />
+                <ModalContent>
+                    {this.props.children}
+                </ModalContent>
             </ModalWrapper>
         );
     }

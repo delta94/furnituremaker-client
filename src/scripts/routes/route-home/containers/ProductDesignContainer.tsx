@@ -5,7 +5,7 @@ import { withStoreValues } from '@/app';
 import { resfulFetcher, restfulStore, ProductDesign, productDesignResources } from '@/restful';
 import { CommonStoreValues, CommonStoreProps } from '@/configs';
 
-import { DesignModal } from './product-design-container';
+import { ProductDesignController } from './product-design-container';
 
 @withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductType))
 export class ProductDesignContainer extends React.Component<CommonStoreProps> {
@@ -26,8 +26,8 @@ export class ProductDesignContainer extends React.Component<CommonStoreProps> {
                     value: selectedProductType.id
                 }]}
                 render={(renderProps) => {
-                    if (renderProps.data) {
-                        return (<DesignModal productDesigns={renderProps.data} />);
+                    if (renderProps.data && !renderProps.fetching) {
+                        return (<ProductDesignController productDesigns={renderProps.data} />);
                     }
                     return null;
                 }}

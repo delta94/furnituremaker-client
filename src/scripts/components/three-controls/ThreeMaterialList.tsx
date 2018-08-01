@@ -6,13 +6,17 @@ import styled from 'styled-components';
 
 import { AntdList, AntdIcon } from '@/components';
 import { FurnutureMaterial, uploadedFileUtils, withMaterials, restfulStore, WithMaterialProps } from '@/restful';
-import { withStoreValues, WithStoreValuesProps } from '@/app';
+import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
 import { Img } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
 
 const { THREE } = window;
 
-interface ThreeMaterialListProps extends WithStoreValuesProps, WithMaterialProps {
+const ListHeader = styled.div`
+    margin: 15px 0;
+`;
+
+interface ThreeMaterialListProps extends WithStoreValuesDispatchs, WithMaterialProps {
     readonly materials: FurnutureMaterial[];
     readonly selectedObject: THREE.Mesh;
     readonly selectedTexture: string;
@@ -77,7 +81,3 @@ export const ThreeMaterialList = withStoreValues(
     'selectedTexture',
     nameof<CommonStoreProps>(o => o.selectedMaterialType)
 )(ThreeMaterialListComponent);
-
-const ListHeader = styled.div`
-    margin: 15px 0;
-`;

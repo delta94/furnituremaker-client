@@ -1,14 +1,19 @@
 
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
-import { render, storeValuesRecuder, route } from '@/app';
+import {
+    render,
+    storeValuesRecuder,
+    storeValuesMiddleware,
+    route
+} from '@/app';
 
 import { RouteHome } from '@/routes';
 
 let configuration: {
-    store: object;
-    routes: React.ComponentType[]
+    readonly store: object;
+    readonly routes: React.ComponentType[]
 };
 
 export function startup() {
@@ -18,7 +23,8 @@ export function startup() {
                 combineReducers({
                     form: formReducer,
                     values: storeValuesRecuder
-                })
+                }),
+                applyMiddleware(storeValuesMiddleware)
             ),
             routes: [
                 RouteHome
@@ -30,8 +36,7 @@ export function startup() {
         store: configuration.store,
         children: configuration.routes.reduce(
             (currenValue, Component) => {
-                currenValue.push(route(Component));
-                return currenValue;
+                return [...currenValue, route(Component)];
             },
             []
         )

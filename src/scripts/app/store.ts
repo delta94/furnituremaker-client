@@ -1,17 +1,26 @@
-import { Dispatch, Action } from 'redux';
+import { Dispatch, Action, Store } from 'redux';
 import { connect } from 'react-redux';
 
-import map from 'lodash/map';
+const map = require('lodash/map');
 
-export interface WithStoreValuesProps {
+export interface WithStoreValuesDispatchs {
     readonly setStore?: (values: object) => void;
+    readonly checkStore?: <T>(key: string) => Promise<T>;
 }
 
-export type ExtendWithStoreValuesProps<T> = WithStoreValuesProps & T;
+export type ExtendWithStoreValuesProps<T> = WithStoreValuesDispatchs & T;
 
 interface StoreValuesRecuder extends Action {
     readonly values: object;
 }
+
+export const storeValuesMiddleware = (store: Store) => next => (action: CheckStoreAction) => {
+    if (action.type === 'CHECK_STORE') {
+        const state: { readonly values: Map<string, unknown> } = store.getState();
+        action.resolve(state.values.get(action.key));
+    }
+    return next(action);
+};
 
 const initStoreValues = new Map();
 
@@ -33,6 +42,19 @@ export function storeValuesRecuder(state: Map<string, unknown> = initStoreValues
             return state;
     }
 }
+
+interface CheckStoreAction extends Action<string> {
+    readonly key: string;
+    readonly resolve: (value: unknown) => void;
+}
+
+export const checkStoreAction = (key: string, resolve: CheckStoreAction['resolve']): CheckStoreAction => {
+    return {
+        type: 'CHECK_STORE',
+        key,
+        resolve
+    };
+};
 
 export const setStoreValuesAction = (values: {}, source) => {
     const keys = map(values, (value, key) => key);
@@ -61,9 +83,15 @@ export function withStoreValues(...keys: string[]): any {
 
         function mapDispatchToProps(dispatch: Dispatch) {
             return {
-                setStore: (values) => {
+                setStore: (values: {}) => {
                     const action = setStoreValuesAction(values, Component);
                     return dispatch(action);
+                },
+                checkStore: (key: string) => {
+                    return new Promise((resolve) => {
+                        const action = checkStoreAction(key, resolve);
+                        dispatch(action);
+                    });
                 }
             };
         }

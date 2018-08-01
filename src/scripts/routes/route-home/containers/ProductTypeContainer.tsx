@@ -3,16 +3,15 @@ import { RestfulRender } from 'react-restful';
 
 import { withStoreValues } from '@/app';
 import { resfulFetcher, restfulStore, productTypeResources, ProductType } from '@/restful';
-import { ProductTypeList } from '@/components';
 import { CommonStoreValues, CommonStoreProps } from '@/configs';
 
-import { DesignModalProps } from './product-design-container';
+import { ProductTypeController } from './product-type-container';
 
-@withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductTypeGroup))
+@withStoreValues(nameof<CommonStoreValues>(o => o.hoveredProductTypeGroup))
 export class ProductTypeContainer extends React.Component<CommonStoreProps> {
     render() {
-        const { selectedProductTypeGroup, setStore } = this.props;
-        if (!selectedProductTypeGroup) {
+        const { hoveredProductTypeGroup } = this.props;
+        if (!hoveredProductTypeGroup) {
             return true;
         }
 
@@ -24,20 +23,12 @@ export class ProductTypeContainer extends React.Component<CommonStoreProps> {
                 parameters={[{
                     type: 'query',
                     parameter: nameof<ProductType>(o => o.productTypeGroup),
-                    value: selectedProductTypeGroup.id
+                    value: hoveredProductTypeGroup.id
                 }]}
                 render={(renderProps) => {
-                    if (renderProps.data) {
+                    if (renderProps.data && !renderProps.fetching) {
                         return (
-                            <ProductTypeList
-                                productTypes={renderProps.data}
-                                onTypeClick={(productType) =>
-                                    setStore({
-                                        [nameof<DesignModalProps>(o => o.showDesignsModal)]: true,
-                                        [nameof<CommonStoreProps>(o => o.selectedProductType)]: productType
-                                    })
-                                }
-                            />
+                            <ProductTypeController productTypes={renderProps.data} />
                         );
                     }
                     return null;

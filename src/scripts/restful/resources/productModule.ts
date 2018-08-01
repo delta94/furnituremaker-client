@@ -8,3 +8,10 @@ export interface ProductModule {
     readonly material: FurnutureMaterial;
     readonly materialPrice: number;
 }
+
+export const productModuleUtils = {
+    getName: (productModule: ProductModule) => {
+        return `${productModule.component.displayName || productModule.component.name} - 
+            ${productModule.material.name}`;
+    }
+};

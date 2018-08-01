@@ -21,6 +21,7 @@ export interface FurnitureComponent extends RecordType {
     readonly design: ProductDesign;
     readonly price: number;
     readonly fbx: UploadedFile;
+    readonly displayName: string;
 }
 
 export const furnitureComponentResourceType = new ResourceType({

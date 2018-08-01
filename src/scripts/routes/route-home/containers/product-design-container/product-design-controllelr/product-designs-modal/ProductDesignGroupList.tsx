@@ -5,7 +5,7 @@ import { RestfulComponentRenderProps } from 'react-restful';
 import { CommonStoreProps } from '@/configs';
 import { ProductDesign, ProductDesignGroup } from '@/restful';
 import { withStoreValues } from '@/app';
-import { AntdButton } from '@/components/antd-component';
+import { AntdButton } from '@/components';
 
 interface ProductDesignListProps extends
     CommonStoreProps,

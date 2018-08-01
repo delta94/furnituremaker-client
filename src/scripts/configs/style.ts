@@ -1,0 +1,1 @@
+export const colorGray = '#e8e8e8';

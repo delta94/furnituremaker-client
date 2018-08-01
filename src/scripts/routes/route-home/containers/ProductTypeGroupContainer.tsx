@@ -3,10 +3,12 @@ import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
 import { productTypeGroupResources, restfulStore, resfulFetcher } from '@/restful';
-import { ProductTypeGroupList } from '@/components';
+import { CommonStoreProps } from '@/configs';
 
-export class ProductTypeGroupContainer extends React.Component {
-    render() { 
+import { TypeGroupController } from './product-type-group-container';
+
+export class ProductTypeGroupContainer extends React.Component<CommonStoreProps> {
+    render() {
         return (
             <RestfulRender
                 fetcher={resfulFetcher}
@@ -14,8 +16,10 @@ export class ProductTypeGroupContainer extends React.Component {
                 resource={productTypeGroupResources.find}
                 parameters={[]}
                 render={(renderProps) => {
-                    if (renderProps.data) {
-                        return <ProductTypeGroupList productTypeGroups={renderProps.data} />;
+                    if (renderProps.data && !renderProps.fetching) {
+                        return (
+                            <TypeGroupController productTypeGroups={renderProps.data} />
+                        );
                     }
                     return null;
                 }}

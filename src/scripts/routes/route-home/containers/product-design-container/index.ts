@@ -1,1 +1,1 @@
-export * from './ProductDesignsModal';
+export * from './ProductDesignController';

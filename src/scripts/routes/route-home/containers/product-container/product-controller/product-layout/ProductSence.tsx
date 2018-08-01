@@ -3,11 +3,9 @@ import autobind from 'autobind-decorator';
 
 import { ThreeSence } from '@/components';
 import { Product, withComponents, restfulStore, WithComponentsProps } from '@/restful';
-import { withStoreValues, WithStoreValuesProps } from '@/app';
+import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
 
-import { allComponents } from '../../data';
-
-interface RouteHomeProps extends WithStoreValuesProps, WithComponentsProps {
+interface RouteHomeProps extends WithStoreValuesDispatchs, WithComponentsProps {
     readonly selectedObject?: THREE.Mesh | null;
     readonly product: Product;
 }

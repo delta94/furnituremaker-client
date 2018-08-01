@@ -3,6 +3,7 @@ import { ProductType } from './productType';
 import { ProductModule } from './productModule';
 import { FurnitureComponentType } from './furnitureComponentType';
 import { MaterialType, materialTypeUtils } from './materialType';
+import { formatCurrency } from '@/utilities';
 
 export interface Product {
     readonly id?: string;
@@ -26,9 +27,7 @@ export const productUtils = {
         furnitureComponentTypes: FurnitureComponentType[],
         materialTypes: MaterialType[]
     ): Product => {
-        const modules: ProductModule[] = [];
-
-        for (const furnitureComponentType of furnitureComponentTypes) {
+        const modules: ProductModule[] = furnitureComponentTypes.map(furnitureComponentType => {
             const defaultComponent = furnitureComponentType.components[0];
             const defaultComponentMaterialType = defaultComponent.materialType;
 
@@ -38,13 +37,14 @@ export const productUtils = {
             const defaultMaterial = defaultMaterialType &&
                 materialTypeUtils.getDefaultMaterial(defaultMaterialType);
 
-            modules.push({
+            return {
                 component: defaultComponent,
                 componentPrice: defaultComponent.price,
                 material: defaultMaterial,
                 materialPrice: defaultMaterial ? defaultMaterial.price : 0
-            });
-        }
+            };
+        });
+
         const product: Product = {
             design,
             productType,
@@ -52,5 +52,22 @@ export const productUtils = {
             totalPrice: productUtils.getTotalPriceFromModules(modules, 0)
         };
         return product;
-    }
+    },
+    getProductName: (product: Product) => {
+        return `${product.productType.name}`;
+    },
+    getOriginPrice: (product: Product) => {
+        if (product.totalPrice) {
+            return product.totalPrice;
+        }
+        return product.modules.reduce(
+            (currentValue, productModule: ProductModule) => {
+                const { component, material } = productModule;
+
+                return currentValue += (component.price + material.price) || 0;
+            },
+            0
+        );
+    },
+    formatPrice: (product: Product) => formatCurrency(productUtils.getOriginPrice(product))
 };

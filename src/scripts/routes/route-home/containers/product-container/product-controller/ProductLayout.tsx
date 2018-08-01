@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'styled-components';
 
 import {
     AntdRow,
@@ -11,10 +12,14 @@ import {
     productUtils
 } from '@/restful';
 
-import { ProductSence } from './ProductSence';
-import { ProductInfo } from './ProductInfo';
 import { withStoreValues } from '@/app';
 import { CommonStoreProps } from '@/configs';
+
+import { ProductSence, ProductInfo } from './product-layout';
+
+const ProductLayoutContent = styled.div`
+    padding: 30px 0;
+`;
 
 interface ProductLayoutProps extends CommonStoreProps, WithMaterialTypesProps {
     readonly furnitureComponentTypes: FurnitureComponentType[];
@@ -32,14 +37,16 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
 
         return (
             <Container>
-                <AntdRow type="flex">
-                    <AntdCol span={16}>
-                        <ProductSence product={defaultProduct} />
-                    </AntdCol>
-                    <AntdCol span={8}>
-                        <ProductInfo />
-                    </AntdCol>
-                </AntdRow>
+                <ProductLayoutContent>
+                    <AntdRow type="flex">
+                        <AntdCol span={16}>
+                            <ProductSence product={defaultProduct} />
+                        </AntdCol>
+                        <AntdCol span={8}>
+                            <ProductInfo product={defaultProduct} />
+                        </AntdCol>
+                    </AntdRow>
+                </ProductLayoutContent>
             </Container>
         );
     }

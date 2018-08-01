@@ -5,13 +5,7 @@ import Slider, { Settings } from 'react-slick';
 import { CommonStoreProps } from '@/configs';
 import { ProductDesign, productDesignUtils } from '@/restful';
 import { withStoreValues } from '@/app';
-import { Img } from './generic';
-
-const Wrapper = styled.div`
-    background-color: #F6F5F6;
-    border-bottom: 2px solid #D59B01;
-    padding: 10px 0;
-`;
+import { Img } from '@/components';
 
 type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { readonly isSelected: boolean }>;
 const Item: ItemProps = styled.div`
@@ -36,6 +30,7 @@ const Label = styled.span`
 
 interface ProductDesignListProps extends CommonStoreProps {
     readonly designs: ProductDesign[];
+    readonly onDesignClick: (design: ProductDesign) => void;
 }
 
 @withStoreValues(
@@ -45,7 +40,8 @@ interface ProductDesignListProps extends CommonStoreProps {
 )
 export class ProductDesignList extends React.Component<ProductDesignListProps> {
     static readonly defaultProps: ProductDesignListProps = {
-        designs: []
+        designs: [],
+        onDesignClick: () => { /** onDesignClick */ }
     };
 
     static readonly slickSettings: Settings = {
@@ -59,13 +55,15 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
     constructor(props: ProductDesignListProps) {
         super(props);
 
-        const { designs, setStore } = props;
+        const { designs, selectedProductDesign, setStore } = props;
 
         // * Set default product design
-        const defaulDesign = productDesignUtils.getDefaultProductDesigns(designs);
-        setStore({
-            [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: defaulDesign
-        });
+        if (!selectedProductDesign) {
+            const defaulDesign = productDesignUtils.getDefaultProductDesigns(designs);
+            setStore({
+                [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: defaulDesign
+            });       
+        }
     }
 
     render() {
@@ -74,7 +72,7 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
             selectedProductType,
             selectedProductDesign,
             selectedProductDesignGroup,
-            setStore
+            onDesignClick
         } = this.props;
 
         if (!designs || !selectedProductType) {
@@ -86,28 +84,24 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
             designs;
 
         return (
-            <Wrapper>
-                <Slider {...ProductDesignList.slickSettings}>
-                    {
-                        filterdDesigns.map((productDesign: ProductDesign) => {
-                            return (
-                                <Item
-                                    key={productDesign.id}
-                                    isSelected={selectedProductDesign && selectedProductDesign.id === productDesign.id}
-                                    onClick={() => setStore({
-                                        [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: productDesign
-                                    })}
-                                >
-                                    <ThumbnailWrapper>
-                                        <Img className="mw-100" file={productDesign.thumbnail} />
-                                    </ThumbnailWrapper>
-                                    <Label>{productDesign.name}</Label>
-                                </Item>
-                            );
-                        })
-                    }
-                </Slider>
-            </Wrapper>
+            <Slider {...ProductDesignList.slickSettings}>
+                {
+                    filterdDesigns.map((productDesign: ProductDesign) => {
+                        return (
+                            <Item
+                                key={productDesign.id}
+                                isSelected={selectedProductDesign && selectedProductDesign.id === productDesign.id}
+                                onClick={() => onDesignClick(productDesign)}
+                            >
+                                <ThumbnailWrapper>
+                                    <Img className="mw-100" file={productDesign.thumbnail} />
+                                </ThumbnailWrapper>
+                                <Label>{productDesign.name}</Label>
+                            </Item>
+                        );
+                    })
+                }
+            </Slider>
         );
     }
 }

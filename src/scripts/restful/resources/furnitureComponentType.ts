@@ -43,7 +43,6 @@ export const furnitureComponentTypeUtils = {
 
             if (existingFurnitureComponentType) {
                 existingFurnitureComponentType.components.push(furnitureComponent);
-                continue;
             } else {
                 const furnitureComponentTypeWithComponent: FurnitureComponentType = {
                     ...furnitureComponentType,

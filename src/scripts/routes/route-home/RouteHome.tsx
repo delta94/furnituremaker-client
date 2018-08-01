@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 
-import { Page } from '@/components';
+import { Page, PageLoadingProps } from '@/components';
 
 import {
     ProductTypeContainer,
@@ -10,14 +10,24 @@ import {
     ProductTypeGroupContainer
 } from './containers';
 import { resfulFetcher, furnutureMaterialResources } from '@/restful';
+import { CommonStoreProps } from '@/configs';
+import { withStoreValues } from '@/app';
 
-export class RouteHome extends React.Component {
+@withStoreValues()
+export class RouteHome extends React.Component<CommonStoreProps> {
     static readonly routeProps = {
         path: '/'
     };
 
-    constructor(props: object) {
+    constructor(props: CommonStoreProps) {
         super(props);
+        
+        const { setStore } = props;
+
+        setTimeout(
+            () => setStore({ [nameof<PageLoadingProps>(o => o.showPageLoading)]: false }),
+            500
+        );
     }
     
     componentDidMount() {
