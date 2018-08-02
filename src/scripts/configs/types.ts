@@ -1,5 +1,7 @@
 import { ExtendWithStoreValuesProps } from '@/app';
-import { ProductTypeGroup, ProductType, ProductDesignGroup, ProductDesign, MaterialType } from '@/restful';
+import { ProductTypeGroup, ProductType, ProductDesignGroup, ProductDesign, MaterialType, Product } from '@/restful';
+
+export type Include<T, K extends keyof T> = Pick<T, Extract<keyof T, K>>;
 
 export interface CommonStoreValues {
     readonly hoveredProductTypeGroup?: ProductTypeGroup;
@@ -8,6 +10,7 @@ export interface CommonStoreValues {
     readonly selectedProductDesignGroup?: ProductDesignGroup;
     readonly selectedProductDesign?: ProductDesign;
     readonly selectedMaterialType?: MaterialType;
+    readonly selectedProduct?: Product;
 }
 
 export type CommonStoreProps = ExtendWithStoreValuesProps<CommonStoreValues>;

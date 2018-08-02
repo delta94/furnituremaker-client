@@ -14,14 +14,14 @@ const ListHeader = styled.div`
 
 const { THREE } = window;
 
-interface ThreeMaterialListProps extends WithStoreValuesDispatchs {
+export interface ThreeComponentListProps extends WithStoreValuesDispatchs {
     readonly components: FurnitureComponent[];
     readonly selectedObject: THREE.Mesh;
-    readonly selectedTexture: string;
+    readonly selectedMaterial: string;
     readonly sence: THREE.Scene;
 }
 
-class ThreeComponentListComponent extends React.PureComponent<ThreeMaterialListProps> {
+class ThreeComponentListComponent extends React.PureComponent<ThreeComponentListProps> {
     render() {
         const { selectedObject, components } = this.props;
         (selectedObject.material as THREE.MeshPhongMaterial).map.needsUpdate = true;

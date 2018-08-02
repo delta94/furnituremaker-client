@@ -43,7 +43,7 @@ export interface WithMaterialProps {
     readonly materials?: FurnutureMaterial[];
 }
 
-export const withMaterials = (store: Store) =>
+export const withMaterialsByType = (store: Store) =>
     // tslint:disable-next-line:no-any 
     (Component: React.ComponentType<WithMaterialProps>): any => {
         return restfulDataContainer<FurnutureMaterial, WithMaterialProps>({
@@ -53,11 +53,21 @@ export const withMaterials = (store: Store) =>
                 if (!data) {
                     return;
                 }
-                
+
                 const { selectedMaterialType } = ownProps;
                 return {
                     materials: data.filter(o => o.materialType.id === selectedMaterialType.id)
                 };
             }
+        })(Component);
+    };
+
+export const withMaterials = (store: Store) =>
+    // tslint:disable-next-line:no-any 
+    (Component: React.ComponentType<WithMaterialProps>): any => {
+        return restfulDataContainer<FurnutureMaterial, WithMaterialProps>({
+            resourceType: furnutureMaterialResouceType,
+            store: store,
+            mapToProps: (data) => ({ materials: data })
         })(Component);
     };

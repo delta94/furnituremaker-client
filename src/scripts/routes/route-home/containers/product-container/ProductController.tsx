@@ -10,9 +10,10 @@ import {
     FurnitureComponent
 } from '@/restful';
 
+import { DesignModalProps } from '../product-design-container';
 import { ProductLayout } from './product-controller';
 
-interface ProductContainerProps extends CommonStoreProps, WithMaterialTypesProps { 
+interface ProductContainerProps extends CommonStoreProps, WithMaterialTypesProps {
     readonly furnitureComponents: FurnitureComponent[];
 }
 
@@ -23,21 +24,27 @@ export class ProductController extends React.Component<ProductContainerProps> {
         const {
             materialTypes,
             selectedProductDesign,
-            furnitureComponents
+            furnitureComponents,
+            setStore
         } = this.props;
-        
+
         if (!selectedProductDesign) {
             return null;
         }
 
         const furnitureComponentTypes =
             furnitureComponentTypeUtils.fromFurnitureComponents(furnitureComponents);
-        
+
         return (
             <ProductLayout
                 furnitureComponentTypes={furnitureComponentTypes}
                 materialTypes={materialTypes}
                 selectedProductDesign={selectedProductDesign}
+                showDesignModal={() => {
+                    setStore({
+                        [nameof<DesignModalProps>(o => o.showDesignsModal)]: true
+                    });
+                }}
             />
         );
     }

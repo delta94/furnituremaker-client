@@ -6,10 +6,13 @@ import {
     ThreeMaterialList,
     ThreeComponentList,
     Condition,
-    AntdDivider
+    AntdDivider,
+    ThreeComponentListProps,
+    AntdRow,
+    AntdCol
 } from '@/components';
 import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
-import { CommonStoreProps } from '@/configs';
+import { CommonStoreProps, Include, colorPrimary } from '@/configs';
 
 import {
     Product,
@@ -18,7 +21,8 @@ import {
     resfulFetcher,
     restfulStore,
     discountByQuantitiesResources,
-    DiscountByQuantities
+    DiscountByQuantities,
+    ProductModule
 } from '@/restful';
 
 import { colorGray } from '@/configs';
@@ -39,6 +43,12 @@ const ProductDesign = styled.p`
     font-size: 14px;
 `;
 
+const ChangeDesign = styled.div`
+    text-align: right;
+    cursor: pointer;
+    color: ${colorPrimary};
+`;
+
 const FurnitureModules = styled.div`
     border: 1px solid ${colorGray};
     padding: 15px;
@@ -52,18 +62,26 @@ const FurnitureModuleItem = styled.div`
     }
 `;
 
-interface RouteHomeProps extends CommonStoreProps, WithStoreValuesDispatchs {
-    readonly selectedObject?: THREE.Mesh | null;
+export interface ProductInfoProps extends
+    CommonStoreProps,
+    WithStoreValuesDispatchs,
+    Partial<Include<ThreeComponentListProps, 'selectedObject'>> {
     readonly product: Product;
+    readonly showDesignModal: () => void;
 }
 
 @withStoreValues(
-    'selectedObject',
-    nameof<CommonStoreProps>(o => o.selectedProductType)
+    nameof<CommonStoreProps>(o => o.selectedProductType),
+    nameof<ThreeComponentListProps>(o => o.selectedObject)
 )
-export class ProductInfo extends React.Component<RouteHomeProps> {
+export class ProductInfo extends React.Component<ProductInfoProps> {
     render() {
-        const { product, selectedProductType } = this.props;
+        const {
+            product,
+            selectedProductType,
+            showDesignModal
+        } = this.props;
+
         return (
             <ComponentsInfoWrapper>
                 <Condition condition={this.props.selectedObject}>
@@ -75,13 +93,25 @@ export class ProductInfo extends React.Component<RouteHomeProps> {
                         <React.Fragment>
                             <ProductName>{productUtils.getProductName(product)}</ProductName>
                             <AntdDivider />
-                            <ProductDesign>{product.design.name}</ProductDesign>
+                            <AntdRow>
+                                <AntdCol span={13}>
+                                    <ProductDesign>{product.design.name}</ProductDesign>
+                                </AntdCol>
+                                <AntdCol span={11}>
+                                    <ChangeDesign
+                                        className="text-right"
+                                        onClick={showDesignModal}
+                                    >
+                                        Thay đổi thiết kế khác?
+                                    </ChangeDesign>
+                                </AntdCol>
+                            </AntdRow>
                             <FurnitureModules>
                                 {
-                                    product.modules.map((module, index) => {
+                                    product.modules.map((productModule, index) => {
                                         return (
                                             <FurnitureModuleItem key={index}>
-                                                {productModuleUtils.getName(module)}
+                                                {productModuleUtils.getName(productModule)}
                                             </FurnitureModuleItem>
                                         );
                                     })

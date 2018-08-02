@@ -5,8 +5,16 @@ import * as classNames from 'classnames';
 import styled from 'styled-components';
 
 import { AntdList, AntdIcon } from '@/components';
-import { FurnutureMaterial, uploadedFileUtils, withMaterials, restfulStore, WithMaterialProps } from '@/restful';
-import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
+import {
+    FurnutureMaterial,
+    uploadedFileUtils,
+    withMaterialsByType,
+    restfulStore,
+    WithMaterialProps,
+    Product
+} from '@/restful';
+
+import { withStoreValues, } from '@/app';
 import { Img } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
 
@@ -16,16 +24,20 @@ const ListHeader = styled.div`
     margin: 15px 0;
 `;
 
-interface ThreeMaterialListProps extends WithStoreValuesDispatchs, WithMaterialProps {
+export interface ThreeMaterialListProps extends CommonStoreProps, WithMaterialProps {
     readonly materials: FurnutureMaterial[];
     readonly selectedObject: THREE.Mesh;
-    readonly selectedTexture: string;
+    readonly selectedMaterial: FurnutureMaterial;
 }
 
-@withMaterials(restfulStore)
+@withMaterialsByType(restfulStore)
+@withStoreValues(
+    nameof<ThreeMaterialListProps>(o => o.selectedMaterial),
+    nameof<ThreeMaterialListProps>(o => o.selectedProduct),
+)
 class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListProps> {
     render() {
-        const { selectedTexture, materials } = this.props;
+        const { selectedMaterial, materials } = this.props;
 
         return (
             <React.Fragment>
@@ -44,7 +56,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                             <div
                                 className={classNames(
                                     'three-material-list-material',
-                                    { selected: selectedTexture === uploadedFileUtils.getUrl(material.texture) }
+                                    { selected: selectedMaterial.id === material.id }
                                 )}
                             >
                                 <Img
@@ -60,7 +72,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
     }
 
     onMaterialSelect(material: FurnutureMaterial) {
-        const { selectedObject } = this.props;
+        const { selectedObject, selectedProduct } = this.props;
         const texture = new THREE.TextureLoader();
         const textureFile = uploadedFileUtils.getUrl(material.texture);
         texture.load(textureFile, (map) => {
@@ -71,13 +83,30 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
             // tslint:disable-next-line:no-string-literal
             selectedObject.material['needsUpdate'] = true;
 
-            this.props.setStore({ selectedTexture: textureFile });
+            const nextSelectedProduct: Product = {
+                ...selectedProduct,
+                modules: selectedProduct.modules.map(productModule => {
+
+                    const nextMaterial = (selectedObject.name === productModule.component.id) ?
+                        material : productModule.material;
+                    
+                    return {
+                        ...productModule,
+                        material: nextMaterial,
+                        materialPrice: nextMaterial.price
+                    };
+                })
+            };
+            this.props.setStore({
+                [nameof<ThreeMaterialListProps>(o => o.selectedMaterial)]: material,
+                [nameof<ThreeMaterialListProps>(o => o.selectedProduct)]: nextSelectedProduct
+            });
         });
     }
 }
 
 export const ThreeMaterialList = withStoreValues(
     'selectedObject',
-    'selectedTexture',
+    'selectedMaterial',
     nameof<CommonStoreProps>(o => o.selectedMaterialType)
 )(ThreeMaterialListComponent);

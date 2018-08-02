@@ -2,16 +2,28 @@ import * as React from 'react';
 import autobind from 'autobind-decorator';
 
 import { ThreeSence } from '@/components';
-import { Product, withComponents, restfulStore, WithComponentsProps } from '@/restful';
-import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
+import {
+    Product,
+    withComponents,
+    restfulStore,
+    WithComponentsProps,
+    WithMaterialProps,
+    uploadedFileUtils,
+    withMaterials
+} from '@/restful';
+import { withStoreValues } from '@/app';
+import { CommonStoreProps } from '@/configs';
 
-interface RouteHomeProps extends WithStoreValuesDispatchs, WithComponentsProps {
+interface RouteHomeProps extends
+    CommonStoreProps,
+    WithComponentsProps,
+    WithMaterialProps {
     readonly selectedObject?: THREE.Mesh | null;
     readonly product: Product;
 }
-
 @withComponents(restfulStore)
-@withStoreValues('selectedObject')
+@withMaterials(restfulStore)
+@withStoreValues(nameof<RouteHomeProps>(o => o.selectedObject))
 export class ProductSence extends React.PureComponent<RouteHomeProps> {
     render() {
         return (
@@ -30,21 +42,25 @@ export class ProductSence extends React.PureComponent<RouteHomeProps> {
                 materials: [],
                 components: [],
                 selectedObject: object,
-                selectedTexture: null
+                selectedMaterial: null
             });
         }
 
-        const { components } = this.props;
+        const { components, materials } = this.props;
 
         const componentData = components.find(o => o.id === object.name);
         const sameTypeComponents = components.filter(o => o.componentType.id === componentData.componentType.id);
 
-        const material = object.material as THREE.MeshPhongMaterial;
-        const currentTexturePathWithOrigin = material.map.image.src;
+        const objectMaterial = object.material as THREE.MeshPhongMaterial;
+        
+        const selectedMaterial = materials.find(material => {
+            return uploadedFileUtils.getUrl(material.texture) === objectMaterial.map.image.src;
+        });
+
         return this.props.setStore({
             materials: [],
             selectedObject: object,
-            selectedTexture: currentTexturePathWithOrigin.replace(location.origin, ''),
+            selectedMaterial: selectedMaterial,
             components: sameTypeComponents,
             selectedMaterialType: componentData.materialType
         });

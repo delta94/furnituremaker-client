@@ -5,6 +5,8 @@ import {
     AntdRow,
     AntdCol,
     Container,
+    ThreeComponentListProps,
+    ThreeMaterialListProps,
 } from '@/components';
 import {
     FurnitureComponentType,
@@ -13,37 +15,67 @@ import {
 } from '@/restful';
 
 import { withStoreValues } from '@/app';
-import { CommonStoreProps } from '@/configs';
+import { CommonStoreProps, Include } from '@/configs';
 
-import { ProductSence, ProductInfo } from './product-layout';
+import { ProductSence, ProductInfo, ProductInfoProps } from './product-layout';
 
 const ProductLayoutContent = styled.div`
     padding: 30px 0;
 `;
 
-interface ProductLayoutProps extends CommonStoreProps, WithMaterialTypesProps {
+interface ProductLayoutProps extends
+    CommonStoreProps,
+    WithMaterialTypesProps,
+    Include<ProductInfoProps, 'showDesignModal'> {
     readonly furnitureComponentTypes: FurnitureComponentType[];
 }
 
-@withStoreValues(nameof<CommonStoreProps>(o => o.selectedProductType))
+@withStoreValues(
+    nameof<CommonStoreProps>(o => o.selectedProductType),
+    nameof<ProductLayoutProps>(o => o.selectedProduct),
+)
 export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
-    render() {
+    constructor(props: ProductLayoutProps) {
+        super(props);
+
         const defaultProduct = productUtils.createDefaultProduct(
-            this.props.selectedProductDesign,
-            this.props.selectedProductType,
-            this.props.furnitureComponentTypes,
-            this.props.materialTypes
+            props.selectedProductDesign,
+            props.selectedProductType,
+            props.furnitureComponentTypes,
+            props.materialTypes
         );
+
+        props.setStore({
+            [nameof<ProductLayoutProps>(o => o.selectedProduct)]: defaultProduct
+        });
+    }
+
+    componentWillUnmount() {
+        this.props.setStore({
+            [nameof<ProductLayoutProps>(o => o.selectedProduct)]: null,
+            [nameof<ThreeComponentListProps>(o => o.selectedObject)]: null,
+            [nameof<ThreeMaterialListProps>(o => o.selectedMaterial)]: null,
+        });
+    }
+
+    render() {
+        const { selectedProduct, showDesignModal } = this.props;
+        if (!selectedProduct) {
+            return null;
+        }
 
         return (
             <Container>
                 <ProductLayoutContent>
                     <AntdRow type="flex">
                         <AntdCol span={16}>
-                            <ProductSence product={defaultProduct} />
+                            <ProductSence product={selectedProduct} />
                         </AntdCol>
                         <AntdCol span={8}>
-                            <ProductInfo product={defaultProduct} />
+                            <ProductInfo
+                                product={selectedProduct}
+                                showDesignModal={showDesignModal}
+                            />
                         </AntdCol>
                     </AntdRow>
                 </ProductLayoutContent>
