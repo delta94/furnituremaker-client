@@ -110,13 +110,18 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             new THREE.Vector2(this.container.clientWidth, this.container.clientHeight),
             this.scene,
             this.camera);
-        this.outlinePass.edgeStrength = 2;
         this.outlinePass.pulsePeriod = 1;
         this.composer.addPass(this.outlinePass);
 
+        // * SSAO
+        const ssaoPass = new THREE.SSAOPass(this.scene, this.camera);
+        ssaoPass.aoClamp = 2;
+        ssaoPass.lumInfluence = 1;
+        this.composer.addPass(ssaoPass);
+
         // * FXAA
         const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
-        effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
+        effectFXAA.uniforms['resolution'].value.set(1 / this.container.clientWidth, 1 / this.container.clientHeight);
         effectFXAA.renderToScreen = true;
         this.composer.addPass(effectFXAA);
     }
@@ -157,7 +162,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.controls.minPolarAngle = Math.PI / 2.4;
 
         this.controls.enablePan = false;
-        this.controls.enableZoom = false;
+        // this.controls.enableZoom = false;
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.07;
         this.controls.rotateSpeed = 0.07;
@@ -166,12 +171,12 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     initLights() {
         // * Environtment
         const hemiLight = new THREE.AmbientLight(0xffffff, 0xffffff, 1);
-        hemiLight.intensity = 1.5;
+        hemiLight.intensity = 2;
         this.scene.add(hemiLight);
 
         // * Directional
         const dirLight = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLight.intensity = 1.5;
+        dirLight.intensity = 2;
         dirLight.position.set(-120, 120, 90);
         const d = 150;
         dirLight.castShadow = true;
