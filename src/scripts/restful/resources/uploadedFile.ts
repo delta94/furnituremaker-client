@@ -1,5 +1,3 @@
-import { fileHostOrigin } from '@/configs/url';
-
 export interface UploadedFile {
     readonly id?: string;
     readonly name?: string;
@@ -11,5 +9,5 @@ export interface UploadedFile {
 }
 
 export const uploadedFileUtils = {
-    getUrl: (uploadedFile: UploadedFile) => `${fileHostOrigin}${uploadedFile.url}`
+    getUrl: (uploadedFile: UploadedFile) => `${FILE_HOST}${uploadedFile.url}`
 };

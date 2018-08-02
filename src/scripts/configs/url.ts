@@ -1,1 +1,0 @@
-export const fileHostOrigin = 'http://localhost:1337';

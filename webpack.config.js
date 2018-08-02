@@ -21,7 +21,8 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            '__DEV__': true
+            'API_ENTRY': JSON.stringify('http://localhost:1337'),
+            'FILE_HOST': JSON.stringify('http://localhost:1337'),
         }),
         new ErrorOverlayPlugin(),
         new webpack.HotModuleReplacementPlugin(),
