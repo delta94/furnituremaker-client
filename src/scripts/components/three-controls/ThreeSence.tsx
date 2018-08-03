@@ -47,6 +47,8 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
 
                 const callbackOnLoadObj = (event) => {
                     for (const child of event.detail.loaderRootNode.children) {
+                        child.material.shading = 2;
+
                         child.castShadow = true;
                         child.receiveShadow = true;
                         child.name = productModule.component.id;

@@ -171,12 +171,12 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     initLights() {
         // * Environtment
         const hemiLight = new THREE.AmbientLight(0xffffff, 0xffffff, 1);
-        hemiLight.intensity = 2;
+        hemiLight.intensity = 1.8;
         this.scene.add(hemiLight);
 
         // * Directional
         const dirLight = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLight.intensity = 2;
+        dirLight.intensity = 1.8;
         dirLight.position.set(-120, 120, 90);
         const d = 150;
         dirLight.castShadow = true;

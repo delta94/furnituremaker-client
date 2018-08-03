@@ -98,10 +98,7 @@ export class ProductInfo extends React.Component<ProductInfoProps> {
                                     <ProductDesign>{product.design.name}</ProductDesign>
                                 </AntdCol>
                                 <AntdCol span={11}>
-                                    <ChangeDesign
-                                        className="text-right"
-                                        onClick={showDesignModal}
-                                    >
+                                    <ChangeDesign onClick={showDesignModal}>
                                         Thay đổi thiết kế khác?
                                     </ChangeDesign>
                                 </AntdCol>
