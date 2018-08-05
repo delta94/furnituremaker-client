@@ -20,8 +20,8 @@ let configuration: RootProps;
 export function startup() {
     if (!configuration) {
         const appRoutes = [
-            RouteHome,
-            RouteLogin
+            RouteLogin,
+            RouteHome
         ];
 
         configuration = {

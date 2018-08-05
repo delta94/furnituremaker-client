@@ -13,6 +13,6 @@ export class Img extends React.Component<ImgProps> {
         const imgSrc = file ? uploadedFileUtils.getUrl(file) : Img.getDefaultImgSrc();
 
         const passedProps = { ...this.props, file: undefined };
-        return <img {...passedProps} src={imgSrc} />;
+        return <img style={{ maxWidth: '100%' }} {...passedProps} src={imgSrc} />;
     }
 }

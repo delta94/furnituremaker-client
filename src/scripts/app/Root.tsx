@@ -1,7 +1,3 @@
-// * Package styles
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
 import './Root.scss';
 
 import * as React from 'react';
@@ -12,6 +8,7 @@ import { createBrowserHistory, History } from 'history';
 import { Router } from 'react-router';
 import { Switch } from 'react-router-dom';
 import { Auth } from '@/app/Auth';
+import { changeAppStateToReady } from '@/app/readyState';
 
 export interface RootProps {
     readonly store: Store<unknown, AnyAction>;
@@ -23,24 +20,30 @@ export class Root extends React.Component<RootProps> {
     readonly authHelper: Auth;
     readonly history: History;
 
+    readonly state = {
+        allowLoad: false
+    };
+
     constructor(props: RootProps) {
         super(props);
 
-        this.authHelper = new Auth({
-            loginPath: props.loginPath
-        });
         this.history = createBrowserHistory();
-    }
-
-    componentDidMount() {
-        const isUserLoggedIn = this.authHelper.isLoggedIn();
-        if (!isUserLoggedIn) {
-            return this.history.push(this.props.loginPath);
-        }
+        this.authHelper = new Auth({
+            loginPath: props.loginPath,
+            store: props.store,
+            history: this.history,
+        });
+        this.authHelper
+            .isLoggedIn()
+            .then(() => changeAppStateToReady(this.props.store))
+            .catch((toLoginPage: () => void) => {
+                return toLoginPage();
+            });
     }
 
     render() {
         const { store } = this.props;
+
         return (
             <Provider store={store}>
                 <Router history={this.history}>

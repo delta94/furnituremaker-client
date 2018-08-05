@@ -20,11 +20,12 @@ interface AddToCartFormProps {
 class AddToCartFormComponent extends React.Component<AddToCartFormProps & InjectedFormProps<{}, AddToCartFormProps>> {
     render() {
         const {
+            handleSubmit,
             discountByQuantities,
             product
         } = this.props;
         return (
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <FormBody>
                     <Field
                         name="quantity"

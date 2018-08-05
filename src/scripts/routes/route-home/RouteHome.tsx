@@ -3,6 +3,9 @@ import * as React from 'react';
 import { RouteProps } from 'react-router';
 
 import { Page, PageLoadingProps } from '@/components';
+import { resfulFetcher, furnutureMaterialResources } from '@/restful';
+import { CommonStoreProps } from '@/configs';
+import { readyState, withStoreValues } from '@/app';
 
 import {
     ProductTypeContainer,
@@ -10,10 +13,9 @@ import {
     ProductContainer,
     ProductTypeGroupContainer
 } from './containers';
-import { resfulFetcher, furnutureMaterialResources } from '@/restful';
-import { CommonStoreProps } from '@/configs';
-import { withStoreValues } from '@/app';
+import { DefaultLayout } from '@/layout';
 
+@readyState()
 @withStoreValues()
 export class RouteHome extends React.Component<CommonStoreProps> {
     static readonly routeProps: RouteProps = {
@@ -23,7 +25,7 @@ export class RouteHome extends React.Component<CommonStoreProps> {
 
     constructor(props: CommonStoreProps) {
         super(props);
-        
+
         const { setStore } = props;
 
         setTimeout(
@@ -31,7 +33,7 @@ export class RouteHome extends React.Component<CommonStoreProps> {
             500
         );
     }
-    
+
     componentDidMount() {
         resfulFetcher.fetchResource(furnutureMaterialResources.find, []);
     }
@@ -39,10 +41,12 @@ export class RouteHome extends React.Component<CommonStoreProps> {
     render() {
         return (
             <Page>
-                <ProductTypeGroupContainer />
-                <ProductTypeContainer />
-                <ProductDesignContainer />
-                <ProductContainer />
+                <DefaultLayout>
+                    <ProductTypeGroupContainer />
+                    <ProductTypeContainer />
+                    <ProductDesignContainer />
+                    <ProductContainer />
+                </DefaultLayout>
             </Page>
         );
     }

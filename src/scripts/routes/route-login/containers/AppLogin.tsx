@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import { AntdAlert, AntdCheckbox } from '@/components';
 import styled from 'styled-components';
+import { Auth } from '@/app/Auth';
+import { Link } from 'react-router-dom';
 
 const Login = require('ant-design-pro/lib/Login');
 const { UserName, Password, Submit } = Login;
@@ -58,21 +60,28 @@ const LoginExtends = styled.div`
     margin: 0 0 30px 0;
 `;
 
+interface LoginFormData {
+    readonly username: string;
+    readonly password: string;
+}
+
 export class AppLogin extends React.Component {
     readonly state = {
         notice: '',
-        type: 'tab2',
-        autoLogin: true,
+        autoLogin: true
     };
 
-    readonly onSubmit = (err, values) => {
-        //
-    }
-
-    readonly onTabChange = (key) => {
-        this.setState({
-            type: key,
-        });
+    readonly onSubmit = async (err, values: LoginFormData) => {
+        if (err) {
+            return this.setState({ notice: err });
+        }
+        try {
+            const { username, password } = values;
+            const auth = Auth.instance;
+            await auth.login(username, password, this.state.autoLogin);
+        } catch (error) {
+            this.setState({ notice: 'Thông tin đăng nhập không chính xác' });
+        }
     }
 
     readonly changeAutoLogin = (e) => {
@@ -92,10 +101,7 @@ export class AppLogin extends React.Component {
                     </LoginSiteDescription>
                 </LoginHeader>
                 <LoginContent>
-                    <Login
-                        onTabChange={this.onTabChange}
-                        onSubmit={this.onSubmit}
-                    >
+                    <Login onSubmit={this.onSubmit}>
                         {
                             this.state.notice &&
                             <AntdAlert
@@ -104,6 +110,7 @@ export class AppLogin extends React.Component {
                                 type="error"
                                 showIcon={true}
                                 closable={true}
+                                onClose={() => this.setState({ notice: '' })}
                             />
                         }
                         <UserName name="username" />
@@ -115,13 +122,12 @@ export class AppLogin extends React.Component {
                             >
                                 Tự động đăng nhập
                             </AntdCheckbox>
-                            <a style={{ float: 'right' }} href="">Quên mật khẩu</a>
+                            <Link style={{ float: 'right' }} to="/forgot-password">Quên mật khẩu</Link>
                         </LoginExtends>
                         <Submit>Đăng nhập</Submit>
                     </Login>
                 </LoginContent>
             </LoginWrapper>
-
         );
     }
 }

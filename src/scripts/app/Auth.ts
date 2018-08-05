@@ -1,64 +1,82 @@
-import * as Cookies from 'js-cookie';
-import { apiEntry } from '@/restful/apiEntry';
-import { User } from '@/restful';
+import { Store } from 'redux';
+import { History } from 'history';
 
-const jwtDecode = require('jwt-decode');
+import { resfulFetcher, userResources, UserAuthResponse, User } from '@/restful';
+import { saveToken, clearToken } from '@/configs';
+import { getUrlSearchParam } from '@/utilities';
+
+import { changeAppStateToReady } from './readyState';
 
 interface AuthProps {
     readonly loginPath: string;
-}
-
-interface LoginResponse {
-    readonly user: User;
-    readonly jwt: string;
+    /** To navigate user after a action  */
+    readonly history: History;
+    readonly store: Store;
 }
 
 export class Auth {
-    readonly configs: AuthProps;
 
-    constructor(props: AuthProps) {
-        this.configs = props;
+    // tslint:disable-next-line:readonly-keyword
+    static _instance: Auth;
+    static get instance() {
+        return Auth._instance;
+    }
+    static set instance(instance: Auth) {
+        if (Auth._instance) {
+            throw Error('Only one Auth!');
+        }
+        Auth._instance = instance;
     }
 
-    isLoggedIn() {
-        const token = this.getToken();
-        if (!token) {
-            return false;
+    // tslint:disable-next-line:member-ordering
+    readonly props: AuthProps;
+
+    constructor(props: AuthProps) {
+        this.props = props;
+
+        Auth.instance = this;
+    }
+
+    async isLoggedIn() {
+        try {
+            const user: User = await resfulFetcher.fetchResource(userResources.me, []);
+            return user;
+        } catch (error) {
+            const { loginPath, history } = this.props;
+            throw () => history.replace(loginPath);
         }
-        return this.verifyToken(token);
     }
 
     async login(identifier: string, password: string, isRememberMe: boolean) {
         try {
-            const loginUrl = apiEntry('/auth/local');
-            const login = await fetch(loginUrl, {
-                method: 'POST',
-                body: JSON.stringify({
-                    identifier: identifier,
-                    password: password
-                })
+            const login: UserAuthResponse = await resfulFetcher.fetchResource(
+                userResources.auth,
+                [{
+                    type: 'body',
+                    value: {
+                        identifier: identifier,
+                        password: password
+                    }
+                }]
+            );
+
+            saveToken(login.jwt, isRememberMe);
+
+            changeAppStateToReady(this.props.store).then(() => {
+                const returnUrlParam = getUrlSearchParam('returnUrl');
+                const returnPath = returnUrlParam ? returnUrlParam : '/';
+                this.props.history.replace(returnPath);
             });
 
-            if (!login.ok) {
-                throw await login.text();
-            }
-
-            const { user, jwt } = await login.json() as LoginResponse;
-
-            this.saveToken(jwt, isRememberMe);
-
+            return true;
         } catch (error) {
-            throw new Error(error);
+            throw error;
         }
     }
 
-    private readonly getToken = () => Cookies.get('token');
-
-    private readonly verifyToken = async (token: string) => {
-        const user = await fetch('http://v2-api.furnituremaker.vn/user/me');
-        const decoded = jwtDecode(token);
-        return false;
+    readonly logout = () => {
+        const { loginPath } = this.props;
+        clearToken();
+        this.props.history.replace(loginPath);
     }
-
-    private readonly saveToken = (token: string, isRememberMe: boolean) => Cookies.set('token', token, { expires: 7 });
 }

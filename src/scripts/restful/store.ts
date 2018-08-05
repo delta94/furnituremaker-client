@@ -8,7 +8,8 @@ import {
     furnitureComponentTypeResourceType,
     materialTypeResourceType,
     furnutureMaterialResouceType,
-    discountByQuantitiesResourceType
+    discountByQuantitiesResourceType,
+    userResourceType
 } from './resources';
 
 export const restfulStore = new Store();
@@ -21,3 +22,4 @@ restfulStore.registerRecordType(furnitureComponentResourceType);
 restfulStore.registerRecordType(furnutureMaterialResouceType);
 restfulStore.registerRecordType(materialTypeResourceType);
 restfulStore.registerRecordType(discountByQuantitiesResourceType);
+restfulStore.registerRecordType(userResourceType);
