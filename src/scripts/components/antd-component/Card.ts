@@ -1,6 +1,6 @@
 // tslint:disable:no-any
 
-import 'antd/lib/card/style/css';
+// import 'antd/lib/card/style/css';
 import * as Card from 'antd/lib/card';
 import CardType from 'antd/lib/card';
 

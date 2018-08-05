@@ -38,7 +38,7 @@ module.exports = {
             loaders: ['ts-loader', 'ts-nameof-loader']
         },
         {
-            test: /\.(css|sass|scss)$/,
+            test: /\.(css|sass|scss|less)$/,
             use: [{
                 loader: "style-loader"
             }, {
@@ -54,24 +54,32 @@ module.exports = {
                     includePaths: [path.resolve(process.cwd(), 'src')]
                 }
             }]
+        }, {
+            test: /(\.less)$/,
+            loader: 'less-loader',
+            options: {
+                modifyVars: {
+                    '@blue-6': '#D39C01'
+                }
+            }
         },
-        {
-            test: /\.(eot|svg|ttf|woff|woff2)$/,
-            use: [{
-                loader: 'file-loader?name=[name].[ext]'
-            }]
-        },
-        {
-            test: /\.(jpe?g|png|gif|svg)$/i,
-            use: [{
-                loader: 'file-loader?name=[name].[ext]'
-            }]
-        }
+{
+    test: /\.(eot|svg|ttf|woff|woff2)$/,
+        use: [{
+            loader: 'file-loader?name=[name].[ext]'
+        }]
+},
+{
+    test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [{
+            loader: 'file-loader?name=[name].[ext]'
+        }]
+}
         ]
     },
-    resolve: {
-        modules: ['node_modules'],
+resolve: {
+    modules: ['node_modules'],
         extensions: ['.js', '.ts', '.tsx'],
-        plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })]
-    }
+            plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })]
+}
 };

@@ -6,18 +6,24 @@ import {
     render,
     storeValuesRecuder,
     storeValuesMiddleware,
-    route
+    route,
+    RootProps
 } from '@/app';
 
-import { RouteHome } from '@/routes';
+import {
+    RouteHome,
+    RouteLogin
+} from '@/routes';
 
-let configuration: {
-    readonly store: object;
-    readonly routes: React.ComponentType[]
-};
+let configuration: RootProps;
 
 export function startup() {
     if (!configuration) {
+        const appRoutes = [
+            RouteHome,
+            RouteLogin
+        ];
+
         configuration = {
             store: createStore(
                 combineReducers({
@@ -26,19 +32,15 @@ export function startup() {
                 }),
                 applyMiddleware(storeValuesMiddleware)
             ),
-            routes: [
-                RouteHome
-            ]
+            children: appRoutes.reduce(
+                (currenValue, Component) => {
+                    return [...currenValue, route(Component)];
+                },
+                []
+            ),
+            loginPath: RouteLogin.routeProps.path
         };
     }
 
-    return render({
-        store: configuration.store,
-        children: configuration.routes.reduce(
-            (currenValue, Component) => {
-                return [...currenValue, route(Component)];
-            },
-            []
-        )
-    });
+    return render(configuration);
 }

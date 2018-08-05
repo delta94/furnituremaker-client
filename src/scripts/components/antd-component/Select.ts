@@ -1,6 +1,6 @@
 // tslint:disable:no-any
 
-import 'antd/lib/select/style/css';
+// import 'antd/lib/select/style/css';
 import * as Select from 'antd/lib/select';
 import SelectType, { OptionProps, SelectProps } from 'antd/lib/select';
 

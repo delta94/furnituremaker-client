@@ -4,24 +4,16 @@ import styled from 'styled-components';
 import { withStoreValues } from '@/app';
 
 import { CommonStoreProps } from '@/configs';
-import { PageLoading, PageLoadingProps } from './PageLoading';
+import { PageLoading } from './PageLoading';
 
 type PageProps = React.DOMAttributes<{}> & CommonStoreProps;
 
 const PageContent = styled.div`
-    margin: 15px 0 0 0;
+    min-height: inherit;
 `;
 
 @withStoreValues()
 export class Page extends React.Component<PageProps> {
-    constructor(props: PageProps) {
-        super(props);
-        const { setStore } = props;
-        setStore({
-            [nameof<PageLoadingProps>(o => o.showPageLoading)]: true
-        });
-    }
-
     render() {
         return (
             <React.Fragment>

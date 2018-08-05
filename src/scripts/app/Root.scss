@@ -1,22 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700');
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600');
-// Use bootstrap's utilities only
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-// @import "~bootstrap/scss/bootstrap-reboot";
-@import "~bootstrap/scss/utilities";
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700');
 
 html, body {
     width: initial!important;
     height: initial!important;
+    font-family: 'Source Sans Pro', sans-serif!important;
 }
 
 #root {
     min-height: 100vh;
     background: #F7F7F7;
-}
-
-.page {
-    height: 100%;
 }

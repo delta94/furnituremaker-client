@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import { RouteProps } from 'react-router';
 
 import { Page, PageLoadingProps } from '@/components';
 
@@ -15,8 +16,9 @@ import { withStoreValues } from '@/app';
 
 @withStoreValues()
 export class RouteHome extends React.Component<CommonStoreProps> {
-    static readonly routeProps = {
-        path: '/'
+    static readonly routeProps: RouteProps = {
+        path: '/',
+        exact: true
     };
 
     constructor(props: CommonStoreProps) {

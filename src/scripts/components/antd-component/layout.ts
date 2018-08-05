@@ -6,8 +6,8 @@ import * as Col from 'antd/lib/col';
 import RowType from 'antd/lib/row';
 import ColType from 'antd/lib/col';
 
-import 'antd/lib/row/style/css';
-import 'antd/lib/col/style/css';
+// import 'antd/lib/row/style/css';
+// import 'antd/lib/col/style/css';
 
 export const AntdRow: typeof RowType = Row as any;
 export const AntdCol: typeof ColType = Col as any;

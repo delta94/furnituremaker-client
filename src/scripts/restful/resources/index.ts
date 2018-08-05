@@ -13,3 +13,4 @@ export * from './productType';
 export * from './productTypeGroup';
 export * from './quotaUnit';
 export * from './uploadedFile';
+export * from './user';

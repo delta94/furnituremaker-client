@@ -14,14 +14,6 @@ interface StoreValuesRecuder extends Action {
     readonly values: object;
 }
 
-export const storeValuesMiddleware = (store: Store) => next => (action: CheckStoreAction) => {
-    if (action.type === 'CHECK_STORE') {
-        const state: { readonly values: Map<string, unknown> } = store.getState();
-        action.resolve(state.values.get(action.key));
-    }
-    return next(action);
-};
-
 const initStoreValues = new Map();
 
 export function storeValuesRecuder(state: Map<string, unknown> = initStoreValues, action: StoreValuesRecuder) {
@@ -54,6 +46,14 @@ export const checkStoreAction = (key: string, resolve: CheckStoreAction['resolve
         key,
         resolve
     };
+};
+
+export const storeValuesMiddleware = (store: Store) => next => (action: CheckStoreAction) => {
+    if (action.type === 'CHECK_STORE') {
+        const state: { readonly values: Map<string, unknown> } = store.getState();
+        action.resolve(state.values.get(action.key));
+    }
+    return next(action);
 };
 
 export const setStoreValuesAction = (values: {}, source) => {
