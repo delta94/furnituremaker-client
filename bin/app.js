@@ -12,7 +12,7 @@ const encodeResToGzip = contentType => (req, res, next) => {
   console.log(req.url)
   res.set('Content-Encoding', 'gzip');
   res.set('Content-Type', contentType);
-  res.sendFile(req.url, { root: publicFolder });
+  res.sendFile(req.url, { root: __dirname });
 };
 
 app.get("*.js", encodeResToGzip('text/javascript'));
