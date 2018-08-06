@@ -4,8 +4,9 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
     mode: 'production',
@@ -32,6 +33,9 @@ module.exports = {
         },
     },
     plugins: [
+        new DuplicatePackageCheckerPlugin({
+            emitError: true
+        }),
         new webpack.DefinePlugin({
             'API_ENTRY': JSON.stringify('http://v2-api.furnituremaker.vn'),
             'FILE_HOST': JSON.stringify('http://v2-api.furnituremaker.vn'),
@@ -39,21 +43,11 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
+        new BundleAnalyzerPlugin(),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new ExtractTextPlugin({
             filename: '[name].[hash].css',
             allChunks: true
-        }),
-        new webpack.SourceMapDevToolPlugin({
-            filename: '[name].[chunkhash].js.map',
-            include: /\.js$/,
-            exclude: [/vendors/g],
-        }),
-        new CompressionPlugin({
-            test: /\.(js|css)/,
-            exclude: /\.map/,
-            deleteOriginalAssets: true,
-            cache: true
         }),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
@@ -74,7 +68,7 @@ module.exports = {
                 }, {
                     loader: 'postcss-loader'
                 }, {
-                    loader: 'resolve-url-loader',
+                    loader: "resolve-url-loader",
                 }, {
                     loader: 'sass-loader',
                     options: {
