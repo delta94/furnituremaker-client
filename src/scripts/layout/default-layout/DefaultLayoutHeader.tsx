@@ -1,11 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { Container, AntdIcon } from '@/components';
+import { Container, AntdIcon, AntdPopover, AntdBadge } from '@/components';
 import { colorPrimary } from '@/configs';
-import { AntdPopover } from '@/components/antd-component/Popover';
 import { Auth } from '@/app/Auth';
-import { AntdBadge } from '@/components/antd-component/Badge';
+import { withCurrentUser, restfulStore, WithCurrentUserProps } from '@/restful';
 
 const HeaderWrapper = styled.div`
     margin: 0 0 30px 0;
@@ -64,7 +63,10 @@ const HeaderCartButton = styled.span`
     color: #fff;
 `;
 
-export class DefaultLayoutHeader extends React.Component {
+type DefaultLayoutHeaderProps = Partial<WithCurrentUserProps>;
+
+@withCurrentUser(restfulStore)
+export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProps> {
     render() {
         return (
             <HeaderWrapper>

@@ -11,8 +11,9 @@ import {
     AntdRow,
     AntdCol
 } from '@/components';
+
 import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
-import { CommonStoreProps, Include, colorPrimary } from '@/configs';
+import { CommonStoreProps, Include, colorPrimary, colorGray } from '@/configs';
 
 import {
     Product,
@@ -21,11 +22,9 @@ import {
     resfulFetcher,
     restfulStore,
     discountByQuantitiesResources,
-    DiscountByQuantities,
-    ProductModule
+    DiscountByQuantities
 } from '@/restful';
 
-import { colorGray } from '@/configs';
 import { AddToCartForm } from './product-info';
 
 const ComponentsInfoWrapper = styled.div`
@@ -128,12 +127,20 @@ export class ProductInfo extends React.Component<ProductInfoProps> {
                                     resource={discountByQuantitiesResources.find}
                                     render={(renderProps) => {
                                         if (renderProps.data && !renderProps.fetching) {
+                                            const discount = renderProps.data[0];
                                             return (
                                                 <AddToCartForm
                                                     discountByQuantities={renderProps.data}
                                                     product={product}
                                                     initialValues={{
-                                                        quantity: renderProps.data[0] && renderProps.data[0].quantity
+                                                        orderDetail: {
+                                                            design: product.design,
+                                                            productType: product.productType,
+                                                            productModules: product.modules,
+                                                            quantity: discount && discount.quantity,
+                                                            totalPrice: 0,
+                                                            subTotalPrice: 0,
+                                                        }
                                                     }}
                                                 />
                                             );
