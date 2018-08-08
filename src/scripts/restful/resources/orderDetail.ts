@@ -39,7 +39,7 @@ export const orderDetailResources = {
             }
         }
     }),
-    add: new Resource({
+    add: new Resource<OrderDetail>({
         resourceType: orderDetailResourceType,
         url: apiEntry('/orderDetail'),
         method: 'POST',
@@ -47,12 +47,20 @@ export const orderDetailResources = {
             store.mapRecord(resourceType, item);
         }
     }),
-    update: new Resource({
+    update: new Resource<OrderDetail>({
         resourceType: orderDetailResourceType,
         url: apiEntry('/orderDetail/:id'),
         method: 'PUT',
         mapDataToStore: (item, resourceType, store) => {
             store.mapRecord(resourceType, item);
+        }
+    }),
+    delete: new Resource<OrderDetail>({
+        resourceType: orderDetailResourceType,
+        url: apiEntry('/orderDetail/:id'),
+        method: 'DELETE',
+        mapDataToStore: (item, resourceType, store) => {
+            store.removeRecord(resourceType, item);
         }
     }),
 };
@@ -63,6 +71,16 @@ export const orderDetailUtils = {
         parameter: 'status',
         value: 'temp'
     } as ResourceParameter,
+    createUpdateParams: (orderDetail: OrderDetail): ResourceParameter[] => {
+        return [{
+            type: 'path',
+            parameter: 'id',
+            value: orderDetail.id
+        }, {
+            type: 'body',
+            value: orderDetail
+        }];
+    },
     getQuantity: (orderDetails: OrderDetail[]) => {
         return orderDetails.reduce(
             (currentValue, orderDetail) => {
@@ -72,7 +90,11 @@ export const orderDetailUtils = {
             0
         );
     },
-    updateTheOrderDetail: (orderDetail: OrderDetail, quantity: number, discountPerProduct: number) => {
+    updateTheOrderDetail: (
+        orderDetail: OrderDetail,
+        quantity: number,
+        discountPerProduct: number
+    ) => {
         const nextSubTotalPrice = orderDetail.productPrice * quantity;
         const nextTotalDiscount = discountPerProduct * quantity;
         const nextTotalPrice = nextSubTotalPrice - nextTotalDiscount;
@@ -85,7 +107,7 @@ export const orderDetailUtils = {
             discount: nextTotalDiscount,
             totalPrice: nextTotalPrice,
         };
-        
+
         return updateOrderDetail;
     }
 };

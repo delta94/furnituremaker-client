@@ -14,6 +14,7 @@ import {
 
 import { ProductController } from './product-container';
 import { PageLoadingProps } from '@/components';
+import { NoProductData } from '@/routes/route-home/containers/product-container/NoProductData';
 
 type ProductContainerProps = CommonStoreProps & WithMaterialTypesProps;
 
@@ -43,6 +44,10 @@ export class ProductContainer extends React.Component<ProductContainerProps> {
                 resource={furnitureComponentResources.find}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
+                        if (!renderProps.data.length) {
+                            return <NoProductData/>;
+                        }
+
                         return (
                             <ProductController
                                 furnitureComponents={renderProps.data}

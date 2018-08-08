@@ -10,6 +10,7 @@ export * from './Icon';
 export * from './Input';
 export * from './List';
 export * from './Message';
+export * from './Modal';
 export * from './Popover';
 export * from './Select';
 export * from './Spin';

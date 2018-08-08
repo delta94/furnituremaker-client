@@ -8,7 +8,7 @@ export class DefaultLayout extends React.Component {
         return (
             <AntdLayout style={{ minHeight: 'inherit', background: '#F7F7F7 ' }}>
                 <DefaultLayoutHeader />
-                <AntdLayout.Content>
+                <AntdLayout.Content style={{ display: 'flex', flexDirection: 'column' }}>
                     {this.props.children}
                 </AntdLayout.Content>
             </AntdLayout>

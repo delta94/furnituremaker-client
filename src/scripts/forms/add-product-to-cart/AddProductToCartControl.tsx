@@ -77,15 +77,8 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
                 nextQuantity,
                 nextDiscoutPerProduct
             );
-
-            await resfulFetcher.fetchResource(orderDetailResources.update, [{
-                type: 'path',
-                parameter: 'id',
-                value: orderDetail.id
-            }, {
-                type: 'body',
-                value: updateOrderDetail
-            }]);
+            const updateParams = orderDetailUtils.createUpdateParams(updateOrderDetail);
+            await resfulFetcher.fetchResource(orderDetailResources.update, updateParams);
         } catch (response) {
             throw await fetchErrorHandler(response);
         }

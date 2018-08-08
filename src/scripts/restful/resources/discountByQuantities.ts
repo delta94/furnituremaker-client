@@ -1,8 +1,12 @@
-import { ResourceType, Resource } from 'react-restful';
-import { Product, productUtils } from './_product';
-import { apiEntry } from '@/restful/apiEntry';
-import { ProductType } from '@/restful/resources/productType';
+import * as React from 'react';
+import { ResourceType, Resource, restfulDataContainer } from 'react-restful';
+
 import { formatCurrency } from '@/utilities';
+
+import { apiEntry } from '../apiEntry';
+
+import { Product, productUtils } from './_product';
+import { ProductType } from './productType';
 
 export interface DiscountByQuantity {
     readonly id?: string;
@@ -35,11 +39,55 @@ export const discountByQuantitiesResources = {
 export const discountByQuantitiesUtils = {
     format: (discountByQuantity: DiscountByQuantity, product: Product) => {
         const { quantity, discountPerProduct } = discountByQuantity;
-        const price =  Math.abs(productUtils.getOriginPrice(product) - (discountPerProduct));
+        const rawPrice = productUtils.getOriginPrice(product) - (discountPerProduct);
+        const price = Math.abs(rawPrice);
         return `mua ${quantity} - ${formatCurrency(price)}/cái`;
     },
-    getDiscountValue: (discountByQuantities: DiscountByQuantity[], quantity: number) => {
+    getDiscountValue: (
+        discountByQuantities: DiscountByQuantity[] = [],
+        quantity: number = 0
+    ) => {
+        if (!discountByQuantities.length) {
+            return 0;
+        }
+
         const entity = discountByQuantities.find(o => o.quantity === quantity);
+        if (!entity) {
+            const lastDiscountItemIndex = discountByQuantities.length - 1;
+            const lastDiscountItem = discountByQuantities[lastDiscountItemIndex];
+            if (quantity > lastDiscountItem.quantity) {
+                return lastDiscountItem.discountPerProduct;
+            }
+        }
         return entity.discountPerProduct;
     }
 };
+
+export interface WithDiscountByQuantitiesOwnProps {
+    readonly productType: ProductType;
+}
+
+export interface WithDiscountByQuantities {
+    readonly discountByQuantities?: DiscountByQuantity[];
+}
+
+export const withDiscountByQuantities = (store) =>
+    // tslint:disable-next-line:no-any
+    (Component: React.ComponentType<WithDiscountByQuantities>): any =>
+        restfulDataContainer<DiscountByQuantity, WithDiscountByQuantities>({
+            store: store,
+            resourceType: discountByQuantitiesResourceType,
+            mapToProps: (data, ownProps: WithDiscountByQuantitiesOwnProps) => {
+                const { productType } = ownProps;
+                if (!productType) {
+                    return {
+                        discountByQuantities: data
+                    };
+                }
+
+                const discountByQuantities = data.filter(o => o.productType.id === productType.id);
+                return {
+                    discountByQuantities: discountByQuantities
+                };
+            }
+        })(Component);

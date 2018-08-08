@@ -66,7 +66,8 @@ export class Root extends React.Component<RootProps> {
                 orderDetailResources.find,
                 [orderDetailUtils.getTempOrderParameter]
             ),
-            resfulFetcher.fetchResource(furnutureMaterialResources.find, [])
+            resfulFetcher.fetchResource(furnutureMaterialResources.find, []),
+            resfulFetcher.fetchResource(orderDetailResources.find, [])
         ]);
 
         changeAppStateToReady(this.props.store);

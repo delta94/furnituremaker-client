@@ -17,7 +17,9 @@ class RestfulFetcher extends Fetcher {
     async fetchResource<DataModel>(resource: Resource<DataModel>, params: ResourceParameter[]) {
         try {
             const url = resource.urlReslover(params);
-            const requestInit = resource.requestInitReslover(params) || this.createDefaultRequestInit();
+            const requestInit: RequestInit = resource.requestInitReslover(params) || this.createDefaultRequestInit();
+            requestInit.method = resource.method;
+
             const response = await this.fetch(url, requestInit);
 
             if (!response.ok) {
