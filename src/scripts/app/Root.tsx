@@ -4,11 +4,15 @@ import * as React from 'react';
 import { Store, AnyAction } from 'redux';
 import { Provider } from 'react-redux';
 import { createBrowserHistory, History } from 'history';
-
+import autobind from 'autobind-decorator';
 import { Router } from 'react-router';
 import { Switch } from 'react-router-dom';
-import { Auth } from '@/app/Auth';
-import { changeAppStateToReady } from '@/app/readyState';
+
+import { User, orderDetailResources, orderDetailUtils, furnutureMaterialResources } from '@/restful';
+import { resfulFetcher } from '@/restful';
+
+import { Auth } from './Auth';
+import { changeAppStateToReady } from './readyState';
 
 export interface RootProps {
     readonly store: Store<unknown, AnyAction>;
@@ -35,7 +39,7 @@ export class Root extends React.Component<RootProps> {
         });
         this.authHelper
             .isLoggedIn()
-            .then(() => changeAppStateToReady(this.props.store))
+            .then(this.appInit)
             .catch((toLoginPage: () => void) => {
                 return toLoginPage();
             });
@@ -53,5 +57,18 @@ export class Root extends React.Component<RootProps> {
                 </Router>
             </Provider>
         );
+    }
+
+    @autobind
+    async appInit(user: User) {
+        await Promise.all([
+            resfulFetcher.fetchResource(
+                orderDetailResources.find,
+                [orderDetailUtils.getTempOrderParameter]
+            ),
+            resfulFetcher.fetchResource(furnutureMaterialResources.find, [])
+        ]);
+
+        changeAppStateToReady(this.props.store);
     }
 }

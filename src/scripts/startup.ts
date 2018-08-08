@@ -1,5 +1,10 @@
 
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import {
+    createStore,
+    combineReducers,
+    applyMiddleware,
+    compose
+} from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import {
@@ -15,22 +20,23 @@ import {
     RouteLogin
 } from '@/routes';
 
-let configuration: RootProps;
-
 export function startup() {
-    if (!configuration) {
+    if (!window.configuration) {
         const appRoutes = [
             RouteLogin,
             RouteHome
         ];
 
-        configuration = {
+        const middlewares = applyMiddleware(storeValuesMiddleware);
+        const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+        const configuration: RootProps = {
             store: createStore(
                 combineReducers({
                     form: formReducer,
                     values: storeValuesRecuder
                 }),
-                applyMiddleware(storeValuesMiddleware)
+                composeEnhancers(middlewares)
             ),
             children: appRoutes.reduce(
                 (currenValue, Component) => {
@@ -40,7 +46,8 @@ export function startup() {
             ),
             loginPath: RouteLogin.routeProps.path
         };
+        window.configuration = configuration;
     }
 
-    return render(configuration);
+    return render(window.configuration);
 }

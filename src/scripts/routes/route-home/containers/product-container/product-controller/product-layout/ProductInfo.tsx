@@ -22,10 +22,10 @@ import {
     resfulFetcher,
     restfulStore,
     discountByQuantitiesResources,
-    DiscountByQuantities
+    DiscountByQuantity
 } from '@/restful';
 
-import { AddToCartForm } from './product-info';
+import { AddProductToCartControl } from '@/forms/add-product-to-cart';
 
 const ComponentsInfoWrapper = styled.div`
     border: 1px solid #DADADA;
@@ -90,7 +90,10 @@ export class ProductInfo extends React.Component<ProductInfoProps> {
                     </Condition.Then>
                     <Condition.Else>
                         <React.Fragment>
-                            <ProductName>{productUtils.getProductName(product)}</ProductName>
+                            <ProductName>
+                                {productUtils.getProductName(product)}<br/>
+                                <small>{productUtils.getProductCode(product)}</small>
+                            </ProductName>
                             <AntdDivider />
                             <AntdRow>
                                 <AntdCol span={13}>
@@ -121,27 +124,15 @@ export class ProductInfo extends React.Component<ProductInfoProps> {
                                     store={restfulStore}
                                     parameters={[{
                                         type: 'query',
-                                        parameter: nameof<DiscountByQuantities>(o => o.productType),
+                                        parameter: nameof<DiscountByQuantity>(o => o.productType),
                                         value: selectedProductType.id
                                     }]}
                                     resource={discountByQuantitiesResources.find}
                                     render={(renderProps) => {
                                         if (renderProps.data && !renderProps.fetching) {
-                                            const discount = renderProps.data[0];
                                             return (
-                                                <AddToCartForm
+                                                <AddProductToCartControl
                                                     discountByQuantities={renderProps.data}
-                                                    product={product}
-                                                    initialValues={{
-                                                        orderDetail: {
-                                                            design: product.design,
-                                                            productType: product.productType,
-                                                            productModules: product.modules,
-                                                            quantity: discount && discount.quantity,
-                                                            totalPrice: 0,
-                                                            subTotalPrice: 0,
-                                                        }
-                                                    }}
                                                 />
                                             );
                                         }

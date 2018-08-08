@@ -29,7 +29,7 @@ export const productUtils = {
     ): Product => {
         const modules: ProductModule[] = furnitureComponentTypes.map(furnitureComponentType => {
             const defaultComponent = furnitureComponentType.components[0];
-            const defaultComponentMaterialType = defaultComponent.materialType;
+            const defaultComponentMaterialType = defaultComponent.materialTypes[0];
 
             const defaultMaterialType = defaultComponentMaterialType &&
                 materialTypes.find(o => o.id === defaultComponentMaterialType.id);
@@ -69,5 +69,11 @@ export const productUtils = {
             0
         );
     },
-    formatPrice: (product: Product) => formatCurrency(productUtils.getOriginPrice(product))
+    formatPrice: (product: Product) => formatCurrency(productUtils.getOriginPrice(product)),
+    getProductCode: (product: Product) => {
+        const moduleCodes = product.modules.map(o => {
+            return o.component.code + o.material.code;
+        });
+        return moduleCodes.join('-');
+    }
 };

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { RouteProps } from 'react-router';
 
 import { Page, PageLoadingProps } from '@/components';
-import { resfulFetcher, furnutureMaterialResources, withCurrentUser } from '@/restful';
+import { resfulFetcher, furnutureMaterialResources } from '@/restful';
 import { CommonStoreProps } from '@/configs';
 import { readyState, withStoreValues } from '@/app';
 
@@ -32,10 +32,6 @@ export class RouteHome extends React.Component<CommonStoreProps> {
             () => setStore({ [nameof<PageLoadingProps>(o => o.showPageLoading)]: false }),
             500
         );
-    }
-
-    componentDidMount() {
-        resfulFetcher.fetchResource(furnutureMaterialResources.find, []);
     }
 
     render() {

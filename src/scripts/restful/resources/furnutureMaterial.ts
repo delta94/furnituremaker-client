@@ -12,6 +12,7 @@ export interface FurnutureMaterial extends RecordType {
     readonly materialType: MaterialType;
     readonly price: number;
     readonly inStock: boolean;
+    readonly code: string;
 }
 
 export const furnutureMaterialResouceType = new ResourceType({

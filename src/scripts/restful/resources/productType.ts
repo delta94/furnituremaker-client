@@ -3,14 +3,14 @@ import { apiEntry } from '../apiEntry';
 
 import { UploadedFile } from './uploadedFile';
 import { ProductTypeGroup } from './productTypeGroup';
-import { DiscountByQuantities } from './discountByQuantities';
+import { DiscountByQuantity } from './discountByQuantities';
 
 export interface ProductType extends RecordType {
     readonly id: string;
     readonly name: string;
     readonly thumbnail: UploadedFile;
     readonly productTypeGroup: ProductTypeGroup | string;
-    readonly discountByQuantities?: DiscountByQuantities[];
+    readonly discountByQuantities?: DiscountByQuantity[];
 }
 
 export const productType = new ResourceType({

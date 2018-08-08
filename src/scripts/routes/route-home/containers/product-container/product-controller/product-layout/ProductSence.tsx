@@ -62,7 +62,7 @@ export class ProductSence extends React.PureComponent<RouteHomeProps> {
             selectedObject: object,
             selectedMaterial: selectedMaterial,
             components: sameTypeComponents,
-            selectedMaterialType: componentData.materialType
+            selectedMaterialType: componentData.materialTypes
         });
     }
 }

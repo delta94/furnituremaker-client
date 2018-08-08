@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { Form, reduxForm, InjectedFormProps, Field } from 'redux-form';
+import { Form, reduxForm, InjectedFormProps, Field, FormDecorator, ConfigProps } from 'redux-form';
 import styled from 'styled-components';
 
-import { AntdButton, renderSelectField, AntdAlert, AntdMessage, fetchErrorHandler } from '@/components';
-import { DiscountByQuantities, Product, discountByQuantitiesUtils, resfulFetcher } from '@/restful';
-import { OrderDetail, orderDetailResources } from '@/restful/resources/orderDetail';
-import { FormError } from '@/components/antd-component/FormError';
+import { AntdButton, renderSelectField, FormError, AntdMessage } from '@/components';
+import {
+    DiscountByQuantity,
+    Product,
+    discountByQuantitiesUtils,
+    OrderDetail, withTempOrderDetails, restfulStore, WithTempOrderDetails
+} from '@/restful';
 
 const FormBody = styled.div`
     margin: 0 0 15px 0;
@@ -15,32 +18,34 @@ const FormActions = styled.div`
     text-align: right;
 `;
 
-interface AddToCartFormProps {
-    readonly discountByQuantities: DiscountByQuantities[];
+interface AddProductToCartFormProps {
     readonly product: Product;
+    readonly discountByQuantities: DiscountByQuantity[];
 }
 
-interface FormValues {
-    readonly orderDetail: OrderDetail;
+export interface AddToCartFormValues {
+    readonly orderDetail?: OrderDetail;
+    readonly selectQuantity: number;
 }
 
-class AddToCartFormComponent extends React.Component<
-    AddToCartFormProps &
-    InjectedFormProps<FormValues, AddToCartFormProps>> {
+class AddProductToCartFormComponent extends React.Component<
+    AddProductToCartFormProps &
+    InjectedFormProps<AddToCartFormValues, AddProductToCartFormProps>> {
     render() {
         const {
-            handleSubmit,
             discountByQuantities,
             product,
+            handleSubmit,
             submitting,
             error
         } = this.props;
+
         return (
             <Form onSubmit={handleSubmit}>
                 <FormError error={error} />
                 <FormBody>
                     <Field
-                        name={nameof.full<FormValues>(o => o.orderDetail.quantity)}
+                        name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
                         component={renderSelectField}
                         items={discountByQuantities.map(o => ({
                             value: o.quantity,
@@ -66,18 +71,8 @@ class AddToCartFormComponent extends React.Component<
     }
 }
 
-export const AddToCartForm = reduxForm<FormValues, AddToCartFormProps>({
+export const AddProductToCartForm = reduxForm<AddToCartFormValues, AddProductToCartFormProps>({
     form: 'AddToCartForm',
-    onSubmit: async (values) => {
-        try {
-            const { orderDetail } = values;
-            await resfulFetcher.fetchResource(orderDetailResources.create, [{
-                type: 'body',
-                value: orderDetail
-            }]);
-        } catch (response) {
-            throw await fetchErrorHandler(response);
-        }
-    },
-    onSubmitSuccess: () => AntdMessage.success('Sản phẩm đã được thêm vào giỏ')
-})(AddToCartFormComponent);
+    onSubmitSuccess: () => AntdMessage.success('Sản phẩm đã được thêm vào giỏ'),
+    enableReinitialize: true
+})(AddProductToCartFormComponent);

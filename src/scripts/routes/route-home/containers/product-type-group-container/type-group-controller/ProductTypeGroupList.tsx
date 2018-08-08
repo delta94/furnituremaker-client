@@ -11,6 +11,7 @@ type WrapperProps = React.ComponentType<React.DOMAttributes<{}> & { readonly ite
 const Wrapper: WrapperProps = styled.div`
     background-color: #fff;
     margin: 0 auto;
+    padding-top: 30px;
 `;
 
 type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { readonly isSelected: boolean }>;

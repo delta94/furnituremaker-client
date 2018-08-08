@@ -11,3 +11,8 @@ import ColType from 'antd/lib/col';
 
 export const AntdRow: typeof RowType = Row as any;
 export const AntdCol: typeof ColType = Col as any;
+
+import * as Layout from 'antd/lib/layout';
+import LayoutType from 'antd/lib/layout';
+
+export const AntdLayout: typeof LayoutType = Layout as any;

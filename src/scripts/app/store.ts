@@ -19,17 +19,18 @@ const initStoreValues = new Map();
 export function storeValuesRecuder(state: Map<string, unknown> = initStoreValues, action: StoreValuesRecuder) {
     switch (action.type) {
         case 'SET_VALUES':
+            const newState = new Map(state);
             for (const key in action.values) {
                 if (action.values.hasOwnProperty(key)) {
                     const value = action.values[key];
-                    if (!value) {
-                        state.delete(key);
+                    if (value === undefined || value === null) {
+                        newState.delete(key);
                         continue;
                     }
-                    state.set(key, value);
+                    newState.set(key, value);
                 }
             }
-            return new Map(state);
+            return newState;
         default:
             return state;
     }
@@ -78,7 +79,8 @@ export function withStoreValues(...keys: string[]): any {
                 reducerValue[currentKey] = values.get(currentKey);
                 return reducerValue;
             };
-            return keys.reduce(keysReducer, {});
+            const state = keys.reduce(keysReducer, {});
+            return state;
         };
 
         function mapDispatchToProps(dispatch: Dispatch) {

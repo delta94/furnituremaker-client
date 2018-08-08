@@ -15,13 +15,14 @@ export interface FurnitureComponent extends RecordType {
     readonly mtl: UploadedFile;
     readonly thumbnail: UploadedFile;
     readonly componentType: FurnitureComponentType;
-    readonly materialType: MaterialType;
+    readonly materialTypes: MaterialType[];
     readonly quotaValue: number;
     readonly quotaUnit: QuotaUnit;
     readonly design: ProductDesign;
     readonly price: number;
     readonly fbx: UploadedFile;
     readonly displayName: string;
+    readonly code: string;
 }
 
 export const furnitureComponentResourceType = new ResourceType({

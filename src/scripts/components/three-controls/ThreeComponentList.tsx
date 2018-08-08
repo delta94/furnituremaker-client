@@ -3,10 +3,10 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 import styled from 'styled-components';
 
-import { AntdList } from '@/components';
-import { FurnitureComponent, uploadedFileUtils } from '@/restful';
-import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
-import { Img } from '@/components/domain-components';
+import { AntdList, Img } from '@/components';
+import { FurnitureComponent, uploadedFileUtils, Product } from '@/restful';
+import { withStoreValues } from '@/app';
+import { CommonStoreProps } from '@/configs';
 
 const ListHeader = styled.div`
     margin: 15px 0;
@@ -14,13 +14,14 @@ const ListHeader = styled.div`
 
 const { THREE } = window;
 
-export interface ThreeComponentListProps extends WithStoreValuesDispatchs {
+export interface ThreeComponentListProps extends CommonStoreProps {
     readonly components: FurnitureComponent[];
     readonly selectedObject: THREE.Mesh;
     readonly selectedMaterial: string;
     readonly sence: THREE.Scene;
 }
 
+@withStoreValues(nameof<CommonStoreProps>(o => o.selectedProduct))
 class ThreeComponentListComponent extends React.PureComponent<ThreeComponentListProps> {
     render() {
         const { selectedObject, components } = this.props;
@@ -49,7 +50,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
     }
 
     onComponentSelect(component: FurnitureComponent) {
-        const { selectedObject, setStore } = this.props;
+        const { selectedObject, setStore, selectedProduct } = this.props;
 
         if (component.id === selectedObject.name) {
             return;
@@ -67,8 +68,25 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                 const selectedObjectParent = selectedObject.parent;
                 selectedObjectParent.remove(selectedObject);
                 selectedObjectParent.add(mesh);
+
+                const nextSelectedProduct: Product = {
+                    ...selectedProduct,
+                    modules: selectedProduct.modules.map(productModule => {
+
+                        const nextComponent = (selectedObject.name === productModule.component.id) ?
+                            component : productModule.component;
+
+                        return {
+                            ...productModule,
+                            component: nextComponent,
+                            componentPrice: nextComponent.price
+                        };
+                    })
+                };
+
                 setStore({
-                    selectedObject: mesh
+                    selectedObject: mesh,
+                    [nameof<CommonStoreProps>(o => o.selectedProduct)]: nextSelectedProduct
                 });
             }
         };

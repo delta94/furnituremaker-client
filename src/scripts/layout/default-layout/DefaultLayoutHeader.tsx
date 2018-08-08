@@ -3,11 +3,12 @@ import styled from 'styled-components';
 
 import { Container, AntdIcon, AntdPopover, AntdBadge } from '@/components';
 import { colorPrimary } from '@/configs';
-import { Auth } from '@/app/Auth';
+import { Auth } from '@/app';
 import { withCurrentUser, restfulStore, WithCurrentUserProps } from '@/restful';
 
+import { HeaderCart } from './deafult-layout-header';
+
 const HeaderWrapper = styled.div`
-    margin: 0 0 30px 0;
     background-color: #3D3D3D;
     height: 60px;
 `;
@@ -50,19 +51,6 @@ const HeaderButton = styled.div`
     }
 `;
 
-const HeaderCartButtonWrapper = styled.div`
-    padding: 0 0 0 12px;
-`;
-
-const HeaderCartButton = styled.span`
-    width: 25px;
-    height: 20px;
-    border-radius: 4px;
-    display: inline-block;
-    font-size: 20px;
-    color: #fff;
-`;
-
 type DefaultLayoutHeaderProps = Partial<WithCurrentUserProps>;
 
 @withCurrentUser(restfulStore)
@@ -78,15 +66,7 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
                             <span>Thảnh thơi gom hàng với giá cực tốt</span>
                         </HeaderDescription>
                         <HeaderSearch />
-                        <HeaderButton>
-                            <HeaderCartButtonWrapper>
-                                <AntdBadge count={0} showZero={true}>
-                                    <HeaderCartButton>
-                                        <AntdIcon type="shopping-cart" />
-                                    </HeaderCartButton>
-                                </AntdBadge>
-                            </HeaderCartButtonWrapper>
-                        </HeaderButton>
+                        <HeaderCart />
                         <AntdPopover
                             placement="bottomRight"
                             title="Tài Khoản"
