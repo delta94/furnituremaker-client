@@ -6,6 +6,7 @@ export * from './furnitureComponent';
 export * from './furnitureComponentType';
 export * from './furnutureMaterial';
 export * from './materialType';
+export * from './order';
 export * from './orderDetail';
 export * from './productDesign';
 export * from './productDesignGroup';

@@ -21,7 +21,7 @@ export interface OrderDetail extends RecordType {
 }
 
 export const orderDetailResourceType = new ResourceType({
-    name: 'orderDetail',
+    name: nameof<OrderDetail>(),
     schema: [{
         field: 'id',
         type: 'PK'
@@ -123,8 +123,10 @@ export const withTempOrderDetails = (store) =>
             resourceType: orderDetailResourceType,
             store: store,
             mapToProps: (data) => {
-                return {
-                    orderDetails: data
-                };
+                const orderDetails = data.filter(o => {
+                    return !o.order;
+                });
+
+                return { orderDetails };
             }
         })(Component);

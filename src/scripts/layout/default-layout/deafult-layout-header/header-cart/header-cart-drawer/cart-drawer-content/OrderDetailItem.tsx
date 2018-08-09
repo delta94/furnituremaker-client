@@ -87,7 +87,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                         onClick={() => {
                             AntdModal.confirm({
                                 title: 'Xóa sản phẩm?',
-                                content: 'Bỏ sản phẩm này khỏi giỏ hàng của bạn',
+                                content: 'Loại bỏ sản phẩm này khỏi giỏ hàng của bạn',
                                 onOk: () => resfulFetcher.fetchResource(
                                     orderDetailResources.delete,
                                     [{ type: 'path', parameter: 'id', value: orderDetail.id }]

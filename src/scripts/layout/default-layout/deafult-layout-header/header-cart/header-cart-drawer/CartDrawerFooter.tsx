@@ -1,20 +1,18 @@
 import * as React from 'react';
 import { withTempOrderDetails, WithTempOrderDetails, restfulStore, OrderDetail } from '@/restful';
-import { AntdList, AntdButton } from '@/components';
+import { CreateOrderControl } from '@/forms/create-order';
 
-interface CartDrawerFooterProps {
+interface CartDrawerFooterProps extends WithTempOrderDetails {
 }
 
 @withTempOrderDetails(restfulStore)
 export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
     render() {
+        const { orderDetails } = this.props;
         return (
             <div>
-                <AntdButton
-                    type="primary"
-                >
-                    Đặt hàng
-                </AntdButton>
+                Đặt Hàng
+                <CreateOrderControl orderDetails={orderDetails} />
             </div>
         );
     }

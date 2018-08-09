@@ -2,7 +2,10 @@ import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
 import { apiEntry } from '@/restful/apiEntry';
 
 export interface User {
-    readonly id?: string;
+    readonly id: string;
+    readonly email: string;
+    readonly phone: string;
+    readonly address: string;
 }
 
 export const userResourceType = new ResourceType({
@@ -41,7 +44,7 @@ export const userResources = {
 };
 
 export interface WithCurrentUserProps {
-    readonly user: User;
+    readonly user?: User;
 }
 
 // tslint:disable-next-line:no-any
