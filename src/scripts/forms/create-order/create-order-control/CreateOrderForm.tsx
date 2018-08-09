@@ -1,10 +1,9 @@
 import * as React from 'react';
-
-import {
-    Order
-} from '@/restful';
-
 import { Form, InjectedFormProps, reduxForm, Field } from 'redux-form';
+import styled from 'styled-components';
+
+import { Order } from '@/restful';
+
 import {
     FormError,
     AntdButton,
@@ -13,8 +12,6 @@ import {
     renderInput,
     renderTextArea
 } from '@/components';
-import { } from '@/restful/resources/order';
-import styled from 'styled-components';
 
 const FormBody = styled.div`
 

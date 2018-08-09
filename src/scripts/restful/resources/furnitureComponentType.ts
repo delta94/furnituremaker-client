@@ -33,24 +33,41 @@ export const furnitureComponentTypeResources = {
 
 export const furnitureComponentTypeUtils = {
     fromFurnitureComponents: (furnitureComponents: FurnitureComponent[]): FurnitureComponentType[] => {
-        const furnitureComponentTypes: FurnitureComponentType[] = [];
-
-        for (const furnitureComponent of furnitureComponents) {
+        const furnitureComponentsReducer = (
+            curentValues: FurnitureComponentType[],
+            furnitureComponent: FurnitureComponent
+        ): FurnitureComponentType[] => {
             const furnitureComponentType = furnitureComponent.componentType;
 
             const existingFurnitureComponentType =
-                furnitureComponentTypes.find(o => o.id === furnitureComponentType.id);
+                curentValues.find(o => o.id === furnitureComponentType.id);
 
-            if (existingFurnitureComponentType) {
-                existingFurnitureComponentType.components.push(furnitureComponent);
-            } else {
+            if (!existingFurnitureComponentType) {
                 const furnitureComponentTypeWithComponent: FurnitureComponentType = {
                     ...furnitureComponentType,
                     components: [furnitureComponent]
                 };
-                furnitureComponentTypes.push(furnitureComponentTypeWithComponent);
+
+                return [...curentValues, furnitureComponentTypeWithComponent];
             }
-        }
+
+            const updatedComponentTypes = curentValues.map((o: FurnitureComponentType) => {
+                if (o === existingFurnitureComponentType) {
+                    return {
+                        ...existingFurnitureComponentType,
+                        components: [
+                            ...existingFurnitureComponentType.components,
+                            furnitureComponent
+                        ]
+                    };
+                }
+                return o;
+            });
+            return updatedComponentTypes;
+        };
+
+        const furnitureComponentTypes = furnitureComponents
+            .reduce(furnitureComponentsReducer, []);
 
         return furnitureComponentTypes;
     }

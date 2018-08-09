@@ -14,23 +14,41 @@ export const productDesignGroupUtils = {
         };
     },
     fromDesigns: (productDesigns: ProductDesign[]): ProductDesignGroup[] => {
-        const productDesignGroups: ProductDesignGroup[] = [];
+        const productDesignGroups = productDesigns
+            .reduce(productDesignGroupUtils._productDesignGroupsReducer, []);
+        return productDesignGroups;
+    },
+    /**
+     * Create designGroups from given designs
+     */
+    _productDesignGroupsReducer: (
+        productDesignGroups: ProductDesignGroup[],
+        productDesign: ProductDesign
+    ): ProductDesignGroup[] => {
+        const currentCheckingProductDesignGroup = productDesign.designGroup;
 
-        for (const productDesign of productDesigns) {
-            const productDesignGroup = productDesign.designGroup;
+        const existingDesign =
+            productDesignGroups.find(o => o.id === currentCheckingProductDesignGroup.id);
 
-            const existingProductDesignGroup = productDesignGroups.find(o => o.id === productDesignGroup.id);
-            if (existingProductDesignGroup) {
-                existingProductDesignGroup.productDesigns.push(productDesign);
-                continue;
-            } else {
-                const productDesingGroupWithDesigns =
-                    productDesignGroupUtils.createDesignList(productDesignGroup, [productDesign]);
+        if (!existingDesign) {
+            const productDesingGroupWithDesign = productDesignGroupUtils
+                .createDesignList(currentCheckingProductDesignGroup, [productDesign]);
 
-                productDesignGroups.push(productDesingGroupWithDesigns);
-            }
+            return [...productDesignGroups, productDesingGroupWithDesign];
         }
 
-        return productDesignGroups;
-    }
+        const updatedDesignGroup = productDesignGroups.map((productDesignGroup) => {
+            if (productDesignGroup === existingDesign) {
+                return {
+                    ...existingDesign,
+                    components: [
+                        ...existingDesign.productDesigns,
+                        productDesign
+                    ]
+                };
+            }
+            return productDesignGroup;
+        });
+        return updatedDesignGroup;
+    },
 };

@@ -17,14 +17,16 @@ import {
 
 import {
     RouteHome,
-    RouteLogin
+    RouteLogin,
+    RouteOrders
 } from '@/routes';
 
 export function startup() {
     if (!window.configuration) {
         const appRoutes = [
             RouteLogin,
-            RouteHome
+            RouteHome,
+            RouteOrders
         ];
 
         const middlewares = applyMiddleware(storeValuesMiddleware);
