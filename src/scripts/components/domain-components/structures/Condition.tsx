@@ -6,8 +6,8 @@ interface ConditionProps {
 }
 
 export class Condition extends React.Component<ConditionProps> {
-    readonly static Then = ({ children }) => (<React.Fragment>{children}</React.Fragment>);
-    readonly static Else = ({ children }) => (<React.Fragment>{children}</React.Fragment>);
+    static readonly Then = ({ children }) => (<React.Fragment>{children}</React.Fragment>);
+    static readonly Else = ({ children }) => (<React.Fragment>{children}</React.Fragment>);
     render() {
         const { condition, children } = this.props;
         if (condition) {
