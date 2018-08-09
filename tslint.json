@@ -121,6 +121,8 @@
             "check-type",
             "check-typecast"
         ],
+        "max-classes-per-file": [true, 1],
+        "no-default-export": true,
         // tslint-immutable
         "readonly-keyword": true,
         "no-array-mutation": true,

@@ -1,6 +1,7 @@
+import { RecordType, Resource, ResourceType } from 'react-restful';
+
+import { apiEntry } from '../apiEntry';
 import { OrderDetail } from './orderDetail';
-import { ResourceType, Resource, RecordType } from 'react-restful/dist';
-import { apiEntry } from '@/restful/apiEntry';
 
 export interface Order extends RecordType {
     readonly id?: number;
@@ -24,10 +25,20 @@ export const orderResourceType = new ResourceType({
 });
 
 export const orderResources = {
+    find: new Resource<Order[]>({
+        resourceType: orderResourceType,
+        url: apiEntry('/order'),
+        method: 'GET',
+        mapDataToStore: (items, resourceType, store) => {
+            for (const item of items) {
+                store.mapRecord(resourceType, item);
+            }
+        }
+    }),
     add: new Resource<Order>({
         resourceType: orderResourceType,
-        url: apiEntry('order'),
-        method: 'GET',
+        url: apiEntry('/order'),
+        method: 'POST',
         mapDataToStore: (item, resourceType, store) => {
             store.mapRecord(resourceType, item);
         }

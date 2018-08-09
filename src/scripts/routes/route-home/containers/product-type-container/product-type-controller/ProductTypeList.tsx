@@ -1,11 +1,11 @@
 import * as React from 'react';
+import Slider, { Settings } from 'react-slick';
 import styled from 'styled-components';
 
-import { CommonStoreProps } from '@/configs';
-import { ProductType } from '@/restful';
-import Slider, { Settings } from 'react-slick';
 import { withStoreValues } from '@/app';
 import { Img } from '@/components';
+import { CommonStoreProps } from '@/configs';
+import { ProductType } from '@/restful';
 
 const Wrapper = styled.div`
     position: relative;
@@ -63,12 +63,9 @@ interface ProductTypeListProps extends CommonStoreProps, ProductTypeListStorePro
     nameof<ProductTypeListProps>(o => o.showProductTypeList)
 )
 export class ProductTypeList extends React.Component<ProductTypeListProps> {
-    static readonly defaultProps: ProductTypeListProps = {
+    static readonly defaultProps: Partial<ProductTypeListProps> = {
         showProductTypeList: false,
-        productTypes: [],
-        onTypeClick: () => { /** onTypeClick */ },
-        onMouseHoverOnList: () => { /** onTypeClick */ },
-        onMouseLeaveList: () => { /** onTypeClick */ }
+        productTypes: []
     };
 
     static readonly slickSettings: Settings = {

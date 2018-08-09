@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {
-    ResourceType,
-    Resource,
     RecordType,
+    Resource,
+    ResourceType,
     restfulDataContainer,
     Store
 } from 'react-restful';
 
-import { FurnutureMaterial } from './furnutureMaterial';
 import { apiEntry } from '../apiEntry';
+import { FurnutureMaterial } from './furnutureMaterial';
 
 export interface MaterialType extends RecordType {
     readonly id: string;

@@ -1,7 +1,8 @@
 {
     "recommendations": [
         "msjsdiag.debugger-for-chrome",
-        "KnisterPeter.vscode-github",
-        "eg2.tslint"
+        "eamodio.gitlens",
+        "eg2.tslint",
+        "shinnn.stylelint"
     ]
 }

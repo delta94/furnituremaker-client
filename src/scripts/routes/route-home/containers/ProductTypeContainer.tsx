@@ -2,8 +2,13 @@ import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
 import { withStoreValues } from '@/app';
-import { resfulFetcher, restfulStore, productTypeResources, ProductType } from '@/restful';
-import { CommonStoreValues, CommonStoreProps } from '@/configs';
+import { CommonStoreProps, CommonStoreValues } from '@/configs';
+import {
+    ProductType,
+    productTypeResources,
+    resfulFetcher,
+    restfulStore
+} from '@/restful';
 
 import { ProductTypeController } from './product-type-container';
 

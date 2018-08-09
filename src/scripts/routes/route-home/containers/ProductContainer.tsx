@@ -2,19 +2,17 @@ import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
 import { withStoreValues } from '@/app';
-import { CommonStoreValues, CommonStoreProps } from '@/configs';
+import { CommonStoreProps, CommonStoreValues } from '@/configs';
 import {
-    restfulStore,
-    resfulFetcher,
     FurnitureComponent,
     furnitureComponentResources,
-    WithMaterialTypesProps,
-    withMaterialTypes
+    resfulFetcher,
+    restfulStore,
+    withMaterialTypes,
+    WithMaterialTypesProps
 } from '@/restful';
 
-import { ProductController } from './product-container';
-import { PageLoadingProps } from '@/components';
-import { NoProductData } from '@/routes/route-home/containers/product-container/NoProductData';
+import { NoProductData, ProductController } from './product-container';
 
 type ProductContainerProps = CommonStoreProps & WithMaterialTypesProps;
 
@@ -45,7 +43,7 @@ export class ProductContainer extends React.Component<ProductContainerProps> {
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
                         if (!renderProps.data.length) {
-                            return <NoProductData/>;
+                            return <NoProductData />;
                         }
 
                         return (

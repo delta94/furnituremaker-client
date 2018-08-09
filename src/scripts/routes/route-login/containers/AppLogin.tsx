@@ -1,9 +1,9 @@
 import * as React from 'react';
-
-import { AntdAlert, AntdCheckbox } from '@/components';
-import styled from 'styled-components';
-import { Auth } from '@/app/Auth';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { Auth } from '@/app/Auth';
+import { AntdAlert, AntdCheckbox } from '@/components';
 
 const Login = require('ant-design-pro/lib/Login');
 const { UserName, Password, Submit } = Login;

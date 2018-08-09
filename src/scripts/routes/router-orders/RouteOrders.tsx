@@ -2,9 +2,11 @@ import * as React from 'react';
 import { RouteProps } from 'react-router';
 
 import { readyState } from '@/app';
-import { CommonStoreProps } from '@/configs';
 import { Page } from '@/components';
+import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
+
+import { OrderListContainer } from './containers';
 
 @readyState()
 export class RouteOrders extends React.Component<CommonStoreProps> {
@@ -16,7 +18,7 @@ export class RouteOrders extends React.Component<CommonStoreProps> {
         return (
             <Page>
                 <DefaultLayout>
-                    <div />
+                    <OrderListContainer />
                 </DefaultLayout>
             </Page>
         );
