@@ -14,7 +14,7 @@ import {
 } from '@/components';
 
 const FormBody = styled.div`
-
+    display: block;
 `;
 
 const FormWrapper = styled.div`
