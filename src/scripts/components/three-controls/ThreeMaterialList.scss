@@ -1,4 +1,7 @@
 .three-material-list {
+    .ant-list-pagination {
+        margin-top: 0px;
+    }
     &-backbtn {
         font-size: 20px;
         width: 30px;
@@ -11,7 +14,7 @@
             max-width: 100%;
         }
         &.selected {
-            border: 2px solid blue;
+            border: 2px solid #ad7900;
         }
     }
 }

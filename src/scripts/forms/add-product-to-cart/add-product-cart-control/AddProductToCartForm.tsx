@@ -1,21 +1,37 @@
 import * as React from 'react';
-import { Form, reduxForm, InjectedFormProps, Field, FormDecorator, ConfigProps } from 'redux-form';
+import { Field, Form, InjectedFormProps, reduxForm } from 'redux-form';
 import styled from 'styled-components';
 
-import { AntdButton, renderSelectField, FormError, AntdMessage } from '@/components';
 import {
-    DiscountByQuantity,
-    Product,
+    AntdButton,
+    AntdCol,
+    AntdMessage,
+    AntdRow,
+    Condition,
+    FormError,
+    renderInputNumber,
+    renderSelectField
+} from '@/components';
+import { colorPrimary } from '@/configs';
+import {
     discountByQuantitiesUtils,
-    OrderDetail, withTempOrderDetails, restfulStore, WithTempOrderDetails
+    DiscountByQuantity,
+    OrderDetail,
+    Product
 } from '@/restful';
+import { formatCurrency } from '@/utilities';
 
 const FormBody = styled.div`
-    margin: 0 0 15px 0;
+    margin: 0 5px 15px 5px;
 `;
 
 const FormActions = styled.div`
-    text-align: right;
+    text-align: left;
+`;
+
+const TotalValue = styled.span`
+    font-size: 18px;
+    color: ${colorPrimary};
 `;
 
 interface AddProductToCartFormProps {
@@ -25,6 +41,7 @@ interface AddProductToCartFormProps {
 
 export interface AddToCartFormValues {
     readonly orderDetail?: OrderDetail;
+    readonly quantityWithDiscount: number;
     readonly selectQuantity: number;
 }
 
@@ -37,25 +54,65 @@ class AddProductToCartFormComponent extends React.Component<
             product,
             handleSubmit,
             submitting,
-            error
+            error,
+            change
         } = this.props;
 
         return (
             <Form onSubmit={handleSubmit}>
                 <FormError error={error} />
                 <FormBody>
-                    <Field
-                        name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
-                        component={renderSelectField}
-                        items={discountByQuantities.map(o => ({
-                            value: o.quantity,
-                            title: discountByQuantitiesUtils.format(o, product)
-                        }))}
-                        selectProps={{
-                            className: 'w-100',
-                            placeholder: 'chọn số lượng'
-                        }}
-                    />
+                    <AntdRow gutter={10}>
+                        <Condition condition={discountByQuantities}>
+                            <Condition.Then>
+                                <AntdCol span={17}>
+                                    <Field
+                                        name={nameof<AddToCartFormValues>(o => o.quantityWithDiscount)}
+                                        component={renderSelectField}
+                                        label="Khuyến mãi"
+                                        items={discountByQuantities.map(o => ({
+                                            value: o.quantity,
+                                            title: discountByQuantitiesUtils.format(o, product)
+                                        }))}
+                                        selectProps={{
+                                            className: 'w-100',
+                                            placeholder: 'chọn số lượng'
+                                        }}
+                                        onChange={(prevenDefault, value) => {
+                                            change(nameof<AddToCartFormValues>(o => o.selectQuantity), value);
+                                        }}
+                                    />
+                                </AntdCol>
+                            </Condition.Then>
+                        </Condition>
+                        <AntdCol span={7}>
+                            <Field
+                                name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
+                                component={renderInputNumber}
+                                label="Số lượng"
+                                inputProps={{
+                                    className: 'w-100',
+                                    min: 1
+                                }}
+                            />
+                        </AntdCol>
+                        <AntdCol span={24}>
+                            <div >
+                                <Field
+                                    name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
+                                    component={(fieldProps) => {
+                                        const { input } = fieldProps;
+                                        const totalPrice = input.value * product.totalPrice;
+                                        return (
+                                            <div>
+                                                Tổng: <TotalValue>{formatCurrency(totalPrice)}</TotalValue>
+                                            </div>
+                                        );
+                                    }}
+                                />
+                            </div>
+                        </AntdCol>
+                    </AntdRow>
                 </FormBody>
                 <FormActions>
                     <AntdButton

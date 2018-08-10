@@ -1,6 +1,8 @@
 import * as React from 'react';
-
 import { WrappedFieldProps } from 'redux-form';
+
+import { AntdForm } from '@/components/antd-component';
+
 import {
     AntdSelect,
     AntdSelectOptionProps,
@@ -13,25 +15,32 @@ interface RenderSelectField extends WrappedFieldProps {
 }
 
 export function renderSelectField(props: RenderSelectField) {
-    const { input, items, selectProps } = props;
+    const { input, meta, items, selectProps, label } = props;
+    const validateStatus = meta.touched && meta.invalid ? 'error' : undefined;
+
     return (
-        <AntdSelect
-            value={input.value ? input.value : undefined}
-            onChange={input.onChange}
-            {...selectProps}
+        <AntdForm.Item
+            label={label}
+            validateStatus={validateStatus}
         >
-            {
-                items.map(o => {
-                    return (
-                        <AntdSelect.Option
-                            key={o.value}
-                            value={o.value}
-                        >
-                            {o.title}
-                        </AntdSelect.Option>
-                    );
-                })
-            }
-        </AntdSelect>
+            <AntdSelect
+                value={input.value ? input.value : undefined}
+                onChange={input.onChange}
+                {...selectProps}
+            >
+                {
+                    items.map(o => {
+                        return (
+                            <AntdSelect.Option
+                                key={o.value}
+                                value={o.value}
+                            >
+                                {o.title}
+                            </AntdSelect.Option>
+                        );
+                    })
+                }
+            </AntdSelect>
+        </AntdForm.Item>
     );
 }

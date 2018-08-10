@@ -1,31 +1,29 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { RestfulRender } from 'react-restful';
-
-import {
-    ThreeMaterialList,
-    ThreeComponentList,
-    Condition,
-    AntdDivider,
-    ThreeComponentListProps,
-    AntdRow,
-    AntdCol
-} from '@/components';
+import styled from 'styled-components';
 
 import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
-import { CommonStoreProps, Include, colorPrimary, colorGray } from '@/configs';
-
 import {
-    Product,
-    productUtils,
-    productModuleUtils,
-    resfulFetcher,
-    restfulStore,
-    discountByQuantitiesResources,
-    DiscountByQuantity
-} from '@/restful';
-
+    AntdCard,
+    AntdCol,
+    AntdDivider,
+    AntdRow,
+    Condition,
+    ThreeComponentList,
+    ThreeComponentListProps,
+    ThreeMaterialList
+} from '@/components';
+import { colorGray, colorPrimary, CommonStoreProps, Include } from '@/configs';
 import { AddProductToCartControl } from '@/forms/add-product-to-cart';
+import {
+    discountByQuantitiesResources,
+    DiscountByQuantity,
+    Product,
+    productModuleUtils,
+    productUtils,
+    resfulFetcher,
+    restfulStore
+} from '@/restful';
 
 const ComponentsInfoWrapper = styled.div`
     border: 1px solid #DADADA;
@@ -82,16 +80,17 @@ export class ProductInfo extends React.Component<ProductInfoProps> {
         } = this.props;
 
         return (
-            <ComponentsInfoWrapper>
+            <AntdCard>
                 <Condition condition={this.props.selectedObject}>
                     <Condition.Then>
                         <ThreeMaterialList />
+                        <AntdDivider />
                         <ThreeComponentList />
                     </Condition.Then>
                     <Condition.Else>
                         <React.Fragment>
                             <ProductName>
-                                {productUtils.getProductName(product)}<br/>
+                                {productUtils.getProductName(product)}<br />
                                 <small>{productUtils.getProductCode(product)}</small>
                             </ProductName>
                             <AntdDivider />
@@ -118,7 +117,7 @@ export class ProductInfo extends React.Component<ProductInfoProps> {
                             </FurnitureModules>
                             <AntdDivider />
                             <div>
-                                <p>Giá ban đầu: {productUtils.formatPrice(product)}</p>
+                                <div>Giá ban đầu: {productUtils.formatPrice(product)}</div>
                                 <RestfulRender
                                     fetcher={resfulFetcher}
                                     store={restfulStore}
@@ -143,7 +142,7 @@ export class ProductInfo extends React.Component<ProductInfoProps> {
                         </React.Fragment>
                     </Condition.Else>
                 </Condition>
-            </ComponentsInfoWrapper>
+            </AntdCard>
         );
     }
 }

@@ -1,23 +1,25 @@
 import * as React from 'react';
 
+import { withStoreValues } from '@/app';
+import { fetchErrorHandler } from '@/components';
+import { CommonStoreProps, CommonStoreValues } from '@/configs';
 import {
-    DiscountByQuantity,
-    productUtils,
     discountByQuantitiesUtils,
+    DiscountByQuantity,
     OrderDetail,
-    resfulFetcher,
     orderDetailResources,
-    WithTempOrderDetails,
-    withTempOrderDetails,
+    orderDetailUtils,
+    productUtils,
+    resfulFetcher,
     restfulStore,
-    orderDetailUtils
+    WithTempOrderDetails,
+    withTempOrderDetails
 } from '@/restful';
 
-import { CommonStoreValues, CommonStoreProps } from '@/configs';
-import { fetchErrorHandler } from '@/components';
-import { withStoreValues } from '@/app';
-
-import { AddProductToCartForm, AddToCartFormValues } from './add-product-cart-control';
+import {
+    AddProductToCartForm,
+    AddToCartFormValues
+} from './add-product-cart-control';
 
 interface ProductAddCartControlProps extends CommonStoreValues, WithTempOrderDetails {
     readonly discountByQuantities: DiscountByQuantity[];
@@ -67,7 +69,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
 
         try {
             const { orderDetail, selectQuantity } = values;
-            const nextQuantity = orderDetail.quantity + selectQuantity;
+            const nextQuantity = orderDetail.quantity + (+selectQuantity);
             const nextDiscoutPerProduct = discountByQuantitiesUtils.getDiscountValue(
                 discountByQuantities,
                 nextQuantity
@@ -102,7 +104,8 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
                 discountByQuantities={discountByQuantities}
                 initialValues={{
                     orderDetail: existingOrderDetail,
-                    selectQuantity: initQuantity
+                    selectQuantity: initQuantity,
+                    quantityWithDiscount: initQuantity
                 }}
                 onSubmit={
                     existingOrderDetail ?

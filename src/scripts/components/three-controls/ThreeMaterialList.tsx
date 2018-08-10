@@ -1,22 +1,21 @@
 import './ThreeMaterialList.scss';
 
-import * as React from 'react';
 import * as classNames from 'classnames';
+import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdList, AntdIcon } from '@/components';
-import {
-    FurnutureMaterial,
-    uploadedFileUtils,
-    withMaterialsByType,
-    restfulStore,
-    WithMaterialProps,
-    Product
-} from '@/restful';
-
-import { withStoreValues, } from '@/app';
+import { withStoreValues } from '@/app';
+import { AntdIcon, AntdList } from '@/components';
 import { Img } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
+import {
+    FurnutureMaterial,
+    Product,
+    restfulStore,
+    uploadedFileUtils,
+    WithMaterialProps,
+    withMaterialsByType
+} from '@/restful';
 
 const { THREE } = window;
 
@@ -40,7 +39,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
         const { selectedMaterial, materials } = this.props;
 
         return (
-            <React.Fragment>
+            <div className="three-material-list">
                 <div
                     className="three-material-list-backbtn"
                     onClick={() => this.props.setStore({ selectedObject: null })}
@@ -51,6 +50,10 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                 <AntdList
                     dataSource={materials}
                     grid={{ gutter: 16, column: 3 }}
+                    pagination={{
+                        pageSize: 6,
+                        simple: true
+                    }}
                     renderItem={(material: FurnutureMaterial) => (
                         <AntdList.Item>
                             <div
@@ -67,7 +70,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                         </AntdList.Item>
                     )}
                 />
-            </React.Fragment>
+            </div>
         );
     }
 
