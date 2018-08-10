@@ -38,28 +38,40 @@ class CreateOrderFormComponent extends React.Component<
             <Form onSubmit={handleSubmit}>
                 <FormError error={error} />
                 <FormBody>
-                    <AntdRow>
+                    <AntdRow gutter={15}>
                         <AntdCol span={12}>
                             <FormWrapper>
+                                Điện thoại
                                 <Field
                                     name={nameof.full<CreateOrderFormValues>(o => o.order.phone)}
                                     component={renderInput}
+                                    inputProps={{
+                                        placeholder: 'Điện thoại'
+                                    }}
                                 />
                             </FormWrapper>
                         </AntdCol>
                         <AntdCol span={12}>
                             <FormWrapper>
+                                Email
                                 <Field
                                     name={nameof.full<CreateOrderFormValues>(o => o.order.email)}
                                     component={renderInput}
+                                    inputProps={{
+                                        placeholder: 'Email'
+                                    }}
                                 />
                             </FormWrapper>
                         </AntdCol>
                         <AntdCol span={24}>
                             <FormWrapper>
+                                Địa chỉ giao hàng
                                 <Field
                                     name={nameof.full<CreateOrderFormValues>(o => o.order.shippingAddress)}
                                     component={renderTextArea}
+                                    inputProps={{
+                                        placeholder: 'Địa chỉ giao hàng'
+                                    }}
                                 />
                             </FormWrapper>
                         </AntdCol>

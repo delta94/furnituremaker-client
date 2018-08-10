@@ -11,12 +11,18 @@ import {
 import { fetchErrorHandler } from '@/components';
 
 import { CreateOrderForm, CreateOrderFormValues } from './create-order-control';
+import { withStoreValues } from '@/app';
+import { CommonStoreProps } from '@/configs';
 
-interface CreateOrderControlProps extends WithCurrentUserProps {
+interface CreateOrderControlProps extends
+    WithCurrentUserProps,
+    CommonStoreProps {
     readonly orderDetails: OrderDetail[];
+    readonly onOrderCreate: () => void;
 }
 
 @withCurrentUser(restfulStore)
+@withStoreValues()
 export class CreateOrderControl extends React.Component<CreateOrderControlProps> {
     readonly onCreateOrder = async (formValues: CreateOrderFormValues) => {
         try {
@@ -41,7 +47,7 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
     }
 
     render() {
-        const { user } = this.props;
+        const { user, onOrderCreate } = this.props;
         return (
             <CreateOrderForm
                 onSubmit={this.onCreateOrder}
@@ -52,6 +58,7 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                         shippingAddress: user.address
                     }
                 }}
+                onSubmitSuccess={onOrderCreate}
             />
         );
     }

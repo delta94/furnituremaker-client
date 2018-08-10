@@ -22,34 +22,30 @@ import {
 } from '@/routes';
 
 export function startup() {
-    if (!window.configuration) {
-        const appRoutes = [
-            RouteLogin,
-            RouteHome,
-            RouteOrders
-        ];
+    const appRoutes = [
+        RouteLogin,
+        RouteHome,
+        RouteOrders
+    ];
 
-        const middlewares = applyMiddleware(storeValuesMiddleware);
-        const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const middlewares = applyMiddleware(storeValuesMiddleware);
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-        const configuration: RootProps = {
-            store: createStore(
-                combineReducers({
-                    form: formReducer,
-                    values: storeValuesRecuder
-                }),
-                composeEnhancers(middlewares)
-            ),
-            children: appRoutes.reduce(
-                (currenValue, Component) => {
-                    return [...currenValue, route(Component)];
-                },
-                []
-            ),
-            loginPath: RouteLogin.routeProps.path
-        };
-        window.configuration = configuration;
-    }
-
-    return render(window.configuration);
+    const configuration: RootProps = {
+        store: createStore(
+            combineReducers({
+                form: formReducer,
+                values: storeValuesRecuder
+            }),
+            composeEnhancers(middlewares)
+        ),
+        children: appRoutes.reduce(
+            (currenValue, Component) => {
+                return [...currenValue, route(Component)];
+            },
+            []
+        ),
+        loginPath: RouteLogin.routeProps.path
+    };
+    return render(configuration);
 }

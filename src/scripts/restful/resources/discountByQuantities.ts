@@ -8,6 +8,8 @@ import { apiEntry } from '../apiEntry';
 import { Product, productUtils } from './_product';
 import { ProductType } from './productType';
 
+const sortBy = require('lodash/sortBy');
+
 export interface DiscountByQuantity {
     readonly id?: string;
     readonly discountPerProduct: number;
@@ -53,13 +55,26 @@ export const discountByQuantitiesUtils = {
 
         const entity = discountByQuantities.find(o => o.quantity === quantity);
         if (!entity) {
-            const lastDiscountItemIndex = discountByQuantities.length - 1;
-            const lastDiscountItem = discountByQuantities[lastDiscountItemIndex];
-            if (quantity > lastDiscountItem.quantity) {
-                return lastDiscountItem.discountPerProduct;
+            const sortedDiscountByQuantities =
+                discountByQuantitiesUtils.sort(discountByQuantities);
+            
+            for (const discountByQuantity of sortedDiscountByQuantities) {
+                if (
+                    quantity > discountByQuantity.quantity ||
+                    quantity === discountByQuantity.quantity
+                ) {
+                    return discountByQuantity.discountPerProduct;
+                }
             }
+            return 0;
         }
         return entity.discountPerProduct;
+    },
+    sort: (discountByquantities: DiscountByQuantity[]) => {
+        return sortBy(
+            discountByquantities,
+            nameof<DiscountByQuantity>(o => o.quantity)
+        );
     }
 };
 

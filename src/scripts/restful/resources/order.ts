@@ -29,9 +29,9 @@ export const orderResources = {
         resourceType: orderResourceType,
         url: apiEntry('/order'),
         method: 'GET',
-        mapDataToStore: (items, resourceType, store) => {
-            for (const item of items) {
-                store.mapRecord(resourceType, item);
+        mapDataToStore: (orders, resourceType, store) => {
+            for (const order of orders) {
+                store.mapRecord(resourceType, order);
             }
         }
     }),
@@ -39,8 +39,12 @@ export const orderResources = {
         resourceType: orderResourceType,
         url: apiEntry('/order'),
         method: 'POST',
-        mapDataToStore: (item, resourceType, store) => {
-            store.mapRecord(resourceType, item);
+        mapDataToStore: (order, resourceType, store) => {
+            store.mapRecord(resourceType, order);
+            const orderDetailType = store.getRegisteredResourceType(nameof<OrderDetail>());
+            for (const orderDetail of order.orderDetails) {
+                store.mapRecord(orderDetailType, orderDetail);
+            }
         }
     })
 };

@@ -109,6 +109,14 @@ export const orderDetailUtils = {
         };
 
         return updateOrderDetail;
+    },
+    getTotalPrice: (orderDetails: OrderDetail[]) => {
+        return orderDetails.reduce(
+            (currentValue, orderDetail) => {
+                return currentValue + orderDetail.totalPrice;
+            },
+            0
+        );
     }
 };
 

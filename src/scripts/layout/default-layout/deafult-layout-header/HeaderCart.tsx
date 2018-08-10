@@ -50,6 +50,9 @@ export class HeaderCart extends React.Component<DefaultLayoutHeaderProps> {
             <React.Fragment>
                 <HeaderCartButtonWrapper
                     onClick={(e) => {
+                        if (!quantity) {
+                            return;
+                        }
                         setStore({ [nameof<HeaderCartDrawerProps>(o => o.drawerVisible)]: true });
                     }}
                 >

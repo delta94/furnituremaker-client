@@ -7,6 +7,7 @@ import { Auth } from '@/app';
 import { withCurrentUser, restfulStore, WithCurrentUserProps } from '@/restful';
 
 import { HeaderCart } from './deafult-layout-header';
+import { Link } from 'react-router-dom';
 
 const HeaderWrapper = styled.div`
     background-color: #3D3D3D;
@@ -51,6 +52,10 @@ const HeaderButton = styled.div`
     }
 `;
 
+const HeaderPopoverButton = styled.div`
+    margin: 0 0 8px 0;
+`;
+
 type DefaultLayoutHeaderProps = Partial<WithCurrentUserProps>;
 
 @withCurrentUser(restfulStore)
@@ -70,11 +75,20 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
                         <AntdPopover
                             placement="bottomRight"
                             title="Tài Khoản"
-                            content={[
-                                <a key="logout" onClick={Auth.instance.logout}>
-                                    Đăng xuất
-                                </a>
-                            ]}
+                            content={
+                                <React.Fragment>
+                                    <HeaderPopoverButton>
+                                        <Link to="/orders">
+                                            Đơn hàng
+                                        </Link>
+                                    </HeaderPopoverButton>
+                                    <HeaderPopoverButton>
+                                        <a key="logout" onClick={Auth.instance.logout}>
+                                            Đăng xuất
+                                        </a>
+                                    </HeaderPopoverButton>
+                                </React.Fragment>
+                            }
                         >
                             <HeaderButton>
                                 <AntdIcon type="user" />
@@ -82,7 +96,7 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
                         </AntdPopover>
                     </HeaderContent>
                 </Container>
-            </HeaderWrapper>
+            </HeaderWrapper >
         );
     }
 }

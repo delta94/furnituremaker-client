@@ -1,3 +1,5 @@
+import './OrderDetailItem.scss';
+
 import * as React from 'react';
 
 import {
@@ -56,6 +58,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
         const { orderDetail } = this.props;
         return (
             <AntdList.Item
+                className="order-detail-item"
                 key={orderDetail.id}
                 actions={[
                     <AntdInputNumber
@@ -78,6 +81,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                         placeholder="Số lượng"
                         key="quantity"
                         min={1}
+                        style={{ width: 75 }}
                     />,
                     <AntdButton
                         key="remove"
@@ -98,15 +102,26 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                         xóa
                     </AntdButton>
                 ]}
+                extra={
+                    <img
+                        width={120}
+                        alt="logo"
+                        src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                    />
+                }
             >
                 <AntdList.Item.Meta
                     title={<a href="https://ant.design">{orderDetail.productType.name}</a>}
                     description={(
                         <div>
-                            <span>Giá: {formatCurrency(orderDetail.totalPrice)}</span>
+                            <span>{orderDetail.productCode}</span>
                         </div>
                     )}
                 />
+                <div>Số lượng mua: {orderDetail.quantity}</div>
+                <div>Đơn giá: {formatCurrency(orderDetail.productPrice)}</div>
+                <div>Giảm giá mỗi sản phẩm: {formatCurrency(orderDetail.productDiscount)}</div>
+                <div>thành tiền: {formatCurrency(orderDetail.subTotalPrice)}</div>
             </AntdList.Item >
         );
     }
