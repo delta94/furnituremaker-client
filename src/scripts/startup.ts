@@ -1,31 +1,21 @@
-
-import {
-    createStore,
-    combineReducers,
-    applyMiddleware,
-    compose
-} from 'redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import {
     render,
-    storeValuesRecuder,
-    storeValuesMiddleware,
+    RootProps,
     route,
-    RootProps
+    storeValuesMiddleware,
+    storeValuesRecuder
 } from '@/app';
-
-import {
-    RouteHome,
-    RouteLogin,
-    RouteOrders
-} from '@/routes';
+import { RouteHome, RouteLogin, RouteOrderDetail, RouteOrders } from '@/routes';
 
 export function startup() {
     const appRoutes = [
         RouteLogin,
         RouteHome,
-        RouteOrders
+        RouteOrders,
+        RouteOrderDetail
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);

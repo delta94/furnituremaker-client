@@ -1,15 +1,26 @@
 import * as React from 'react';
-import { withTempOrderDetails, WithTempOrderDetails, restfulStore, orderDetailUtils } from '@/restful';
-import { CreateOrderControl } from '@/forms/create-order';
-import { AntdModal, AntdRow, AntdCol, AntdDivider } from '@/components';
 import styled from 'styled-components';
-import { formatCurrency } from '@/utilities';
+
+import { AntdCol, AntdDivider, AntdModal, AntdRow } from '@/components';
 import { colorPrimary } from '@/configs';
+import { CreateOrderControl } from '@/forms/create-order';
+import {
+    orderDetailUtils,
+    orderUtils,
+    restfulStore,
+    withTempOrderDetails,
+    WithTempOrderDetails
+} from '@/restful';
+import { formatCurrency, formatDate } from '@/utilities';
 
 const TotalPrice = styled.div`
     text-align: right;
     font-size: 20px;
     color: ${colorPrimary};
+`;
+
+const ShippingDate = styled.div`
+    text-align: right;
 `;
 
 interface CartDrawerFooterProps extends WithTempOrderDetails {
@@ -21,6 +32,7 @@ export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
     render() {
         const { orderDetails, onCartDrawerClose } = this.props;
         const totalPrice = orderDetailUtils.getTotalPrice(orderDetails);
+        const shippingDate = orderUtils.getShippingDate();
         return (
             <div>
                 <AntdRow>
@@ -33,6 +45,16 @@ export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
                         <TotalPrice>
                             {formatCurrency(totalPrice)}
                         </TotalPrice>
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <span>
+                            Dự kiến giao hàng:
+                        </span>
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <ShippingDate>
+                            {formatDate(shippingDate, 'DD/MM/YYYY')}
+                        </ShippingDate>
                     </AntdCol>
                 </AntdRow>
                 <AntdDivider />

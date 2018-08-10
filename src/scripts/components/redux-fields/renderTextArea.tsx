@@ -1,22 +1,31 @@
 import * as React from 'react';
-
 import { WrappedFieldProps } from 'redux-form';
-import {
-    AntdInput,
-    AntdTextAreaProps
-} from '../antd-component';
+
+import { AntdForm, AntdInput, AntdTextAreaProps } from '../antd-component';
 
 interface RenderInputField extends WrappedFieldProps {
     readonly inputProps: AntdTextAreaProps;
 }
 
 export function renderTextArea(props: RenderInputField) {
-    const { input, inputProps } = props;
+    const { input, meta, inputProps, label } = props;
+
+    // tslint:disable-next-line:no-any
+    const validateStatus = meta.touched && meta.invalid ? 'error' : undefined;
+
     return (
-        <AntdInput.TextArea
-            value={input.value ? input.value : undefined}
-            onChange={input.onChange}
-            {...inputProps}
-        />
+        <AntdForm.Item
+            label={label}
+            validateStatus={validateStatus}
+            help={validateStatus && meta.error}
+        >
+            <AntdInput.TextArea
+                value={input.value ? input.value : undefined}
+                onChange={input.onChange}
+                onFocus={input.onFocus}
+                onBlur={input.onBlur}
+                {...inputProps}
+            />
+        </AntdForm.Item>
     );
 }

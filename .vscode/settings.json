@@ -44,6 +44,6 @@
     "tslint.configFile": "./tslint.json",
     "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 80,
     "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimit",
-    "importSorter.generalConfiguration.sortOnBeforeSave": true
-
+    "importSorter.generalConfiguration.sortOnBeforeSave": true,
+    "importSorter.sortConfiguration.joinImportPaths": false
 }

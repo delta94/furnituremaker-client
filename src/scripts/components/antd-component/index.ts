@@ -1,4 +1,5 @@
 export * from './Alert';
+export * from './AntdForm';
 export * from './Badge';
 export * from './Button';
 export * from './Card';
@@ -14,5 +15,8 @@ export * from './Modal';
 export * from './Popover';
 export * from './Select';
 export * from './Spin';
+export * from './Steps';
+export * from './Table';
+export * from './Tag';
 export * from './layout';
 import 'antd/dist/antd.less';

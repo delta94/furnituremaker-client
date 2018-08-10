@@ -1,14 +1,20 @@
 import './Root.scss';
 
-import * as React from 'react';
-import { Store, AnyAction } from 'redux';
-import { Provider } from 'react-redux';
-import { createBrowserHistory, History } from 'history';
 import autobind from 'autobind-decorator';
+import { createBrowserHistory, History } from 'history';
+import * as React from 'react';
+import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { Switch } from 'react-router-dom';
+import { AnyAction, Store } from 'redux';
 
-import { User, orderDetailResources, orderDetailUtils, furnutureMaterialResources } from '@/restful';
+import {
+    furnutureMaterialResources,
+    orderDetailResources,
+    orderDetailUtils,
+    productTypeResources,
+    User
+} from '@/restful';
 import { resfulFetcher } from '@/restful';
 
 import { Auth } from './Auth';
@@ -67,7 +73,7 @@ export class Root extends React.Component<RootProps> {
                 [orderDetailUtils.getTempOrderParameter]
             ),
             resfulFetcher.fetchResource(furnutureMaterialResources.find, []),
-            resfulFetcher.fetchResource(orderDetailResources.find, [])
+            resfulFetcher.fetchResource(productTypeResources.find, [])
         ]);
 
         changeAppStateToReady(this.props.store);

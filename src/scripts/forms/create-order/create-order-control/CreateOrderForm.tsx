@@ -1,24 +1,24 @@
 import * as React from 'react';
-import { Form, InjectedFormProps, reduxForm, Field } from 'redux-form';
+import { Field, Form, InjectedFormProps, reduxForm } from 'redux-form';
 import styled from 'styled-components';
 
-import { Order } from '@/restful';
-
 import {
-    FormError,
     AntdButton,
-    AntdRow,
     AntdCol,
+    AntdRow,
+    FormError,
     renderInput,
-    renderTextArea
+    renderTextArea,
+    required
 } from '@/components';
+import { Order } from '@/restful';
 
 const FormBody = styled.div`
     display: block;
 `;
 
 const FormWrapper = styled.div`
-    margin: 0 0 15px 0;
+    margin: 0 0 0 0;
 `;
 
 interface CreateOrderFormProps {
@@ -32,6 +32,10 @@ export interface CreateOrderFormValues {
 class CreateOrderFormComponent extends React.Component<
     CreateOrderFormProps &
     InjectedFormProps<CreateOrderFormValues, CreateOrderFormProps>> {
+    static readonly phoneValidates = [required('Nhập số điện thoại')];
+    static readonly emailValidates = [required('Nhập cung cấp email')];
+    static readonly addressValidates = [required('Nhập địa chỉ giao hàng')];
+
     render() {
         const { handleSubmit, error } = this.props;
         return (
@@ -41,10 +45,12 @@ class CreateOrderFormComponent extends React.Component<
                     <AntdRow gutter={15}>
                         <AntdCol span={12}>
                             <FormWrapper>
-                                Điện thoại
+
                                 <Field
                                     name={nameof.full<CreateOrderFormValues>(o => o.order.phone)}
                                     component={renderInput}
+                                    validate={CreateOrderFormComponent.phoneValidates}
+                                    label="Điện thoại"
                                     inputProps={{
                                         placeholder: 'Điện thoại'
                                     }}
@@ -53,10 +59,11 @@ class CreateOrderFormComponent extends React.Component<
                         </AntdCol>
                         <AntdCol span={12}>
                             <FormWrapper>
-                                Email
                                 <Field
                                     name={nameof.full<CreateOrderFormValues>(o => o.order.email)}
                                     component={renderInput}
+                                    validate={CreateOrderFormComponent.emailValidates}
+                                    label="Email"
                                     inputProps={{
                                         placeholder: 'Email'
                                     }}
@@ -65,10 +72,10 @@ class CreateOrderFormComponent extends React.Component<
                         </AntdCol>
                         <AntdCol span={24}>
                             <FormWrapper>
-                                Địa chỉ giao hàng
                                 <Field
                                     name={nameof.full<CreateOrderFormValues>(o => o.order.shippingAddress)}
                                     component={renderTextArea}
+                                    validate={CreateOrderFormComponent.addressValidates}
                                     inputProps={{
                                         placeholder: 'Địa chỉ giao hàng'
                                     }}

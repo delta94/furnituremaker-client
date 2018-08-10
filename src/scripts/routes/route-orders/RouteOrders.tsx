@@ -11,7 +11,8 @@ import { OrderListContainer } from './containers';
 @readyState()
 export class RouteOrders extends React.Component<CommonStoreProps> {
     static readonly routeProps: RouteProps = {
-        path: '/orders'
+        path: '/orders',
+        exact: true
     };
 
     render() {

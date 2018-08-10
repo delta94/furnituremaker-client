@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Route, RouteProps } from 'react-router-dom';
+import { Route, RouteComponentProps, RouteProps } from 'react-router-dom';
+
+export type AppRouteComponentProps<T> = RouteComponentProps<T>;
 
 export type AppRouteComponent = React.ComponentType & {
     readonly routeProps: RouteProps

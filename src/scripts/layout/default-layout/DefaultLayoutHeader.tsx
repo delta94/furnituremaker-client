@@ -1,13 +1,13 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Container, AntdIcon, AntdPopover, AntdBadge } from '@/components';
-import { colorPrimary } from '@/configs';
 import { Auth } from '@/app';
-import { withCurrentUser, restfulStore, WithCurrentUserProps } from '@/restful';
+import { AntdIcon, AntdPopover, Container } from '@/components';
+import { colorPrimary } from '@/configs';
+import { restfulStore, withCurrentUser, WithCurrentUserProps } from '@/restful';
 
 import { HeaderCart } from './deafult-layout-header';
-import { Link } from 'react-router-dom';
 
 const HeaderWrapper = styled.div`
     background-color: #3D3D3D;
@@ -65,7 +65,9 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
             <HeaderWrapper>
                 <Container>
                     <HeaderContent>
-                        <HeaderLogo src="/static/assets/logo.svg" />
+                        <Link to="/">
+                            <HeaderLogo src="/static/assets/logo.svg" />
+                        </Link>
                         <HeaderDescription>
                             <span>Dễ dàng tùy biến sản phẩm</span>
                             <span>Thảnh thơi gom hàng với giá cực tốt</span>
@@ -78,9 +80,7 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
                             content={
                                 <React.Fragment>
                                     <HeaderPopoverButton>
-                                        <Link to="/orders">
-                                            Đơn hàng
-                                        </Link>
+                                        <Link to="/orders">Đơn hàng</Link>
                                     </HeaderPopoverButton>
                                     <HeaderPopoverButton>
                                         <a key="logout" onClick={Auth.instance.logout}>

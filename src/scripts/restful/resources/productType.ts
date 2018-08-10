@@ -1,9 +1,9 @@
-import { ResourceType, Resource, RecordType } from 'react-restful';
-import { apiEntry } from '../apiEntry';
+import { RecordType, Resource, ResourceType } from 'react-restful';
 
-import { UploadedFile } from './uploadedFile';
-import { ProductTypeGroup } from './productTypeGroup';
+import { apiEntry } from '../apiEntry';
 import { DiscountByQuantity } from './discountByQuantities';
+import { ProductTypeGroup } from './productTypeGroup';
+import { UploadedFile } from './uploadedFile';
 
 export interface ProductType extends RecordType {
     readonly id: string;
@@ -14,7 +14,7 @@ export interface ProductType extends RecordType {
 }
 
 export const productType = new ResourceType({
-    name: 'product-type',
+    name: nameof<ProductType>(),
     schema: [{
         field: 'id',
         type: 'PK'
@@ -26,8 +26,8 @@ export const productTypeResources = {
         resourceType: productType,
         url: apiEntry('/producttype'),
         method: 'GET',
-        mapDataToStore: (customers, resourceType, store) => {
-            for (const item of customers) {
+        mapDataToStore: (items, resourceType, store) => {
+            for (const item of items) {
                 store.dataMapping(resourceType, item);
             }
         }

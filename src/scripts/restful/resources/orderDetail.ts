@@ -1,9 +1,15 @@
-import { ResourceType, Resource, restfulDataContainer, RecordType, ResourceParameter } from 'react-restful';
+import {
+    RecordType,
+    Resource,
+    ResourceParameter,
+    ResourceType,
+    restfulDataContainer
+} from 'react-restful';
 
 import { apiEntry } from '../apiEntry';
-
-import { ProductType } from './productType';
+import { Order } from './order';
 import { ProductDesign } from './productDesign';
+import { ProductType } from './productType';
 
 export interface OrderDetail extends RecordType {
     readonly id?: string;
@@ -15,7 +21,7 @@ export interface OrderDetail extends RecordType {
     readonly totalPrice: number;
     readonly productPrice: number;
     readonly productDiscount: number;
-    readonly order?: unknown;
+    readonly order?: Order;
     readonly status: 'temp' | 'order';
     readonly discount: number;
 }
@@ -25,6 +31,14 @@ export const orderDetailResourceType = new ResourceType({
     schema: [{
         field: 'id',
         type: 'PK'
+    }, {
+        resourceType: nameof<Order>(),
+        field: nameof<OrderDetail>(o => o.order),
+        type: 'FK'
+    }, {
+        resourceType: nameof<ProductType>(),
+        field: nameof<OrderDetail>(o => o.productType),
+        type: 'FK'
     }]
 });
 
@@ -34,7 +48,11 @@ export const orderDetailResources = {
         url: apiEntry('/orderDetail'),
         method: 'GET',
         mapDataToStore: (items, resourceType, store) => {
+            const orderRecordType = store.getRegisteredResourceType(nameof<Order>());
             for (const item of items) {
+                if (item.order) {
+                    store.mapRecord(orderRecordType, item.order);
+                }
                 store.mapRecord(resourceType, item);
             }
         }

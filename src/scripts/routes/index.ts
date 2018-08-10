@@ -1,3 +1,4 @@
 export * from './route-home';
 export * from './route-login';
-export * from './router-orders';
+export * from './route-orders';
+export * from './route-order-detail';

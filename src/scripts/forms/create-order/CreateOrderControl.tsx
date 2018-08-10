@@ -1,18 +1,21 @@
 import * as React from 'react';
-import {
-    withCurrentUser,
-    WithCurrentUserProps,
-    restfulStore,
-    OrderDetail,
-    Order,
-    resfulFetcher,
-    orderResources
-} from '@/restful';
+
+import { withStoreValues } from '@/app';
 import { fetchErrorHandler } from '@/components';
+import { CommonStoreProps } from '@/configs';
+import {
+    Order,
+    OrderDetail,
+    orderDetailUtils,
+    orderResources,
+    orderUtils,
+    resfulFetcher,
+    restfulStore,
+    withCurrentUser,
+    WithCurrentUserProps
+} from '@/restful';
 
 import { CreateOrderForm, CreateOrderFormValues } from './create-order-control';
-import { withStoreValues } from '@/app';
-import { CommonStoreProps } from '@/configs';
 
 interface CreateOrderControlProps extends
     WithCurrentUserProps,
@@ -29,8 +32,11 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
             const { orderDetails } = this.props;
             const { order } = formValues;
 
+            const totalPrice = orderDetailUtils.getTotalPrice(orderDetails);
             const newOrder: Partial<Order> = {
                 ...order,
+                totalPrice: orderDetailUtils.getTotalPrice(orderDetails),
+                depositRequired: totalPrice * 0.3,
                 orderDetails: orderDetails
             };
 
@@ -48,6 +54,9 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
 
     render() {
         const { user, onOrderCreate } = this.props;
+
+        const shippingDate = orderUtils.getShippingDate();
+
         return (
             <CreateOrderForm
                 onSubmit={this.onCreateOrder}
@@ -55,7 +64,10 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                     order: {
                         email: user.email,
                         phone: user.phone,
-                        shippingAddress: user.address
+                        shippingAddress: user.address,
+                        shippingDate: shippingDate.toISOString(),
+                        depositRequired: 0,
+                        status: 'new'
                     }
                 }}
                 onSubmitSuccess={onOrderCreate}

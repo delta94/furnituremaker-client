@@ -3,8 +3,8 @@ import { Store } from 'redux';
 
 import { CommonStoreProps } from '@/configs';
 
-import { withStoreValues, setStoreValuesAction } from './store';
 import { AppRouteComponent } from './route';
+import { setStoreValuesAction, withStoreValues } from './store';
 
 /**
  * Allow Route's Component render when appState is READY
@@ -22,7 +22,8 @@ export function readyState() {
             if (props.appState !== 'READY') {
                 return null;
             }
-            return <Component />;
+            // tslint:disable-next-line:no-any
+            return <Component {...props as any}/>;
         });
 
         withAppState.routeProps = Component.routeProps;

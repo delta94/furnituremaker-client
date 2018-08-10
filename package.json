@@ -13,6 +13,7 @@
         "js-cookie": "^2.2.0",
         "jwt-decode": "^2.2.0",
         "lodash": "^4.17.10",
+        "moment": "^2.22.2",
         "moment-range": "^4.0.1",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
