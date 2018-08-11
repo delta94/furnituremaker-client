@@ -1,18 +1,23 @@
-import * as React from 'react';
 import autobind from 'autobind-decorator';
+import * as React from 'react';
+import styled from 'styled-components';
 
+import { withStoreValues } from '@/app';
 import { ThreeSence } from '@/components';
+import { CommonStoreProps } from '@/configs';
 import {
     Product,
-    withComponents,
     restfulStore,
+    uploadedFileUtils,
+    withComponents,
     WithComponentsProps,
     WithMaterialProps,
-    uploadedFileUtils,
     withMaterials
 } from '@/restful';
-import { withStoreValues } from '@/app';
-import { CommonStoreProps } from '@/configs';
+
+const ProductSenceWrapper = styled.div`
+    padding: 60px 0 0 0;
+`;
 
 interface RouteHomeProps extends
     CommonStoreProps,
@@ -27,11 +32,13 @@ interface RouteHomeProps extends
 export class ProductSence extends React.PureComponent<RouteHomeProps> {
     render() {
         return (
-            <ThreeSence
-                onObjectSelect={this.onObjectSelect}
-                selectedObject={this.props.selectedObject}
-                productModules={this.props.product.modules}
-            />
+            <ProductSenceWrapper>
+                <ThreeSence
+                    onObjectSelect={this.onObjectSelect}
+                    selectedObject={this.props.selectedObject}
+                    productModules={this.props.product.modules}
+                />
+            </ProductSenceWrapper>
         );
     }
 
@@ -52,7 +59,7 @@ export class ProductSence extends React.PureComponent<RouteHomeProps> {
         const sameTypeComponents = components.filter(o => o.componentType.id === componentData.componentType.id);
 
         const objectMaterial = object.material as THREE.MeshPhongMaterial;
-        
+
         const selectedMaterial = materials.find(material => {
             return uploadedFileUtils.getUrl(material.texture) === objectMaterial.map.image.src;
         });

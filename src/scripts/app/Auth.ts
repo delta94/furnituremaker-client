@@ -1,8 +1,13 @@
-import { Store } from 'redux';
 import { History } from 'history';
+import { Store } from 'redux';
 
-import { resfulFetcher, userResources, UserAuthResponse, User } from '@/restful';
-import { saveToken, clearToken } from '@/configs';
+import { clearToken, saveToken } from '@/configs';
+import {
+    resfulFetcher,
+    User,
+    UserAuthResponse,
+    userResources
+} from '@/restful';
 import { getUrlSearchParam } from '@/utilities';
 
 import { changeAppStateToReady } from './readyState';
@@ -47,7 +52,7 @@ export class Auth {
         }
     }
 
-    async login(identifier: string, password: string, isRememberMe: boolean) {
+    async login(identifier: string, password: string, rememberMe: boolean) {
         try {
             const login: UserAuthResponse = await resfulFetcher.fetchResource(
                 userResources.auth,
@@ -55,12 +60,13 @@ export class Auth {
                     type: 'body',
                     value: {
                         identifier: identifier,
-                        password: password
+                        password: password,
+                        rememberMe: rememberMe
                     }
                 }]
             );
 
-            saveToken(login.jwt, isRememberMe);
+            saveToken(login.jwt, rememberMe);
 
             changeAppStateToReady(this.props.store).then(() => {
                 const returnUrlParam = getUrlSearchParam('returnUrl');

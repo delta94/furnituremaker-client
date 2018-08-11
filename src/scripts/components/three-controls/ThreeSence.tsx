@@ -1,12 +1,13 @@
 // tslint:disable:no-string-literal
 // tslint:disable:no-console
-
 import './ThreeSence.scss';
 
 import * as React from 'react';
-import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
-import { ProductModule, uploadedFileUtils } from '@/restful';
+
 import { WithStoreValuesDispatchs } from '@/app';
+import { ProductModule, uploadedFileUtils } from '@/restful';
+
+import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 
 const { THREE } = window;
 
@@ -121,5 +122,8 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                 key
             );
         }
+        setTimeout(() => {
+            console.log( this.renderer.domElement.toDataURL('image/jpeg'));
+        }, 1000);
     }
 }

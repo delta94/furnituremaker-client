@@ -2,7 +2,6 @@
 // tslint:disable:no-console
 // tslint:disable:align
 // tslint:disable:readonly-keyword
-
 import * as React from 'react';
 
 const { THREE } = window;
@@ -29,8 +28,8 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     camera: THREE.PerspectiveCamera;
     cameraTarget: THREE.Vector3;
     cameraDefaults = {
-        posCamera: new THREE.Vector3(0, 70, 200.0),
-        posCameraTarget: new THREE.Vector3(0, 20, 0),
+        posCamera: new THREE.Vector3(0, 70, 160.0),
+        posCameraTarget: new THREE.Vector3(0, 30, 0),
         near: 0.1,
         far: 10000,
         fov: 45
@@ -128,7 +127,8 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
     initRenderer() {
         this.renderer = new THREE.WebGLRenderer({
-            alpha: true
+            alpha: true,
+            preserveDrawingBuffer: true 
         });
         this.renderer.autoClear = false;
         this.renderer.gammaInput = true;
@@ -162,7 +162,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.controls.minPolarAngle = Math.PI / 2.4;
 
         this.controls.enablePan = false;
-        // this.controls.enableZoom = false;
+        this.controls.enableZoom = false;
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.07;
         this.controls.rotateSpeed = 0.07;

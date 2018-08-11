@@ -12,7 +12,7 @@ import {
 } from './order-detail';
 
 const OrderDetailWrapper = styled.div`
-    padding:30px 0 0 0;
+    padding: 0 0 0 0;
 `;
 
 export interface OrderDetailProps {

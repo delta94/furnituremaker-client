@@ -6,7 +6,7 @@ import { Container } from '@/components';
 import { OrderListContent, OrderListHeader } from './order-list';
 
 const OrderListWrapper = styled.div`
-    padding: 30px 0 0 0;
+    padding: 0 0 0 0;
     display: block;
 `;
 

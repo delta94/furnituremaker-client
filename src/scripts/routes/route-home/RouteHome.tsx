@@ -1,19 +1,18 @@
-
 import * as React from 'react';
 import { RouteProps } from 'react-router';
 
-import { Page, PageLoadingProps } from '@/components';
-import { resfulFetcher, furnutureMaterialResources } from '@/restful';
-import { CommonStoreProps } from '@/configs';
 import { readyState, withStoreValues } from '@/app';
+import { AntdBreadcrumb, AntdIcon, Page, PageLoadingProps } from '@/components';
+import { CommonStoreProps } from '@/configs';
+import { DefaultLayout } from '@/layout';
+import { furnutureMaterialResources, resfulFetcher } from '@/restful';
 
 import {
-    ProductTypeContainer,
-    ProductDesignContainer,
     ProductContainer,
+    ProductDesignContainer,
+    ProductTypeContainer,
     ProductTypeGroupContainer
 } from './containers';
-import { DefaultLayout } from '@/layout';
 
 @readyState()
 @withStoreValues()
@@ -37,13 +36,22 @@ export class RouteHome extends React.Component<CommonStoreProps> {
     render() {
         return (
             <Page>
-                <DefaultLayout>
+                <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <ProductTypeGroupContainer />
                     <ProductTypeContainer />
                     <ProductDesignContainer />
                     <ProductContainer />
                 </DefaultLayout>
-            </Page>
+            </Page >
+        );
+    }
+
+    renderBreadcrumb() {
+        return (
+            <AntdBreadcrumb>
+                <AntdBreadcrumb.Item><AntdIcon type="home" /></AntdBreadcrumb.Item>
+                <AntdBreadcrumb.Item>Tự thiết kế</AntdBreadcrumb.Item>
+            </AntdBreadcrumb>
         );
     }
 }
