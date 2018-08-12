@@ -2,8 +2,7 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/scripts/*"],
-            "react-restful": ["./react-restful"]
+            "@/*": ["src/scripts/*"]
         },
         "plugins": [
             { "name": "tslint-language-service"}
