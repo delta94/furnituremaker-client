@@ -53,7 +53,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                         child.castShadow = true;
                         child.receiveShadow = true;
                         child.name = productModule.component.id;
-                        // child.scale.set(0.1, 0.1, 0.1);
+                        child.scale.set(0.1, 0.1, 0.1);
                         this.fadeIn(child);
                     }
                     this.scene.add(event.detail.loaderRootNode);

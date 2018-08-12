@@ -63,28 +63,26 @@ class AddProductToCartFormComponent extends React.Component<
                 <FormError error={error} />
                 <FormBody>
                     <AntdRow gutter={10}>
-                        <Condition condition={discountByQuantities}>
-                            <Condition.Then>
-                                <AntdCol span={17}>
-                                    <Field
-                                        name={nameof<AddToCartFormValues>(o => o.quantityWithDiscount)}
-                                        component={renderSelectField}
-                                        label="Khuyến mãi"
-                                        items={discountByQuantities.map(o => ({
-                                            value: o.quantity,
-                                            title: discountByQuantitiesUtils.format(o, product)
-                                        }))}
-                                        selectProps={{
-                                            className: 'w-100',
-                                            placeholder: 'chọn số lượng'
-                                        }}
-                                        onChange={(prevenDefault, value) => {
-                                            change(nameof<AddToCartFormValues>(o => o.selectQuantity), value);
-                                        }}
-                                    />
-                                </AntdCol>
-                            </Condition.Then>
-                        </Condition>
+                        {(discountByQuantities && discountByQuantities.length) &&
+                            <AntdCol span={17}>
+                                <Field
+                                    name={nameof<AddToCartFormValues>(o => o.quantityWithDiscount)}
+                                    component={renderSelectField}
+                                    label="Khuyến mãi"
+                                    items={discountByQuantities.map(o => ({
+                                        value: o.quantity,
+                                        title: discountByQuantitiesUtils.format(o, product)
+                                    }))}
+                                    selectProps={{
+                                        className: 'w-100',
+                                        placeholder: 'chọn số lượng'
+                                    }}
+                                    onChange={(prevenDefault, value) => {
+                                        change(nameof<AddToCartFormValues>(o => o.selectQuantity), value);
+                                    }}
+                                />
+                            </AntdCol>
+                        }
                         <AntdCol span={7}>
                             <Field
                                 name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
@@ -102,7 +100,11 @@ class AddProductToCartFormComponent extends React.Component<
                                     name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
                                     component={(fieldProps) => {
                                         const { input } = fieldProps;
-                                        const totalPrice = input.value * product.totalPrice;
+                                        const quantity = (typeof input.value === 'string') ? +input.value : input.value;
+                                        const discountValue = discountByQuantitiesUtils
+                                            .getDiscountValue(discountByQuantities, quantity);
+
+                                        const totalPrice = quantity * (product.totalPrice - discountValue);
                                         return (
                                             <div>
                                                 Tổng: <TotalValue>{formatCurrency(totalPrice)}</TotalValue>

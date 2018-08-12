@@ -25,13 +25,6 @@ import {
     restfulStore
 } from '@/restful';
 
-const ComponentsInfoWrapper = styled.div`
-    border: 1px solid #DADADA;
-    background: #fff; 
-    padding: 30px;
-    overflow: auto;
-`;
-
 const ProductName = styled.h1`
     font-size: 18px;
 `;
