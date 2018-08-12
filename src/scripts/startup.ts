@@ -8,14 +8,21 @@ import {
     storeValuesMiddleware,
     storeValuesRecuder
 } from '@/app';
-import { RouteHome, RouteLogin, RouteOrderDetail, RouteOrders } from '@/routes';
+import {
+    RouteHome,
+    RouteLogin,
+    RouteMaker,
+    RouteOrderDetail,
+    RouteOrders
+} from '@/routes';
 
 export function startup() {
     const appRoutes = [
         RouteLogin,
         RouteHome,
         RouteOrders,
-        RouteOrderDetail
+        RouteOrderDetail,
+        RouteMaker
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);

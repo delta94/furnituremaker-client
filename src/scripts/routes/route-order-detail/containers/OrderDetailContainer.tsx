@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
-import { orderResources, resfulFetcher, restfulStore } from '@/restful';
+import { orderResources, restfulFetcher, restfulStore } from '@/restful';
 
 import { OrderDetailControl } from './order-detail-container';
 
@@ -15,7 +15,7 @@ export class OrderDetailContainer extends React.Component<OrderDetailContainerPr
         return (
             <RestfulRender
                 store={restfulStore}
-                fetcher={resfulFetcher}
+                fetcher={restfulFetcher}
                 parameters={[{
                     type: 'path',
                     parameter: 'id',

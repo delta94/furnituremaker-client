@@ -10,7 +10,7 @@ import {
     orderDetailResources,
     orderDetailUtils,
     productUtils,
-    resfulFetcher,
+    restfulFetcher,
     restfulStore,
     WithTempOrderDetails,
     withTempOrderDetails
@@ -55,7 +55,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
     readonly onCreateOrderDetail = async (values: AddToCartFormValues) => {
         try {
             const newOrderDetail = this.createNewOrderDetail(values.selectQuantity);
-            await resfulFetcher.fetchResource(orderDetailResources.add, [{
+            await restfulFetcher.fetchResource(orderDetailResources.add, [{
                 type: 'body',
                 value: newOrderDetail
             }]);
@@ -80,7 +80,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
                 nextDiscoutPerProduct
             );
             const updateParams = orderDetailUtils.createUpdateParams(updateOrderDetail);
-            await resfulFetcher.fetchResource(orderDetailResources.update, updateParams);
+            await restfulFetcher.fetchResource(orderDetailResources.update, updateParams);
         } catch (response) {
             throw await fetchErrorHandler(response);
         }

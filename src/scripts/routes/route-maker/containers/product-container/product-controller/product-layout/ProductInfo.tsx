@@ -21,7 +21,7 @@ import {
     Product,
     productModuleUtils,
     productUtils,
-    resfulFetcher,
+    restfulFetcher,
     restfulStore
 } from '@/restful';
 
@@ -119,7 +119,7 @@ export class ProductInfo extends React.Component<ProductInfoProps> {
                             <div>
                                 <div>Giá ban đầu: {productUtils.formatPrice(product)}</div>
                                 <RestfulRender
-                                    fetcher={resfulFetcher}
+                                    fetcher={restfulFetcher}
                                     store={restfulStore}
                                     parameters={[{
                                         type: 'query',

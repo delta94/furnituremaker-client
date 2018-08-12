@@ -6,7 +6,7 @@ import { CommonStoreProps, CommonStoreValues } from '@/configs';
 import {
     FurnitureComponent,
     furnitureComponentResources,
-    resfulFetcher,
+    restfulFetcher,
     restfulStore,
     withMaterialTypes,
     WithMaterialTypesProps
@@ -33,7 +33,7 @@ export class ProductContainer extends React.Component<ProductContainerProps> {
         return (
             <RestfulRender
                 store={restfulStore}
-                fetcher={resfulFetcher}
+                fetcher={restfulFetcher}
                 parameters={[{
                     type: 'query',
                     parameter: nameof<FurnitureComponent>(o => o.design),

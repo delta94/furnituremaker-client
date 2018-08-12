@@ -1,18 +1,21 @@
 import * as React from 'react';
-import { RouteProps } from 'react-router';
+import { RouteComponentProps, RouteProps } from 'react-router';
 
 import { Page } from '@/components';
 
 import { AppLogin } from './containers';
 
-export class RouteLogin extends React.Component {
+type RouteLoginProps = RouteComponentProps<{}>;
+
+export class RouteLogin extends React.Component<RouteLoginProps> {
     static readonly routeProps: RouteProps = {
         path: '/login'
     };
 
     render() {
+        const routeProps = Page.getRouteProps(this.props);
         return (
-            <Page>
+            <Page routeProps={routeProps}>
                 <AppLogin />
             </Page>
         );

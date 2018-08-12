@@ -1,9 +1,10 @@
-import { ProductDesign } from './productDesign';
-import { ProductType } from './productType';
-import { ProductModule } from './productModule';
+import { formatCurrency } from '@/utilities';
+
 import { FurnitureComponentType } from './furnitureComponentType';
 import { MaterialType, materialTypeUtils } from './materialType';
-import { formatCurrency } from '@/utilities';
+import { ProductDesign } from './productDesign';
+import { ProductModule } from './productModule';
+import { ProductType } from './productType';
 
 export interface Product {
     readonly id?: string;
@@ -11,6 +12,7 @@ export interface Product {
     readonly productType: ProductType;
     readonly modules: ProductModule[];
     readonly totalPrice: number;
+    readonly code: string;
 }
 
 export const productUtils = {
@@ -46,6 +48,7 @@ export const productUtils = {
         });
 
         const product: Product = {
+            code: null,
             design,
             productType,
             modules: modules,
@@ -75,5 +78,15 @@ export const productUtils = {
             return o.component.code + o.material.code;
         });
         return moduleCodes.join('-');
+    },
+    getComponentCodes: (productCode: string) => {
+        // three chars
+        const componentCodes = productCode.match(/\w{3}/g);
+        return componentCodes.map(o => String(o));
+    },
+    getMaterialCodes: (productCode: string) => {
+        // two chars after component code
+        const componentCodes = productCode.match(/((?!\w{3})\w{2})/g);
+        return componentCodes.map(o => String(o));
     }
 };

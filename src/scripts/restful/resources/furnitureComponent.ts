@@ -1,12 +1,18 @@
-import { ResourceType, Resource, RecordType, Store, restfulDataContainer } from 'react-restful';
+import {
+    RecordType,
+    Resource,
+    ResourceType,
+    restfulDataContainer,
+    Store
+} from 'react-restful';
+
+import { MaterialType } from '@/restful/resources/materialType';
 
 import { apiEntry } from '../apiEntry';
-
 import { FurnitureComponentType } from './furnitureComponentType';
-import { QuotaUnit } from './quotaUnit';
 import { ProductDesign } from './productDesign';
+import { QuotaUnit } from './quotaUnit';
 import { UploadedFile } from './uploadedFile';
-import { MaterialType } from '@/restful/resources/materialType';
 
 export interface FurnitureComponent extends RecordType {
     readonly id: string;
@@ -25,7 +31,7 @@ export interface FurnitureComponent extends RecordType {
     readonly code: string;
 }
 
-export const furnitureComponentResourceType = new ResourceType({
+export const furnitureComponentResourceType = new ResourceType<FurnitureComponent>({
     name: 'furniture-component-type',
     schema: [{
         field: 'id',

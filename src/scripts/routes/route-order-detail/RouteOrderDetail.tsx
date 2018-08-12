@@ -18,9 +18,10 @@ export class RouteOrderDetail extends React.Component<RouteOrderDetailProps> {
 
     render() {
         const { match } = this.props;
+        const routeProps = Page.getRouteProps(this.props);
 
         return (
-            <Page>
+            <Page routeProps={routeProps}>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <OrderDetailContainer orderId={match.params.id} />
                 </DefaultLayout>

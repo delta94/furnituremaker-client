@@ -1,6 +1,8 @@
 import { Fetcher, Resource, ResourceParameter } from 'react-restful';
-import { restfulStore } from './store';
+
 import { getToken } from '@/configs';
+
+import { restfulStore } from './store';
 
 class RestfulFetcher extends Fetcher {
     readonly createDefaultRequestInit = () => ({ headers: new Headers() });
@@ -44,6 +46,6 @@ class RestfulFetcher extends Fetcher {
     }
 }
 
-export const resfulFetcher = new RestfulFetcher({
+export const restfulFetcher = new RestfulFetcher({
     store: restfulStore
 });

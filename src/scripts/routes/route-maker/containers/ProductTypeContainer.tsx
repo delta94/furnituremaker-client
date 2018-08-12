@@ -6,7 +6,7 @@ import { CommonStoreProps, CommonStoreValues } from '@/configs';
 import {
     ProductType,
     productTypeResources,
-    resfulFetcher,
+    restfulFetcher,
     restfulStore
 } from '@/restful';
 
@@ -22,7 +22,7 @@ export class ProductTypeContainer extends React.Component<CommonStoreProps> {
 
         return (
             <RestfulRender
-                fetcher={resfulFetcher}
+                fetcher={restfulFetcher}
                 store={restfulStore}
                 resource={productTypeResources.find}
                 parameters={[{

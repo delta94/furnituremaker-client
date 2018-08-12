@@ -1,22 +1,22 @@
 import './OrderDetailItem.scss';
 
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
-import {
-    withDiscountByQuantities,
-    WithDiscountByQuantitiesOwnProps,
-    OrderDetail,
-    restfulStore,
-    WithDiscountByQuantities,
-    discountByQuantitiesUtils,
-    orderDetailUtils,
-    resfulFetcher,
-    orderDetailResources
-} from '@/restful';
-
-import { AntdList, AntdInputNumber, AntdButton } from '@/components';
-import { formatCurrency } from '@/utilities';
+import { AntdButton, AntdInputNumber, AntdList } from '@/components';
 import { AntdModal } from '@/components/antd-component/Modal';
+import {
+    discountByQuantitiesUtils,
+    OrderDetail,
+    orderDetailResources,
+    orderDetailUtils,
+    restfulFetcher,
+    restfulStore,
+    withDiscountByQuantities,
+    WithDiscountByQuantities,
+    WithDiscountByQuantitiesOwnProps
+} from '@/restful';
+import { formatCurrency } from '@/utilities';
 
 interface OrderDetailItemProps extends
     WithDiscountByQuantitiesOwnProps,
@@ -43,7 +43,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
             nextDiscoutPerProduct
         );
         const updateParams = orderDetailUtils.createUpdateParams(updateOrderDetail);
-        return resfulFetcher.fetchResource(
+        return restfulFetcher.fetchResource(
             orderDetailResources.update,
             updateParams
         );
@@ -92,7 +92,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                             AntdModal.confirm({
                                 title: 'Xóa sản phẩm?',
                                 content: 'Loại bỏ sản phẩm này khỏi giỏ hàng của bạn',
-                                onOk: () => resfulFetcher.fetchResource(
+                                onOk: () => restfulFetcher.fetchResource(
                                     orderDetailResources.delete,
                                     [{ type: 'path', parameter: 'id', value: orderDetail.id }]
                                 )
@@ -114,7 +114,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                     title={<a href="https://ant.design">{orderDetail.productType.name}</a>}
                     description={(
                         <div>
-                            <span>{orderDetail.productCode}</span>
+                            <Link to={`/maker/${orderDetail.productCode}`}>{orderDetail.productCode}</Link>
                         </div>
                     )}
                 />

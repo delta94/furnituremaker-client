@@ -1,6 +1,8 @@
 import * as React from 'react';
+
 import { withStoreValues } from '@/app';
-import { AntdDrawer, AntdDivider } from '@/components';
+import { AntdDivider, AntdDrawer } from '@/components';
+
 import { CartDrawerContent, CartDrawerFooter } from './header-cart-drawer';
 
 export interface HeaderCartDrawerProps {
@@ -10,6 +12,10 @@ export interface HeaderCartDrawerProps {
 
 @withStoreValues(nameof<HeaderCartDrawerProps>(o => o.drawerVisible))
 export class HeaderCartDrawer extends React.PureComponent<HeaderCartDrawerProps> {
+    componentWillUnmount() {
+        this.props.onDrawerClose();
+    }
+
     render() {
         const {
             drawerVisible,

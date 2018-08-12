@@ -3,7 +3,7 @@ import { Store } from 'redux';
 
 import { clearToken, saveToken } from '@/configs';
 import {
-    resfulFetcher,
+    restfulFetcher,
     User,
     UserAuthResponse,
     userResources
@@ -44,7 +44,7 @@ export class Auth {
 
     async isLoggedIn() {
         try {
-            const user: User = await resfulFetcher.fetchResource(userResources.me, []);
+            const user: User = await restfulFetcher.fetchResource(userResources.me, []);
             return user;
         } catch (error) {
             const { loginPath, history } = this.props;
@@ -54,7 +54,7 @@ export class Auth {
 
     async login(identifier: string, password: string, rememberMe: boolean) {
         try {
-            const login: UserAuthResponse = await resfulFetcher.fetchResource(
+            const login: UserAuthResponse = await restfulFetcher.fetchResource(
                 userResources.auth,
                 [{
                     type: 'body',

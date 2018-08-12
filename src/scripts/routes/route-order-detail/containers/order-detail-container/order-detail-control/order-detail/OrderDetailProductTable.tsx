@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { AntdCard, AntdColumnProps, AntdTable, Img } from '@/components';
 import { Order, OrderDetail } from '@/restful';
@@ -25,7 +26,8 @@ const columns: AntdColumnProps<OrderDetail>[] = [{
 }, {
     title: 'Mã sản phẩm',
     dataIndex: nameof<OrderDetail>(o => o.productCode),
-    key: nameof<OrderDetail>(o => o.productCode)
+    key: nameof<OrderDetail>(o => o.productCode),
+    render: (productCode: string) => (<Link to={`/maker/${productCode}`}>{productCode}</Link>)
 }, {
     title: 'Số lượng',
     dataIndex: nameof<OrderDetail>(o => o.quantity),

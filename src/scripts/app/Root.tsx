@@ -15,7 +15,7 @@ import {
     productTypeResources,
     User
 } from '@/restful';
-import { resfulFetcher } from '@/restful';
+import { restfulFetcher } from '@/restful';
 
 import { Auth } from './Auth';
 import { changeAppStateToReady } from './readyState';
@@ -68,12 +68,12 @@ export class Root extends React.Component<RootProps> {
     @autobind
     async appInit(user: User) {
         await Promise.all([
-            resfulFetcher.fetchResource(
+            restfulFetcher.fetchResource(
                 orderDetailResources.find,
                 [orderDetailUtils.getTempOrderParameter]
             ),
-            resfulFetcher.fetchResource(furnutureMaterialResources.find, []),
-            resfulFetcher.fetchResource(productTypeResources.find, [])
+            restfulFetcher.fetchResource(furnutureMaterialResources.find, []),
+            restfulFetcher.fetchResource(productTypeResources.find, [])
         ]);
 
         changeAppStateToReady(this.props.store);

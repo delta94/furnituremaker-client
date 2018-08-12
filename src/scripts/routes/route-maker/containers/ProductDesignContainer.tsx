@@ -2,8 +2,13 @@ import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
 import { withStoreValues } from '@/app';
-import { resfulFetcher, restfulStore, ProductDesign, productDesignResources } from '@/restful';
-import { CommonStoreValues, CommonStoreProps } from '@/configs';
+import { CommonStoreProps, CommonStoreValues } from '@/configs';
+import {
+    ProductDesign,
+    productDesignResources,
+    restfulFetcher,
+    restfulStore
+} from '@/restful';
 
 import { ProductDesignController } from './product-design-container';
 
@@ -17,7 +22,7 @@ export class ProductDesignContainer extends React.Component<CommonStoreProps> {
 
         return (
             <RestfulRender
-                fetcher={resfulFetcher}
+                fetcher={restfulFetcher}
                 store={restfulStore}
                 resource={productDesignResources.find}
                 parameters={[{

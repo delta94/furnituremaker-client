@@ -13,7 +13,7 @@ export interface ProductType extends RecordType {
     readonly discountByQuantities?: DiscountByQuantity[];
 }
 
-export const productType = new ResourceType({
+export const productType = new ResourceType<ProductType>({
     name: nameof<ProductType>(),
     schema: [{
         field: 'id',

@@ -9,7 +9,7 @@ import {
     orderDetailUtils,
     orderResources,
     orderUtils,
-    resfulFetcher,
+    restfulFetcher,
     restfulStore,
     withCurrentUser,
     WithCurrentUserProps
@@ -40,7 +40,7 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                 orderDetails: orderDetails
             };
 
-            await resfulFetcher.fetchResource(
+            await restfulFetcher.fetchResource(
                 orderResources.add,
                 [{
                     type: 'body',

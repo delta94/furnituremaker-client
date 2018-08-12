@@ -1,9 +1,16 @@
-import { ResourceType, Resource, RecordType, Store, restfulDataContainer } from 'react-restful';
+import {
+    RecordType,
+    Resource,
+    ResourceType,
+    restfulDataContainer,
+    Store
+} from 'react-restful';
 
-import { MaterialType } from './materialType';
-import { apiEntry } from '../apiEntry';
-import { UploadedFile } from './uploadedFile';
 import { CommonStoreProps } from '@/configs';
+
+import { apiEntry } from '../apiEntry';
+import { MaterialType } from './materialType';
+import { UploadedFile } from './uploadedFile';
 
 export interface FurnutureMaterial extends RecordType {
     readonly id: string;
@@ -15,7 +22,7 @@ export interface FurnutureMaterial extends RecordType {
     readonly code: string;
 }
 
-export const furnutureMaterialResouceType = new ResourceType({
+export const furnutureMaterialResouceType = new ResourceType<FurnutureMaterial>({
     name: 'material',
     schema: [{
         field: 'id',

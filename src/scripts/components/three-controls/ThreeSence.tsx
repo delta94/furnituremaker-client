@@ -124,6 +124,6 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
         }
         setTimeout(() => {
             console.log( this.renderer.domElement.toDataURL('image/jpeg'));
-        }, 1000);
+        },         1000);
     }
 }

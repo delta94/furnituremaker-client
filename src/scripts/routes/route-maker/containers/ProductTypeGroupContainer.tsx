@@ -4,19 +4,17 @@ import { RestfulRender } from 'react-restful';
 import { CommonStoreProps } from '@/configs';
 import {
     productTypeGroupResources,
-    resfulFetcher,
+    restfulFetcher,
     restfulStore
 } from '@/restful';
 
-import {
-    TypeGroupController
-} from './product-type-group-container';
+import { TypeGroupController } from './product-type-group-container';
 
 export class ProductTypeGroupContainer extends React.Component<CommonStoreProps> {
     render() {
         return (
             <RestfulRender
-                fetcher={resfulFetcher}
+                fetcher={restfulFetcher}
                 store={restfulStore}
                 resource={productTypeGroupResources.find}
                 parameters={[]}

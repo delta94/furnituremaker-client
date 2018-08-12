@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteProps } from 'react-router';
+import { RouteComponentProps, RouteProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { readyState } from '@/app';
@@ -9,16 +9,20 @@ import { DefaultLayout } from '@/layout';
 
 import { OrderListContainer } from './containers';
 
+type RouteOrdersProps = CommonStoreProps & RouteComponentProps<{}>;
+
 @readyState()
-export class RouteOrders extends React.Component<CommonStoreProps> {
+export class RouteOrders extends React.Component<RouteOrdersProps> {
     static readonly routeProps: RouteProps = {
         path: '/orders',
         exact: true
     };
 
     render() {
+        const routeProps = Page.getRouteProps(this.props);
+
         return (
-            <Page>
+            <Page routeProps={routeProps}>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <OrderListContainer />
                 </DefaultLayout>
