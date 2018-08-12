@@ -12,10 +12,6 @@ export interface HeaderCartDrawerProps {
 
 @withStoreValues(nameof<HeaderCartDrawerProps>(o => o.drawerVisible))
 export class HeaderCartDrawer extends React.PureComponent<HeaderCartDrawerProps> {
-    componentWillUnmount() {
-        this.props.onDrawerClose();
-    }
-
     render() {
         const {
             drawerVisible,

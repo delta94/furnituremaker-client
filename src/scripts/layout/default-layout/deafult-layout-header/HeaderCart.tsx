@@ -1,11 +1,17 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdIcon, AntdBadge } from '@/components';
-import { withTempOrderDetails, WithTempOrderDetails, restfulStore, orderDetailUtils } from '@/restful';
 import { withStoreValues } from '@/app';
-import { CommonStoreProps, colorPrimary } from '@/configs';
-import { HeaderCartDrawerProps, HeaderCartDrawer } from './header-cart';
+import { AntdBadge, AntdIcon } from '@/components';
+import { colorPrimary, CommonStoreProps } from '@/configs';
+import {
+    orderDetailUtils,
+    restfulStore,
+    withTempOrderDetails,
+    WithTempOrderDetails
+} from '@/restful';
+
+import { HeaderCartDrawer, HeaderCartDrawerProps } from './header-cart';
 
 const HeaderCartButtonWrapper = styled.div`
     height: 60px;
@@ -43,6 +49,11 @@ type DefaultLayoutHeaderProps = CommonStoreProps & Partial<WithTempOrderDetails>
 @withTempOrderDetails(restfulStore)
 @withStoreValues()
 export class HeaderCart extends React.Component<DefaultLayoutHeaderProps> {
+    componentWillUnmount() {
+        const { setStore } = this.props;
+        setStore({ [nameof<HeaderCartDrawerProps>(o => o.drawerVisible)]: false });
+    }
+
     render() {
         const { orderDetails, setStore } = this.props;
         const quantity = orderDetailUtils.getQuantity(orderDetails);
