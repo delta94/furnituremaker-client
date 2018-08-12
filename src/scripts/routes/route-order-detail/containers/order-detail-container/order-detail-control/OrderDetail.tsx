@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { restfulDataContainer } from 'react-restful/dist';
 import styled from 'styled-components';
 
 import { Container } from '@/components';
-import { Order, orderResourceType, restfulStore } from '@/restful';
+import { Order } from '@/restful';
 
 import {
     OrderDetailHeader,

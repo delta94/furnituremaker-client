@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ResourceParameter } from 'react-restful/dist';
+import { ResourceParameter } from 'react-restful';
 import { RouteComponentProps, RouteProps } from 'react-router';
 
 import { readyState, withStoreValues } from '@/app';
