@@ -1,5 +1,5 @@
-import { Dispatch, Action, Store } from 'redux';
 import { connect } from 'react-redux';
+import { Action, Dispatch, Store } from 'redux';
 
 const map = require('lodash/map');
 
@@ -16,7 +16,8 @@ interface StoreValuesRecuder extends Action {
 
 const initStoreValues = new Map();
 
-export function storeValuesRecuder(state: Map<string, unknown> = initStoreValues, action: StoreValuesRecuder) {
+// tslint:disable-next-line:no-any
+export function storeValuesRecuder(state: Map<string, any> = initStoreValues, action: StoreValuesRecuder) {
     switch (action.type) {
         case 'SET_VALUES':
             const newState = new Map(state);
@@ -38,7 +39,8 @@ export function storeValuesRecuder(state: Map<string, unknown> = initStoreValues
 
 interface CheckStoreAction extends Action<string> {
     readonly key: string;
-    readonly resolve: (value: unknown) => void;
+    // tslint:disable-next-line:no-any
+    readonly resolve: (value: any) => void;
 }
 
 export const checkStoreAction = (key: string, resolve: CheckStoreAction['resolve']): CheckStoreAction => {
@@ -51,7 +53,8 @@ export const checkStoreAction = (key: string, resolve: CheckStoreAction['resolve
 
 export const storeValuesMiddleware = (store: Store) => next => (action: CheckStoreAction) => {
     if (action.type === 'CHECK_STORE') {
-        const state: { readonly values: Map<string, unknown> } = store.getState();
+        // tslint:disable-next-line:no-any
+        const state: { readonly values: Map<string, any> } = store.getState();
         action.resolve(state.values.get(action.key));
     }
     return next(action);

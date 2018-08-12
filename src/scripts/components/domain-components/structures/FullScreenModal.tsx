@@ -1,8 +1,8 @@
 import * as React from 'react';
-
 import styled from 'styled-components';
 
-type ModalWrapperProps = React.DOMAttributes<unknown> & { readonly visibled: boolean };
+// tslint:disable-next-line:no-any
+type ModalWrapperProps = React.DOMAttributes<any> & { readonly visibled: boolean };
 type ModalWrapperType = React.ComponentType<ModalWrapperProps>;
 const ModalWrapper: ModalWrapperType = styled.div`
     position: fixed;

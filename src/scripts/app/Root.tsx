@@ -21,7 +21,8 @@ import { Auth } from './Auth';
 import { changeAppStateToReady } from './readyState';
 
 export interface RootProps {
-    readonly store: Store<unknown, AnyAction>;
+    // tslint:disable-next-line:no-any
+    readonly store: Store<any, AnyAction>;
     readonly children: JSX.Element[];
     readonly loginPath: string;
 }
