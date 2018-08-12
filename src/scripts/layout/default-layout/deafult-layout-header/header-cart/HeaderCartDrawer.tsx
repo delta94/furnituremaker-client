@@ -25,7 +25,6 @@ export class HeaderCartDrawer extends React.PureComponent<HeaderCartDrawerProps>
                 onClose={onDrawerClose}
                 closable={false}
                 maskClosable={true}
-                destroyOnClose={true}
             >
                 <CartDrawerContent />
                 <AntdDivider />
