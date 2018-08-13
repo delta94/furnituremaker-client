@@ -3,12 +3,9 @@ import { ResourceParameter } from 'react-restful';
 import { RouteComponentProps, RouteProps } from 'react-router';
 
 import { readyState, withStoreValues } from '@/app';
-import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
+import { AntdBreadcrumb, AntdIcon, Container, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
-import {
-    HeaderCartDrawerProps
-} from '@/layout/default-layout/deafult-layout-header/header-cart';
 import {
     FurnitureComponent,
     furnitureComponentResources,
@@ -114,7 +111,7 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
             [nameof<CommonStoreProps>(o => o.selectedProductType)]: product.productType,
             [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: product.design,
             [nameof<CommonStoreProps>(o => o.selectedProduct)]: product,
-            [nameof<HeaderCartDrawerProps>(o => o.drawerVisible)]: false
+            [nameof<CommonStoreProps>(o => o.drawerVisible)]: false
         });
         this.setState({
             pageReady: true,

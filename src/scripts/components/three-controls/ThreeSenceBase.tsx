@@ -128,7 +128,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     initRenderer() {
         this.renderer = new THREE.WebGLRenderer({
             alpha: true,
-            preserveDrawingBuffer: true 
+            preserveDrawingBuffer: true
         });
         this.renderer.autoClear = false;
         this.renderer.gammaInput = true;
@@ -217,6 +217,10 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.camera.position.copy(this.cameraDefaults.posCamera);
         this.cameraTarget.copy(this.cameraDefaults.posCameraTarget);
         this.updateCamera();
+    }
+
+    resetControl() {
+        this.controls.reset();
     }
 
     renderSence() {

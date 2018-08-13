@@ -49,11 +49,6 @@ type DefaultLayoutHeaderProps = CommonStoreProps & Partial<WithTempOrderDetails>
 @withTempOrderDetails(restfulStore)
 @withStoreValues()
 export class HeaderCart extends React.Component<DefaultLayoutHeaderProps> {
-    componentWillUnmount() {
-        const { setStore } = this.props;
-        // setStore({ [nameof<HeaderCartDrawerProps>(o => o.drawerVisible)]: false });
-    }
-
     render() {
         const { orderDetails, setStore } = this.props;
         const quantity = orderDetailUtils.getQuantity(orderDetails);

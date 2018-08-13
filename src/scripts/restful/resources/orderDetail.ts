@@ -24,6 +24,7 @@ export interface OrderDetail extends RecordType {
     readonly order?: Order;
     readonly status: 'temp' | 'order';
     readonly discount: number;
+    readonly previewImg?: string;
 }
 
 export const orderDetailResourceType = new ResourceType({

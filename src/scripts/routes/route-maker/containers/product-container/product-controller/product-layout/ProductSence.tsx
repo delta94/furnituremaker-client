@@ -31,12 +31,18 @@ interface RouteHomeProps extends
 @withStoreValues(nameof<RouteHomeProps>(o => o.selectedObject))
 export class ProductSence extends React.PureComponent<RouteHomeProps> {
     render() {
+        const { setStore } = this.props;
         return (
             <ProductSenceWrapper>
                 <ThreeSence
                     onObjectSelect={this.onObjectSelect}
                     selectedObject={this.props.selectedObject}
                     productModules={this.props.product.modules}
+                    setSence={(threeScreen) => {
+                        setStore({
+                            [nameof<CommonStoreProps>(o => o.product3Dsence)]: threeScreen
+                        });
+                    }}
                 />
             </ProductSenceWrapper>
         );

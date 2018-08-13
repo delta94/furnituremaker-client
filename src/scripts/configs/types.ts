@@ -1,6 +1,7 @@
 import { RouteComponentProps } from 'react-router';
 
 import { ExtendWithStoreValuesProps } from '@/app';
+import { ThreeSence } from '@/components';
 import {
     MaterialType,
     Product,
@@ -22,6 +23,9 @@ export interface CommonStoreValues {
     readonly selectedMaterialType?: MaterialType;
     readonly selectedProduct?: Product;
     readonly getCurrentRouteProps?: <T>() => RouteComponentProps<T>;
+
+    readonly drawerVisible?: boolean;
+    readonly product3Dsence?: ThreeSence;
 }
 
 export type CommonStoreProps = ExtendWithStoreValuesProps<CommonStoreValues>;

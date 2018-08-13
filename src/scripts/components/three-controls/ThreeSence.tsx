@@ -7,6 +7,7 @@ import * as React from 'react';
 import { WithStoreValuesDispatchs } from '@/app';
 import { ProductModule, uploadedFileUtils } from '@/restful';
 
+import autobind from '../../../../node_modules/autobind-decorator';
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 
 const { THREE } = window;
@@ -14,12 +15,14 @@ const { THREE } = window;
 interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesDispatchs {
     readonly productModules: ProductModule[];
     readonly selectedObject: THREE.Mesh;
+    readonly setSence: (threeSence: ThreeSence) => void;
 }
 
 export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
     componentDidMount() {
         this.initSence();
         this.initContent();
+        this.props.setSence(this);
     }
 
     componentDidUpdate() {
@@ -48,7 +51,13 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
 
                 const callbackOnLoadObj = (event) => {
                     for (const child of event.detail.loaderRootNode.children) {
-                        child.material.shading = 2;
+                        if (Array.isArray(child.material)) {
+                            for (const material of child.material) {
+                                material.shading = 2;
+                            }
+                        } else {
+                            child.material.shading = 2;
+                        }
 
                         child.castShadow = true;
                         child.receiveShadow = true;
@@ -59,7 +68,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                     this.scene.add(event.detail.loaderRootNode);
                 };
 
-                const onLoadMtl = (mtl) => {
+                const onLoadMtl = (mtl: THREE.MaterialCreator) => {
                     const textureFile = uploadedFileUtils.getUrl(productModule.material.texture);
                     for (const materialInfoKey in mtl.materialsInfo) {
                         if (mtl.materialsInfo.hasOwnProperty(materialInfoKey)) {
@@ -69,8 +78,10 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                             materialInfo.map_kd = textureFile;
                         }
                     }
-                    mtl.crossOrigin = '';
+
+                    mtl.setCrossOrigin(true);
                     mtl.preload();
+
                     const materials = mtl.materials;
 
                     for (const key in materials) {
@@ -122,8 +133,19 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                 key
             );
         }
-        setTimeout(() => {
-            console.log( this.renderer.domElement.toDataURL('image/jpeg'));
-        },         1000);
+    }
+
+    @autobind
+    takeScreenshot() {
+        return new Promise<string>((resolve) => {
+            this.resetControl();
+            setTimeout(
+                () => {
+                    const base64 = this.renderer.domElement.toDataURL('image/jpeg');
+                    resolve(base64);
+                },
+                500
+            );
+        });
     }
 }

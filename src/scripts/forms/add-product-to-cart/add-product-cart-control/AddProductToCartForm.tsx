@@ -7,7 +7,6 @@ import {
     AntdCol,
     AntdMessage,
     AntdRow,
-    Condition,
     FormError,
     renderInputNumber,
     renderSelectField
@@ -22,7 +21,7 @@ import {
 import { formatCurrency } from '@/utilities';
 
 const FormBody = styled.div`
-    margin: 0 5px 15px 5px;
+    margin: 0 0 15px 0;
 `;
 
 const FormActions = styled.div`

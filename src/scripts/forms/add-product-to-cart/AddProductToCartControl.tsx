@@ -26,10 +26,13 @@ interface ProductAddCartControlProps extends CommonStoreValues, WithTempOrderDet
 }
 
 @withTempOrderDetails(restfulStore)
-@withStoreValues(nameof<CommonStoreProps>(o => o.selectedProduct))
+@withStoreValues(
+    nameof<CommonStoreProps>(o => o.selectedProduct),
+    nameof<CommonStoreProps>(o => o.product3Dsence)
+)
 export class AddProductToCartControl extends React.PureComponent<ProductAddCartControlProps> {
-    readonly createNewOrderDetail = (quantity: number): OrderDetail => {
-        const { selectedProduct, discountByQuantities } = this.props;
+    readonly createNewOrderDetail = async (quantity: number): Promise<OrderDetail> => {
+        const { selectedProduct, discountByQuantities, product3Dsence } = this.props;
         const productPrice = productUtils.getOriginPrice(selectedProduct);
         const discountPerProduct = discountByQuantitiesUtils.getDiscountValue(
             discountByQuantities,
@@ -37,6 +40,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
         );
         const subTotalPrice = productPrice * quantity;
         const totalPrice = subTotalPrice - (discountPerProduct * quantity);
+        const previewImg = await product3Dsence.takeScreenshot();
 
         return {
             design: selectedProduct.design,
@@ -44,11 +48,13 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
             productCode: productUtils.getProductCode(selectedProduct),
             quantity: quantity,
             subTotalPrice: subTotalPrice,
+
             totalPrice: totalPrice,
             productPrice: productPrice,
             productDiscount: discountPerProduct,
             discount: discountPerProduct * quantity,
-            status: 'temp'
+            status: 'temp',
+            previewImg: previewImg
         };
     }
 
