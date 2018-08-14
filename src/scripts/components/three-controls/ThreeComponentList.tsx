@@ -41,7 +41,11 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                                     { selected: selectedObject.name === component.id }
                                 )}
                             >
-                                <Img file={component.thumbnail} onClick={() => this.onComponentSelect(component)} />
+                                <Img
+                                    file={component.thumbnail}
+                                    size="img256x256"
+                                    onClick={() => this.onComponentSelect(component)}
+                                />
                             </div>
                         </AntdList.Item>
                     )}

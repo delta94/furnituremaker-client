@@ -64,6 +64,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                             >
                                 <Img
                                     file={material.texture}
+                                    size="img256x256"
                                     onClick={() => this.onMaterialSelect(material)}
                                 />
                             </div>
