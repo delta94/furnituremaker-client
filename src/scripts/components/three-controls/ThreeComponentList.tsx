@@ -1,12 +1,13 @@
 import './ThreeComponentList.scss';
-import * as React from 'react';
+
 import * as classNames from 'classnames';
+import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdList, Img } from '@/components';
-import { FurnitureComponent, uploadedFileUtils, Product } from '@/restful';
 import { withStoreValues } from '@/app';
+import { AntdList, Img } from '@/components';
 import { CommonStoreProps } from '@/configs';
+import { FurnitureComponent, Product, uploadedFileUtils } from '@/restful';
 
 const ListHeader = styled.div`
     margin: 15px 0;
@@ -62,7 +63,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
                 mesh.name = component.id;
-                // mesh.scale.set(0.1, 0.1, 0.1);
+                mesh.scale.set(0.1, 0.1, 0.1);
                 mesh.material = selectedObject.material;
 
                 const selectedObjectParent = selectedObject.parent;
