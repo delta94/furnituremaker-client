@@ -47,6 +47,16 @@ export interface AddToCartFormValues {
 class AddProductToCartFormComponent extends React.Component<
     AddProductToCartFormProps &
     InjectedFormProps<AddToCartFormValues, AddProductToCartFormProps>> {
+    readonly restToMinimumQuantity = () => {
+        const { change } = this.props;
+        change(nameof<AddToCartFormValues>(o => o.selectQuantity), 1);
+    }
+
+    readonly restToMaxiumQuantity = () => {
+        const { change } = this.props;
+        change(nameof<AddToCartFormValues>(o => o.selectQuantity), 30);
+    }
+
     render() {
         const {
             discountByQuantities,
@@ -100,6 +110,15 @@ class AddProductToCartFormComponent extends React.Component<
                                     component={(fieldProps) => {
                                         const { input } = fieldProps;
                                         const quantity = (typeof input.value === 'string') ? +input.value : input.value;
+
+                                        if (!quantity) {
+                                            this.restToMinimumQuantity();
+                                            return null;
+                                        } else if (quantity > 30) {
+                                            this.restToMaxiumQuantity();
+                                            return null;
+                                        }
+
                                         const discountValue = discountByQuantitiesUtils
                                             .getDiscountValue(discountByQuantities, quantity);
 

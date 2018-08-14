@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { ResourceType, Resource, restfulDataContainer } from 'react-restful';
+import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
 
 import { formatCurrency } from '@/utilities';
 
 import { apiEntry } from '../apiEntry';
-
 import { Product, productUtils } from './_product';
 import { ProductType } from './productType';
 
@@ -56,7 +55,7 @@ export const discountByQuantitiesUtils = {
         const entity = discountByQuantities.find(o => o.quantity === quantity);
         if (!entity) {
             const sortedDiscountByQuantities =
-                discountByQuantitiesUtils.sort(discountByQuantities);
+                discountByQuantitiesUtils.sort(discountByQuantities).reverse();
             
             for (const discountByQuantity of sortedDiscountByQuantities) {
                 if (

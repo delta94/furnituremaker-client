@@ -2,12 +2,12 @@
 // tslint:disable:no-console
 import './ThreeSence.scss';
 
+import autobind from 'autobind-decorator';
 import * as React from 'react';
 
 import { WithStoreValuesDispatchs } from '@/app';
 import { ProductModule, uploadedFileUtils } from '@/restful';
 
-import autobind from '../../../../node_modules/autobind-decorator';
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 
 const { THREE } = window;
@@ -47,27 +47,6 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
             }
 
             if (productModule.component.mtl) {
-                const objLoader = new THREE.OBJLoader2();
-
-                const callbackOnLoadObj = (event) => {
-                    for (const child of event.detail.loaderRootNode.children) {
-                        if (Array.isArray(child.material)) {
-                            for (const material of child.material) {
-                                material.shading = 2;
-                            }
-                        } else {
-                            child.material.shading = 2;
-                        }
-
-                        child.castShadow = true;
-                        child.receiveShadow = true;
-                        child.name = productModule.component.id;
-                        child.scale.set(0.1, 0.1, 0.1);
-                        this.fadeIn(child);
-                    }
-                    this.scene.add(event.detail.loaderRootNode);
-                };
-
                 const onLoadMtl = (mtl: THREE.MaterialCreator) => {
                     const textureFile = uploadedFileUtils.getUrl(productModule.material.texture);
                     for (const materialInfoKey in mtl.materialsInfo) {
@@ -82,7 +61,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                     mtl.setCrossOrigin(true);
                     mtl.preload();
 
-                    const materials = mtl.materials;
+                    const materials: { readonly [key: string]: THREE.Material } = mtl.materials;
 
                     for (const key in materials) {
                         if (materials.hasOwnProperty(key)) {
@@ -95,6 +74,34 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                             }
                         }
                     }
+
+                    const objLoader = new THREE.OBJLoader2();
+                    const callbackOnLoadObj = (event) => {
+                        for (const child of event.detail.loaderRootNode.children) {
+                            // if child has multi material, we need set child's material to first material in the list
+                            if (Array.isArray(child.material)) {
+                                child.material = child.material.find((o: THREE.Material) => {
+                                    for (const materialKey in materials) {
+                                        if (materials.hasOwnProperty(materialKey)) {
+                                            const material = materials[materialKey];
+                                            if (material.name = o.name) {
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                            child.material.flatShading = false;
+
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                            child.name = productModule.component.id;
+                            child.scale.set(0.1, 0.1, 0.1);
+                            this.fadeIn(child);
+                        }
+                        this.scene.add(event.detail.loaderRootNode);
+                    };
+
                     objLoader.setLogging(false, false);
                     objLoader.setMaterials(materials);
                     objLoader.setModelName(productModule.component.name);
@@ -138,7 +145,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
     @autobind
     takeScreenshot() {
         return new Promise<string>((resolve) => {
-            this.resetControl();
+            this.resetCamera();
             setTimeout(
                 () => {
                     const base64 = this.renderer.domElement.toDataURL('image/jpeg');

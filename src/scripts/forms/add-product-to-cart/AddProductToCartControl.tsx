@@ -48,7 +48,6 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
             productCode: productUtils.getProductCode(selectedProduct),
             quantity: quantity,
             subTotalPrice: subTotalPrice,
-
             totalPrice: totalPrice,
             productPrice: productPrice,
             productDiscount: discountPerProduct,
@@ -60,7 +59,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
 
     readonly onCreateOrderDetail = async (values: AddToCartFormValues) => {
         try {
-            const newOrderDetail = this.createNewOrderDetail(values.selectQuantity);
+            const newOrderDetail = await this.createNewOrderDetail(values.selectQuantity);
             await restfulFetcher.fetchResource(orderDetailResources.add, [{
                 type: 'body',
                 value: newOrderDetail
