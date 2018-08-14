@@ -52,6 +52,11 @@ const FurnitureModuleItem = styled.div`
     }
 `;
 
+const ProductInfoWrapper = styled.div`
+    margin: 0 0 0 0;
+    min-height: 500px;
+`;
+
 export interface ProductInfoProps extends
     CommonStoreProps,
     WithStoreValuesDispatchs,
@@ -64,7 +69,7 @@ export interface ProductInfoProps extends
     nameof<CommonStoreProps>(o => o.selectedProductType),
     nameof<ThreeComponentListProps>(o => o.selectedObject)
 )
-export class ProductInfo extends React.Component<ProductInfoProps> {
+export class ProductInfo extends React.PureComponent<ProductInfoProps> {
     render() {
         const {
             product,
@@ -74,67 +79,68 @@ export class ProductInfo extends React.Component<ProductInfoProps> {
 
         return (
             <AntdCard>
-                <Condition condition={this.props.selectedObject}>
-                    <Condition.Then>
-                        <ThreeMaterialList />
-                        <AntdDivider />
-                        <ThreeComponentList />
-                    </Condition.Then>
-                    <Condition.Else>
-                        <React.Fragment>
-                            <ProductName>
-                                {productUtils.getProductName(product)}<br />
-                                <small>{productUtils.getProductCode(product)}</small>
-                            </ProductName>
+                {
+                    this.props.selectedObject ? (
+                        <ProductInfoWrapper>
+                            <ThreeMaterialList />
                             <AntdDivider />
-                            <AntdRow>
-                                <AntdCol span={13}>
-                                    <ProductDesign>{product.design.name}</ProductDesign>
-                                </AntdCol>
-                                <AntdCol span={11}>
-                                    <ChangeDesign onClick={showDesignModal}>
-                                        Thay đổi thiết kế khác?
-                                    </ChangeDesign>
-                                </AntdCol>
-                            </AntdRow>
-                            <FurnitureModules>
-                                {
-                                    product.modules.map((productModule, index) => {
-                                        return (
-                                            <FurnitureModuleItem key={index}>
-                                                {productModuleUtils.getName(productModule)}
-                                            </FurnitureModuleItem>
-                                        );
-                                    })
-                                }
-                            </FurnitureModules>
-                            <AntdDivider />
-                            <div>
-                                <div>Giá ban đầu: {productUtils.formatPrice(product)}</div>
-                                <RestfulRender
-                                    fetcher={restfulFetcher}
-                                    store={restfulStore}
-                                    parameters={[{
-                                        type: 'query',
-                                        parameter: nameof<DiscountByQuantity>(o => o.productType),
-                                        value: selectedProductType.id
-                                    }]}
-                                    resource={discountByQuantitiesResources.find}
-                                    render={(renderProps) => {
-                                        if (renderProps.data && !renderProps.fetching) {
+                            <ThreeComponentList />
+                        </ProductInfoWrapper>
+                    ) : (
+                            <ProductInfoWrapper>
+                                <ProductName>
+                                    {productUtils.getProductName(product)}<br />
+                                    <small>{productUtils.getProductCode(product)}</small>
+                                </ProductName>
+                                <AntdDivider />
+                                <AntdRow>
+                                    <AntdCol span={13}>
+                                        <ProductDesign>{product.design.name}</ProductDesign>
+                                    </AntdCol>
+                                    <AntdCol span={11}>
+                                        <ChangeDesign onClick={showDesignModal}>
+                                            Thay đổi thiết kế khác?
+                                        </ChangeDesign>
+                                    </AntdCol>
+                                </AntdRow>
+                                <FurnitureModules>
+                                    {
+                                        product.modules.map((productModule, index) => {
                                             return (
-                                                <AddProductToCartControl
-                                                    discountByQuantities={renderProps.data}
-                                                />
+                                                <FurnitureModuleItem key={index}>
+                                                    {productModuleUtils.getName(productModule)}
+                                                </FurnitureModuleItem>
                                             );
-                                        }
-                                        return null;
-                                    }}
-                                />
-                            </div>
-                        </React.Fragment>
-                    </Condition.Else>
-                </Condition>
+                                        })
+                                    }
+                                </FurnitureModules>
+                                <AntdDivider />
+                                <div>
+                                    <div>Giá ban đầu: {productUtils.formatPrice(product)}</div>
+                                    <RestfulRender
+                                        fetcher={restfulFetcher}
+                                        store={restfulStore}
+                                        parameters={[{
+                                            type: 'query',
+                                            parameter: nameof<DiscountByQuantity>(o => o.productType),
+                                            value: selectedProductType.id
+                                        }]}
+                                        resource={discountByQuantitiesResources.find}
+                                        render={(renderProps) => {
+                                            if (renderProps.data && !renderProps.fetching) {
+                                                return (
+                                                    <AddProductToCartControl
+                                                        discountByQuantities={renderProps.data}
+                                                    />
+                                                );
+                                            }
+                                            return null;
+                                        }}
+                                    />
+                                </div>
+                            </ProductInfoWrapper>
+                        )
+                }
             </AntdCard>
         );
     }

@@ -92,13 +92,13 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                                 });
                             }
                             child.material.flatShading = false;
-
                             child.castShadow = true;
                             child.receiveShadow = true;
-                            child.name = productModule.component.id;
                             child.scale.set(0.1, 0.1, 0.1);
                             this.fadeIn(child);
                         }
+
+                        event.detail.loaderRootNode.name = productModule.component.id;
                         this.scene.add(event.detail.loaderRootNode);
                     };
 

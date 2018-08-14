@@ -12,7 +12,7 @@ interface ReportProgressEvent {
 }
 
 export interface ThreeSenceBaseProps {
-    onObjectSelect: (object: THREE.Mesh | null) => void;
+    onObjectSelect: (object: THREE.Group) => void;
 }
 
 export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.PureComponent<TProps> {
@@ -299,7 +299,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
                 selectedObject = null;
             }
             this.selectObject(selectedObject);
-            this.props.onObjectSelect(selectedObject as THREE.Mesh || null);
+            this.props.onObjectSelect(selectedObject.parent as THREE.Group);
         } else {
             this.selectObject(null);
             this.props.onObjectSelect(null);

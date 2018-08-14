@@ -17,22 +17,31 @@ const { THREE } = window;
 
 export interface ThreeComponentListProps extends CommonStoreProps {
     readonly components: FurnitureComponent[];
-    readonly selectedObject: THREE.Mesh;
+    readonly selectedObject: THREE.Group;
     readonly selectedMaterial: string;
     readonly sence: THREE.Scene;
 }
 
-@withStoreValues(nameof<CommonStoreProps>(o => o.selectedProduct))
+@withStoreValues(
+    nameof<CommonStoreProps>(o => o.selectedProduct),
+    nameof<CommonStoreProps>(o => o.product3Dsence),
+)
 class ThreeComponentListComponent extends React.PureComponent<ThreeComponentListProps> {
     render() {
         const { selectedObject, components } = this.props;
-        (selectedObject.material as THREE.MeshPhongMaterial).map.needsUpdate = true;
+        const child = selectedObject.children[0] as THREE.Mesh;
+        (child.material as THREE.MeshPhongMaterial).map.needsUpdate = true;
+
         return (
             <React.Fragment>
                 <ListHeader>Cấu kiện thay thế</ListHeader>
                 <AntdList
                     dataSource={components}
                     grid={{ gutter: 16, column: 3 }}
+                    pagination={{
+                        pageSize: 6,
+                        simple: true
+                    }}
                     renderItem={(component: FurnitureComponent) => (
                         <AntdList.Item>
                             <div
@@ -55,7 +64,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
     }
 
     onComponentSelect(component: FurnitureComponent) {
-        const { selectedObject, setStore, selectedProduct } = this.props;
+        const { selectedObject, setStore, selectedProduct, product3Dsence } = this.props;
 
         if (component.id === selectedObject.name) {
             return;
@@ -63,37 +72,38 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
 
         const objLoader = new THREE.OBJLoader2();
         const callbackOnLoad = (event) => {
+            const child = selectedObject.children[0] as THREE.Mesh;
+
             for (const mesh of event.detail.loaderRootNode.children) {
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
-                mesh.name = component.id;
                 mesh.scale.set(0.1, 0.1, 0.1);
-                mesh.material = selectedObject.material;
-
-                const selectedObjectParent = selectedObject.parent;
-                selectedObjectParent.remove(selectedObject);
-                selectedObjectParent.add(mesh);
-
-                const nextSelectedProduct: Product = {
-                    ...selectedProduct,
-                    modules: selectedProduct.modules.map(productModule => {
-
-                        const nextComponent = (selectedObject.name === productModule.component.id) ?
-                            component : productModule.component;
-
-                        return {
-                            ...productModule,
-                            component: nextComponent,
-                            componentPrice: nextComponent.price
-                        };
-                    })
-                };
-
-                setStore({
-                    selectedObject: mesh,
-                    [nameof<CommonStoreProps>(o => o.selectedProduct)]: nextSelectedProduct
-                });
+                mesh.material = child.material;
             }
+
+            event.detail.loaderRootNode.name = component.id;
+            product3Dsence.scene.remove(selectedObject);
+            product3Dsence.scene.add(event.detail.loaderRootNode);
+
+            const nextSelectedProduct: Product = {
+                ...selectedProduct,
+                modules: selectedProduct.modules.map(productModule => {
+
+                    const nextComponent = (selectedObject.name === productModule.component.id) ?
+                        component : productModule.component;
+
+                    return {
+                        ...productModule,
+                        component: nextComponent,
+                        componentPrice: nextComponent.price
+                    };
+                })
+            };
+
+            setStore({
+                selectedObject: event.detail.loaderRootNode,
+                [nameof<CommonStoreProps>(o => o.selectedProduct)]: nextSelectedProduct
+            });
         };
         const objFile = uploadedFileUtils.getUrl(component.obj);
         objLoader.load(objFile, callbackOnLoad);

@@ -13,6 +13,12 @@ import {
 } from '@/restful';
 import { formatCurrency, formatDate } from '@/utilities';
 
+const ShippingCost = styled.div`
+    text-align: right;
+    font-size: 18px;
+    color: #000000;
+`;
+
 const TotalPrice = styled.div`
     text-align: right;
     font-size: 20px;
@@ -36,6 +42,16 @@ export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
         return (
             <div>
                 <AntdRow>
+                    <AntdCol span={12}>
+                        <span>
+                            Phí vận chuyển:
+                        </span>
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <ShippingCost>
+                            0
+                        </ShippingCost>
+                    </AntdCol>
                     <AntdCol span={12}>
                         <span>
                             Tổng tiền:

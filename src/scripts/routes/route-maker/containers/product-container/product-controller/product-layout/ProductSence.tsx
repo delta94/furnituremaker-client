@@ -49,7 +49,7 @@ export class ProductSence extends React.PureComponent<RouteHomeProps> {
     }
 
     @autobind
-    onObjectSelect(object: THREE.Mesh | null) {
+    onObjectSelect(object: THREE.Group) {
         if (!object) {
             return this.props.setStore({
                 materials: [],
@@ -60,11 +60,12 @@ export class ProductSence extends React.PureComponent<RouteHomeProps> {
         }
 
         const { components, materials } = this.props;
-
+        
         const componentData = components.find(o => o.id === object.name);
         const sameTypeComponents = components.filter(o => o.componentType.id === componentData.componentType.id);
-
-        const objectMaterial = object.material as THREE.MeshPhongMaterial | THREE.MeshPhongMaterial[];
+        
+        const child = object.children[0] as THREE.Mesh;
+        const objectMaterial = child.material as THREE.MeshPhongMaterial | THREE.MeshPhongMaterial[];
 
         const selectedMaterial = materials.find(material => {
             if (Array.isArray(objectMaterial)) {

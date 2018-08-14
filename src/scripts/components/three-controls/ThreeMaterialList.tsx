@@ -25,7 +25,7 @@ const ListHeader = styled.div`
 
 export interface ThreeMaterialListProps extends CommonStoreProps, WithMaterialProps {
     readonly materials: FurnutureMaterial[];
-    readonly selectedObject: THREE.Mesh;
+    readonly selectedObject: THREE.Group;
     readonly selectedMaterial: FurnutureMaterial;
 }
 
@@ -79,13 +79,16 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
         const { selectedObject, selectedProduct } = this.props;
         const texture = new THREE.TextureLoader();
         const textureFile = uploadedFileUtils.getUrl(material.texture);
+
         texture.load(textureFile, (map) => {
-            // tslint:disable-next-line:no-string-literal
-            selectedObject.material['map'].image = map.image;
-            // tslint:disable-next-line:no-string-literal
-            selectedObject.material['map'].needsUpdate = true;
-            // tslint:disable-next-line:no-string-literal
-            selectedObject.material['needsUpdate'] = true;
+            for (const mesh of selectedObject.children as THREE.Mesh[]) {
+                // tslint:disable-next-line:no-string-literal
+                mesh.material['map'].image = map.image;
+                // tslint:disable-next-line:no-string-literal
+                mesh.material['map'].needsUpdate = true;
+                // tslint:disable-next-line:no-string-literal
+                mesh.material['needsUpdate'] = true;
+            }
 
             const nextSelectedProduct: Product = {
                 ...selectedProduct,
@@ -93,7 +96,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
 
                     const nextMaterial = (selectedObject.name === productModule.component.id) ?
                         material : productModule.material;
-                    
+
                     return {
                         ...productModule,
                         material: nextMaterial,

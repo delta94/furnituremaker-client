@@ -7,8 +7,14 @@
     <meta content="utf-8" http-equiv="encoding">
     <title>Furniture Maker</title>
     <link rel="icon" type="image/png" href="/static/assets/favicon.png?version=1">
-
+    
+    <!-- OverlayScrollbars -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.5.1/css/OverlayScrollbars.min.css">
+    <style>
+        html.os-html>.os-host>.os-scrollbar{
+            z-index: 999;
+        }
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.5.1/js/OverlayScrollbars.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -17,6 +23,7 @@
         OverlayScrollbars(document.querySelectorAll("body"), { });
     });
     </script>
+    <!-- End OverlayScrollbars -->
 </head>
 
 <body>
