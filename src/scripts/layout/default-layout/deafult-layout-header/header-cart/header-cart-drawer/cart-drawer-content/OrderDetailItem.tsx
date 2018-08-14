@@ -106,7 +106,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                     <img
                         width={120}
                         alt="logo"
-                        src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                        src={orderDetail.previewImg}
                     />
                 }
             >
