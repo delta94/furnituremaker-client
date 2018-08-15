@@ -40,8 +40,8 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     highlightObjects: THREE.Object3D[] = [];
     selectedObject: THREE.Object3D;
 
-    highlightTimeout: NodeJS.Timer | number;
-    mouseHoldTimeout: NodeJS.Timer | number;
+    highlightTimeout: number;
+    mouseHoldTimeout: number;
     isMouseHold: boolean;
 
     static reportProgress = function (event: ReportProgressEvent) {
@@ -87,7 +87,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         };
         this.container.onmouseup = () => {
             this.onClick();
-            clearTimeout(this.mouseHoldTimeout as number);
+            clearTimeout(this.mouseHoldTimeout);
             this.isMouseHold = false;
         };
     }
@@ -239,7 +239,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         var intersects = this.raycaster.intersectObjects([this.scene], true);
         if (intersects.length > 0) {
             if (this.highlightTimeout) {
-                clearTimeout(this.highlightTimeout as number);
+                clearTimeout(this.highlightTimeout);
             }
             const selectedObject = intersects[0].object;
 
