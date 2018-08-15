@@ -29,7 +29,6 @@
         ]
     },
     "exclude": [
-        "node_modules",
-        "react-restful"
+        "node_modules"
     ]
 }
