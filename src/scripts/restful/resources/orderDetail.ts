@@ -129,14 +129,30 @@ export const orderDetailUtils = {
 
         return updateOrderDetail;
     },
-    getTotalPrice: (orderDetails: OrderDetail[]) => {
+    getTotalOfPayment: (orderDetails: OrderDetail[]) => {
         return orderDetails.reduce(
             (currentValue, orderDetail) => {
                 return currentValue + orderDetail.totalPrice;
             },
             0
         );
-    }
+    },
+    getTotalPrice: (orderDetails: OrderDetail[]) => {
+        return orderDetails.reduce(
+            (currentValue, orderDetail) => {
+                return currentValue + orderDetail.subTotalPrice;
+            },
+            0
+        );
+    },
+    getTotalDiscount: (orderDetails: OrderDetail[]) => {
+        return orderDetails.reduce(
+            (currentValue, orderDetail) => {
+                return currentValue + orderDetail.discount;
+            },
+            0
+        );
+    },
 };
 
 export interface WithTempOrderDetails {

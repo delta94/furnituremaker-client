@@ -28,16 +28,20 @@ interface RouteHomeProps extends
 }
 @withComponents(restfulStore)
 @withMaterials(restfulStore)
-@withStoreValues(nameof<RouteHomeProps>(o => o.selectedObject))
+@withStoreValues(
+    nameof<RouteHomeProps>(o => o.selectedObject),
+    nameof<RouteHomeProps>(o => o.selectedProduct),
+)
 export class ProductSence extends React.PureComponent<RouteHomeProps> {
     render() {
-        const { setStore } = this.props;
+        const { setStore, selectedProduct } = this.props;
         return (
             <ProductSenceWrapper>
                 <ThreeSence
                     onObjectSelect={this.onObjectSelect}
                     selectedObject={this.props.selectedObject}
                     productModules={this.props.product.modules}
+                    productType={selectedProduct.productType}
                     setSence={(threeScreen) => {
                         setStore({
                             [nameof<CommonStoreProps>(o => o.product3Dsence)]: threeScreen
@@ -60,10 +64,10 @@ export class ProductSence extends React.PureComponent<RouteHomeProps> {
         }
 
         const { components, materials } = this.props;
-        
+
         const componentData = components.find(o => o.id === object.name);
         const sameTypeComponents = components.filter(o => o.componentType.id === componentData.componentType.id);
-        
+
         const child = object.children[0] as THREE.Mesh;
         const objectMaterial = child.material as THREE.MeshPhongMaterial | THREE.MeshPhongMaterial[];
 

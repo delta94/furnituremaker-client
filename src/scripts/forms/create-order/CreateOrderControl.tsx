@@ -32,10 +32,10 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
             const { orderDetails } = this.props;
             const { order } = formValues;
 
-            const totalPrice = orderDetailUtils.getTotalPrice(orderDetails);
+            const totalPrice = orderDetailUtils.getTotalOfPayment(orderDetails);
             const newOrder: Partial<Order> = {
                 ...order,
-                totalPrice: orderDetailUtils.getTotalPrice(orderDetails),
+                totalPrice: orderDetailUtils.getTotalOfPayment(orderDetails),
                 depositRequired: totalPrice * 0.3,
                 orderDetails: orderDetails
             };

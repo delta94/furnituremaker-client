@@ -6,13 +6,14 @@ import autobind from 'autobind-decorator';
 import * as React from 'react';
 
 import { WithStoreValuesDispatchs } from '@/app';
-import { ProductModule, uploadedFileUtils } from '@/restful';
+import { ProductModule, ProductType, uploadedFileUtils } from '@/restful';
 
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 
 const { THREE } = window;
 
 interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesDispatchs {
+    readonly productType: ProductType;
     readonly productModules: ProductModule[];
     readonly selectedObject: THREE.Mesh;
     readonly setSence: (threeSence: ThreeSence) => void;
@@ -36,7 +37,17 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
     }
 
     render() {
-        return (<div id="threeViewWindow" ref={(element) => this.container = element} />);
+        const { productType } = this.props;
+        return (
+            <div
+                id="threeViewWindow"
+                ref={(element) => this.container = element}
+                style={{
+                    width: productType.view_senceWidth,
+                    height: productType.view_senceHeight
+                }}
+            />
+        );
     }
 
     initContent() {

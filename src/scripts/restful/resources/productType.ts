@@ -11,6 +11,13 @@ export interface ProductType extends RecordType {
     readonly thumbnail: UploadedFile;
     readonly productTypeGroup: ProductTypeGroup | string;
     readonly discountByQuantities?: DiscountByQuantity[];
+    readonly size: string;
+    readonly volume: number;
+
+    readonly view_senceWidth: number;
+    readonly view_senceHeight: number;
+    readonly view_rotateX: number;
+    readonly view_rotateY: number;
 }
 
 export const productType = new ResourceType<ProductType>({

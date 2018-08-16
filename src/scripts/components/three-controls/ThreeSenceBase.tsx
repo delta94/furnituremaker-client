@@ -28,11 +28,11 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     camera: THREE.PerspectiveCamera;
     cameraTarget: THREE.Vector3;
     cameraDefaults = {
-        posCamera: new THREE.Vector3(0, 70, 160.0),
+        posCamera: new THREE.Vector3(0, 70, 150),
         posCameraTarget: new THREE.Vector3(0, 30, 0),
         near: 0.1,
         far: 10000,
-        fov: 45
+        fov: 50
     };
     scene: THREE.Scene;
     raycaster: THREE.Raycaster = new THREE.Raycaster();
@@ -40,8 +40,8 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     highlightObjects: THREE.Object3D[] = [];
     selectedObject: THREE.Object3D;
 
-    highlightTimeout: number;
-    mouseHoldTimeout: number;
+    highlightTimeout: number | NodeJS.Timer;
+    mouseHoldTimeout: number | NodeJS.Timer;
     isMouseHold: boolean;
 
     static reportProgress = function (event: ReportProgressEvent) {
@@ -60,9 +60,6 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             this.resizeDisplayGL();
         };
 
-        // tslint:disable-next-line:no-console
-        console.log('Starting initialisation phase...');
-
         if (!this.mouse) {
             this.mouse = new THREE.Vector2();
         }
@@ -76,7 +73,6 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.resizeDisplayGL();
         this.renderSence();
 
-        window.addEventListener('resize', resizeWindow, false);
         this.container.onmousemove = this.onTouchMove.bind(this);
         this.container.ontouchmove = this.onTouchMove.bind(this);
 
@@ -87,9 +83,11 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         };
         this.container.onmouseup = () => {
             this.onClick();
-            clearTimeout(this.mouseHoldTimeout);
+            clearTimeout(this.mouseHoldTimeout as number);
             this.isMouseHold = false;
         };
+
+        window.addEventListener('resize', resizeWindow, false);
     }
 
     initComposer() {
@@ -196,10 +194,18 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     resizeDisplayGL() {
-        this.recalcAspectRatio();
-        this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight, false);
+        const canvas = this.renderer.domElement;
+        // look up the size the canvas is being displayed
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
 
-        this.updateCamera();
+        // adjust displayBuffer size to match
+        if (canvas.width !== width || canvas.height !== height) {
+            // you must pass false here or three.js sadly fights the browser
+            this.renderer.setSize(width, height, false);
+            this.recalcAspectRatio();
+            this.updateCamera();
+        }
     }
 
     recalcAspectRatio() {
@@ -214,6 +220,11 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     resetCamera() {
+        const canvas = this.renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        this.cameraDefaults.posCamera = new THREE.Vector3(0, 70, (width / height) * 150);
+
         this.camera.position.copy(this.cameraDefaults.posCamera);
         this.cameraTarget.copy(this.cameraDefaults.posCameraTarget);
         this.updateCamera();
@@ -239,7 +250,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         var intersects = this.raycaster.intersectObjects([this.scene], true);
         if (intersects.length > 0) {
             if (this.highlightTimeout) {
-                clearTimeout(this.highlightTimeout);
+                clearTimeout(this.highlightTimeout as number);
             }
             const selectedObject = intersects[0].object;
 
@@ -254,7 +265,6 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             this.highlightTimeout = setTimeout(() => {
                 this.outlinePass.selectedObjects = [selectedObject];
                 this.container.style.cursor = 'pointer';
-                // tslint:disable-next-line:align
             }, 50);
 
         } else {

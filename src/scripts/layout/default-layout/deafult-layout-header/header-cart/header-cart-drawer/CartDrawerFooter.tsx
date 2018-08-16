@@ -29,6 +29,11 @@ const ShippingDate = styled.div`
     text-align: right;
 `;
 
+const SectionTitle = styled.h3`
+    display: bold;
+    text-transform: uppercase;
+`;
+
 interface CartDrawerFooterProps extends WithTempOrderDetails {
     readonly onCartDrawerClose: () => void;
 }
@@ -37,11 +42,31 @@ interface CartDrawerFooterProps extends WithTempOrderDetails {
 export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
     render() {
         const { orderDetails, onCartDrawerClose } = this.props;
+
         const totalPrice = orderDetailUtils.getTotalPrice(orderDetails);
+        const totalDiscount = orderDetailUtils.getTotalDiscount(orderDetails);
+        const totalOfPayment = orderDetailUtils.getTotalOfPayment(orderDetails);
         const shippingDate = orderUtils.getShippingDate();
         return (
             <div>
                 <AntdRow>
+                    <SectionTitle>Thông tin thanh toán</SectionTitle>
+                    <AntdCol span={12}>
+                        <span>Tổng tiền:</span>
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <ShippingCost>
+                            {formatCurrency(totalPrice)}
+                        </ShippingCost>
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <span>Tổng giảm giá:</span>
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <ShippingCost>
+                            -{formatCurrency(totalDiscount)}
+                        </ShippingCost>
+                    </AntdCol>
                     <AntdCol span={12}>
                         <span>
                             Phí vận chuyển:
@@ -52,14 +77,17 @@ export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
                             0
                         </ShippingCost>
                     </AntdCol>
+                    <AntdCol span={12} offset={12}>
+                        <AntdDivider dashed={true} />
+                    </AntdCol>
                     <AntdCol span={12}>
                         <span>
-                            Tổng tiền:
+                            Tổng thanh toán:
                         </span>
                     </AntdCol>
                     <AntdCol span={12}>
                         <TotalPrice>
-                            {formatCurrency(totalPrice)}
+                            {formatCurrency(totalOfPayment)}
                         </TotalPrice>
                     </AntdCol>
                     <AntdCol span={12}>
@@ -74,6 +102,7 @@ export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
                     </AntdCol>
                 </AntdRow>
                 <AntdDivider />
+                <SectionTitle>Thông tin giao hàng</SectionTitle>
                 <CreateOrderControl
                     orderDetails={orderDetails}
                     onOrderCreate={() => {
