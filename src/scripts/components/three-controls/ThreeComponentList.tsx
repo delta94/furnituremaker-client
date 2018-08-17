@@ -7,7 +7,12 @@ import styled from 'styled-components';
 import { withStoreValues } from '@/app';
 import { AntdList, Img } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { FurnitureComponent, Product, uploadedFileUtils } from '@/restful';
+import {
+    FurnitureComponent,
+    Product,
+    productUtils,
+    uploadedFileUtils
+} from '@/restful';
 
 const ListHeader = styled.div`
     margin: 15px 0;
@@ -84,20 +89,22 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
             event.detail.loaderRootNode.name = component.id;
             product3Dsence.scene.remove(selectedObject);
             product3Dsence.scene.add(event.detail.loaderRootNode);
+            const nextModules = selectedProduct.modules.map(productModule => {
+
+                const nextComponent = (selectedObject.name === productModule.component.id) ?
+                    component : productModule.component;
+
+                return {
+                    ...productModule,
+                    component: nextComponent,
+                    componentPrice: nextComponent.price
+                };
+            });
 
             const nextSelectedProduct: Product = {
                 ...selectedProduct,
-                modules: selectedProduct.modules.map(productModule => {
-
-                    const nextComponent = (selectedObject.name === productModule.component.id) ?
-                        component : productModule.component;
-
-                    return {
-                        ...productModule,
-                        component: nextComponent,
-                        componentPrice: nextComponent.price
-                    };
-                })
+                modules: nextModules,
+                totalPrice: productUtils.getTotalPriceFromModules(nextModules, 0)
             };
 
             setStore({

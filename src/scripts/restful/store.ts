@@ -1,17 +1,19 @@
 import { Store } from 'react-restful';
 
+import { promotionResourceType } from '@/restful/resources/promotion';
+
 import {
-    productType,
-    productTypeGroupResourceType,
-    productDesign,
+    discountByQuantitiesResourceType,
     furnitureComponentResourceType,
     furnitureComponentTypeResourceType,
-    materialTypeResourceType,
     furnutureMaterialResouceType,
-    discountByQuantitiesResourceType,
-    userResourceType,
+    materialTypeResourceType,
     orderDetailResourceType,
-    orderResourceType
+    orderResourceType,
+    productDesign,
+    productType,
+    productTypeGroupResourceType,
+    userResourceType
 } from './resources';
 
 export const restfulStore = new Store();
@@ -27,3 +29,4 @@ restfulStore.registerRecordType(discountByQuantitiesResourceType);
 restfulStore.registerRecordType(userResourceType);
 restfulStore.registerRecordType(orderDetailResourceType);
 restfulStore.registerRecordType(orderResourceType);
+restfulStore.registerRecordType(promotionResourceType);

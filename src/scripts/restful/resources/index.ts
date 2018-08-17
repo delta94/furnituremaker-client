@@ -13,6 +13,7 @@ export * from './productDesignGroup';
 export * from './productModule';
 export * from './productType';
 export * from './productTypeGroup';
+export * from './promotion';
 export * from './quotaUnit';
 export * from './uploadedFile';
 export * from './user';

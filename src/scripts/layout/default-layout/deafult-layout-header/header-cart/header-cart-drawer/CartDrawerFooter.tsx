@@ -13,6 +13,8 @@ import {
 } from '@/restful';
 import { formatCurrency, formatDate } from '@/utilities';
 
+import { CartUsePromoCode } from './cart-drawer-footer';
+
 const ShippingCost = styled.div`
     text-align: right;
     font-size: 18px;
@@ -44,7 +46,7 @@ export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
         const { orderDetails, onCartDrawerClose } = this.props;
 
         const totalPrice = orderDetailUtils.getTotalPrice(orderDetails);
-        const totalDiscount = orderDetailUtils.getTotalDiscount(orderDetails);
+        const totalProductsDiscount = orderDetailUtils.getTotalDiscount(orderDetails);
         const totalOfPayment = orderDetailUtils.getTotalOfPayment(orderDetails);
         const shippingDate = orderUtils.getShippingDate();
         return (
@@ -59,31 +61,35 @@ export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
                             {formatCurrency(totalPrice)}
                         </ShippingCost>
                     </AntdCol>
+                    {
+                        totalProductsDiscount && (
+                            <React.Fragment>
+                                <AntdCol span={12}>
+                                    <span>Giảm giá sản phẩm:</span>
+                                </AntdCol>
+                                <AntdCol span={12}>
+                                    <ShippingCost>
+                                        -{formatCurrency(totalProductsDiscount)}
+                                    </ShippingCost>
+                                </AntdCol>
+                            </React.Fragment>
+                        )
+                    }
                     <AntdCol span={12}>
-                        <span>Tổng giảm giá:</span>
-                    </AntdCol>
-                    <AntdCol span={12}>
-                        <ShippingCost>
-                            -{formatCurrency(totalDiscount)}
-                        </ShippingCost>
-                    </AntdCol>
-                    <AntdCol span={12}>
-                        <span>
-                            Phí vận chuyển:
-                        </span>
+                        <span>Phí vận chuyển:</span>
                     </AntdCol>
                     <AntdCol span={12}>
                         <ShippingCost>
                             0
                         </ShippingCost>
                     </AntdCol>
-                    <AntdCol span={12} offset={12}>
-                        <AntdDivider dashed={true} />
-                    </AntdCol>
+                </AntdRow>
+                <AntdDivider dashed={true} />
+                <CartUsePromoCode />
+                <AntdDivider dashed={true} />
+                <AntdRow>
                     <AntdCol span={12}>
-                        <span>
-                            Tổng thanh toán:
-                        </span>
+                        <span>Tổng thanh toán:</span>
                     </AntdCol>
                     <AntdCol span={12}>
                         <TotalPrice>
@@ -91,9 +97,7 @@ export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
                         </TotalPrice>
                     </AntdCol>
                     <AntdCol span={12}>
-                        <span>
-                            Dự kiến giao hàng:
-                        </span>
+                        <span>Dự kiến giao hàng:</span>
                     </AntdCol>
                     <AntdCol span={12}>
                         <ShippingDate>

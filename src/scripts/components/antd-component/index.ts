@@ -19,5 +19,6 @@ export * from './Spin';
 export * from './Steps';
 export * from './Table';
 export * from './Tag';
+export * from './Tooltip';
 export * from './layout';
 import 'antd/dist/antd.less';

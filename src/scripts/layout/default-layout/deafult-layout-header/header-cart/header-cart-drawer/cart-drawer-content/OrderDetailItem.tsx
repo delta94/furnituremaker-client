@@ -121,7 +121,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                 <div>Số lượng mua: {orderDetail.quantity}</div>
                 <div>Đơn giá: {formatCurrency(orderDetail.productPrice)}</div>
                 <div>Giảm giá mỗi sản phẩm: {formatCurrency(orderDetail.productDiscount)}</div>
-                <div>thành tiền: {formatCurrency(orderDetail.totalPrice)}</div>
+                <div>Thành tiền: {formatCurrency(orderDetail.totalPrice)}</div>
             </AntdList.Item >
         );
     }
