@@ -4,6 +4,7 @@ import { Action, Dispatch, Store } from 'redux';
 const map = require('lodash/map');
 
 export interface WithStoreValuesDispatchs {
+    readonly dispatch?: Dispatch;
     readonly setStore?: (values: object) => void;
     readonly checkStore?: <T>(key: string) => Promise<T>;
 }
@@ -88,6 +89,7 @@ export function withStoreValues(...keys: string[]): any {
 
         function mapDispatchToProps(dispatch: Dispatch) {
             return {
+                dispatch,
                 setStore: (values: {}) => {
                     const action = setStoreValuesAction(values, Component);
                     return dispatch(action);

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { submit } from 'redux-form';
 
 import { withStoreValues } from '@/app';
 import { fetchErrorHandler } from '@/components';
@@ -15,9 +16,13 @@ import {
     WithCurrentUserProps
 } from '@/restful';
 
-import { CreateOrderForm, CreateOrderFormValues } from './create-order-control';
+import {
+    CreateOrderForm,
+    createOrderForm,
+    CreateOrderFormValues
+} from './create-order-control';
 
-interface CreateOrderControlProps extends
+export interface CreateOrderControlProps extends
     WithCurrentUserProps,
     CommonStoreProps {
     readonly orderDetails: OrderDetail[];
@@ -25,11 +30,13 @@ interface CreateOrderControlProps extends
 }
 
 @withCurrentUser(restfulStore)
-@withStoreValues()
+@withStoreValues(
+    nameof<CreateOrderControlProps>(o => o.selectedPromotion)
+)
 export class CreateOrderControl extends React.Component<CreateOrderControlProps> {
     readonly onCreateOrder = async (formValues: CreateOrderFormValues) => {
         try {
-            const { orderDetails } = this.props;
+            const { orderDetails, selectedPromotion } = this.props;
             const { order } = formValues;
 
             const totalPrice = orderDetailUtils.getTotalOfPayment(orderDetails);
@@ -37,7 +44,8 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                 ...order,
                 totalPrice: orderDetailUtils.getTotalOfPayment(orderDetails),
                 depositRequired: totalPrice * 0.3,
-                orderDetails: orderDetails
+                orderDetails: orderDetails,
+                promotion: selectedPromotion
             };
 
             await restfulFetcher.fetchResource(
@@ -52,14 +60,25 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
         }
     }
 
+    componentWillMount() {
+        const { setStore, dispatch } = this.props;
+        const submitFormAction = submit(createOrderForm);
+        setStore({
+            [nameof<CommonStoreProps>(o => o.submitOrderForm)]: () => dispatch(submitFormAction)
+        });
+    }
+
     render() {
-        const { user, onOrderCreate } = this.props;
+        const { user, onOrderCreate, setStore } = this.props;
 
         const shippingDate = orderUtils.getShippingDate();
 
         return (
             <CreateOrderForm
                 onSubmit={this.onCreateOrder}
+                onFormStatusChange={(status) => {
+                    setStore({ [nameof<CommonStoreProps>(o => o.orderFormStatus)]: status });
+                }}
                 initialValues={{
                     order: {
                         email: user.email,

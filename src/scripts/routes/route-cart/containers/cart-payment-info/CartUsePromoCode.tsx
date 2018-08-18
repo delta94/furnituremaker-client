@@ -9,8 +9,10 @@ import {
     AntdIcon,
     AntdInput,
     AntdRow,
+    AntdSpin,
     AntdTooltip
 } from '@/components';
+import { CommonStoreProps } from '@/configs';
 import { Promotion, promotionResources, restfulFetcher } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
@@ -27,13 +29,14 @@ const PromotionValue = styled.div`
 
 interface CartUsePromoCodeState {
     readonly promotion: Promotion;
-    readonly status?: 'success' | 'error';
+    readonly status?: 'fetching' | 'success' | 'error';
     readonly message?: string;
     readonly inputValue?: string;
+    readonly inputDisabled?: boolean;
 }
 
 @withStoreValues()
-export class CartUsePromoCode extends React.Component<{}, CartUsePromoCodeState> {
+export class CartUsePromoCode extends React.Component<CommonStoreProps, CartUsePromoCodeState> {
     readonly state: CartUsePromoCodeState = {
         promotion: null,
     };
@@ -56,24 +59,49 @@ export class CartUsePromoCode extends React.Component<{}, CartUsePromoCodeState>
     }
 
     readonly clearPromotion = () => {
+        this.resetState();
+        this.usePromotion(null);
+    }
+
+    readonly resetState = () => {
         this.setState({
             promotion: null,
             status: null,
             message: null,
-            inputValue: ''
+            inputValue: '',
+            inputDisabled: false
+        });
+    }
+    readonly usePromotion = (promotion: Promotion) => {
+        const { setStore } = this.props;
+        setStore({
+            [nameof<CommonStoreProps>(o => o.selectedPromotion)]: promotion
         });
     }
 
-    async componentDidUpdate() {
+    async componentDidUpdate(
+        prevProps: CommonStoreProps,
+        prevState: CartUsePromoCodeState,
+    ) {
         const { inputValue, status } = this.state;
 
+        if (status === 'error' && inputValue !== prevState.inputValue) {
+            this.resetState();
+        }
+
         if (inputValue && inputValue.length === 5 && !status) {
+            this.setState({
+                status: 'fetching',
+                inputDisabled: true
+            });
+
             const promotion = await this.findPromotion(inputValue);
             if (promotion) {
                 this.setState({
                     promotion: promotion,
                     status: 'success',
-                    message: 'Mã hợp lệ'
+                    message: 'Mã hợp lệ',
+                    inputDisabled: true
                 });
             } else {
                 this.setState({
@@ -82,11 +110,12 @@ export class CartUsePromoCode extends React.Component<{}, CartUsePromoCodeState>
                     message: 'Mã không khả dụng'
                 });
             }
+            this.usePromotion(promotion);
         }
     }
 
     render() {
-        const { promotion, message, status, inputValue } = this.state;
+        const { promotion, message, status, inputValue, inputDisabled } = this.state;
         return (
             <AntdRow className="cart-use-promo-code">
                 <AntdCol span={24}>
@@ -95,6 +124,7 @@ export class CartUsePromoCode extends React.Component<{}, CartUsePromoCodeState>
                 <AntdCol span={12}>
                     <AntdInput
                         value={inputValue}
+                        readOnly={inputDisabled}
                         className="w-100"
                         placeholder="Promo Code"
                         onChange={(e) => {
@@ -130,6 +160,8 @@ export class CartUsePromoCode extends React.Component<{}, CartUsePromoCodeState>
 
     getInputIcon(status: CartUsePromoCodeState['status'], message: string) {
         switch (status) {
+            case 'fetching':
+                return <AntdSpin indicator={<AntdIcon type="loading" spin={true} />} />;
             case 'success':
                 return <AntdIcon style={{ color: 'green' }} type="gift" />;
             case 'error':

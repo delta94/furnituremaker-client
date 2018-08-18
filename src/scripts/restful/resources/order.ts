@@ -6,8 +6,12 @@ import {
     restfulDataContainer
 } from 'react-restful';
 
+import { City } from '@/restful/resources/city';
+import { County } from '@/restful/resources/county';
+
 import { apiEntry } from '../apiEntry';
 import { OrderDetail } from './orderDetail';
+import { Promotion } from './promotion';
 
 const sortBy = require('lodash/sortBy');
 
@@ -24,6 +28,10 @@ export interface Order extends RecordType {
     readonly totalPrice: number;
     readonly status: 'new' | 'confirmed' | 'processing' | 'shipping' | 'done' | 'cancel';
     readonly createdAt?: string;
+    readonly promotion?: Promotion;
+    readonly note?: string;
+    readonly city: City;
+    readonly county: County;
 }
 
 export const orderResourceType = new ResourceType({

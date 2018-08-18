@@ -1,15 +1,15 @@
 import * as React from 'react';
 
+import { AntdList } from '@/components';
 import {
-    withTempOrderDetails,
-    WithTempOrderDetails,
+    OrderDetail,
     restfulStore,
-    OrderDetail
+    withTempOrderDetails,
+    WithTempOrderDetails
 } from '@/restful';
 
-import { AntdList } from '@/components';
-
 import { OrderDetailItem } from './cart-drawer-content';
+
 interface CartDrawerContentProps extends WithTempOrderDetails {
 }
 

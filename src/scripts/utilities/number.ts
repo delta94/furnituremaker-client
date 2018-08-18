@@ -13,7 +13,7 @@ function roundTo(n: number, digits: number) {
 
 export function formatCurrency(amount: number, sourceCurrency?: string, rate?: number) {
     // Default destCurrency = 'VND'
-    if (!amount) {
+    if (!amount || amount <= 0) {
         return `0 ${sourceCurrency ? sourceCurrency : ''}`.trim();
     }
 

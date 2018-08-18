@@ -9,6 +9,7 @@ import { Switch } from 'react-router-dom';
 import { AnyAction, Store } from 'redux';
 
 import {
+    discountByQuantitiesResources,
     furnutureMaterialResources,
     orderDetailResources,
     orderDetailUtils,
@@ -74,7 +75,8 @@ export class Root extends React.Component<RootProps> {
                 [orderDetailUtils.getTempOrderParameter]
             ),
             restfulFetcher.fetchResource(furnutureMaterialResources.find, []),
-            restfulFetcher.fetchResource(productTypeResources.find, [])
+            restfulFetcher.fetchResource(productTypeResources.find, []),
+            restfulFetcher.fetchResource(discountByQuantitiesResources.find, [])
         ]);
 
         changeAppStateToReady(this.props.store);

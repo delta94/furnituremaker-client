@@ -28,7 +28,7 @@ export class HeaderCartDrawer extends React.PureComponent<HeaderCartDrawerProps>
             >
                 <CartDrawerContent />
                 <AntdDivider />
-                <CartDrawerFooter onCartDrawerClose={onDrawerClose} />
+                <CartDrawerFooter />
             </AntdDrawer >
         );
     }

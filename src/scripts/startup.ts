@@ -9,6 +9,7 @@ import {
     storeValuesRecuder
 } from '@/app';
 import {
+    RouteCart,
     RouteHome,
     RouteLogin,
     RouteMaker,
@@ -22,7 +23,8 @@ export function startup() {
         RouteHome,
         RouteOrders,
         RouteOrderDetail,
-        RouteMaker
+        RouteMaker,
+        RouteCart
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);

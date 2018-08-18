@@ -5,12 +5,12 @@ import { AntdForm, AntdInput, AntdTextAreaProps } from '../antd-component';
 
 interface RenderInputField extends WrappedFieldProps {
     readonly inputProps: AntdTextAreaProps;
+    readonly required: boolean;
 }
 
 export function renderTextArea(props: RenderInputField) {
-    const { input, meta, inputProps, label } = props;
+    const { input, meta, inputProps, label, required } = props;
 
-    // tslint:disable-next-line:no-any
     const validateStatus = meta.touched && meta.invalid ? 'error' : undefined;
 
     return (
@@ -18,6 +18,7 @@ export function renderTextArea(props: RenderInputField) {
             label={label}
             validateStatus={validateStatus}
             help={validateStatus && meta.error}
+            required={required}
         >
             <AntdInput.TextArea
                 value={input.value ? input.value : undefined}

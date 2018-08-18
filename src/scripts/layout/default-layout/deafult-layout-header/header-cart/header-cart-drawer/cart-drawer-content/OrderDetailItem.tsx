@@ -3,7 +3,13 @@ import './OrderDetailItem.scss';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { AntdButton, AntdInputNumber, AntdList } from '@/components';
+import {
+    AntdButton,
+    AntdIcon,
+    AntdInputNumber,
+    AntdList,
+    AntdSpin
+} from '@/components';
 import { AntdModal } from '@/components/antd-component/Modal';
 import {
     discountByQuantitiesUtils,
@@ -24,14 +30,16 @@ interface OrderDetailItemProps extends
     readonly orderDetail: OrderDetail;
 }
 
-type OrderDetailItemState = Partial<OrderDetail>;
+type OrderDetailItemState = Partial<OrderDetail> & {
+    readonly fetching?: boolean;
+};
 
 @withDiscountByQuantities(restfulStore)
 export class OrderDetailItem extends React.Component<OrderDetailItemProps, OrderDetailItemState> {
     // tslint:disable-next-line:readonly-keyword
     changeQuantityTimeOut = null;
 
-    readonly updateOrderDetailQuantity = (nextQuantity: number) => {
+    readonly updateOrderDetailQuantity = async (nextQuantity: number) => {
         const { orderDetail, discountByQuantities } = this.props;
         const nextDiscoutPerProduct = discountByQuantitiesUtils.getDiscountValue(
             discountByQuantities,
@@ -43,7 +51,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
             nextDiscoutPerProduct
         );
         const updateParams = orderDetailUtils.createUpdateParams(updateOrderDetail);
-        return restfulFetcher.fetchResource(
+        return await restfulFetcher.fetchResource(
             orderDetailResources.update,
             updateParams
         );
@@ -56,6 +64,8 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
 
     render() {
         const { orderDetail } = this.props;
+        const { fetching } = this.state;
+
         return (
             <AntdList.Item
                 className="order-detail-item"
@@ -65,14 +75,22 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                         value={this.state.quantity}
                         onChange={(nextValue: number) => {
                             this.setState(
-                                { quantity: nextValue },
+                                {
+                                    quantity: nextValue,
+                                    fetching: true
+                                },
                                 () => {
                                     if (this.changeQuantityTimeOut) {
                                         clearTimeout(this.changeQuantityTimeOut);
                                         this.changeQuantityTimeOut = null;
                                     }
                                     this.changeQuantityTimeOut = setTimeout(
-                                        () => this.updateOrderDetailQuantity(nextValue),
+                                        async () => {
+                                            this.updateOrderDetailQuantity(nextValue);
+                                            this.setState({
+                                                fetching: false
+                                            });
+                                        },
                                         1000
                                     );
                                 }
@@ -83,24 +101,26 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                         min={1}
                         style={{ width: 75 }}
                     />,
-                    <AntdButton
-                        key="remove"
-                        icon="delete"
-                        type="danger"
-                        ghost={true}
-                        onClick={() => {
-                            AntdModal.confirm({
-                                title: 'Xóa sản phẩm?',
-                                content: 'Loại bỏ sản phẩm này khỏi giỏ hàng của bạn',
-                                onOk: () => restfulFetcher.fetchResource(
-                                    orderDetailResources.delete,
-                                    [{ type: 'path', parameter: 'id', value: orderDetail.id }]
-                                )
-                            });
-                        }}
-                    >
-                        xóa
-                    </AntdButton>
+                    fetching ?
+                        <AntdSpin indicator={<AntdIcon type="loading" spin={true} />} /> :
+                        <AntdButton
+                            key="remove"
+                            icon="delete"
+                            type="danger"
+                            ghost={true}
+                            onClick={() => {
+                                AntdModal.confirm({
+                                    title: 'Xóa sản phẩm?',
+                                    content: 'Loại bỏ sản phẩm này khỏi giỏ hàng của bạn',
+                                    onOk: () => restfulFetcher.fetchResource(
+                                        orderDetailResources.delete,
+                                        [{ type: 'path', parameter: 'id', value: orderDetail.id }]
+                                    )
+                                });
+                            }}
+                        >
+                            xóa
+                        </AntdButton>
                 ]}
                 extra={
                     <img
