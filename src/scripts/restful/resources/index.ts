@@ -1,5 +1,7 @@
 export * from './_product';
 export * from './cart';
+export * from './city';
+export * from './county';
 export * from './customer';
 export * from './discountByQuantities';
 export * from './furnitureComponent';

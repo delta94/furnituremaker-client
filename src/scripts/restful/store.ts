@@ -1,8 +1,8 @@
 import { Store } from 'react-restful';
 
-import { promotionResourceType } from '@/restful/resources/promotion';
-
 import {
+    cityResourceType,
+    countyResourceType,
     discountByQuantitiesResourceType,
     furnitureComponentResourceType,
     furnitureComponentTypeResourceType,
@@ -13,6 +13,7 @@ import {
     productDesign,
     productType,
     productTypeGroupResourceType,
+    promotionResourceType,
     userResourceType
 } from './resources';
 
@@ -30,3 +31,5 @@ restfulStore.registerRecordType(userResourceType);
 restfulStore.registerRecordType(orderDetailResourceType);
 restfulStore.registerRecordType(orderResourceType);
 restfulStore.registerRecordType(promotionResourceType);
+restfulStore.registerRecordType(cityResourceType);
+restfulStore.registerRecordType(countyResourceType);
