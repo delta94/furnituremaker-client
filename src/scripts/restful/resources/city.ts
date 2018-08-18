@@ -1,5 +1,7 @@
 import { RecordType, Resource, ResourceType } from 'react-restful';
 
+import { apiEntry } from '@/restful/apiEntry';
+
 import { County } from './county';
 
 const countyResourceTypeName = nameof<County>();
@@ -7,6 +9,8 @@ const countyResourceTypeName = nameof<County>();
 export interface City extends RecordType {
     readonly id?: string;
     readonly name: string;
+    readonly transportFee: number;
+    readonly additionalShippingDays: number;
     readonly counties: County[];
 }
 
@@ -25,7 +29,7 @@ export const cityResourceType = new ResourceType<City>({
 export const cityResources = {
     find: new Resource<City[]>({
         resourceType: cityResourceType,
-        url: '/city',
+        url: apiEntry('/city'),
         method: 'GET',
         mapDataToStore: (items, resourceType, store) => {
             for (const item of items) {

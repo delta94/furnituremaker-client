@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {
     AntdCol,
     AntdRow,
+    AntdSelectOptionProps,
     FormError,
     renderInput,
     renderSelectField,
@@ -12,7 +13,7 @@ import {
     required
 } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { Order } from '@/restful';
+import { City, Order } from '@/restful';
 
 const FormBody = styled.div`
     display: block;
@@ -24,6 +25,7 @@ const FormWrapper = styled.div`
 
 export interface CreateOrderFormProps {
     readonly onFormStatusChange: (status: CommonStoreProps['orderFormStatus']) => void;
+    readonly cities: City[];
 }
 
 export interface CreateOrderFormValues {
@@ -61,7 +63,8 @@ class CreateOrderFormComponent extends React.Component<
     }
 
     render() {
-        const { handleSubmit, error } = this.props;
+        const { handleSubmit, error, cities } = this.props;
+        const citiesMap: AntdSelectOptionProps[] = cities.map(o => ({ value: o.id, title: o.name }));
         return (
             <Form onSubmit={handleSubmit}>
                 <FormError error={error} />
@@ -103,7 +106,7 @@ class CreateOrderFormComponent extends React.Component<
                                     validate={CreateOrderFormComponent.cityValidates}
                                     required={true}
                                     label="Tỉnh thành"
-                                    items={[]}
+                                    items={citiesMap}
                                     selectProps={{
                                         placeholder: 'Chọn tỉnh thành'
                                     }}
@@ -113,23 +116,8 @@ class CreateOrderFormComponent extends React.Component<
                         <AntdCol span={12}>
                             <FormWrapper>
                                 <Field
-                                    name={nameof.full<CreateOrderFormValues>(o => o.countyId)}
-                                    component={renderSelectField}
-                                    validate={CreateOrderFormComponent.countyValidates}
-                                    required={true}
-                                    label="Quận huyện"
-                                    items={[]}
-                                    selectProps={{
-                                        placeholder: 'Chọn Chọn quận huyện'
-                                    }}
-                                />
-                            </FormWrapper>
-                        </AntdCol>
-                        <AntdCol span={12}>
-                            <FormWrapper>
-                                <Field
                                     name={nameof.full<CreateOrderFormValues>(o => o.order.shippingAddress)}
-                                    component={renderTextArea}
+                                    component={renderInput}
                                     validate={CreateOrderFormComponent.addressValidates}
                                     required={true}
                                     label="Địa chỉ giao hàng"
@@ -139,7 +127,7 @@ class CreateOrderFormComponent extends React.Component<
                                 />
                             </FormWrapper>
                         </AntdCol>
-                        <AntdCol span={12}>
+                        <AntdCol span={24}>
                             <FormWrapper>
                                 <Field
                                     name={nameof.full<CreateOrderFormValues>(o => o.order.note)}

@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { RestfulRender } from 'react-restful';
 import { submit } from 'redux-form';
 
 import { withStoreValues } from '@/app';
 import { fetchErrorHandler } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
+    cityResources,
     Order,
     OrderDetail,
     orderDetailUtils,
@@ -74,22 +76,36 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
         const shippingDate = orderUtils.getShippingDate();
 
         return (
-            <CreateOrderForm
-                onSubmit={this.onCreateOrder}
-                onFormStatusChange={(status) => {
-                    setStore({ [nameof<CommonStoreProps>(o => o.orderFormStatus)]: status });
-                }}
-                initialValues={{
-                    order: {
-                        email: user.email,
-                        phone: user.phone,
-                        shippingAddress: user.address,
-                        shippingDate: shippingDate.toISOString(),
-                        depositRequired: 0,
-                        status: 'new'
+            <RestfulRender
+                fetcher={restfulFetcher}
+                store={restfulStore}
+                resource={cityResources.find}
+                parameters={[]}
+                render={(renderProps) => {
+                    if (renderProps.data && !renderProps.fetching) {
+                        return (
+                            <CreateOrderForm
+                                cities={renderProps.data}
+                                onSubmit={this.onCreateOrder}
+                                onFormStatusChange={(status) => {
+                                    setStore({ [nameof<CommonStoreProps>(o => o.orderFormStatus)]: status });
+                                }}
+                                initialValues={{
+                                    order: {
+                                        email: user.email,
+                                        phone: user.phone,
+                                        shippingAddress: user.address,
+                                        shippingDate: shippingDate.toISOString(),
+                                        depositRequired: 0,
+                                        status: 'new'
+                                    }
+                                }}
+                                onSubmitSuccess={onOrderCreate}
+                            />
+                        );
                     }
+                    return null;
                 }}
-                onSubmitSuccess={onOrderCreate}
             />
         );
     }
