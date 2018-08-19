@@ -13,7 +13,7 @@ import {
     ThreeComponentListProps,
     ThreeMaterialList
 } from '@/components';
-import { colorGray, colorPrimary, CommonStoreProps, Include } from '@/configs';
+import { colorGray, colorPrimary, CommonStoreProps } from '@/configs';
 import { AddProductToCartControl } from '@/forms/add-product-to-cart';
 import {
     discountByQuantitiesResources,
@@ -60,7 +60,7 @@ const ProductInfoWrapper = styled.div`
 export interface ProductInfoProps extends
     CommonStoreProps,
     WithStoreValuesDispatchs,
-    Partial<Include<ThreeComponentListProps, 'selectedObject'>> {
+    Partial<Pick<ThreeComponentListProps, 'selectedObject'>> {
     readonly product: Product;
     readonly showDesignModal: () => void;
 }

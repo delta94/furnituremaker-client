@@ -1,4 +1,4 @@
-export * from './_product';
+export * from './product';
 export * from './cart';
 export * from './city';
 export * from './county';

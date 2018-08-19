@@ -13,8 +13,6 @@ import { apiEntry } from '../apiEntry';
 import { OrderDetail } from './orderDetail';
 import { Promotion } from './promotion';
 
-const sortBy = require('lodash/sortBy');
-
 export interface Order extends RecordType {
     readonly id?: string;
     readonly orderDetails: OrderDetail[];
@@ -30,8 +28,16 @@ export interface Order extends RecordType {
     readonly createdAt?: string;
     readonly promotion?: Promotion;
     readonly note?: string;
-    readonly city: City;
+    readonly shippingToCity: City;
     readonly county: County;
+    readonly shippingFee: number;
+    readonly totalOfPayment: number;
+    readonly totalDiscount: number;
+    readonly productDiscount: number;
+    readonly promotionDiscount: number;
+    readonly agencyCommissionPercent: number;
+    readonly agencyCommissionValue: number;
+    readonly billDiscount: number;
 }
 
 export const orderResourceType = new ResourceType({
@@ -80,6 +86,14 @@ export const orderResources = {
                 store.mapRecord(orderDetailType, orderDetail);
             }
         }
+    }),
+    delete: new Resource<Order>({
+        resourceType: orderResourceType,
+        url: apiEntry('/order/:id'),
+        method: 'DELETE',
+        mapDataToStore: (order, resourceType, store) => {
+            store.removeRecord(resourceType, order);
+        }
     })
 };
 
@@ -98,6 +112,33 @@ export const orderUtils = {
         }
 
         return shippingDateMoment.toDate();
+    },
+    getTransportFee(order: Partial<Order>) {
+        const { orderDetails, shippingToCity } = order;
+
+        if (!orderDetails || !shippingToCity) {
+            return 0;
+        }
+
+        const totalVolume = orderDetails.reduce(
+            (totalVolumeValue, orderDetail) => {
+                const orderDetailVolume = orderDetail.productType.volume * orderDetail.quantity;
+                return totalVolumeValue += (orderDetailVolume || 0);
+            },
+            0
+        );
+
+        const flatTransportFee = shippingToCity ? shippingToCity.transportFee : 0;
+        const totalTransportFee = Math.ceil(totalVolume * flatTransportFee);
+        const lastThreeNumber = (totalTransportFee % 1000);
+        const result = totalTransportFee - lastThreeNumber;
+        return result;
+    },
+    getDeposit: (totalOfPayment: number) => {
+        return totalOfPayment * 0.3;
+    },
+    getDetailPageUrl: (order: Order) => {
+        return `/orders/${order.id}`;
     }
 };
 

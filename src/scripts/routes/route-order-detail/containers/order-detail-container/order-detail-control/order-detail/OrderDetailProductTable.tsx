@@ -11,10 +11,10 @@ export interface OrderDetailProductTableProps {
 
 const columns: AntdColumnProps<OrderDetail>[] = [{
     title: 'Hình ảnh',
-    dataIndex: nameof<OrderDetail>(o => o.productType),
-    key: nameof<OrderDetail>(o => o.productType),
-    render: (productType: OrderDetail['productType']) => {
-        return <Img width="100" file={productType.thumbnail} />;
+    dataIndex: nameof<OrderDetail>(o => o.previewImg),
+    key: nameof.full<OrderDetail>(o => o.previewImg),
+    render: (previewImg: OrderDetail['previewImg']) => {
+        return <Img width="100" file={previewImg} />;
     }
 }, {
     title: 'Tên',

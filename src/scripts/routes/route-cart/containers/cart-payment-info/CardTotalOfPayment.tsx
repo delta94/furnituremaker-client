@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
 import { AntdCol, AntdRow } from '@/components';
-import { colorPrimary, CommonStoreProps, Include } from '@/configs';
-import { OrderDetail, orderDetailUtils } from '@/restful';
+import { colorPrimary, CommonStoreProps } from '@/configs';
+import { OrderDetail, orderDetailUtils, orderUtils } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
 const TotalPrice = styled.div`
@@ -14,17 +14,27 @@ const TotalPrice = styled.div`
 `;
 
 interface CardTotalOfPaymentProps extends
-    Include<CommonStoreProps, 'selectedPromotion'> {
+    Pick<CommonStoreProps, 'selectedPromotion'>,
+    Pick<CommonStoreProps, 'orderFormSelectedCity'> {
     readonly orderDetails: OrderDetail[];
 }
 
-@withStoreValues(nameof<CardTotalOfPaymentProps>(o => o.selectedPromotion))
+@withStoreValues(
+    nameof<CardTotalOfPaymentProps>(o => o.selectedPromotion),
+    nameof<CardTotalOfPaymentProps>(o => o.orderFormSelectedCity),
+)
 export class CardTotalOfPayment extends React.Component<CardTotalOfPaymentProps> {
     render() {
-        const { orderDetails, selectedPromotion } = this.props;
+        const { orderDetails, selectedPromotion, orderFormSelectedCity } = this.props;
+
+        const productTotalPayment = orderDetailUtils.getTotalOfPayment(orderDetails);
+        const orderTransportFee = orderUtils.getTransportFee({
+            orderDetails,
+            shippingToCity: orderFormSelectedCity
+        });
 
         const selectedPromotionDiscount = selectedPromotion ? selectedPromotion.discountPrice : 0;
-        const totalOfPayment = orderDetailUtils.getTotalOfPayment(orderDetails) - selectedPromotionDiscount;
+        const totalOfPayment = productTotalPayment + orderTransportFee - selectedPromotionDiscount;
 
         return (
             <AntdRow>

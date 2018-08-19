@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { RestfulRender } from 'react-restful';
 import { submit } from 'redux-form';
 
 import { withStoreValues } from '@/app';
 import { fetchErrorHandler } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
-    cityResources,
+    City,
     Order,
     OrderDetail,
     orderDetailUtils,
     orderResources,
     orderUtils,
+    promotionUtils,
     restfulFetcher,
     restfulStore,
     withCurrentUser,
@@ -26,37 +26,58 @@ import {
 
 export interface CreateOrderControlProps extends
     WithCurrentUserProps,
-    CommonStoreProps {
+    Pick<CommonStoreProps, 'selectedPromotion'>,
+    Pick<CommonStoreProps, 'setStore'>,
+    Pick<CommonStoreProps, 'dispatch'> {
     readonly orderDetails: OrderDetail[];
-    readonly onOrderCreate: () => void;
+    readonly onOrderCreate: (order: Order) => void;
 }
 
 @withCurrentUser(restfulStore)
-@withStoreValues(
-    nameof<CreateOrderControlProps>(o => o.selectedPromotion)
-)
+@withStoreValues<CreateOrderControlProps>('selectedPromotion')
 export class CreateOrderControl extends React.Component<CreateOrderControlProps> {
     readonly onCreateOrder = async (formValues: CreateOrderFormValues) => {
         try {
             const { orderDetails, selectedPromotion } = this.props;
             const { order } = formValues;
 
-            const totalPrice = orderDetailUtils.getTotalOfPayment(orderDetails);
+            const productsTotalPayment = orderDetailUtils.getTotalOfPayment(orderDetails);
+            const transportFee = orderUtils.getTransportFee({
+                orderDetails,
+                shippingToCity: order.shippingToCity
+            });
+            const orderTotalPrice = productsTotalPayment + transportFee;
+
+            // * Discount
+            const productsDiscount = orderDetailUtils.getTotalDiscount(orderDetails);
+            const promotionDiscount = promotionUtils.getDiscount(selectedPromotion);
+            const orderTotalDiscount = promotionDiscount + productsDiscount;
+            // * End Discount
+
+            const orderTotalOfPayment = orderTotalPrice - orderTotalDiscount;
+
             const newOrder: Partial<Order> = {
                 ...order,
-                totalPrice: orderDetailUtils.getTotalOfPayment(orderDetails),
-                depositRequired: totalPrice * 0.3,
+                totalPrice: orderTotalPrice,
                 orderDetails: orderDetails,
-                promotion: selectedPromotion
+                promotion: selectedPromotion,
+                shippingFee: transportFee,
+                totalOfPayment: orderTotalOfPayment,
+                totalDiscount: orderTotalDiscount,
+                productDiscount: productsDiscount,
+                promotionDiscount: productsDiscount,
+                depositRequired: orderUtils.getDeposit(orderTotalOfPayment),
             };
 
-            await restfulFetcher.fetchResource(
+            const createdOrder = await restfulFetcher.fetchResource(
                 orderResources.add,
                 [{
                     type: 'body',
                     value: newOrder
                 }]
             );
+
+            return createdOrder;
         } catch (error) {
             throw await fetchErrorHandler(error);
         }
@@ -65,47 +86,34 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
     componentWillMount() {
         const { setStore, dispatch } = this.props;
         const submitFormAction = submit(createOrderForm);
-        setStore({
-            [nameof<CommonStoreProps>(o => o.submitOrderForm)]: () => dispatch(submitFormAction)
+        setStore<CommonStoreProps>({
+            submitOrderForm: () => dispatch(submitFormAction)
         });
     }
 
     render() {
         const { user, onOrderCreate, setStore } = this.props;
-
         const shippingDate = orderUtils.getShippingDate();
-
         return (
-            <RestfulRender
-                fetcher={restfulFetcher}
-                store={restfulStore}
-                resource={cityResources.find}
-                parameters={[]}
-                render={(renderProps) => {
-                    if (renderProps.data && !renderProps.fetching) {
-                        return (
-                            <CreateOrderForm
-                                cities={renderProps.data}
-                                onSubmit={this.onCreateOrder}
-                                onFormStatusChange={(status) => {
-                                    setStore({ [nameof<CommonStoreProps>(o => o.orderFormStatus)]: status });
-                                }}
-                                initialValues={{
-                                    order: {
-                                        email: user.email,
-                                        phone: user.phone,
-                                        shippingAddress: user.address,
-                                        shippingDate: shippingDate.toISOString(),
-                                        depositRequired: 0,
-                                        status: 'new'
-                                    }
-                                }}
-                                onSubmitSuccess={onOrderCreate}
-                            />
-                        );
-                    }
-                    return null;
+            <CreateOrderForm
+                onSubmit={this.onCreateOrder}
+                onFormStatusChange={(status) => {
+                    setStore<CommonStoreProps>({ orderFormStatus: status });
                 }}
+                onCityChange={(city: City) => {
+                    setStore<CommonStoreProps>({ orderFormSelectedCity: city });
+                }}
+                initialValues={{
+                    order: {
+                        email: user.agency && user.agency.email,
+                        phone: user.agency && user.agency.phone,
+                        shippingAddress: user.agency && user.agency.address,
+                        shippingDate: shippingDate.toISOString(),
+                        depositRequired: 0,
+                        status: 'new'
+                    }
+                }}
+                onSubmitSuccess={onOrderCreate}
             />
         );
     }

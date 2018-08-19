@@ -5,7 +5,7 @@ const map = require('lodash/map');
 
 export interface WithStoreValuesDispatchs {
     readonly dispatch?: Dispatch;
-    readonly setStore?: (values: object) => void;
+    readonly setStore?: <T = {}>(values: Partial<T>) => void;
     readonly checkStore?: <T>(key: string) => Promise<T>;
 }
 
@@ -72,7 +72,7 @@ export const setStoreValuesAction = (values: {}, source) => {
 };
 
 // tslint:disable-next-line:no-any
-export function withStoreValues(...keys: string[]): any {
+export function withStoreValues<T = {}>(...keys: Array<keyof T>): any {
     return (Component) => {
         const mapStateToProps = ({ values }) => {
             if (!keys) {

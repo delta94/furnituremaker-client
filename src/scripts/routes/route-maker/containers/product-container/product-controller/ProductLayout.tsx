@@ -1,23 +1,22 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { withStoreValues } from '@/app';
 import {
-    AntdRow,
     AntdCol,
+    AntdRow,
     Container,
     ThreeComponentListProps,
-    ThreeMaterialListProps,
+    ThreeMaterialListProps
 } from '@/components';
+import { CommonStoreProps } from '@/configs';
 import {
     FurnitureComponentType,
-    WithMaterialTypesProps,
-    productUtils
+    productUtils,
+    WithMaterialTypesProps
 } from '@/restful';
 
-import { withStoreValues } from '@/app';
-import { CommonStoreProps, Include } from '@/configs';
-
-import { ProductSence, ProductInfo, ProductInfoProps } from './product-layout';
+import { ProductInfo, ProductInfoProps, ProductSence } from './product-layout';
 
 const ProductLayoutContent = styled.div`
     padding: 30px 0;
@@ -26,7 +25,7 @@ const ProductLayoutContent = styled.div`
 interface ProductLayoutProps extends
     CommonStoreProps,
     WithMaterialTypesProps,
-    Include<ProductInfoProps, 'showDesignModal'> {
+    Pick<ProductInfoProps, 'showDesignModal'> {
     readonly furnitureComponentTypes: FurnitureComponentType[];
 }
 

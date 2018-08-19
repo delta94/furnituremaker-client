@@ -8,6 +8,7 @@ import { Router } from 'react-router';
 import { Switch } from 'react-router-dom';
 import { AnyAction, Store } from 'redux';
 
+import { initAppStore } from '@/app/initAppStore';
 import {
     discountByQuantitiesResources,
     furnutureMaterialResources,
@@ -78,6 +79,10 @@ export class Root extends React.Component<RootProps> {
             restfulFetcher.fetchResource(productTypeResources.find, []),
             restfulFetcher.fetchResource(discountByQuantitiesResources.find, [])
         ]);
+
+        initAppStore(this.props.store, {
+            history: this.history
+        });
 
         changeAppStateToReady(this.props.store);
     }

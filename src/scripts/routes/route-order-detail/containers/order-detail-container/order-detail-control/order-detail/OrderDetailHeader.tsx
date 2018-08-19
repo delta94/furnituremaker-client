@@ -5,7 +5,7 @@ import PageHeader from 'ant-design-pro/lib/PageHeader';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdButton, AntdCol, AntdRow, AntdTag } from '@/components';
+import { AntdButton, AntdCol, AntdModal, AntdRow, AntdTag } from '@/components';
 import { colorPrimary } from '@/configs';
 import { Order, orderDetailUtils } from '@/restful';
 import { formatCurrency, formatDate } from '@/utilities';
@@ -22,11 +22,12 @@ const OrderId = styled.span`
 
 export interface OrderDetailHeaderProps {
     readonly order: Order;
+    readonly onOrderCancel: (order: Order) => void;
 }
 
 export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
     render() {
-        const { order } = this.props;
+        const { order, onOrderCancel } = this.props;
 
         return (
             <PageHeaderWrapper>
@@ -40,6 +41,26 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                             </AntdDescriptionList.Description>
                             <AntdDescriptionList.Description term="Số lượng	">
                                 {orderDetailUtils.getQuantity(order.orderDetails)}
+                            </AntdDescriptionList.Description>
+                            <AntdDescriptionList.Description term="Tổng giá trị sản phẩm">
+                                {formatCurrency(order.totalPrice)}
+                            </AntdDescriptionList.Description>
+                            {
+                                order.productDiscount && (
+                                    <AntdDescriptionList.Description term="Giảm giá sản phẩm">
+                                        {formatCurrency(order.productDiscount)}
+                                    </AntdDescriptionList.Description>
+                                )
+                            }
+                            {
+                                order.promotionDiscount && (
+                                    <AntdDescriptionList.Description term="Sử dụng mã ưu đãi">
+                                        {formatCurrency(order.promotionDiscount)}
+                                    </AntdDescriptionList.Description>
+                                )
+                            }
+                            <AntdDescriptionList.Description term="Phí vận chuyển">
+                                {formatCurrency(order.shippingFee)}
                             </AntdDescriptionList.Description>
                             <AntdDescriptionList.Description term="Yêu cầu đặt cọc">
                                 {formatCurrency(order.depositRequired)}
@@ -66,6 +87,7 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                             type="danger"
                             ghost={true}
                             icon="delete"
+                            onClick={() => onOrderCancel(order)}
                         >
                             Hủy đơn hàng
                         </AntdButton>
@@ -73,9 +95,9 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                     extraContent={(
                         <AntdRow>
                             <AntdCol sm={24} md={12}>
-                                <div style={{ color: 'rgba(0, 0, 0, 0.43)' }}>Tổng tiền</div>
+                                <div style={{ color: 'rgba(0, 0, 0, 0.43)' }}>Cần thanh toán</div>
                                 <div style={{ color: 'rgba(0, 0, 0, 0.85)', fontSize: 20 }}>
-                                    {formatCurrency(order.totalPrice)}
+                                    {formatCurrency(order.totalOfPayment)}
                                 </div>
                             </AntdCol>
                             <AntdCol sm={24} md={12}>

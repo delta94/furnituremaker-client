@@ -1,11 +1,13 @@
 import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
+
 import { apiEntry } from '@/restful/apiEntry';
+
+import { Agency } from './agency';
 
 export interface User {
     readonly id: string;
     readonly email: string;
-    readonly phone: string;
-    readonly address: string;
+    readonly agency?: Agency;
 }
 
 export const userResourceType = new ResourceType({

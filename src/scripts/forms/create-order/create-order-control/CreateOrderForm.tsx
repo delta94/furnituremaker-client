@@ -15,6 +15,11 @@ import {
 import { CommonStoreProps } from '@/configs';
 import { City, Order } from '@/restful';
 
+import {
+    OrderFormCityField,
+    OrderFormCityFieldProps
+} from './create-order-form';
+
 const FormBody = styled.div`
     display: block;
 `;
@@ -23,9 +28,9 @@ const FormWrapper = styled.div`
     margin: 0 0 0 0;
 `;
 
-export interface CreateOrderFormProps {
+export interface CreateOrderFormProps extends
+    Pick<OrderFormCityFieldProps, 'onCityChange'> {
     readonly onFormStatusChange: (status: CommonStoreProps['orderFormStatus']) => void;
-    readonly cities: City[];
 }
 
 export interface CreateOrderFormValues {
@@ -37,11 +42,17 @@ export interface CreateOrderFormValues {
 class CreateOrderFormComponent extends React.Component<
     CreateOrderFormProps &
     InjectedFormProps<CreateOrderFormValues, CreateOrderFormProps>> {
-    static readonly cityValidates = [required('Nhập tỉnh thành')];
     static readonly countyValidates = [required('Nhập quận huyện')];
     static readonly phoneValidates = [required('Nhập số điện thoại')];
     static readonly emailValidates = [required('Nhập cung cấp email')];
     static readonly addressValidates = [required('Nhập địa chỉ giao hàng')];
+
+    readonly onCityChange = (city: City) => {
+        const { change, onCityChange } = this.props;
+
+        change(nameof.full<CreateOrderFormValues>(o => o.order.shippingToCity), city);
+        onCityChange(city);
+    }
 
     componentDidUpdate(prevProps: InjectedFormProps<CreateOrderFormValues, CreateOrderFormProps>) {
         const {
@@ -63,8 +74,7 @@ class CreateOrderFormComponent extends React.Component<
     }
 
     render() {
-        const { handleSubmit, error, cities } = this.props;
-        const citiesMap: AntdSelectOptionProps[] = cities.map(o => ({ value: o.id, title: o.name }));
+        const { handleSubmit, error } = this.props;
         return (
             <Form onSubmit={handleSubmit}>
                 <FormError error={error} />
@@ -100,16 +110,9 @@ class CreateOrderFormComponent extends React.Component<
                         </AntdCol>
                         <AntdCol span={12}>
                             <FormWrapper>
-                                <Field
-                                    name={nameof.full<CreateOrderFormValues>(o => o.cityId)}
-                                    component={renderSelectField}
-                                    validate={CreateOrderFormComponent.cityValidates}
-                                    required={true}
-                                    label="Tỉnh thành"
-                                    items={citiesMap}
-                                    selectProps={{
-                                        placeholder: 'Chọn tỉnh thành'
-                                    }}
+                                <OrderFormCityField
+                                    fieldName={nameof<CreateOrderFormValues>(o => o.cityId)}
+                                    onCityChange={this.onCityChange}
                                 />
                             </FormWrapper>
                         </AntdCol>

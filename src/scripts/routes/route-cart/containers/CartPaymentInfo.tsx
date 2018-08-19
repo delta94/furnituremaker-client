@@ -9,16 +9,13 @@ import {
     withTempOrderDetails,
     WithTempOrderDetails
 } from '@/restful';
-import { formatCurrency, formatDate } from '@/utilities';
+import {
+    CartTransportFee
+} from '@/routes/route-cart/containers/cart-payment-info/CartTransportFee';
+import { formatCurrency, formatDate, toVNDay } from '@/utilities';
 
 import { CardTotalOfPayment, CartUsePromoCode } from './cart-payment-info';
-import { SectionTitle } from './CartUI';
-
-const ShippingCost = styled.div`
-    text-align: right;
-    font-size: 18px;
-    color: #000000;
-`;
+import { SectionTitle, ShippingCost } from './CartUI';
 
 const ShippingDate = styled.div`
     text-align: right;
@@ -63,15 +60,8 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
                             </React.Fragment>
                         )
                     }
-                    <AntdCol span={12}>
-                        <span>Phí vận chuyển:</span>
-                    </AntdCol>
-                    <AntdCol span={12}>
-                        <ShippingCost>
-                            0
-                        </ShippingCost>
-                    </AntdCol>
                 </AntdRow>
+                <CartTransportFee orderDetails={orderDetails} />
                 <AntdDivider dashed={true} />
                 <CartUsePromoCode />
                 <AntdDivider dashed={true} />
@@ -82,7 +72,7 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
                     </AntdCol>
                     <AntdCol span={12}>
                         <ShippingDate>
-                            {formatDate(shippingDate, 'DD/MM/YYYY')}
+                            {`${toVNDay(shippingDate)} - ${formatDate(shippingDate, 'DD/MM/YYYY')}`}
                         </ShippingDate>
                     </AntdCol>
                 </AntdRow>

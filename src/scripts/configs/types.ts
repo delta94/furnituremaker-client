@@ -1,8 +1,10 @@
+import { History } from 'history';
 import { RouteComponentProps } from 'react-router';
 
 import { ExtendWithStoreValuesProps } from '@/app';
 import { ThreeSence } from '@/components';
 import {
+    City,
     MaterialType,
     Product,
     ProductDesign,
@@ -12,9 +14,11 @@ import {
     Promotion
 } from '@/restful';
 
-export type Include<T, K extends keyof T> = Pick<T, Extract<keyof T, K>>;
+export interface InitAppStoreProps {
+    readonly history?: History;
+}
 
-export interface CommonStoreValues {
+export interface CommonStoreValues extends InitAppStoreProps {
     readonly appState?: 'PENDING' | 'READY';
     readonly hoveredProductTypeGroup?: ProductTypeGroup;
     readonly selectedProductTypeGroup?: ProductTypeGroup;
@@ -29,6 +33,7 @@ export interface CommonStoreValues {
     readonly drawerVisible?: boolean;
     readonly product3Dsence?: ThreeSence;
 
+    readonly orderFormSelectedCity?: City;
     readonly orderFormStatus?: 'default' | 'submitting' | 'submitSucceeded' | 'submitFailed';
     readonly submitOrderForm?: () => void;
 }

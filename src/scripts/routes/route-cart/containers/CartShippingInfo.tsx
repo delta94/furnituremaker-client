@@ -1,9 +1,12 @@
 import * as React from 'react';
 
+import { withStoreValues } from '@/app';
 import { AntdModal } from '@/components';
-import { colorPrimary } from '@/configs';
+import { colorPrimary, InitAppStoreProps } from '@/configs';
 import { CreateOrderControl } from '@/forms/create-order';
 import {
+    Order,
+    orderUtils,
     restfulStore,
     withTempOrderDetails,
     WithTempOrderDetails
@@ -11,26 +14,31 @@ import {
 
 import { SectionTitle } from './CartUI';
 
-interface CartDrawerFooterProps extends WithTempOrderDetails {
+interface CartDrawerFooterProps extends
+    WithTempOrderDetails,
+    Pick<InitAppStoreProps, 'history'> {
     // implement...
 }
 
 @withTempOrderDetails(restfulStore)
+@withStoreValues<InitAppStoreProps>('history')
 export class CartShippingInfo extends React.Component<CartDrawerFooterProps> {
     render() {
-        const { orderDetails } = this.props;
+        const { orderDetails, history } = this.props;
 
         return (
             <div>
                 <SectionTitle>Thông tin giao hàng</SectionTitle>
                 <CreateOrderControl
                     orderDetails={orderDetails}
-                    onOrderCreate={() => {
+                    onOrderCreate={(order: Order) => {
+                        const toOrderDetailPageUrl = orderUtils.getDetailPageUrl(order);
                         AntdModal.success({
                             title: 'Đặt hàng thành công',
                             content: 'Nhân viên của Furniture Maker sẽ liên hệ với bạn trong thời gian sớm nhất!',
                             okText: 'Tiếp tục',
-                            okType: 'default'
+                            okType: 'default',
+                            onOk: () => history.push(toOrderDetailPageUrl)
                         });
                     }}
                 />

@@ -1,5 +1,5 @@
-import { Product } from './_product';
 import { Customer } from './customer';
+import { Product } from './product';
 
 export interface Cart {
     readonly id: string;

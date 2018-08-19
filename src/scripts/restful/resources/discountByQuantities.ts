@@ -4,7 +4,7 @@ import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
 import { formatCurrency } from '@/utilities';
 
 import { apiEntry } from '../apiEntry';
-import { Product, productUtils } from './_product';
+import { Product, productUtils } from './product';
 import { ProductType } from './productType';
 
 const sortBy = require('lodash/sortBy');

@@ -152,7 +152,7 @@ export const orderDetailUtils = {
             },
             0
         );
-    },
+    }
 };
 
 export interface WithTempOrderDetails {

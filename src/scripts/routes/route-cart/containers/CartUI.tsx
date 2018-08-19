@@ -8,6 +8,12 @@ export const SectionTitle = styled.h3`
     text-transform: uppercase;
 `;
 
+export const ShippingCost = styled.div`
+    text-align: right;
+    font-size: 18px;
+    color: #000000;
+`;
+
 const DividerWrapper = styled.div`
     display: flex;
     height: 100%;

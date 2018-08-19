@@ -2,11 +2,11 @@ import * as React from 'react';
 
 import { withStoreValues } from '@/app';
 import { AntdDivider, AntdDrawer } from '@/components';
-import { CommonStoreProps, Include } from '@/configs';
+import { CommonStoreProps } from '@/configs';
 
 import { CartDrawerContent, CartDrawerFooter } from './header-cart-drawer';
 
-export interface HeaderCartDrawerProps extends Include<CommonStoreProps, 'drawerVisible'> {
+export interface HeaderCartDrawerProps extends Pick<CommonStoreProps, 'drawerVisible'> {
     readonly onDrawerClose: () => void;
 }
 

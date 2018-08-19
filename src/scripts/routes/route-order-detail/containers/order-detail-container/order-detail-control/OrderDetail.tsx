@@ -6,6 +6,7 @@ import { Order } from '@/restful';
 
 import {
     OrderDetailHeader,
+    OrderDetailHeaderProps,
     OrderDetailProductTable,
     OrderDetailStatus
 } from './order-detail';
@@ -14,17 +15,21 @@ const OrderDetailWrapper = styled.div`
     padding: 0 0 0 0;
 `;
 
-export interface OrderDetailProps {
+export interface OrderDetailProps extends
+    Pick<OrderDetailHeaderProps, 'onOrderCancel'> {
     readonly order: Order;
 }
 
 export class OrderDetail extends React.Component<OrderDetailProps> {
     render() {
-        const { order } = this.props;
+        const { order, onOrderCancel } = this.props;
         return (
             <Container>
                 <OrderDetailWrapper>
-                    <OrderDetailHeader order={order} />
+                    <OrderDetailHeader
+                        order={order}
+                        onOrderCancel={onOrderCancel}
+                    />
                     <OrderDetailStatus />
                     <OrderDetailProductTable order={order} />
                 </OrderDetailWrapper>

@@ -40,3 +40,13 @@ export const promotionResources = {
         }
     })
 };
+
+export const promotionUtils = {
+    getDiscount: (promotion: Promotion) => {
+        if (!promotion) {
+            return 0;
+        }
+        
+        return promotion.discountPrice;
+    }
+};
