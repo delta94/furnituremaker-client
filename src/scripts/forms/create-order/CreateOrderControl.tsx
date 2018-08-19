@@ -64,7 +64,7 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                 shippingFee: transportFee,
                 totalOfPayment: orderTotalOfPayment,
                 totalDiscount: orderTotalDiscount,
-                productDiscount: productsDiscount,
+                productsDiscount: productsDiscount,
                 promotionDiscount: productsDiscount,
                 depositRequired: orderUtils.getDeposit(orderTotalOfPayment),
             };

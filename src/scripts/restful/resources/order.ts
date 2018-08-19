@@ -33,7 +33,7 @@ export interface Order extends RecordType {
     readonly shippingFee: number;
     readonly totalOfPayment: number;
     readonly totalDiscount: number;
-    readonly productDiscount: number;
+    readonly productsDiscount: number;
     readonly promotionDiscount: number;
     readonly agencyCommissionPercent: number;
     readonly agencyCommissionValue: number;

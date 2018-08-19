@@ -46,9 +46,9 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                                 {formatCurrency(order.totalPrice)}
                             </AntdDescriptionList.Description>
                             {
-                                order.productDiscount && (
+                                order.productsDiscount && (
                                     <AntdDescriptionList.Description term="Giảm giá sản phẩm">
-                                        {formatCurrency(order.productDiscount)}
+                                        {formatCurrency(order.productsDiscount)}
                                     </AntdDescriptionList.Description>
                                 )
                             }
