@@ -6,6 +6,7 @@ import { AntdForm, AntdInput, AntdInputProps } from '../antd-component';
 interface RenderInputField extends WrappedFieldProps {
     readonly inputProps: AntdInputProps;
     readonly required: boolean;
+    readonly label: string;
 }
 
 export function renderInput(props: RenderInputField) {

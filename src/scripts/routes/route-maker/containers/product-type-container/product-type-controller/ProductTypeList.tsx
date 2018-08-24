@@ -14,25 +14,30 @@ const Wrapper = styled.div`
     z-index: 1;
 `;
 
-type ContentProps = React.ComponentType<React.DOMAttributes<{}> & { readonly showList: boolean }>;
-const Content: ContentProps = styled.div`
+interface ContentProps extends React.DOMAttributes<HTMLDivElement> {
+    readonly showList: boolean;
+}
+
+const Content: React.ComponentType<ContentProps> = styled.div`
     position: absolute;
     width: 100%;
     height: 220px;
     border-bottom: 2px solid #D59B01;
     background-color: #F6F5F6;
     transition: visibility 0s, opacity 0.3s;
-    visibility : ${(props) => props.showList ? 'visible' : 'hidden'};
+    visibility : ${(props: ContentProps) => props.showList ? 'visible' : 'hidden'};
     opacity : ${(props) => props.showList ? 1 : 0};
 `;
 
-type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { readonly isSelected: boolean }>;
-const Item: ItemProps = styled.div`
+interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
+    readonly isSelected: boolean;
+}
+const Item: React.ComponentType<ItemProps> = styled.div`
     text-align: center;
     padding: 10px;
     border-radius: 10px 10px 0 0;
     transition: all .3s;
-    opacity: ${(props) => props.isSelected ? 1 : 0.5};
+    opacity: ${(props: ItemProps) => props.isSelected ? 1 : 0.5};
     cursor: pointer;
 `;
 

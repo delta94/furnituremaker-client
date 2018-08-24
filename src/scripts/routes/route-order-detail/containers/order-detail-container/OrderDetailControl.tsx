@@ -22,12 +22,20 @@ export interface OrderDetailControlProps extends
 @withStoreValues<InitAppStoreProps>('history')
 class OrderDetailControlComponent extends React.Component<OrderDetailControlProps> {
     readonly onOrderCancel = async (order: Order) => {
+        const updatingOrder: Order = {
+            ...order,
+            status: 'cancel'
+        };
+
         await restfulFetcher.fetchResource(
-            orderResources.delete,
+            orderResources.update,
             [{
                 type: 'path',
                 parameter: 'id',
                 value: order.id
+            }, {
+                type: 'body',
+                value: updatingOrder
             }]
         );
     }

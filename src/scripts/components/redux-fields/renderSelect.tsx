@@ -13,6 +13,7 @@ interface RenderSelectField extends WrappedFieldProps {
     readonly items: AntdSelectOptionProps[];
     readonly selectProps: AntdSelectProps;
     readonly required: boolean;
+    readonly label: string;
 }
 
 export function renderSelectField(props: RenderSelectField) {

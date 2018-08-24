@@ -1,19 +1,22 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import Slider, { Settings } from 'react-slick';
+import styled from 'styled-components';
 
-import { CommonStoreProps } from '@/configs';
-import { ProductDesign, productDesignUtils } from '@/restful';
 import { withStoreValues } from '@/app';
 import { Img } from '@/components';
+import { CommonStoreProps } from '@/configs';
+import { ProductDesign, productDesignUtils } from '@/restful';
 
-type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { readonly isSelected: boolean }>;
-const Item: ItemProps = styled.div`
+interface ItemProps extends React.DOMAttributes<ItemProps> {
+    readonly isSelected: boolean;
+}
+
+const Item: React.ComponentType<ItemProps> = styled.div`
     text-align: center;
     padding: 10px;
     border-radius: 10px 10px 0 0;
     transition: all .3s;
-    opacity: ${(props) => props.isSelected ? 1 : 0.5};
+    opacity: ${(props: ItemProps) => props.isSelected ? 1 : 0.5};
     cursor: pointer;
 `;
 
@@ -62,7 +65,7 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
             const defaulDesign = productDesignUtils.getDefaultProductDesigns(designs);
             setStore({
                 [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: defaulDesign
-            });       
+            });
         }
     }
 

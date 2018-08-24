@@ -5,9 +5,9 @@ import PageHeader from 'ant-design-pro/lib/PageHeader';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdButton, AntdCol, AntdModal, AntdRow, AntdTag } from '@/components';
+import { AntdButton, AntdCol, AntdIcon, AntdRow, AntdTag } from '@/components';
 import { colorPrimary } from '@/configs';
-import { Order, orderDetailUtils } from '@/restful';
+import { Order, orderDetailUtils, orderUtils } from '@/restful';
 import { formatCurrency, formatDate } from '@/utilities';
 
 const AntdDescriptionList = require('ant-design-pro/lib/DescriptionList');
@@ -28,6 +28,7 @@ export interface OrderDetailHeaderProps {
 export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
     render() {
         const { order, onOrderCancel } = this.props;
+        const statusInfo = orderUtils.getStatusInfo(order);
 
         return (
             <PageHeaderWrapper>
@@ -35,12 +36,12 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                     logo={<img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />}
                     title={<React.Fragment>Order: <OrderId>{order.id}</OrderId></React.Fragment>}
                     content={(
-                        <AntdDescriptionList title="Chi tiết:" size="small" col={2}>
-                            <AntdDescriptionList.Description term="Ngày tạo">
-                                {formatDate(order.createdAt, 'DD-MM-YYYY')}
+                        <AntdDescriptionList title={order.note || 'Chi tiết:'} size="small" col={2}>
+                            <AntdDescriptionList.Description term="Ngày đặt">
+                                {formatDate(order.createdAt, 'DD-MM-YYYY HH:mm')}
                             </AntdDescriptionList.Description>
-                            <AntdDescriptionList.Description term="Số lượng	">
-                                {orderDetailUtils.getQuantity(order.orderDetails)}
+                            <AntdDescriptionList.Description term="Số lượng">
+                                {orderDetailUtils.getQuantity(order.orderDetails)} sản phẩm
                             </AntdDescriptionList.Description>
                             <AntdDescriptionList.Description term="Tổng giá trị sản phẩm">
                                 {formatCurrency(order.totalPrice)}
@@ -54,8 +55,10 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                             }
                             {
                                 order.promotionDiscount && (
-                                    <AntdDescriptionList.Description term="Sử dụng mã ưu đãi">
-                                        {formatCurrency(order.promotionDiscount)}
+                                    <AntdDescriptionList.Description
+                                        term={`Mã khuyến mại #${order.promotion.code}`}
+                                    >
+                                        -{formatCurrency(order.promotionDiscount)}
                                     </AntdDescriptionList.Description>
                                 )
                             }
@@ -74,23 +77,46 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                             <AntdDescriptionList.Description term="Email">
                                 {order.email}
                             </AntdDescriptionList.Description>
+                            <AntdDescriptionList.Description term="Tỉnh thành">
+                                {order.shippingToCity.name}
+                            </AntdDescriptionList.Description>
                             <AntdDescriptionList.Description term="Địa chỉ nhận hàng">
                                 {order.shippingAddress}
                             </AntdDescriptionList.Description>
                             <AntdDescriptionList.Description term="Tình trạng">
-                                <AntdTag color="green">{order.status}</AntdTag>
+                                <AntdTag color={statusInfo.color}>
+                                    <AntdIcon type={statusInfo.icon} /> {statusInfo.label}
+                                </AntdTag>
                             </AntdDescriptionList.Description>
                         </AntdDescriptionList>
                     )}
                     action={(
-                        <AntdButton
-                            type="danger"
-                            ghost={true}
-                            icon="delete"
-                            onClick={() => onOrderCancel(order)}
-                        >
-                            Hủy đơn hàng
-                        </AntdButton>
+                        <AntdButton.Group>
+                            {
+                                orderUtils.canChange(order) && (
+                                    <AntdButton
+                                        type="danger"
+                                        ghost={true}
+                                        icon="rollback"
+                                        onClick={() => onOrderCancel(order)}
+                                    >
+                                        Đổi trả
+                                    </AntdButton>
+                                )
+                            }
+                            {
+                                orderUtils.canCancel(order) && (
+                                    <AntdButton
+                                        type="danger"
+                                        ghost={true}
+                                        icon="delete"
+                                        onClick={() => onOrderCancel(order)}
+                                    >
+                                        Hủy đơn hàng
+                                    </AntdButton>
+                                )
+                            }
+                        </AntdButton.Group>
                     )}
                     extraContent={(
                         <AntdRow>

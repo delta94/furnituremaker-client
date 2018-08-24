@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 // tslint:disable-next-line:no-any
-type ModalWrapperProps = React.DOMAttributes<any> & { readonly visibled: boolean };
+type ModalWrapperProps = React.DOMAttributes<HTMLDivElement> & { readonly visibled: boolean };
 type ModalWrapperType = React.ComponentType<ModalWrapperProps>;
 const ModalWrapper: ModalWrapperType = styled.div`
     position: fixed;
@@ -16,7 +16,7 @@ const ModalWrapper: ModalWrapperType = styled.div`
     z-index: 9;
     overflow: auto;
     transition: visibility 0s, opacity 0.5s;
-    visibility : ${(props) => props.visibled ? 'visible' : 'hidden'};
+    visibility : ${(props: ModalWrapperProps) => props.visibled ? 'visible' : 'hidden'};
     opacity : ${(props) => props.visibled ? 1 : 0};
 `;
 

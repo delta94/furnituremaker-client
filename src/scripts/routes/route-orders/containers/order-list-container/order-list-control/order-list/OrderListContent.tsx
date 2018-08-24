@@ -5,11 +5,12 @@ import { AntdColumnProps, AntdTable, AntdTag } from '@/components';
 import {
     Order,
     orderDetailUtils,
+    orderUtils,
     restfulStore,
     withOrders,
     WithOrdersProps
 } from '@/restful';
-import { formatCurrency, formatDate } from '@/utilities';
+import { formatCurrency, formatDate, toVNDay } from '@/utilities';
 
 interface OrderListContentProps extends WithOrdersProps {
 
@@ -35,7 +36,7 @@ const columns: AntdColumnProps<Order>[] = [
         dataIndex: nameof<Order>(o => o.orderDetails),
         key: 'quantity',
         render: (orderDetails: Order['orderDetails']) => {
-            return  orderDetailUtils.getQuantity(orderDetails);
+            return orderDetailUtils.getQuantity(orderDetails);
         }
     }, {
         title: 'Giá',
@@ -63,14 +64,17 @@ const columns: AntdColumnProps<Order>[] = [
         dataIndex: nameof<Order>(o => o.shippingDate),
         key: 'shippingDate',
         render: (shippingDate: Order['shippingDate']) => {
-            return shippingDate ? formatDate(shippingDate, 'DD/MM/YYYY') : 'Không xác định';
+            return shippingDate ?
+                `${toVNDay(shippingDate)} - ${formatDate(shippingDate, 'DD/MM/YYYY')}` :
+                'Không xác định';
         }
     }, {
         title: 'Tình trạng',
         dataIndex: nameof<Order>(o => o.status),
         key: 'status',
-        render: (status: Order['status']) => {
-            return <AntdTag color="green"> {status || 'new'}</AntdTag>;
+        render: (status: Order['status'], order: Order) => {
+            const statusInfo = orderUtils.getStatusInfo(order);
+            return <AntdTag color={statusInfo.color}>{statusInfo.label}</AntdTag>;
         }
     }
 ];

@@ -7,7 +7,7 @@ import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
 
-import { OrderListContainer } from './containers';
+import { OrderListContainer, OrderPageHeader } from './containers';
 
 type RouteOrdersProps = CommonStoreProps & RouteComponentProps<{}>;
 
@@ -24,6 +24,7 @@ export class RouteOrders extends React.Component<RouteOrdersProps> {
         return (
             <Page routeProps={routeProps}>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
+                    <OrderPageHeader />
                     <OrderListContainer />
                 </DefaultLayout>
             </Page>

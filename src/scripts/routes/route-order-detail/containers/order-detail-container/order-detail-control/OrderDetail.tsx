@@ -30,7 +30,7 @@ export class OrderDetail extends React.Component<OrderDetailProps> {
                         order={order}
                         onOrderCancel={onOrderCancel}
                     />
-                    <OrderDetailStatus />
+                    <OrderDetailStatus order={order} />
                     <OrderDetailProductTable order={order} />
                 </OrderDetailWrapper>
             </Container>

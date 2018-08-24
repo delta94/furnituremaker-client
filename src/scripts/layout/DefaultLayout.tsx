@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { AntdLayout, Container } from '@/components';
 
-import { DefaultLayoutHeader } from './default-layout';
+import { DefaultLayoutFooter, DefaultLayoutHeader } from './default-layout';
 
 const Breadcrumb = styled.div`
     margin: 20px 0;
@@ -36,6 +36,7 @@ export class DefaultLayout extends React.Component<DefaultLayoutProps> {
                 <AntdLayout.Content style={{ display: 'flex', flexDirection: 'column' }}>
                     {this.props.children}
                 </AntdLayout.Content>
+                <DefaultLayoutFooter />
             </AntdLayout>
         );
     }

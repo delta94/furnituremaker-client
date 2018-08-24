@@ -24,7 +24,7 @@ export interface Order extends RecordType {
     readonly theAmountPaid: number;
     readonly paid: boolean;
     readonly totalPrice: number;
-    readonly status: 'new' | 'confirmed' | 'processing' | 'shipping' | 'done' | 'cancel';
+    readonly status: 'new' | 'confirmed' | 'produce' | 'payment' | 'shipping' | 'done' | 'cancel' | 'change';
     readonly createdAt?: string;
     readonly promotion?: Promotion;
     readonly note?: string;
@@ -87,6 +87,14 @@ export const orderResources = {
             }
         }
     }),
+    update: new Resource<Order>({
+        resourceType: orderResourceType,
+        url: apiEntry('/order/:id'),
+        method: 'PUT',
+        mapDataToStore: (order, resourceType, store) => {
+            store.mapRecord(resourceType, order);
+        }
+    }),
     delete: new Resource<Order>({
         resourceType: orderResourceType,
         url: apiEntry('/order/:id'),
@@ -96,6 +104,13 @@ export const orderResources = {
         }
     })
 };
+
+export interface OrderStatusInfo {
+    readonly icon: string;
+    readonly label: string;
+    readonly color: string;
+    readonly index: number;
+}
 
 export const orderUtils = {
     getShippingDate: (date?: Date, format?: string) => {
@@ -139,6 +154,79 @@ export const orderUtils = {
     },
     getDetailPageUrl: (order: Order) => {
         return `/orders/${order.id}`;
+    },
+    getStatusInfo: (order: Order): OrderStatusInfo => {
+        switch (order.status) {
+            case 'new':
+                return {
+                    label: 'Mới',
+                    color: 'green',
+                    icon: 'question',
+                    index: 0
+                };
+            case 'confirmed':
+                return {
+                    label: 'Đã xác nhận',
+                    color: 'green',
+                    icon: 'check',
+                    index: 1
+                };
+
+            case 'produce':
+                return {
+                    label: 'Đang lắp ráp',
+                    color: 'green',
+                    icon: 'appstore-o',
+                    index: 2
+                };
+            case 'payment':
+                return {
+                    label: 'Chờ thanh toán',
+                    color: 'green',
+                    icon: '',
+                    index: 3
+                };
+            case 'shipping':
+                return {
+                    label: 'Đang vận chuyển',
+                    color: 'green',
+                    icon: 'export',
+                    index: 4
+                };
+            case 'done':
+                return {
+                    label: 'Hoàn thành',
+                    color: 'green',
+                    icon: 'like',
+                    index: 5
+                };
+            case 'cancel':
+                return {
+                    label: 'Đã hủy',
+                    color: 'red',
+                    icon: 'close',
+                    index: 6
+                };
+            case 'change':
+                return {
+                    label: 'Đổi trả',
+                    color: 'yellow',
+                    icon: 'rollback',
+                    index: 7
+                };
+            default:
+                return null;
+        }
+    },
+    canCancel: (order: Order) => {
+        return (
+            order.status !== 'done' &&
+            order.status !== 'cancel' &&
+            order.status !== 'change'
+        );
+    },
+    canChange: (order: Order) => {
+        return order.status === 'shipping';
     }
 };
 

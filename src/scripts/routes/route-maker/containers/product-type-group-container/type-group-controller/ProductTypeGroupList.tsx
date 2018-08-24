@@ -1,28 +1,31 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import Slider, { Settings } from 'react-slick';
+import styled from 'styled-components';
 
-import { ProductTypeGroup, productTypeGroupUtils } from '@/restful';
 import { withStoreValues } from '@/app';
-import { CommonStoreProps } from '@/configs';
 import { Img } from '@/components';
+import { CommonStoreProps } from '@/configs';
+import { ProductTypeGroup } from '@/restful';
 
-type WrapperProps = React.ComponentType<React.DOMAttributes<{}> & { readonly itemLength: number }>;
-const Wrapper: WrapperProps = styled.div`
+const Wrapper = styled.div`
     background-color: #fff;
     margin: 0 auto;
     padding-top: 30px;
     width: 100%;
 `;
 
-type ItemProps = React.ComponentType<React.DOMAttributes<{}> & { readonly isSelected: boolean }>;
-const Item: ItemProps = styled.div`
+interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
+    readonly isSelected: boolean;
+}
+
+type ItemType = React.ComponentType<ItemProps>;
+const Item: ItemType = styled.div`
     text-align: center;
     padding: 10px;
     border-radius: 10px 10px 0 0;
     transition: all .3s;
     cursor: pointer;
-    background-color: ${(props) => props.isSelected && '#F6F5F6'};
+    background-color: ${(props: ItemProps) => props.isSelected && '#F6F5F6'};
 `;
 
 const ThumbnailWrapper = styled.div`
@@ -58,7 +61,7 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
         slidesToShow: 10,
         slidesToScroll: 1
     };
-    
+
     render() {
         const {
             selectedProductTypeGroup,
@@ -68,7 +71,7 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
         } = this.props;
 
         return (
-            <Wrapper itemLength={this.props.productTypeGroups.length}>
+            <Wrapper>
                 <Slider {...ProductTypeGroupList.slickSettings}>
                     {
                         this.props.productTypeGroups.map(productTypeGroup => {
