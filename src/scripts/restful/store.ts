@@ -1,6 +1,7 @@
 import { Store } from 'react-restful';
 
 import {
+    agencyResourceType,
     cityResourceType,
     countyResourceType,
     discountByQuantitiesResourceType,
@@ -33,3 +34,4 @@ restfulStore.registerRecordType(orderResourceType);
 restfulStore.registerRecordType(promotionResourceType);
 restfulStore.registerRecordType(cityResourceType);
 restfulStore.registerRecordType(countyResourceType);
+restfulStore.registerRecordType(agencyResourceType);

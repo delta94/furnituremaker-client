@@ -38,7 +38,7 @@ export interface CreateOrderControlProps extends
 export class CreateOrderControl extends React.Component<CreateOrderControlProps> {
     readonly onCreateOrder = async (formValues: CreateOrderFormValues) => {
         try {
-            const { orderDetails, selectedPromotion } = this.props;
+            const { orderDetails, selectedPromotion, user } = this.props;
             const { order } = formValues;
 
             const productsTotalPayment = orderDetailUtils.getTotalOfPayment(orderDetails);
@@ -67,6 +67,8 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                 productsDiscount: productsDiscount,
                 promotionDiscount: productsDiscount,
                 depositRequired: orderUtils.getDeposit(orderTotalOfPayment),
+                code: orderUtils.genCode(),
+                agencyOrderer: user.agency
             };
 
             const createdOrder = await restfulFetcher.fetchResource(

@@ -34,7 +34,7 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
             <PageHeaderWrapper>
                 <PageHeader
                     logo={<img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />}
-                    title={<React.Fragment>Order: <OrderId>{order.id}</OrderId></React.Fragment>}
+                    title={<React.Fragment>Order: <OrderId>{order.code}</OrderId></React.Fragment>}
                     content={(
                         <AntdDescriptionList title={order.note || 'Chi tiết:'} size="small" col={2}>
                             <AntdDescriptionList.Description term="Ngày đặt">
@@ -54,7 +54,7 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                                 )
                             }
                             {
-                                order.promotionDiscount && (
+                                order.promotion && (
                                     <AntdDescriptionList.Description
                                         term={`Mã khuyến mại #${order.promotion.code}`}
                                     >

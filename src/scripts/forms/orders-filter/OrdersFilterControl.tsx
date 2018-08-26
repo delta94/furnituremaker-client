@@ -1,15 +1,27 @@
 import * as React from 'react';
 
-import { OrderFilterForm } from './orders-filter-control';
+import { withStoreValues } from '@/app';
+import { InitAppStoreProps } from '@/configs';
+import { objectToSearchParams, searchParamsObject } from '@/utilities';
 
-interface OrdersFilterControlProps {
+import {
+    OrderFilterForm,
+    OrderFilterFormValues
+} from './orders-filter-control';
 
-}
-
-export class OrdersFilterControl extends React.PureComponent<OrdersFilterControlProps> {
+@withStoreValues<InitAppStoreProps>('history')
+export class OrdersFilterControl extends React.PureComponent<InitAppStoreProps> {
     render() {
+        const { history } = this.props;
+        const initialValues = searchParamsObject<OrderFilterFormValues>();
         return (
-            <OrderFilterForm />
+            <OrderFilterForm
+                onSubmit={(values: OrderFilterFormValues) => {
+                    const newSearch = objectToSearchParams(values);
+                    history.push(`?${newSearch.toString()}`);
+                }}
+                initialValues={initialValues}
+            />
         );
     }
 }

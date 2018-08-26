@@ -20,9 +20,8 @@ const columns: AntdColumnProps<Order>[] = [
     {
         title: 'Mã đơn hàng',
         dataIndex: nameof<Order>(o => o.id),
-        key: nameof<Order>(o => o.id),
-        render: (id: string) => {
-            return (<Link to={`/orders/${id}`}>{id}</Link>);
+        render: (id: string, order) => {
+            return (<Link to={`/orders/${id}`}>{order.code}</Link>);
         }
     }, {
         title: 'Ngày tạo',
@@ -39,11 +38,11 @@ const columns: AntdColumnProps<Order>[] = [
             return orderDetailUtils.getQuantity(orderDetails);
         }
     }, {
-        title: 'Giá',
-        dataIndex: nameof<Order>(o => o.totalPrice),
-        key: 'totalPrice',
-        render: (totalPrice: Order['totalPrice']) => {
-            return formatCurrency(totalPrice);
+        title: 'Cần thanh toán',
+        dataIndex: nameof<Order>(o => o.totalOfPayment),
+        key: 'totalOfPayment',
+        render: (totalOfPayment: Order['totalOfPayment']) => {
+            return formatCurrency(totalOfPayment);
         }
     }, {
         title: 'Yêu cầu đặt cọc',
@@ -78,9 +77,7 @@ const columns: AntdColumnProps<Order>[] = [
         }
     }
 ];
-
-@withOrders(restfulStore)
-export class OrderListContent extends React.PureComponent<OrderListContentProps> {
+class OrderListContentComponent extends React.PureComponent<OrderListContentProps> {
     render() {
         const { orders } = this.props;
         return (
@@ -93,3 +90,5 @@ export class OrderListContent extends React.PureComponent<OrderListContentProps>
         );
     }
 }
+
+export const OrderListContent = withOrders(restfulStore)(OrderListContentComponent);

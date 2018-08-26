@@ -6,10 +6,10 @@ import {
     restfulDataContainer
 } from 'react-restful';
 
-import { City } from '@/restful/resources/city';
-import { County } from '@/restful/resources/county';
-
 import { apiEntry } from '../apiEntry';
+import { Agency } from './agency';
+import { City } from './city';
+import { County } from './county';
 import { OrderDetail } from './orderDetail';
 import { Promotion } from './promotion';
 
@@ -38,6 +38,8 @@ export interface Order extends RecordType {
     readonly agencyCommissionPercent: number;
     readonly agencyCommissionValue: number;
     readonly billDiscount: number;
+    readonly code: string;
+    readonly agencyOrderer: Agency;
 }
 
 export const orderResourceType = new ResourceType({
@@ -218,6 +220,21 @@ export const orderUtils = {
                 return null;
         }
     },
+    getStatusSelectItems: (): {
+        readonly value: Order['status'];
+        readonly title: string
+    }[] => {
+        return [
+            { value: 'new', title: 'Mới' },
+            { value: 'confirmed', title: 'Đã xác nhận' },
+            { value: 'produce', title: 'Đang lắp ráp' },
+            { value: 'payment', title: 'Đợi thanh toán' },
+            { value: 'shipping', title: 'Đang chuyển hàng' },
+            { value: 'done', title: 'Hoàn thành' },
+            { value: 'cancel', title: 'Đã hủy' },
+            { value: 'change', title: 'Đổi trả' }
+        ];
+    },
     canCancel: (order: Order) => {
         return (
             order.status !== 'done' &&
@@ -227,6 +244,18 @@ export const orderUtils = {
     },
     canChange: (order: Order) => {
         return order.status === 'shipping';
+    },
+    genCode: () => {
+        const currentMoment = moment();
+        let code = currentMoment.format('YYMMDDHHmm');
+
+        // random last two chars
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        for (var i = 0; i < 2; i++) {
+            code += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+
+        return code;
     }
 };
 

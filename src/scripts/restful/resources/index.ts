@@ -19,3 +19,4 @@ export * from './promotion';
 export * from './quotaUnit';
 export * from './uploadedFile';
 export * from './user';
+export * from './agency';
