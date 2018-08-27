@@ -230,9 +230,9 @@ export const orderUtils = {
             { value: 'produce', title: 'Đang lắp ráp' },
             { value: 'payment', title: 'Đợi thanh toán' },
             { value: 'shipping', title: 'Đang chuyển hàng' },
-            { value: 'done', title: 'Hoàn thành' },
-            { value: 'cancel', title: 'Đã hủy' },
-            { value: 'change', title: 'Đổi trả' }
+            { value: 'done', title: 'Hoàn thành' }
+            // { value: 'cancel', title: 'Đã hủy' },
+            // { value: 'change', title: 'Đổi trả' }
         ];
     },
     canCancel: (order: Order) => {

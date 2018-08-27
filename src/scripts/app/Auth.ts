@@ -33,6 +33,9 @@ export class Auth {
         Auth._instance = instance;
     }
 
+    // tslint:disable-next-line:readonly-keyword
+    currentUser: User;
+
     // tslint:disable-next-line:member-ordering
     readonly props: AuthProps;
 

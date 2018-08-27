@@ -3,10 +3,12 @@ import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
 import { apiEntry } from '@/restful/apiEntry';
 
 import { Agency } from './agency';
+import { Role } from './role';
 
 export interface User {
     readonly id: string;
     readonly email: string;
+    readonly role: Role;
     readonly agency?: Agency;
 }
 

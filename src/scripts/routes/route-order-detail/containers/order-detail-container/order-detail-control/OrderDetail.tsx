@@ -16,19 +16,23 @@ const OrderDetailWrapper = styled.div`
 `;
 
 export interface OrderDetailProps extends
-    Pick<OrderDetailHeaderProps, 'onOrderCancel'> {
+    Pick<OrderDetailHeaderProps, 'onOrderCancel'>,
+    Pick<OrderDetailHeaderProps, 'onOrderChange'>,
+    Pick<OrderDetailHeaderProps, 'onUpdateOrderClick'> {
     readonly order: Order;
 }
 
 export class OrderDetail extends React.Component<OrderDetailProps> {
     render() {
-        const { order, onOrderCancel } = this.props;
+        const { order, onOrderCancel, onOrderChange, onUpdateOrderClick } = this.props;
         return (
             <Container>
                 <OrderDetailWrapper>
                     <OrderDetailHeader
                         order={order}
                         onOrderCancel={onOrderCancel}
+                        onOrderChange={onOrderChange}
+                        onUpdateOrderClick={onUpdateOrderClick}
                     />
                     <OrderDetailStatus order={order} />
                     <OrderDetailProductTable order={order} />

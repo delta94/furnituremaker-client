@@ -31,11 +31,10 @@ const columns: AntdColumnProps<Order>[] = [
             return formatDate(createdAt, 'DD/MM/YYYY');
         }
     }, {
-        title: 'Số lượng',
-        dataIndex: nameof<Order>(o => o.orderDetails),
-        key: 'quantity',
-        render: (orderDetails: Order['orderDetails']) => {
-            return orderDetailUtils.getQuantity(orderDetails);
+        title: 'Đại lý',
+        dataIndex: nameof<Order>(o => o.agencyOrderer),
+        render: (agencyOrderer: Order['agencyOrderer']) => {
+            return agencyOrderer.name;
         }
     }, {
         title: 'Cần thanh toán',

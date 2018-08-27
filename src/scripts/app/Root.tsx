@@ -84,6 +84,7 @@ export class Root extends React.Component<RootProps> {
             history: this.history
         });
 
+        this.authHelper.currentUser = user;
         changeAppStateToReady(this.props.store);
     }
 }

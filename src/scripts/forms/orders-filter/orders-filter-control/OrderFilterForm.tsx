@@ -8,6 +8,7 @@ import {
 } from 'redux-form';
 import styled from 'styled-components';
 
+import { AccessControl } from '@/app';
 import {
     AntdButton,
     AntdForm,
@@ -60,15 +61,15 @@ class OrderFilterFormComponent extends React.PureComponent<
                             name={nameof<OrderFilterFormValues>(o => o.code)}
                             component={renderInput}
                             inputProps={{
-                                placeholder: 'Nhập mã order',
-                                dropdownMatchSelectWidth: false,
-                                allowClear: true
+                                placeholder: 'Nhập mã order'
                             }}
                         />
                     </FormField>
-                    <FormField>
-                        <AgencyField onChange={this.agencyChange} />
-                    </FormField>
+                    <AccessControl allowRoles="root">
+                        <FormField>
+                            <AgencyField onChange={this.agencyChange} />
+                        </FormField>
+                    </AccessControl>
                     <FormField>
                         <Field
                             name={nameof<OrderFilterFormValues>(o => o.status)}

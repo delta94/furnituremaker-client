@@ -5,6 +5,7 @@ import PageHeader from 'ant-design-pro/lib/PageHeader';
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { AccessControl, AllowAccess, DenyAccess } from '@/app';
 import { AntdButton, AntdCol, AntdIcon, AntdRow, AntdTag } from '@/components';
 import { colorPrimary } from '@/configs';
 import { Order, orderDetailUtils, orderUtils } from '@/restful';
@@ -23,11 +24,13 @@ const OrderId = styled.span`
 export interface OrderDetailHeaderProps {
     readonly order: Order;
     readonly onOrderCancel: (order: Order) => void;
+    readonly onOrderChange: (order: Order) => void;
+    readonly onUpdateOrderClick: (order: Order) => void;
 }
 
 export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
     render() {
-        const { order, onOrderCancel } = this.props;
+        const { order, onOrderCancel, onOrderChange, onUpdateOrderClick } = this.props;
         const statusInfo = orderUtils.getStatusInfo(order);
 
         return (
@@ -91,32 +94,45 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                         </AntdDescriptionList>
                     )}
                     action={(
-                        <AntdButton.Group>
-                            {
-                                orderUtils.canChange(order) && (
-                                    <AntdButton
-                                        type="danger"
-                                        ghost={true}
-                                        icon="rollback"
-                                        onClick={() => onOrderCancel(order)}
-                                    >
-                                        Đổi trả
-                                    </AntdButton>
-                                )
-                            }
-                            {
-                                orderUtils.canCancel(order) && (
-                                    <AntdButton
-                                        type="danger"
-                                        ghost={true}
-                                        icon="delete"
-                                        onClick={() => onOrderCancel(order)}
-                                    >
-                                        Hủy đơn hàng
-                                    </AntdButton>
-                                )
-                            }
-                        </AntdButton.Group>
+                        <AccessControl allowRoles="root">
+                            <AllowAccess>
+                                <AntdButton
+                                    icon="edit"
+                                    onClick={() => onUpdateOrderClick(order)}
+                                >
+                                    Cập nhật đơn hàng
+                                </AntdButton>
+                            </AllowAccess>
+                            <DenyAccess>
+                                <AntdButton.Group>
+                                    {
+                                        orderUtils.canChange(order) && (
+                                            <AntdButton
+                                                type="danger"
+                                                ghost={true}
+                                                icon="rollback"
+                                                onClick={() => onOrderChange(order)}
+                                            >
+                                                Đổi trả
+                                            </AntdButton>
+                                        )
+                                    }
+                                    {
+                                        orderUtils.canCancel(order) && (
+                                            <AntdButton
+                                                type="danger"
+                                                ghost={true}
+                                                icon="delete"
+                                                onClick={() => onOrderCancel(order)}
+                                            >
+                                                Hủy đơn hàng
+                                            </AntdButton>
+                                        )
+                                    }
+                                </AntdButton.Group>
+                            </DenyAccess>
+                        </AccessControl>
+
                     )}
                     extraContent={(
                         <AntdRow>
