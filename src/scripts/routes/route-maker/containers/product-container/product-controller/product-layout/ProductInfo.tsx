@@ -26,7 +26,15 @@ import {
 } from '@/restful';
 
 const ProductName = styled.h1`
+    margin-bottom: 0px;
     font-size: 18px;
+`;
+
+const ProductCode = styled.small`
+    font-size: 12px;
+    color: darkgray;
+    font-weight: 400;
+    line-height: 1;
 `;
 
 const ProductDesign = styled.p`
@@ -83,15 +91,15 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                     this.props.selectedObject ? (
                         <ProductInfoWrapper>
                             <ThreeMaterialList />
-                            <AntdDivider />
+                            <AntdDivider dashed={true} />
                             <ThreeComponentList />
                         </ProductInfoWrapper>
                     ) : (
                             <ProductInfoWrapper>
                                 <ProductName>
-                                    {productUtils.getProductName(product)}<br />
-                                    <small>{productUtils.getProductCode(product)}</small>
+                                    {productUtils.getProductName(product)}
                                 </ProductName>
+                                <ProductCode>{productUtils.getProductCode(product)}</ProductCode>
                                 <AntdDivider />
                                 <AntdRow>
                                     <AntdCol span={13}>

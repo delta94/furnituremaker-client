@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { ThreeSence } from '@/components';
+import { AntdAffix, ThreeSence } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
     Product,
@@ -36,19 +36,21 @@ export class ProductSence extends React.PureComponent<RouteHomeProps> {
     render() {
         const { setStore, selectedProduct } = this.props;
         return (
-            <ProductSenceWrapper>
-                <ThreeSence
-                    onObjectSelect={this.onObjectSelect}
-                    selectedObject={this.props.selectedObject}
-                    productModules={this.props.product.modules}
-                    productType={selectedProduct.productType}
-                    setSence={(threeScreen) => {
-                        setStore({
-                            [nameof<CommonStoreProps>(o => o.product3Dsence)]: threeScreen
-                        });
-                    }}
-                />
-            </ProductSenceWrapper>
+            <AntdAffix offsetTop={10}>
+                <ProductSenceWrapper>
+                    <ThreeSence
+                        onObjectSelect={this.onObjectSelect}
+                        selectedObject={this.props.selectedObject}
+                        productModules={this.props.product.modules}
+                        productType={selectedProduct.productType}
+                        setSence={(threeScreen) => {
+                            setStore({
+                                [nameof<CommonStoreProps>(o => o.product3Dsence)]: threeScreen
+                            });
+                        }}
+                    />
+                </ProductSenceWrapper>
+            </AntdAffix>
         );
     }
 

@@ -1,3 +1,4 @@
+export * from './Affix';
 export * from './Alert';
 export * from './AntdForm';
 export * from './Badge';
@@ -19,6 +20,7 @@ export * from './Select';
 export * from './Spin';
 export * from './Steps';
 export * from './Table';
+export * from './Tabs';
 export * from './Tag';
 export * from './Tooltip';
 export * from './layout';

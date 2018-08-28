@@ -4,18 +4,34 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { withStoreValues } from '@/app';
+import { AccessControl, withStoreValues } from '@/app';
 import { AntdList, Img } from '@/components';
+import {
+    AntdCol,
+    AntdDivider,
+    AntdIcon,
+    AntdModal,
+    AntdPopover,
+    AntdRow
+} from '@/components/antd-component';
 import { CommonStoreProps } from '@/configs';
+import { CreateComponentFormControl } from '@/forms/create-component';
 import {
     FurnitureComponent,
     Product,
     productUtils,
     uploadedFileUtils
 } from '@/restful';
+import { apiEntry } from '@/restful/apiEntry';
+import { formatCurrency } from '@/utilities';
 
 const ListHeader = styled.div`
     margin: 15px 0;
+`;
+
+const ComponentOptions = styled.a`
+    right: 5px;
+    position: absolute;
 `;
 
 const { THREE } = window;
@@ -32,14 +48,53 @@ export interface ThreeComponentListProps extends CommonStoreProps {
     nameof<CommonStoreProps>(o => o.product3Dsence),
 )
 class ThreeComponentListComponent extends React.PureComponent<ThreeComponentListProps> {
+
+    readonly componentUpdatePage = apiEntry('/admin/plugins/content-manager/components');
+
+    readonly renderPopover = (component: FurnitureComponent) => {
+        const updatePageHref = `${this.componentUpdatePage}/${component.id}?source=content-manager`;
+        return (
+            <AntdPopover
+                placement="left"
+                title="Thông tin cấu kiện"
+                content={(
+                    <React.Fragment>
+                        <AntdRow>
+                            <AntdCol span={12}>Mã: </AntdCol>
+                            <AntdCol span={12}>{component.code}</AntdCol>
+                        </AntdRow>
+                        <AntdRow>
+                            <AntdCol span={12}>Giá: </AntdCol>
+                            <AntdCol span={12}>{formatCurrency(component.price)}</AntdCol>
+                        </AntdRow>
+                        <AntdDivider dashed={true} />
+                        <a href={updatePageHref} target="blank">
+                            Cập nhật
+                        </a>
+                    </React.Fragment>
+                )}
+            >
+                <ComponentOptions>
+                    <AntdIcon type="ellipsis" />
+                </ComponentOptions>
+            </AntdPopover>
+        );
+    }
+
     render() {
         const { selectedObject, components } = this.props;
         const child = selectedObject.children[0] as THREE.Mesh;
         (child.material as THREE.MeshPhongMaterial).map.needsUpdate = true;
-
         return (
             <React.Fragment>
-                <ListHeader>Cấu kiện thay thế</ListHeader>
+                <ListHeader>
+                    Cấu kiện thay thế
+                    {
+                        <AccessControl allowRoles="root">
+                            <CreateComponentFormControl/>
+                        </AccessControl>
+                    }
+                </ListHeader>
                 <AntdList
                     dataSource={components}
                     grid={{ gutter: 16, column: 3 }}
@@ -60,10 +115,14 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                                     size="img256x256"
                                     onClick={() => this.onComponentSelect(component)}
                                 />
+                                <AccessControl allowRoles="root">
+                                    {this.renderPopover(component)}
+                                </AccessControl>
                             </div>
                         </AntdList.Item>
                     )}
                 />
+
             </React.Fragment>
         );
     }

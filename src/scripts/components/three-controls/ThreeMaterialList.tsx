@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
 import { AntdIcon, AntdList } from '@/components';
+import { AntdTabs } from '@/components/antd-component';
 import { Img } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
 import {
@@ -46,31 +47,34 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                 >
                     <AntdIcon type="arrow-left" />
                 </div>
-                <ListHeader>Vật liệu khả dụng</ListHeader>
-                <AntdList
-                    dataSource={materials}
-                    grid={{ gutter: 16, column: 3 }}
-                    pagination={{
-                        pageSize: 6,
-                        simple: true
-                    }}
-                    renderItem={(material: FurnutureMaterial) => (
-                        <AntdList.Item>
-                            <div
-                                className={classNames(
-                                    'three-material-list-material',
-                                    { selected: selectedMaterial.id === material.id }
-                                )}
-                            >
-                                <Img
-                                    file={material.texture}
-                                    size="img256x256"
-                                    onClick={() => this.onMaterialSelect(material)}
-                                />
-                            </div>
-                        </AntdList.Item>
-                    )}
-                />
+                <AntdTabs>
+                    <AntdTabs.TabPane tab="Vật liệu">
+                        <AntdList
+                            dataSource={materials}
+                            grid={{ gutter: 16, column: 3 }}
+                            pagination={{
+                                pageSize: 6,
+                                simple: true
+                            }}
+                            renderItem={(material: FurnutureMaterial) => (
+                                <AntdList.Item>
+                                    <div
+                                        className={classNames(
+                                            'three-material-list-material',
+                                            { selected: selectedMaterial.id === material.id }
+                                        )}
+                                    >
+                                        <Img
+                                            file={material.texture}
+                                            size="img256x256"
+                                            onClick={() => this.onMaterialSelect(material)}
+                                        />
+                                    </div>
+                                </AntdList.Item>
+                            )}
+                        />
+                    </AntdTabs.TabPane>
+                </AntdTabs>
             </div>
         );
     }
