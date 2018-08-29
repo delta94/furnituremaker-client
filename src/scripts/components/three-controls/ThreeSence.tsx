@@ -96,18 +96,6 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                                     material.needsUpdate = true;
                                 }
                             );
-
-                            // * Spec map test!
-                            normalMapLoader.load(
-                                '/static/assets/spec.jpg',
-                                function (texture: THREE.Texture) {
-                                    texture.wrapS = THREE.RepeatWrapping;
-                                    texture.wrapT = THREE.RepeatWrapping;
-
-                                    material['specularMap'] = texture;
-                                    material.needsUpdate = true;
-                                }
-                            );
                         }
                     }
 

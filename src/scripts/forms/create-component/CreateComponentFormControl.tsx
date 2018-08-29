@@ -1,11 +1,15 @@
-import * as moment from 'moment';
 import * as React from 'react';
-import { submit } from 'redux-form';
 import styled from 'styled-components';
 
+import { withStoreValues } from '@/app';
 import { AntdIcon, AntdModal } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { Order, orderResources, restfulFetcher } from '@/restful';
+import {
+    FurnitureComponent,
+    furnitureComponentResources,
+    furnitureComponentTypeUtils,
+    restfulFetcher
+} from '@/restful';
 
 import {
     CreateComponentForm,
@@ -17,25 +21,37 @@ const AddComponentButton = styled.a`
 `;
 
 interface CreateComponentFormControlProps extends
-    Pick<CommonStoreProps, 'dispatch'> {
+    Pick<CommonStoreProps, 'dispatch'>,
+    Pick<CommonStoreProps, 'selectedComponent'> {
 }
 
 export interface CreateComponentFormState {
     readonly modalVisibled: boolean;
 }
 
+@withStoreValues<CreateComponentFormControlProps>('selectedComponent')
 export class CreateComponentFormControl extends React.Component<
-    CreateComponentFormControlProps,
-    CreateComponentFormState> {
-
-    readonly submit = async () => {
-        const { dispatch } = this.props;
-        const submitFormAction = submit('UpdateOrder');
-        dispatch(submitFormAction);
-    }
+CreateComponentFormControlProps,
+CreateComponentFormState> {
 
     readonly onFormSubmit = async (formValues: CreateComponentFormValues) => {
-        //
+        const { selectedComponent } = this.props;
+
+        const newComponent: FurnitureComponent = {
+            ...formValues,
+            code: furnitureComponentTypeUtils.genCode(),
+            componentType: selectedComponent.componentType,
+            design: selectedComponent.design,
+            materialTypes: selectedComponent.materialTypes
+        };
+
+        await restfulFetcher.fetchResource(
+            furnitureComponentResources.create,
+            [{
+                type: 'body',
+                value: newComponent
+            }]
+        );
     }
 
     constructor(props: CreateComponentFormControlProps) {
@@ -66,8 +82,6 @@ export class CreateComponentFormControl extends React.Component<
                 >
                     <CreateComponentForm
                         onSubmit={this.onFormSubmit}
-                        initialValues={{
-                        }}
                     />
                 </AntdModal>
             </React.Fragment>

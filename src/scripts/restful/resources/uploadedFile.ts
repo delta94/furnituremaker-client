@@ -22,6 +22,11 @@ export const uploadedFileUtils = {
             }
         }
 
-        return `${FILE_HOST}${uploadedFile.url}`;
+        // to fix some time url start with http://localhost:1337/...
+        const url = (uploadedFile.url && uploadedFile.url.startsWith('http://')) ?
+            (new URL(uploadedFile.url)).pathname :
+            uploadedFile.url;
+        
+        return `${FILE_HOST}${url}`;
     }
 };

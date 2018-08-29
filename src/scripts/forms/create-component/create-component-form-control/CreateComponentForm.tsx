@@ -10,7 +10,9 @@ import {
     renderInput,
     renderInputNumber,
     renderSelectField,
-    renderTextArea
+    renderTextArea,
+    renderUploadField,
+    RenderUploadPictureField
 } from '@/components';
 import { FurnitureComponent, Order, orderUtils } from '@/restful';
 
@@ -38,11 +40,57 @@ class CreateComponentFormComponent extends React.Component<
                     <AntdCol span={12}>
                         <Field
                             name={nameof<CreateComponentFormValues>(o => o.name)}
+                            component={RenderUploadPictureField}
+                            label="Ảnh hiển thị"
+                            required={true}
+                            uploadProps={{
+                                placeholder: 'Chọn ảnh'
+                            }}
+                        />
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <Field
+                            name={nameof<CreateComponentFormValues>(o => o.name)}
+                            component={renderUploadField}
+                            label="OBJ file"
+                            required={true}
+                            uploadProps={{
+                                placeholder: 'Chọn MTL file',
+                                accept: '.obj'
+                            }}
+                        />
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <Field
+                            name={nameof<CreateComponentFormValues>(o => o.name)}
+                            component={renderUploadField}
+                            label="OBJ file"
+                            required={true}
+                            uploadProps={{
+                                placeholder: 'Chọn MTL file',
+                                accept: '.mtl'
+                            }}
+                        />
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <Field
+                            name={nameof<CreateComponentFormValues>(o => o.name)}
                             component={renderInput}
                             label="Tên cấu kiện"
                             required={true}
                             inputProps={{
                                 placeholder: 'Nhập tên cấu kiện'
+                            }}
+                        />
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <Field
+                            name={nameof<CreateComponentFormValues>(o => o.displayName)}
+                            component={renderInput}
+                            label="Tên hiển thị"
+                            required={true}
+                            inputProps={{
+                                placeholder: 'Nhập tên hiển thị'
                             }}
                         />
                     </AntdCol>
@@ -67,17 +115,6 @@ class CreateComponentFormComponent extends React.Component<
                             inputProps={{
                                 placeholder: 'Nhập giá',
                                 className: 'w-100'
-                            }}
-                        />
-                    </AntdCol>
-                    <AntdCol span={12}>
-                        <Field
-                            name={nameof<CreateComponentFormValues>(o => o.displayName)}
-                            component={renderInput}
-                            label="Tên hiển thị"
-                            required={true}
-                            inputProps={{
-                                placeholder: 'Nhập tên hiển thị'
                             }}
                         />
                     </AntdCol>

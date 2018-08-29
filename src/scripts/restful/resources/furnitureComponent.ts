@@ -15,18 +15,17 @@ import { QuotaUnit } from './quotaUnit';
 import { UploadedFile } from './uploadedFile';
 
 export interface FurnitureComponent extends RecordType {
-    readonly id: string;
+    readonly id?: string;
     readonly name: string;
-    readonly obj: UploadedFile;
-    readonly mtl: UploadedFile;
-    readonly thumbnail: UploadedFile;
+    readonly obj?: UploadedFile;
+    readonly mtl?: UploadedFile;
+    readonly thumbnail?: UploadedFile;
     readonly componentType: FurnitureComponentType;
     readonly materialTypes: MaterialType[];
     readonly quotaValue: number;
-    readonly quotaUnit: QuotaUnit;
     readonly design: ProductDesign;
     readonly price: number;
-    readonly fbx: UploadedFile;
+    readonly fbx?: UploadedFile;
     readonly displayName: string;
     readonly code: string;
 }
@@ -49,7 +48,15 @@ export const furnitureComponentResources = {
                 store.dataMapping(resourceType, item);
             }
         }
-    })
+    }),
+    create: new Resource<FurnitureComponent>({
+        resourceType: furnitureComponentResourceType,
+        url: apiEntry('/components'),
+        method: 'POST',
+        mapDataToStore: (item, resourceType, store) => {
+            store.dataMapping(resourceType, item);
+        }
+    }),
 };
 
 export interface WithComponentsProps {

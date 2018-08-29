@@ -166,9 +166,10 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                 totalPrice: productUtils.getTotalPriceFromModules(nextModules, 0)
             };
 
-            setStore({
+            setStore<ThreeComponentListProps>({
                 selectedObject: event.detail.loaderRootNode,
-                [nameof<CommonStoreProps>(o => o.selectedProduct)]: nextSelectedProduct
+                selectedProduct: nextSelectedProduct,
+                selectedComponent: component
             });
         };
         const objFile = uploadedFileUtils.getUrl(component.obj);

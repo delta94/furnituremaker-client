@@ -5,6 +5,7 @@ import { ExtendWithStoreValuesProps } from '@/app';
 import { ThreeSence } from '@/components';
 import {
     City,
+    FurnitureComponent,
     MaterialType,
     Product,
     ProductDesign,
@@ -28,6 +29,8 @@ export interface CommonStoreValues extends InitAppStoreProps {
     readonly selectedMaterialType?: MaterialType;
     readonly selectedProduct?: Product;
     readonly selectedPromotion?: Promotion;
+    readonly selectedComponent?: FurnitureComponent;
+    
     readonly getCurrentRouteProps?: <T>() => RouteComponentProps<T>;
 
     readonly drawerVisible?: boolean;

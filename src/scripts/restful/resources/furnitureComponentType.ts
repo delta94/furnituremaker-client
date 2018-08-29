@@ -1,7 +1,6 @@
-import { ResourceType, Resource, RecordType } from 'react-restful';
+import { RecordType, Resource, ResourceType } from 'react-restful';
 
 import { apiEntry } from '../apiEntry';
-
 import { FurnitureComponent } from './furnitureComponent';
 
 export interface FurnitureComponentType extends RecordType {
@@ -70,5 +69,15 @@ export const furnitureComponentTypeUtils = {
             .reduce(furnitureComponentsReducer, []);
 
         return furnitureComponentTypes;
+    },
+    /** Gen 3 random chars */
+    genCode: () => {
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const code = [0, 1, 2].map(o => {
+            const randomChar = possible.charAt(Math.floor(Math.random() * possible.length));
+            return randomChar;
+        });
+
+        return code.join();
     }
 };

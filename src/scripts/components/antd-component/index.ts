@@ -23,5 +23,6 @@ export * from './Table';
 export * from './Tabs';
 export * from './Tag';
 export * from './Tooltip';
+export * from './Upload';
 export * from './layout';
 import 'antd/dist/antd.less';

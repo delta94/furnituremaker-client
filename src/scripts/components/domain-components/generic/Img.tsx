@@ -13,7 +13,10 @@ export class Img extends React.Component<ImgProps> {
     render() {
         const { file, size } = this.props;
         const imgSrc = file ?
-            (typeof file === 'string') ? file : uploadedFileUtils.getUrl(file, size) :
+            ((typeof file === 'string') ?
+                file :
+                uploadedFileUtils.getUrl(file, size)
+            ) :
             Img.getDefaultImgSrc();
 
         const passedProps = { ...this.props, file: undefined };
