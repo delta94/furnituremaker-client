@@ -111,10 +111,10 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.composer.addPass(this.outlinePass);
 
         // * SSAO
-        const ssaoPass = new THREE.SSAOPass(this.scene, this.camera);
-        ssaoPass.aoClamp = 2;
-        ssaoPass.lumInfluence = 1;
-        this.composer.addPass(ssaoPass);
+        // const ssaoPass = new THREE.SSAOPass(this.scene, this.camera);
+        // ssaoPass.aoClamp = 2;
+        // ssaoPass.lumInfluence = 1;
+        // this.composer.addPass(ssaoPass);
 
         // * FXAA
         const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
@@ -160,7 +160,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.controls.minPolarAngle = Math.PI / 2.4;
 
         this.controls.enablePan = false;
-        this.controls.enableZoom = false;
+        this.controls.enableZoom = true;
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.07;
         this.controls.rotateSpeed = 0.07;
@@ -169,27 +169,42 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     initLights() {
         // * Environtment
         const hemiLight = new THREE.AmbientLight(0xffffff, 0xffffff, 1);
-        hemiLight.intensity = 1.8;
+        hemiLight.intensity = 1.3;
         this.scene.add(hemiLight);
 
+        const baseShadowCamera = 150;
         // * Directional
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLight.intensity = 1.8;
-        dirLight.position.set(-120, 120, 90);
-        const d = 150;
-        dirLight.castShadow = true;
-        dirLight.shadow.camera.left = -d;
-        dirLight.shadow.camera.right = d;
-        dirLight.shadow.camera.top = d;
-        dirLight.shadow.camera.bottom = -d;
-        dirLight.shadow.camera.far = 3500;
-        dirLight.shadow.bias = -0.0001;
-        this.scene.add(dirLight);
+        const dirLightLeft = new THREE.DirectionalLight(0xffffff, 1, 1);
+        dirLightLeft.intensity = 1.5;
+        dirLightLeft.position.set(-120, 120, 90);
+        dirLightLeft.castShadow = true;
+        dirLightLeft.shadow.camera.left = -baseShadowCamera;
+        dirLightLeft.shadow.camera.right = baseShadowCamera;
+        dirLightLeft.shadow.camera.top = baseShadowCamera;
+        dirLightLeft.shadow.camera.bottom = -baseShadowCamera;
+        dirLightLeft.shadow.camera.far = 3500;
+        dirLightLeft.shadow.bias = -0.0001;
+        this.scene.add(dirLightLeft);
+
+        // * Directional
+        const dirLightright = new THREE.DirectionalLight(0xffffff, 1, 1);
+        dirLightright.intensity = 1;
+        dirLightright.position.set(120, 120, 45);
+        dirLightright.castShadow = true;
+        dirLightright.shadow.camera.left = -baseShadowCamera;
+        dirLightright.shadow.camera.right = baseShadowCamera;
+        dirLightright.shadow.camera.top = baseShadowCamera;
+        dirLightright.shadow.camera.bottom = -baseShadowCamera;
+        dirLightright.shadow.camera.far = 3500;
+        dirLightright.shadow.bias = -0.0001;
+        this.scene.add(dirLightright);
 
         // * Helpers
         if (!true) {
-            const dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 10);
-            this.scene.add(dirLightHeper);
+            const dirLighLefttHeper = new THREE.DirectionalLightHelper(dirLightLeft, 10);
+            this.scene.add(dirLighLefttHeper);
+            const dirLightRightHeper = new THREE.DirectionalLightHelper(dirLightright, 10);
+            this.scene.add(dirLightRightHeper);
         }
     }
 

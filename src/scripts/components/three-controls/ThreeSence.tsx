@@ -56,6 +56,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
             if (!productModule.material || !productModule.component) {
                 continue;
             }
+            var normalMapLoader = new THREE.TextureLoader();
 
             if (productModule.component.mtl) {
                 const onLoadMtl = (mtl: THREE.MaterialCreator) => {
@@ -83,6 +84,18 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                                 material['map'].anisotropy = 16;
                                 material['shininess'] = 0;
                             }
+
+                            // * Normal map test!
+                            normalMapLoader.load(
+                                '/static/assets/farbic-normal-default.jpg',
+                                function (texture: THREE.Texture) {
+                                    texture.wrapS = THREE.RepeatWrapping;
+                                    texture.wrapT = THREE.RepeatWrapping;
+
+                                    material['normalMap'] = texture;
+                                    material.needsUpdate = true;
+                                }
+                            );
                         }
                     }
 
