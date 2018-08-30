@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { withStoreValues } from '@/app';
-import { fetchErrorHandler } from '@/components';
+import { AntdMessage, fetchErrorHandler } from '@/components';
 import { CommonStoreProps, CommonStoreValues } from '@/configs';
 import {
     discountByQuantitiesUtils,
@@ -21,7 +21,9 @@ import {
     AddToCartFormValues
 } from './add-product-cart-control';
 
-interface ProductAddCartControlProps extends CommonStoreValues, WithTempOrderDetails {
+interface ProductAddCartControlProps extends
+    CommonStoreProps,
+    WithTempOrderDetails {
     readonly discountByQuantities: DiscountByQuantity[];
 }
 
@@ -117,6 +119,13 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
                         this.onUpdateOrderDetail :
                         this.onCreateOrderDetail
                 }
+                onSubmitSuccess={() => {
+                    const { setStore } = this.props;
+                    AntdMessage.success('Sản phẩm đã được thêm vào giỏ');
+                    setStore<CommonStoreProps>({
+                        drawerVisible: true
+                    });
+                }}
             />
         );
     }

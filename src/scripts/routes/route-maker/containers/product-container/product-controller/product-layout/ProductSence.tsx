@@ -23,7 +23,7 @@ interface RouteHomeProps extends
     CommonStoreProps,
     WithComponentsProps,
     WithMaterialProps {
-    readonly selectedObject?: THREE.Mesh | null;
+    readonly selectedObject?: THREE.Group | null;
     readonly product: Product;
 }
 @withComponents(restfulStore)

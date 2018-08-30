@@ -10,7 +10,6 @@ import {
     AntdCol,
     AntdDivider,
     AntdIcon,
-    AntdModal,
     AntdPopover,
     AntdRow
 } from '@/components/antd-component';
@@ -81,6 +80,13 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
         );
     }
 
+    componentWillUnmount() {
+        const { setStore } = this.props;
+        setStore<ThreeComponentListProps>({
+            selectedComponent: null
+        });
+    }
+
     render() {
         const { selectedObject, components } = this.props;
         const child = selectedObject.children[0] as THREE.Mesh;
@@ -91,7 +97,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                     Cấu kiện thay thế
                     {
                         <AccessControl allowRoles="root">
-                            <CreateComponentFormControl/>
+                            <CreateComponentFormControl />
                         </AccessControl>
                     }
                 </ListHeader>

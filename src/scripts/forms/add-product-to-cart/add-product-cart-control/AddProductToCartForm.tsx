@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import {
     AntdButton,
     AntdCol,
-    AntdMessage,
     AntdRow,
     FormError,
     renderInputNumber,
@@ -150,6 +149,5 @@ class AddProductToCartFormComponent extends React.Component<
 
 export const AddProductToCartForm = reduxForm<AddToCartFormValues, AddProductToCartFormProps>({
     form: 'AddToCartForm',
-    onSubmitSuccess: () => AntdMessage.success('Sản phẩm đã được thêm vào giỏ'),
     enableReinitialize: true
 })(AddProductToCartFormComponent);

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
 import { AntdIcon, AntdList } from '@/components';
-import { AntdTabs } from '@/components/antd-component';
+import { AntdTabs, AntdTooltip } from '@/components/antd-component';
 import { Img } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
 import {
@@ -19,10 +19,6 @@ import {
 } from '@/restful';
 
 const { THREE } = window;
-
-const ListHeader = styled.div`
-    margin: 15px 0;
-`;
 
 export interface ThreeMaterialListProps extends CommonStoreProps, WithMaterialProps {
     readonly materials: FurnutureMaterial[];
@@ -58,18 +54,22 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                             }}
                             renderItem={(material: FurnutureMaterial) => (
                                 <AntdList.Item>
-                                    <div
-                                        className={classNames(
-                                            'three-material-list-material',
-                                            { selected: selectedMaterial.id === material.id }
-                                        )}
+                                    <AntdTooltip
+                                        title={material.name}
                                     >
-                                        <Img
-                                            file={material.texture}
-                                            size="img256x256"
-                                            onClick={() => this.onMaterialSelect(material)}
-                                        />
-                                    </div>
+                                        <div
+                                            className={classNames(
+                                                'three-material-list-material',
+                                                { selected: selectedMaterial.id === material.id }
+                                            )}
+                                        >
+                                            <Img
+                                                file={material.texture}
+                                                size="img256x256"
+                                                onClick={() => this.onMaterialSelect(material)}
+                                            />
+                                        </div>
+                                    </AntdTooltip>
                                 </AntdList.Item>
                             )}
                         />

@@ -8,6 +8,7 @@ import * as React from 'react';
 import { WithStoreValuesDispatchs } from '@/app';
 import { ProductModule, ProductType, uploadedFileUtils } from '@/restful';
 
+import { SenceProductInfo } from './three-sence';
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 
 const { THREE } = window;
@@ -15,7 +16,7 @@ const { THREE } = window;
 interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesDispatchs {
     readonly productType: ProductType;
     readonly productModules: ProductModule[];
-    readonly selectedObject: THREE.Mesh;
+    readonly selectedObject: THREE.Group;
     readonly setSence: (threeSence: ThreeSence) => void;
 }
 
@@ -37,16 +38,21 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
     }
 
     render() {
-        const { productType } = this.props;
+        const { productType, selectedObject } = this.props;
         return (
-            <div
-                id="threeViewWindow"
-                ref={(element) => this.container = element}
-                style={{
-                    width: productType.view_senceWidth,
-                    height: productType.view_senceHeight
-                }}
-            />
+            <React.Fragment>
+                <div
+                    id="threeViewWindow"
+                    ref={(element) => this.container = element}
+                    style={{
+                        width: productType.view_senceWidth,
+                        height: productType.view_senceHeight
+                    }}
+                />
+                <SenceProductInfo
+                    selectedObject={selectedObject}
+                />
+            </React.Fragment>
         );
     }
 
