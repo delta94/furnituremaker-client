@@ -156,7 +156,7 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                                     </AntdCol>
                                     <AntdCol span={12}>
                                         <div style={{ textAlign: 'right' }}>
-                                            {product.productType.volume} m3
+                                            {product.productType.volume} m<sup>3</sup>
                                         </div>
                                     </AntdCol>
                                 </AntdRow>

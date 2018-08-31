@@ -10,7 +10,7 @@ export class CartProducts extends React.Component<CartProductsProps> {
     render() {
 
         return (
-            <AntdCard title="Danh sách sản phẩm">
+            <AntdCard title="Giỏ hàng của bạn">
                 <CartDrawerContent />
             </AntdCard>
         );

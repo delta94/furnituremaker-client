@@ -14,7 +14,8 @@ import {
     RouteLogin,
     RouteMaker,
     RouteOrderDetail,
-    RouteOrders
+    RouteOrders,
+    RouteTransportPolicy
 } from '@/routes';
 
 export function startup() {
@@ -24,7 +25,8 @@ export function startup() {
         RouteOrders,
         RouteOrderDetail,
         RouteMaker,
-        RouteCart
+        RouteCart,
+        RouteTransportPolicy
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);

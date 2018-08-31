@@ -152,7 +152,14 @@ export const orderDetailUtils = {
             },
             0
         );
-    }
+    },
+    getTotalVolume: (orderDetails) => orderDetails.reduce(
+        (totalVolumeValue, orderDetail) => {
+            const orderDetailVolume = orderDetail.productType.volume * orderDetail.quantity;
+            return totalVolumeValue += (orderDetailVolume || 0);
+        },
+        0
+    )
 };
 
 export interface WithTempOrderDetails {

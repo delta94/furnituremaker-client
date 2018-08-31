@@ -1,10 +1,11 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import { withStoreValues } from '@/app';
 import { AntdCol, AntdRow } from '@/components';
-import { colorPrimary, CommonStoreProps } from '@/configs';
-import { OrderDetail, orderDetailUtils, orderUtils } from '@/restful';
+import { CommonStoreProps } from '@/configs';
+import { OrderDetail, orderUtils } from '@/restful';
+import { transportPolicyRoutePath } from '@/routes';
 import { ShippingCost } from '@/routes/route-cart/containers/CartUI';
 import { formatCurrency } from '@/utilities';
 
@@ -25,7 +26,8 @@ export class CartTransportFee extends React.Component<CardTotalOfPaymentProps> {
         return (
             <AntdRow>
                 <AntdCol span={12}>
-                    <span>Phí vận chuyển:</span>
+                    <div>Phí vận chuyển:</div>
+                    <Link to={transportPolicyRoutePath}>Xem chính sách vận chuyển</Link>
                 </AntdCol>
                 <AntdCol span={12}>
                     <ShippingCost>

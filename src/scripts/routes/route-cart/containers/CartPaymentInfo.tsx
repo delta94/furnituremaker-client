@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdCol, AntdDivider, AntdRow } from '@/components';
+import { AntdAffix, AntdCol, AntdDivider, AntdRow } from '@/components';
 import {
     orderDetailUtils,
     orderUtils,
@@ -17,6 +17,7 @@ import { formatCurrency, formatDate, toVNDay } from '@/utilities';
 import {
     CardTotalOfPayment,
     CartDiscountByAgencyLevel,
+    CartSubmitOrder,
     CartUsePromoCode
 } from './cart-payment-info';
 import { SectionTitle, ShippingCost } from './CartUI';
@@ -41,54 +42,57 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
         const shippingDate = orderUtils.getShippingDate();
 
         return (
-            <div>
-                <AntdRow>
-                    <SectionTitle>Thông tin thanh toán</SectionTitle>
-                    <AntdCol span={12}>
-                        <span>Tổng tiền:</span>
-                    </AntdCol>
-                    <AntdCol span={12}>
-                        <ShippingCost>
-                            {formatCurrency(totalPrice)}
-                        </ShippingCost>
-                    </AntdCol>
-                    {
-                        totalProductsDiscount && (
-                            <React.Fragment>
-                                <AntdCol span={12}>
-                                    <span>Giảm giá sản phẩm:</span>
-                                </AntdCol>
-                                <AntdCol span={12}>
-                                    <ShippingCost>
-                                        -{formatCurrency(totalProductsDiscount)}
-                                    </ShippingCost>
-                                </AntdCol>
-                            </React.Fragment>
-                        )
-                    }
-                </AntdRow>
+            <AntdAffix>
+                <div>
+                    <AntdRow>
+                        <SectionTitle>Thông tin thanh toán</SectionTitle>
+                        <AntdCol span={12}>
+                            <span>Tổng tiền:</span>
+                        </AntdCol>
+                        <AntdCol span={12}>
+                            <ShippingCost>
+                                {formatCurrency(totalPrice)}
+                            </ShippingCost>
+                        </AntdCol>
+                        {
+                            totalProductsDiscount && (
+                                <React.Fragment>
+                                    <AntdCol span={12}>
+                                        <span>Giảm giá sản phẩm:</span>
+                                    </AntdCol>
+                                    <AntdCol span={12}>
+                                        <ShippingCost>
+                                            -{formatCurrency(totalProductsDiscount)}
+                                        </ShippingCost>
+                                    </AntdCol>
+                                </React.Fragment>
+                            )
+                        }
+                    </AntdRow>
 
-                <AntdDivider dashed={true} />
-                <CartDiscountByAgencyLevel orderPrice={totalPrice - totalProductsDiscount} />
-                <AntdDivider dashed={true} />
-                <CartUsePromoCode />
-                <AntdDivider dashed={true} />
+                    <AntdDivider dashed={true} />
+                    <CartDiscountByAgencyLevel orderPrice={totalPrice - totalProductsDiscount} />
+                    <AntdDivider dashed={true} />
+                    <CartUsePromoCode />
+                    <AntdDivider dashed={true} />
 
-                <CartTransportFee orderDetails={orderDetails} />
-                <AntdDivider dashed={true} />
-                <CardTotalOfPayment orderDetails={orderDetails} />
-                <AntdRow>
-                    <AntdCol span={12}>
-                        <span>Dự kiến giao hàng:</span>
-                    </AntdCol>
-                    <AntdCol span={12}>
-                        <ShippingDate>
-                            {`${toVNDay(shippingDate)} - ${formatDate(shippingDate, 'DD/MM/YYYY')}`}
-                        </ShippingDate>
-                    </AntdCol>
-                </AntdRow>
-                <AntdDivider dashed={true} />
-            </div>
+                    <CartTransportFee orderDetails={orderDetails} />
+                    <AntdDivider dashed={true} />
+                    <CardTotalOfPayment orderDetails={orderDetails} />
+                    <AntdRow>
+                        <AntdCol span={12}>
+                            <span>Dự kiến giao hàng:</span>
+                        </AntdCol>
+                        <AntdCol span={12}>
+                            <ShippingDate>
+                                {`${toVNDay(shippingDate)} - ${formatDate(shippingDate, 'DD/MM/YYYY')}`}
+                            </ShippingDate>
+                        </AntdCol>
+                    </AntdRow>
+                    <AntdDivider dashed={true} />
+                </div>
+                <CartSubmitOrder />
+            </AntdAffix>
         );
     }
 }

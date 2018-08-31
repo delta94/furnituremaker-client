@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps, RouteProps } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { readyState, withStoreValues } from '@/app';
 import {
@@ -13,13 +14,7 @@ import {
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
 
-import {
-    CartDivider,
-    CartPaymentInfo,
-    CartProducts,
-    CartShippingInfo,
-    CartSubmitOrder
-} from './containers';
+import { CartPaymentInfo, CartProducts, CartShippingInfo } from './containers';
 
 type RouteHomeProps = CommonStoreProps & RouteComponentProps<{}>;
 
@@ -46,12 +41,11 @@ export class RouteCart extends React.Component<RouteHomeProps> {
                     <Container>
                         <AntdRow type="flex" gutter={30}>
                             <AntdCol span={12}>
-                                <CartProducts/>
+                                <CartProducts />
                             </AntdCol>
                             <AntdCol span={12}>
                                 <CartShippingInfo />
                                 <CartPaymentInfo />
-                                <CartSubmitOrder />
                             </AntdCol>
                         </AntdRow>
                     </Container>
@@ -63,7 +57,9 @@ export class RouteCart extends React.Component<RouteHomeProps> {
     renderBreadcrumb() {
         return (
             <AntdBreadcrumb>
-                <AntdBreadcrumb.Item><AntdIcon type="home" /></AntdBreadcrumb.Item>
+                <AntdBreadcrumb.Item>
+                    <Link to="/"><AntdIcon type="home" /></Link>
+                </AntdBreadcrumb.Item>
                 <AntdBreadcrumb.Item>Đặt hàng</AntdBreadcrumb.Item>
             </AntdBreadcrumb>
         );

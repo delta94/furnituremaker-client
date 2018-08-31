@@ -4,3 +4,4 @@ export * from './route-orders';
 export * from './route-order-detail';
 export * from './route-maker';
 export * from './route-cart';
+export * from './route-transport-policy';
