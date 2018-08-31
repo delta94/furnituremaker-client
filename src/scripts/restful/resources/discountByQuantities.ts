@@ -48,32 +48,35 @@ export const discountByQuantitiesUtils = {
         discountByQuantities: DiscountByQuantity[] = [],
         quantity: number = 0
     ) => {
-        if (!discountByQuantities.length) {
-            return 0;
-        }
-
-        const entity = discountByQuantities.find(o => o.quantity === quantity);
-        if (!entity) {
-            const sortedDiscountByQuantities =
-                discountByQuantitiesUtils.sort(discountByQuantities).reverse();
-            
-            for (const discountByQuantity of sortedDiscountByQuantities) {
-                if (
-                    quantity > discountByQuantity.quantity ||
-                    quantity === discountByQuantity.quantity
-                ) {
-                    return discountByQuantity.discountPerProduct;
-                }
-            }
-            return 0;
-        }
-        return entity.discountPerProduct;
+        const entity = discountByQuantitiesUtils.getNearestDiscountQuantityInList(discountByQuantities, quantity);
+        return entity ? entity.discountPerProduct : 0;
     },
     sort: (discountByquantities: DiscountByQuantity[]) => {
         return sortBy(
             discountByquantities,
             nameof<DiscountByQuantity>(o => o.quantity)
         );
+    },
+    getNearestDiscountQuantityInList: (discountByQuantities: DiscountByQuantity[], quantity: number) => {
+        if (!discountByQuantities.length) {
+            return null;
+        }
+        const entity = discountByQuantities.find(o => o.quantity === quantity);
+        if (!entity) {
+            const sortedDiscountByQuantities =
+                discountByQuantitiesUtils.sort(discountByQuantities).reverse();
+
+            for (const discountByQuantity of sortedDiscountByQuantities) {
+                if (
+                    quantity > discountByQuantity.quantity ||
+                    quantity === discountByQuantity.quantity
+                ) {
+                    return discountByQuantity;
+                }
+            }
+            return null;
+        }
+        return entity;
     }
 };
 

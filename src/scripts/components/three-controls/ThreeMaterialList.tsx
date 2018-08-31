@@ -5,10 +5,10 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { AntdIcon, AntdList } from '@/components';
-import { AntdTabs, AntdTooltip } from '@/components/antd-component';
-import { Img } from '@/components/domain-components';
-import { CommonStoreProps } from '@/configs';
+import { AntdList, AntdTabs, AntdTooltip, Img } from '@/components';
+import { AntdIcon } from '@/components/antd-component';
+import { Loading } from '@/components/domain-components/generic/Loading';
+import { colorPrimary, CommonStoreProps } from '@/configs';
 import {
     FurnutureMaterial,
     Product,
@@ -18,31 +18,38 @@ import {
     withMaterialsByType
 } from '@/restful';
 
-const { THREE } = window;
-
-export interface ThreeMaterialListProps extends CommonStoreProps, WithMaterialProps {
+export interface ThreeMaterialListProps extends
+    CommonStoreProps,
+    WithMaterialProps {
     readonly materials: FurnutureMaterial[];
     readonly selectedObject: THREE.Group;
     readonly selectedMaterial: FurnutureMaterial;
 }
 
 @withMaterialsByType(restfulStore)
-@withStoreValues(
-    nameof<ThreeMaterialListProps>(o => o.selectedMaterial),
-    nameof<ThreeMaterialListProps>(o => o.selectedProduct),
+@withStoreValues<ThreeMaterialListProps>(
+    'selectedMaterial',
+    'selectedProduct'
 )
 class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListProps> {
+    readonly state: {
+        readonly loading: boolean;
+        readonly nextSelectMaterial: FurnutureMaterial;
+    };
+
+    constructor(props: ThreeMaterialListProps) {
+        super(props);
+        this.state = {
+            loading: false,
+            nextSelectMaterial: null
+        };
+    }
+
     render() {
         const { selectedMaterial, materials } = this.props;
-
+        const { loading, nextSelectMaterial } = this.state;
         return (
             <div className="three-material-list">
-                <div
-                    className="three-material-list-backbtn"
-                    onClick={() => this.props.setStore({ selectedObject: null })}
-                >
-                    <AntdIcon type="arrow-left" />
-                </div>
                 <AntdTabs>
                     <AntdTabs.TabPane tab="Vật liệu">
                         <AntdList
@@ -52,26 +59,32 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                                 pageSize: 6,
                                 simple: true
                             }}
-                            renderItem={(material: FurnutureMaterial) => (
-                                <AntdList.Item>
-                                    <AntdTooltip
-                                        title={material.name}
-                                    >
-                                        <div
-                                            className={classNames(
-                                                'three-material-list-material',
-                                                { selected: selectedMaterial.id === material.id }
-                                            )}
+                            renderItem={(material: FurnutureMaterial) => {
+                                const isSelected = (selectedMaterial.id === material.id);
+                                const isNextSelected = nextSelectMaterial && (nextSelectMaterial.id === material.id);
+
+                                return (
+                                    <AntdList.Item>
+                                        <AntdTooltip
+                                            title={material.description || material.name}
                                         >
-                                            <Img
-                                                file={material.texture}
-                                                size="img256x256"
-                                                onClick={() => this.onMaterialSelect(material)}
-                                            />
-                                        </div>
-                                    </AntdTooltip>
-                                </AntdList.Item>
-                            )}
+                                            <div
+                                                className={classNames(
+                                                    'three-material-list-material',
+                                                    { selected: isSelected }
+                                                )}
+                                            >
+                                                <Img
+                                                    file={material.texture}
+                                                    size="img256x256"
+                                                    onClick={() => this.onMaterialSelect(material)}
+                                                />
+                                                {(loading && isNextSelected) && (<Loading />)}
+                                            </div>
+                                        </AntdTooltip>
+                                    </AntdList.Item>
+                                );
+                            }}
                         />
                     </AntdTabs.TabPane>
                 </AntdTabs>
@@ -81,17 +94,20 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
 
     onMaterialSelect(material: FurnutureMaterial) {
         const { selectedObject, selectedProduct } = this.props;
-        const texture = new THREE.TextureLoader();
+        const texture = new window.THREE.TextureLoader();
         const textureFile = uploadedFileUtils.getUrl(material.texture);
+
+        this.setState({
+            loading: true,
+            nextSelectMaterial: material
+        });
 
         texture.load(textureFile, (map) => {
             for (const mesh of selectedObject.children as THREE.Mesh[]) {
-                // tslint:disable-next-line:no-string-literal
-                mesh.material['map'].image = map.image;
-                // tslint:disable-next-line:no-string-literal
-                mesh.material['map'].needsUpdate = true;
-                // tslint:disable-next-line:no-string-literal
-                mesh.material['needsUpdate'] = true;
+                const meshPhongMaterial = mesh.material as THREE.MeshPhongMaterial;
+                meshPhongMaterial.map.image = map.image;
+                meshPhongMaterial.map.needsUpdate = true;
+                meshPhongMaterial.needsUpdate = true;
             }
 
             const nextSelectedProduct: Product = {
@@ -108,16 +124,19 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                     };
                 })
             };
-            this.props.setStore({
-                [nameof<ThreeMaterialListProps>(o => o.selectedMaterial)]: material,
-                [nameof<ThreeMaterialListProps>(o => o.selectedProduct)]: nextSelectedProduct
+            this.props.setStore<ThreeMaterialListProps>({
+                selectedMaterial: material,
+                selectedProduct: nextSelectedProduct
+            });
+            this.setState({
+                loading: false
             });
         });
     }
 }
 
-export const ThreeMaterialList = withStoreValues(
+export const ThreeMaterialList = withStoreValues<ThreeMaterialListProps>(
     'selectedObject',
     'selectedMaterial',
-    nameof<CommonStoreProps>(o => o.selectedMaterialType)
+    'selectedMaterialType'
 )(ThreeMaterialListComponent);

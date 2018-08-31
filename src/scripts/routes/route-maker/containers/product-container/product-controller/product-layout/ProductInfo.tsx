@@ -7,6 +7,7 @@ import {
     AntdCard,
     AntdCol,
     AntdDivider,
+    AntdIcon,
     AntdRow,
     Condition,
     ThreeComponentList,
@@ -65,6 +66,13 @@ const ProductInfoWrapper = styled.div`
     min-height: 500px;
 `;
 
+const ProductBackBtn = styled.div`
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+`;
+
 export interface ProductInfoProps extends
     CommonStoreProps,
     WithStoreValuesDispatchs,
@@ -82,7 +90,8 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
         const {
             product,
             selectedProductType,
-            showDesignModal
+            showDesignModal,
+            setStore
         } = this.props;
 
         return (
@@ -90,6 +99,11 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                 {
                     this.props.selectedObject ? (
                         <ProductInfoWrapper>
+                            <ProductBackBtn
+                                onClick={() => setStore({ selectedObject: null })}
+                            >
+                                <AntdIcon type="arrow-left" />
+                            </ProductBackBtn>
                             <ThreeMaterialList />
                             <AntdDivider dashed={true} />
                             <ThreeComponentList />
@@ -111,20 +125,44 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                                         </ChangeDesign>
                                     </AntdCol>
                                 </AntdRow>
-                                <FurnitureModules>
-                                    {
-                                        product.modules.map((productModule, index) => {
-                                            return (
-                                                <FurnitureModuleItem key={index}>
-                                                    {productModuleUtils.getName(productModule)}
-                                                </FurnitureModuleItem>
-                                            );
-                                        })
-                                    }
-                                </FurnitureModules>
+                                <div style={{ margin: '0 0 15px 0' }}>
+                                    <h4>Cấu kiện và vật liệu</h4>
+                                    <FurnitureModules>
+                                        {
+                                            product.modules.map((productModule, index) => {
+                                                return (
+                                                    <FurnitureModuleItem key={index}>
+                                                        {productModuleUtils.getName(productModule)}
+                                                    </FurnitureModuleItem>
+                                                );
+                                            })
+                                        }
+                                    </FurnitureModules>
+                                </div>
+                                <AntdRow>
+                                    <AntdCol span={24}>
+                                        <h4>Thông số sản phẩm</h4>
+                                    </AntdCol>
+                                    <AntdCol span={12}>
+                                        Kích thước:
+                                    </AntdCol>
+                                    <AntdCol span={12}>
+                                        <div style={{ textAlign: 'right' }}>
+                                            {product.productType.size}
+                                        </div>
+                                    </AntdCol>
+                                    <AntdCol span={12}>
+                                        Khối lượng:
+                                    </AntdCol>
+                                    <AntdCol span={12}>
+                                        <div style={{ textAlign: 'right' }}>
+                                            {product.productType.volume} m3
+                                        </div>
+                                    </AntdCol>
+                                </AntdRow>
                                 <AntdDivider />
                                 <div>
-                                    <div>Giá ban đầu: {productUtils.formatPrice(product)}</div>
+                                    <h4>Thêm vào giỏ hàng</h4>
                                     <RestfulRender
                                         fetcher={restfulFetcher}
                                         store={restfulStore}

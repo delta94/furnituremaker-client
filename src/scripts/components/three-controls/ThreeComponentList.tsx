@@ -13,6 +13,7 @@ import {
     AntdPopover,
     AntdRow
 } from '@/components/antd-component';
+import { Loading } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
 import { CreateComponentFormControl } from '@/forms/create-component';
 import {
@@ -50,6 +51,18 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
 
     readonly componentUpdatePage = apiEntry('/admin/plugins/content-manager/components');
 
+    readonly state: {
+        readonly loading: boolean;
+        readonly nextSelectComponent: FurnitureComponent;
+    };
+
+    constructor(props: ThreeComponentListProps) {
+        super(props);
+        this.state = {
+            loading: false,
+            nextSelectComponent: null
+        };
+    }
     readonly renderPopover = (component: FurnitureComponent) => {
         const updatePageHref = `${this.componentUpdatePage}/${component.id}?source=content-manager`;
         return (
@@ -91,6 +104,8 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
         const { selectedObject, components } = this.props;
         const child = selectedObject.children[0] as THREE.Mesh;
         (child.material as THREE.MeshPhongMaterial).map.needsUpdate = true;
+
+        const { loading, nextSelectComponent } = this.state;
         return (
             <React.Fragment>
                 <ListHeader>
@@ -108,25 +123,31 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                         pageSize: 6,
                         simple: true
                     }}
-                    renderItem={(component: FurnitureComponent) => (
-                        <AntdList.Item>
-                            <div
-                                className={classNames(
-                                    'three-component-list-component',
-                                    { selected: selectedObject.name === component.id }
-                                )}
-                            >
-                                <Img
-                                    file={component.thumbnail}
-                                    size="img256x256"
-                                    onClick={() => this.onComponentSelect(component)}
-                                />
-                                <AccessControl allowRoles="root">
-                                    {this.renderPopover(component)}
-                                </AccessControl>
-                            </div>
-                        </AntdList.Item>
-                    )}
+                    renderItem={(component: FurnitureComponent) => {
+                        const isSelected = (selectedObject.name === component.id);
+                        const isNextSelected = nextSelectComponent && (nextSelectComponent.id === component.id);
+
+                        return (
+                            <AntdList.Item>
+                                <div
+                                    className={classNames(
+                                        'three-component-list-component',
+                                        { selected: isSelected }
+                                    )}
+                                >
+                                    <Img
+                                        file={component.thumbnail}
+                                        size="img256x256"
+                                        onClick={() => this.onComponentSelect(component)}
+                                    />
+                                    <AccessControl allowRoles="root">
+                                        {this.renderPopover(component)}
+                                    </AccessControl>
+                                    {(loading && isNextSelected) && (<Loading />)}
+                                </div>
+                            </AntdList.Item>
+                        );
+                    }}
                 />
 
             </React.Fragment>
@@ -139,6 +160,11 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
         if (component.id === selectedObject.name) {
             return;
         }
+
+        this.setState({
+            loading: true,
+            nextSelectComponent: component
+        });
 
         const objLoader = new THREE.OBJLoader2();
         const callbackOnLoad = (event) => {
@@ -176,6 +202,10 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                 selectedObject: event.detail.loaderRootNode,
                 selectedProduct: nextSelectedProduct,
                 selectedComponent: component
+            });
+            this.setState({
+                loading: false,
+                nextSelectComponent: null
             });
         };
         const objFile = uploadedFileUtils.getUrl(component.obj);
