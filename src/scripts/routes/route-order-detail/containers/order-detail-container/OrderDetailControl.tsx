@@ -2,7 +2,7 @@ import * as React from 'react';
 import { restfulDataContainer } from 'react-restful';
 
 import { withStoreValues } from '@/app';
-import { AntdModal } from '@/components';
+import { AntdModal, Container } from '@/components';
 import { CommonStoreProps, InitAppStoreProps } from '@/configs';
 import {
     UpdateOrderFormControl
@@ -15,7 +15,11 @@ import {
     restfulStore
 } from '@/restful';
 
-import { OrderDetail, OrderDetailProps } from './order-detail-control';
+import {
+    OrderDetail,
+    OrderDetailProps,
+    OrderTransactions
+} from './order-detail-control';
 
 export interface OrderDetailControlProps extends
     Pick<OrderDetailProps, 'order'>,
@@ -89,30 +93,33 @@ OrderDetailControlComponentState> {
         const { updateOrderModalVisibled } = this.state;
         return (
             <React.Fragment>
-                <OrderDetail
-                    order={order}
-                    onUpdateOrderClick={() => {
-                        this.setState({
-                            updateOrderModalVisibled: true
-                        });
-                    }}
-                    onOrderCancel={() => {
-                        AntdModal.confirm({
-                            title: 'Xác nhận',
-                            content: 'Có phải bạn muốn xóa đơn hàng này',
-                            okType: 'danger',
-                            onOk: () => this.onOrderCancel(order)
-                        });
-                    }}
-                    onOrderChange={() => {
-                        AntdModal.confirm({
-                            title: 'Xác nhận',
-                            content: 'Có phải bạn muốn đổi trả đơn hàng này',
-                            okType: 'danger',
-                            onOk: () => this.onOrderChange(order)
-                        });
-                    }}
-                />
+                <Container>
+                    <OrderDetail
+                        order={order}
+                        onUpdateOrderClick={() => {
+                            this.setState({
+                                updateOrderModalVisibled: true
+                            });
+                        }}
+                        onOrderCancel={() => {
+                            AntdModal.confirm({
+                                title: 'Xác nhận',
+                                content: 'Có phải bạn muốn xóa đơn hàng này',
+                                okType: 'danger',
+                                onOk: () => this.onOrderCancel(order)
+                            });
+                        }}
+                        onOrderChange={() => {
+                            AntdModal.confirm({
+                                title: 'Xác nhận',
+                                content: 'Có phải bạn muốn đổi trả đơn hàng này',
+                                okType: 'danger',
+                                onOk: () => this.onOrderChange(order)
+                            });
+                        }}
+                    />
+                    <OrderTransactions />
+                </Container>
                 <AntdModal
                     destroyOnClose={true}
                     visible={updateOrderModalVisibled}

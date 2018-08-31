@@ -7,8 +7,7 @@ import {
     AntdRow,
     FormError,
     renderDatePickerField,
-    renderSelectField,
-    renderTextArea
+    renderSelectField
 } from '@/components';
 import { Order, orderUtils } from '@/restful';
 
@@ -17,8 +16,7 @@ export interface UpdateOrderFormProps {
 }
 
 export interface UpdateOrderFormValues extends
-    Pick<Order, 'status'>,
-    Pick<Order, 'shippingAddress'> {
+    Pick<Order, 'status'> {
     readonly shippingDate: Moment;
 }
 
@@ -52,14 +50,6 @@ class UpdateOrderFormComponent extends React.Component<
                             selectProps={{
                                 allowClear: false
                             }}
-                        />
-                    </AntdCol>
-                    <AntdCol span={24}>
-                        <Field
-                            name={nameof<UpdateOrderFormValues>(o => o.shippingAddress)}
-                            component={renderTextArea}
-                            label="Địa chỉ giao hàng"
-                            required={true}
                         />
                     </AntdCol>
                 </AntdRow>

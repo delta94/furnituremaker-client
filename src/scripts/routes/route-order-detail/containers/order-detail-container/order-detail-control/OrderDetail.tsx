@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { Container } from '@/components';
 import { Order } from '@/restful';
 
 import {
@@ -12,7 +11,7 @@ import {
 } from './order-detail';
 
 const OrderDetailWrapper = styled.div`
-    padding: 0 0 0 0;
+    padding: 0 0 30px 0;
 `;
 
 export interface OrderDetailProps extends
@@ -26,18 +25,16 @@ export class OrderDetail extends React.Component<OrderDetailProps> {
     render() {
         const { order, onOrderCancel, onOrderChange, onUpdateOrderClick } = this.props;
         return (
-            <Container>
-                <OrderDetailWrapper>
-                    <OrderDetailHeader
-                        order={order}
-                        onOrderCancel={onOrderCancel}
-                        onOrderChange={onOrderChange}
-                        onUpdateOrderClick={onUpdateOrderClick}
-                    />
-                    <OrderDetailStatus order={order} />
-                    <OrderDetailProductTable order={order} />
-                </OrderDetailWrapper>
-            </Container>
+            <OrderDetailWrapper>
+                <OrderDetailHeader
+                    order={order}
+                    onOrderCancel={onOrderCancel}
+                    onOrderChange={onOrderChange}
+                    onUpdateOrderClick={onUpdateOrderClick}
+                />
+                <OrderDetailStatus order={order} />
+                <OrderDetailProductTable order={order} />
+            </OrderDetailWrapper>
         );
     }
 }

@@ -61,6 +61,7 @@ export class OrderDetailProductTable extends React.Component<OrderDetailProductT
                     columns={columns}
                     dataSource={order.orderDetails}
                     pagination={false}
+                    bordered={true}
                 />
             </AntdCard>
         );

@@ -11,6 +11,7 @@ import {
     materialTypeResourceType,
     orderDetailResourceType,
     orderResourceType,
+    orderTransactionType,
     productDesign,
     productType,
     productTypeGroupResourceType,
@@ -35,3 +36,4 @@ restfulStore.registerRecordType(promotionResourceType);
 restfulStore.registerRecordType(cityResourceType);
 restfulStore.registerRecordType(countyResourceType);
 restfulStore.registerRecordType(agencyResourceType);
+restfulStore.registerRecordType(orderTransactionType);

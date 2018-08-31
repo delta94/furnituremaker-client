@@ -29,8 +29,7 @@ export class UpdateOrderFormControl extends React.Component<UpdateOrderFormContr
         const updatingOrder: Order = {
             ...order,
             status: formValues.status,
-            shippingDate: formValues.shippingDate.toISOString(),
-            shippingAddress: formValues.shippingAddress
+            shippingDate: formValues.shippingDate.toISOString()
         };
 
         await restfulFetcher.fetchResource(
@@ -53,8 +52,7 @@ export class UpdateOrderFormControl extends React.Component<UpdateOrderFormContr
                 onSubmit={this.onFormSubmit}
                 initialValues={{
                     shippingDate: moment(order.shippingDate),
-                    status: order.status,
-                    shippingAddress: order.shippingAddress
+                    status: order.status
                 }}
             />
         );
