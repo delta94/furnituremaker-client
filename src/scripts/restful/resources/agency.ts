@@ -8,6 +8,7 @@ import {
 import { apiEntry } from '@/restful/apiEntry';
 
 import { AgencyLevel } from './agencyLevel';
+import { Order } from './order';
 import { User } from './user';
 
 export interface Agency extends RecordType {
@@ -38,7 +39,25 @@ export const agencyResources = {
                 store.mapRecord(resourceType, agency);
             }
         }
+    }),
+    findOne: new Resource<Agency>({
+        resourceType: agencyResourceType,
+        method: 'GET',
+        url: apiEntry('/agency/:id'),
+        mapDataToStore: (agency, resourceType, store) => {
+            store.mapRecord(resourceType, agency);
+        }
     })
+};
+
+export const agencyUtils = {
+    getOrderDiscountByLevel: (agency: Agency, orderPrice: number) => {
+        if (!agency || !agency.level) {
+            return 0;
+        }
+        const discountValue = (agency.level.discountPercent * 0.01) * orderPrice;
+        return discountValue;
+    }
 };
 
 export interface WithAllAgenciesProps {

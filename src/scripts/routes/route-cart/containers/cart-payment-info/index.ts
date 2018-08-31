@@ -1,3 +1,3 @@
 export * from './CardTotalOfPayment';
-export * from './CartTransportFee';
+export * from './CartDiscountByAgencyLevel';
 export * from './CartUsePromoCode';

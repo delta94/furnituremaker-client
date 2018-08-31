@@ -14,14 +14,19 @@ import {
 } from '@/routes/route-cart/containers/cart-payment-info/CartTransportFee';
 import { formatCurrency, formatDate, toVNDay } from '@/utilities';
 
-import { CardTotalOfPayment, CartUsePromoCode } from './cart-payment-info';
+import {
+    CardTotalOfPayment,
+    CartDiscountByAgencyLevel,
+    CartUsePromoCode
+} from './cart-payment-info';
 import { SectionTitle, ShippingCost } from './CartUI';
 
 const ShippingDate = styled.div`
     text-align: right;
 `;
 
-interface CartPaymentInfoProps extends WithTempOrderDetails {
+interface CartPaymentInfoProps extends
+    WithTempOrderDetails {
     // implement...
 }
 
@@ -32,6 +37,7 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
 
         const totalPrice = orderDetailUtils.getTotalPrice(orderDetails);
         const totalProductsDiscount = orderDetailUtils.getTotalDiscount(orderDetails);
+
         const shippingDate = orderUtils.getShippingDate();
 
         return (
@@ -61,9 +67,13 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
                         )
                     }
                 </AntdRow>
+
+                <AntdDivider dashed={true} />
+                <CartDiscountByAgencyLevel orderPrice={totalPrice - totalProductsDiscount} />
                 <AntdDivider dashed={true} />
                 <CartUsePromoCode />
                 <AntdDivider dashed={true} />
+
                 <CartTransportFee orderDetails={orderDetails} />
                 <AntdDivider dashed={true} />
                 <CardTotalOfPayment orderDetails={orderDetails} />
