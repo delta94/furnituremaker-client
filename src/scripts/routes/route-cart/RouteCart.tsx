@@ -16,6 +16,7 @@ import { DefaultLayout } from '@/layout';
 import {
     CartDivider,
     CartPaymentInfo,
+    CartProducts,
     CartShippingInfo,
     CartSubmitOrder
 } from './containers';
@@ -44,16 +45,12 @@ export class RouteCart extends React.Component<RouteHomeProps> {
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <Container>
                         <AntdRow type="flex" gutter={30}>
-                            <AntdCol span={11}>
+                            <AntdCol span={12}>
+                                <CartProducts/>
+                            </AntdCol>
+                            <AntdCol span={12}>
                                 <CartShippingInfo />
-                            </AntdCol>
-                            <AntdCol span={2}>
-                                <CartDivider />
-                            </AntdCol>
-                            <AntdCol span={11}>
                                 <CartPaymentInfo />
-                            </AntdCol>
-                            <AntdCol span={24}>
                                 <CartSubmitOrder />
                             </AntdCol>
                         </AntdRow>

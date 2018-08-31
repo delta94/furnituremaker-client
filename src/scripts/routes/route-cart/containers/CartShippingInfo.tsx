@@ -17,7 +17,6 @@ import { SectionTitle } from './CartUI';
 interface CartDrawerFooterProps extends
     WithTempOrderDetails,
     Pick<InitAppStoreProps, 'history'> {
-    // implement...
 }
 
 @withTempOrderDetails(restfulStore)
@@ -36,9 +35,11 @@ export class CartShippingInfo extends React.Component<CartDrawerFooterProps> {
                         AntdModal.success({
                             title: 'Đặt hàng thành công',
                             content: 'Nhân viên của Furniture Maker sẽ liên hệ với bạn trong thời gian sớm nhất!',
-                            okText: 'Tiếp tục',
+                            okText: 'Xem đơn hàng',
                             okType: 'default',
-                            onOk: () => history.push(toOrderDetailPageUrl)
+                            cancelText: 'Tiếp tục mua sắm',
+                            onOk: () => history.push(toOrderDetailPageUrl),
+                            onCancel: () => history.push('/')
                         });
                     }}
                 />

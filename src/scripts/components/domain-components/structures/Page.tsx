@@ -34,6 +34,10 @@ export class Page extends React.Component<PageProps> {
         });
     }
 
+    componentDidMount() {
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }
+
     render() {
         return (
             <React.Fragment>

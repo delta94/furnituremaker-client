@@ -61,9 +61,10 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
                         )
                     }
                 </AntdRow>
-                <CartTransportFee orderDetails={orderDetails} />
                 <AntdDivider dashed={true} />
                 <CartUsePromoCode />
+                <AntdDivider dashed={true} />
+                <CartTransportFee orderDetails={orderDetails} />
                 <AntdDivider dashed={true} />
                 <CardTotalOfPayment orderDetails={orderDetails} />
                 <AntdRow>

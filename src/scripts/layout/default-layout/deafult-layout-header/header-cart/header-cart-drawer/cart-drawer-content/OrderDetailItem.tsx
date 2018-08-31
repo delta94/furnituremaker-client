@@ -11,6 +11,7 @@ import {
     AntdSpin
 } from '@/components';
 import { AntdModal } from '@/components/antd-component/Modal';
+import { colorPrimary } from '@/configs';
 import {
     discountByQuantitiesUtils,
     OrderDetail,
@@ -131,17 +132,25 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                 }
             >
                 <AntdList.Item.Meta
-                    title={<a href="https://ant.design">{orderDetail.productType.name}</a>}
+                    title={orderDetail.productType.name}
                     description={(
                         <div>
-                            <Link to={`/maker/${orderDetail.productCode}`}>{orderDetail.productCode}</Link>
+                            <Link to={`/maker/${orderDetail.productCode}`}>
+                                Xem sản phẩm
+                            </Link>
                         </div>
                     )}
                 />
                 <div>Số lượng mua: {orderDetail.quantity}</div>
                 <div>Đơn giá: {formatCurrency(orderDetail.productPrice)}</div>
                 <div>Giảm giá mỗi sản phẩm: {formatCurrency(orderDetail.productDiscount)}</div>
-                <div>Thành tiền: {formatCurrency(orderDetail.totalPrice)}</div>
+                <br/>
+                <div>Tổng giảm giá: {formatCurrency(orderDetail.discount)}</div>
+                <div>
+                    Thành tiền: <b style={{ color: colorPrimary }}>
+                        {formatCurrency(orderDetail.totalPrice)}
+                    </b>
+                </div>
             </AntdList.Item >
         );
     }
