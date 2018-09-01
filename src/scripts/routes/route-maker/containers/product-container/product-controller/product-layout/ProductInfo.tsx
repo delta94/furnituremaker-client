@@ -152,7 +152,7 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                                         </div>
                                     </AntdCol>
                                     <AntdCol span={12}>
-                                        Khối lượng:
+                                        Thể tích:
                                     </AntdCol>
                                     <AntdCol span={12}>
                                         <div style={{ textAlign: 'right' }}>

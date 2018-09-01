@@ -24,7 +24,6 @@ export interface Order extends RecordType {
     readonly shippingAddress: string;
     readonly shippingDate: string;
     readonly depositRequired: number;
-    readonly theAmountPaid: number;
     readonly paid: boolean;
     readonly totalPrice: number;
     readonly status: 'new' | 'confirmed' | 'produce' | 'payment' | 'shipping' | 'done' | 'cancel' | 'change';

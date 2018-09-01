@@ -90,7 +90,24 @@ export const orderTransactionUtils = {
 
         return `${title} đơn hàng #${orderTransaction.order.id}`;
     },
-    genCode: () => genCodeWithCurrentDate()
+    genCode: () => genCodeWithCurrentDate(),
+    sumMoney: (orderTransactions: OrderTransaction[]) => {
+        if (!orderTransactions) {
+            return 0;
+        }
+
+        const result = orderTransactions.reduce(
+            (currentValue, orderTransaction) => {
+                if (orderTransaction.type === 'refund') {
+                    return currentValue -= orderTransaction.money;
+                }
+                return currentValue += orderTransaction.money;
+            },
+            0
+        );
+
+        return result;
+    }
 };
 
 export interface WithOrderTransactionProps {

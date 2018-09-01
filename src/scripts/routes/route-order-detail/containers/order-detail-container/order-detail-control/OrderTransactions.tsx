@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { AccessControl } from '@/app';
-import { AntdButton, AntdCard, AntdTable } from '@/components';
+import { AntdCard, AntdTable } from '@/components';
 import {
     CreateOrderTransaction,
     CreateOrderTransactionProps
@@ -10,14 +10,12 @@ import {
     OrderTransaction,
     orderTransactionUtils,
     restfulStore,
-    withCurrentUser,
     WithOrderTransactionProps,
     withOrderTransactionsByOrder
 } from '@/restful';
-import {
-    TransactionDeleteButton
-} from '@/routes/route-order-detail/containers/order-detail-container/order-detail-control/order-transactions';
 import { formatCurrency, formatDate } from '@/utilities';
+
+import { TransactionDeleteButton } from './order-transactions';
 
 interface OrderTransactionsProps extends
     WithOrderTransactionProps,
@@ -59,6 +57,9 @@ export class OrderTransactions extends React.PureComponent<OrderTransactionsProp
                         dataIndex={nameof<OrderTransaction>(o => o.type)}
                         render={(type: OrderTransaction['type']) => {
                             const title = orderTransactionUtils.getTypeTitle(type);
+                            if (type === 'refund') {
+                                return <span style={{ color: 'red' }}>{title}</span>;
+                            }
                             return title;
                         }}
                     />

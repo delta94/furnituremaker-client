@@ -5,6 +5,7 @@ import { AntdColumnProps, AntdTable, AntdTag } from '@/components';
 import {
     Order,
     orderDetailUtils,
+    orderTransactionUtils,
     orderUtils,
     restfulStore,
     withOrders,
@@ -24,11 +25,20 @@ const columns: AntdColumnProps<Order>[] = [
             return (<Link to={`/orders/${id}`}>{order.code}</Link>);
         }
     }, {
-        title: 'Ngày tạo',
+        title: 'Ngày Đặt',
         dataIndex: nameof<Order>(o => o.createdAt),
         key: nameof<Order>(o => o.createdAt),
         render: (createdAt: string) => {
             return formatDate(createdAt, 'DD/MM/YYYY');
+        }
+    }, {
+        title: 'Dự kiến giao hàng',
+        dataIndex: nameof<Order>(o => o.shippingDate),
+        key: 'shippingDate',
+        render: (shippingDate: Order['shippingDate']) => {
+            return shippingDate ?
+                `${toVNDay(shippingDate)} - ${formatDate(shippingDate, 'DD/MM/YYYY')}` :
+                'Không xác định';
         }
     }, {
         title: 'Đại lý',
@@ -44,27 +54,12 @@ const columns: AntdColumnProps<Order>[] = [
             return formatCurrency(totalOfPayment);
         }
     }, {
-        title: 'Yêu cầu đặt cọc',
-        dataIndex: nameof<Order>(o => o.depositRequired),
-        key: 'deposit',
-        render: (totalPrice: Order['depositRequired']) => {
-            return formatCurrency(totalPrice);
-        }
-    }, {
         title: 'Đã thanh toán',
-        dataIndex: nameof<Order>(o => o.theAmountPaid),
-        key: nameof<Order>(o => o.theAmountPaid),
-        render: (theAmountPaid: Order['theAmountPaid']) => {
-            return formatCurrency(theAmountPaid);
-        }
-    }, {
-        title: 'Dự kiến giao hàng',
-        dataIndex: nameof<Order>(o => o.shippingDate),
-        key: 'shippingDate',
-        render: (shippingDate: Order['shippingDate']) => {
-            return shippingDate ?
-                `${toVNDay(shippingDate)} - ${formatDate(shippingDate, 'DD/MM/YYYY')}` :
-                'Không xác định';
+        dataIndex: nameof<Order>(o => o.orderTransactions),
+        key: nameof<Order>(o => o.orderTransactions),
+        render: (orderTransactions: Order['orderTransactions']) => {
+            const money = orderTransactionUtils.sumMoney(orderTransactions);
+            return formatCurrency(money);
         }
     }, {
         title: 'Tình trạng',

@@ -8,7 +8,15 @@ import styled from 'styled-components';
 import { AccessControl, AllowAccess, DenyAccess } from '@/app';
 import { AntdButton, AntdCol, AntdIcon, AntdRow, AntdTag } from '@/components';
 import { colorPrimary } from '@/configs';
-import { Order, orderDetailUtils, orderUtils } from '@/restful';
+import {
+    Order,
+    orderDetailUtils,
+    orderTransactionUtils,
+    orderUtils,
+    restfulStore,
+    WithOrderTransactionProps,
+    withOrderTransactionsByOrder
+} from '@/restful';
 import { formatCurrency, formatDate } from '@/utilities';
 
 const AntdDescriptionList = require('ant-design-pro/lib/DescriptionList');
@@ -21,17 +29,26 @@ const OrderId = styled.span`
     color: ${colorPrimary};
 `;
 
-export interface OrderDetailHeaderProps {
+export interface OrderDetailHeaderProps extends
+    WithOrderTransactionProps {
     readonly order: Order;
     readonly onOrderCancel: (order: Order) => void;
     readonly onOrderChange: (order: Order) => void;
     readonly onUpdateOrderClick: (order: Order) => void;
 }
 
+@withOrderTransactionsByOrder(restfulStore)
 export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
     render() {
-        const { order, onOrderCancel, onOrderChange, onUpdateOrderClick } = this.props;
+        const {
+            order,
+            onOrderCancel,
+            onOrderChange,
+            onUpdateOrderClick,
+            orderTransactions
+        } = this.props;
         const statusInfo = orderUtils.getStatusInfo(order);
+        const theAmountPaid = orderTransactionUtils.sumMoney(orderTransactions);
 
         return (
             <PageHeaderWrapper>
@@ -145,7 +162,7 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                             <AntdCol sm={24} md={12}>
                                 <div style={{ color: 'rgba(0, 0, 0, 0.43)' }}>Đã thanh toán</div>
                                 <div style={{ color: 'rgba(0, 0, 0, 0.85)', fontSize: 20 }}>
-                                    {formatCurrency(order.theAmountPaid)}
+                                    {formatCurrency(theAmountPaid)}
                                 </div>
                             </AntdCol>
                         </AntdRow>
