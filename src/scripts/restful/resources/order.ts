@@ -6,11 +6,14 @@ import {
     restfulDataContainer
 } from 'react-restful';
 
+import { genCodeWithCurrentDate } from '@/utilities/string';
+
 import { apiEntry } from '../apiEntry';
 import { Agency } from './agency';
 import { City } from './city';
 import { County } from './county';
 import { OrderDetail } from './orderDetail';
+import { OrderTransaction } from './orderTransaction';
 import { Promotion } from './promotion';
 
 export interface Order extends RecordType {
@@ -40,6 +43,7 @@ export interface Order extends RecordType {
     readonly billDiscount: number;
     readonly code: string;
     readonly agencyOrderer: Agency;
+    readonly orderTransactions: Array<OrderTransaction>;
 }
 
 export const orderResourceType = new ResourceType({
@@ -50,6 +54,10 @@ export const orderResourceType = new ResourceType({
     }, {
         resourceType: nameof<OrderDetail>(),
         field: nameof<Order>(o => o.orderDetails),
+        type: 'MANY'
+    }, {
+        resourceType: nameof<OrderTransaction>(),
+        field: nameof<Order>(o => o.orderTransactions),
         type: 'MANY'
     }]
 });
@@ -75,6 +83,10 @@ export const orderResources = {
             for (const orderDetail of order.orderDetails) {
                 store.mapRecord(orderDetailType, orderDetail);
             }
+            const orderTransactionType = store.getRegisteredResourceType(nameof<OrderTransaction>());
+            for (const orderTransaction of order.orderTransactions) {
+                store.mapRecord(orderTransactionType, orderTransaction);
+            }
         }
     }),
     add: new Resource<Order>({
@@ -86,6 +98,10 @@ export const orderResources = {
             const orderDetailType = store.getRegisteredResourceType(nameof<OrderDetail>());
             for (const orderDetail of order.orderDetails) {
                 store.mapRecord(orderDetailType, orderDetail);
+            }
+            const orderTransactionType = store.getRegisteredResourceType(nameof<OrderTransaction>());
+            for (const orderTransaction of order.orderTransactions) {
+                store.mapRecord(orderTransactionType, orderTransaction);
             }
         }
     }),
@@ -245,18 +261,7 @@ export const orderUtils = {
     canChange: (order: Order) => {
         return order.status === 'shipping';
     },
-    genCode: () => {
-        const currentMoment = moment();
-        let code = currentMoment.format('YYMMDDHHmm');
-
-        // random last two chars
-        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        for (var i = 0; i < 2; i++) {
-            code += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-
-        return code;
-    }
+    genCode: () => genCodeWithCurrentDate()
 };
 
 export interface WithOrdersProps {

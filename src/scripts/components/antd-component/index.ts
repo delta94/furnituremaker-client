@@ -15,6 +15,7 @@ export * from './Input';
 export * from './List';
 export * from './Message';
 export * from './Modal';
+export * from './Notification';
 export * from './Popover';
 export * from './Select';
 export * from './Spin';

@@ -118,7 +118,7 @@ OrderDetailControlComponentState> {
                             });
                         }}
                     />
-                    <OrderTransactions />
+                    <OrderTransactions order={order}/>
                 </Container>
                 <AntdModal
                     destroyOnClose={true}
