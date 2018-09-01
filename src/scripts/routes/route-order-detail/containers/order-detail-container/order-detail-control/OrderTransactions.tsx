@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { AntdCard, AntdTable } from '@/components';
+import { AccessControl } from '@/app';
+import { AntdButton, AntdCard, AntdTable } from '@/components';
 import {
     CreateOrderTransaction,
     CreateOrderTransactionProps
@@ -9,9 +10,13 @@ import {
     OrderTransaction,
     orderTransactionUtils,
     restfulStore,
+    withCurrentUser,
     WithOrderTransactionProps,
     withOrderTransactionsByOrder
 } from '@/restful';
+import {
+    TransactionDeleteButton
+} from '@/routes/route-order-detail/containers/order-detail-container/order-detail-control/order-transactions';
 import { formatCurrency, formatDate } from '@/utilities';
 
 interface OrderTransactionsProps extends
@@ -21,20 +26,33 @@ interface OrderTransactionsProps extends
 
 @withOrderTransactionsByOrder(restfulStore)
 export class OrderTransactions extends React.PureComponent<OrderTransactionsProps> {
+
     render() {
         const { order, orderTransactions } = this.props;
         return (
             <AntdCard
                 title="Lịch sử giao dịch"
-                extra={<CreateOrderTransaction order={order} />}
+                extra={(
+                    <AccessControl allowRoles="root">
+                        <CreateOrderTransaction order={order} />
+                    </AccessControl>
+                )}
             >
                 <AntdTable
                     dataSource={orderTransactions}
                     bordered={true}
+                    pagination={false}
                 >
                     <AntdTable.Column
                         title="Mã giao dịch"
                         dataIndex={nameof<OrderTransaction>(o => o.code)}
+                        render={(code: string) => {
+                            return (
+                                <div>
+                                    {code}
+                                </div>
+                            );
+                        }}
                     />
                     <AntdTable.Column
                         title="Loại"
@@ -66,6 +84,20 @@ export class OrderTransactions extends React.PureComponent<OrderTransactionsProp
                                 return <i>Không có ghi chú</i>;
                             }
                             return note;
+                        }}
+                    />
+                    <AntdTable.Column
+                        width={50}
+                        dataIndex={nameof<OrderTransaction>(o => o.id)}
+                        key={nameof<OrderTransaction>(o => o.id)}
+                        render={(id: OrderTransaction['id'], orderTransaction: OrderTransaction) => {
+                            return (
+                                <div style={{ float: 'right' }}>
+                                    <AccessControl allowRoles="root">
+                                        <TransactionDeleteButton orderTransaction={orderTransaction} />
+                                    </AccessControl>
+                                </div>
+                            );
                         }}
                     />
                 </AntdTable>

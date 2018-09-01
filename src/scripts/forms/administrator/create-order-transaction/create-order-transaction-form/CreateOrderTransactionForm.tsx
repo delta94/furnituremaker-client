@@ -6,13 +6,12 @@ import {
     AntdCol,
     AntdRow,
     renderDatePickerField,
-    renderInput,
     renderInputNumber,
     renderSelectField,
     renderTextArea,
     required
 } from '@/components';
-import { OrderTransaction, orderTransactionUtils, orderUtils } from '@/restful';
+import { OrderTransaction, orderTransactionUtils } from '@/restful';
 
 export interface CreateOrderTransactionFormOwnProps {
 
@@ -76,7 +75,7 @@ class CreateOrderTransactionFormComponent extends React.PureComponent<CreateOrde
                     <AntdCol span={24}>
                         <Field
                             label="Ghi chú"
-                            name={nameof<CreateOrderTransactionFormValues>(o => o.name)}
+                            name={nameof<CreateOrderTransactionFormValues>(o => o.note)}
                             component={renderTextArea}
                             inputProps={{
                                 rows: 2,

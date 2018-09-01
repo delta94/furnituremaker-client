@@ -46,6 +46,14 @@ export const orderTransactionResources = {
         mapDataToStore: (orderTransaction, resourceType, store) => {
             store.mapRecord(resourceType, orderTransaction);
         }
+    }),
+    delete: new Resource<OrderTransaction>({
+        resourceType: orderTransactionType,
+        url: apiEntry('/orderTransaction/:id'),
+        method: 'DELETE',
+        mapDataToStore: (orderTransaction, resourceType, store) => {
+            store.removeRecord(resourceType, orderTransaction);
+        }
     })
 };
 
