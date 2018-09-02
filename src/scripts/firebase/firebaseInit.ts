@@ -1,9 +1,11 @@
 import { registerFirebaseMessage } from './firebaseMessage';
+import { registerNotificationDatabasse } from './firebaseNotificationDB';
 
 const firebase = require('firebase/app');
 
-require('firebase/messaging');
+require('firebase/auth');
 require('firebase/database');
+require('firebase/messaging');
 
 export const firebaseInit = () => {
     const config = {
@@ -17,6 +19,7 @@ export const firebaseInit = () => {
     
     firebase.initializeApp(config);
     registerFirebaseMessage(firebase);
+    registerNotificationDatabasse(firebase);
 };
 
 export const getFirebaseInstance = () => firebase;

@@ -9,14 +9,13 @@ export const registerFirebaseMessage = async (firebase) => {
     const registration = await serviceWorker.register(serviceWorkerUrl);
     try {
         const messaging = firebase.messaging();
+        messaging.useServiceWorker(registration);
         await messaging.requestPermission();
 
         console.log('Notification permission granted.');
         const token = await messaging.getToken();
 
         console.log(token);
-
-        messaging.useServiceWorker(registration);
 
         messaging.onMessage((payload) => {
             console.log(payload);
