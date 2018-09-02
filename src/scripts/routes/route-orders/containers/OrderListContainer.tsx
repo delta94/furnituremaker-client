@@ -1,11 +1,21 @@
 import * as React from 'react';
 import { ResourceParameter, RestfulRender } from 'react-restful';
 
-import { orderResources, restfulFetcher, restfulStore } from '@/restful';
+import { Auth } from '@/app';
+import { policies } from '@/app/policies';
+import {
+    Order,
+    orderResources,
+    restfulFetcher,
+    restfulStore,
+    withCurrentUser,
+    WithCurrentUserProps
+} from '@/restful';
 
 import { OrderListControl } from './order-list-container';
 
-export class OrderListContainer extends React.Component {
+@withCurrentUser(restfulStore)
+export class OrderListContainer extends React.PureComponent<WithCurrentUserProps> {
     readonly getFetchParams = () => {
         const searchParams = new URLSearchParams(location.search);
         const searchEntries = searchParams.entries();
@@ -20,7 +30,18 @@ export class OrderListContainer extends React.Component {
     }
 
     render() {
-        const fetchParams = this.getFetchParams();
+        const { user } = this.props;
+
+        const fetchParams = policies.canViewAllOrder() ?
+            this.getFetchParams() : [
+                ...this.getFetchParams(),
+                {
+                    parameter: nameof<Order>(o => o.agencyOrderer),
+                    type: 'query',
+                    value: user.agency && user.agency.id
+                } as ResourceParameter
+            ];
+
         return (
             <RestfulRender
                 fetcher={restfulFetcher}

@@ -6,6 +6,8 @@ import {
     restfulDataContainer
 } from 'react-restful';
 
+import { User } from '@/restful/resources/user';
+
 import { apiEntry } from '../apiEntry';
 import { Order } from './order';
 import { ProductDesign } from './productDesign';
@@ -25,6 +27,7 @@ export interface OrderDetail extends RecordType {
     readonly status: 'temp' | 'order';
     readonly discount: number;
     readonly previewImg?: string;
+    readonly createdBy?: User;
 }
 
 export const orderDetailResourceType = new ResourceType({
@@ -85,11 +88,11 @@ export const orderDetailResources = {
 };
 
 export const orderDetailUtils = {
-    getTempOrderParameter: {
+    getTempOrderParameter: () => ({
         type: 'query',
         parameter: 'status',
         value: 'temp'
-    } as ResourceParameter,
+    } as ResourceParameter),
     createUpdateParams: (orderDetail: OrderDetail): ResourceParameter[] => {
         return [{
             type: 'path',

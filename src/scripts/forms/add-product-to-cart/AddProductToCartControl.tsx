@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { withStoreValues } from '@/app';
+import { Auth, withStoreValues } from '@/app';
 import { AntdMessage, fetchErrorHandler } from '@/components';
-import { CommonStoreProps, CommonStoreValues } from '@/configs';
+import { CommonStoreProps } from '@/configs';
 import {
     discountByQuantitiesUtils,
     DiscountByQuantity,
@@ -55,7 +55,8 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
             productDiscount: discountPerProduct,
             discount: discountPerProduct * quantity,
             status: 'temp',
-            previewImg: previewImg
+            previewImg: previewImg,
+            createdBy: Auth.instance.currentUser
         };
     }
 

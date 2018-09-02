@@ -73,7 +73,14 @@ export class Root extends React.Component<RootProps> {
         await Promise.all([
             restfulFetcher.fetchResource(
                 orderDetailResources.find,
-                [orderDetailUtils.getTempOrderParameter]
+                [
+                    orderDetailUtils.getTempOrderParameter(),
+                    {
+                        type: 'query',
+                        parameter: 'createBy',
+                        value: user.id
+                    }
+                ]
             ),
             restfulFetcher.fetchResource(furnutureMaterialResources.find, []),
             restfulFetcher.fetchResource(productTypeResources.find, []),

@@ -1,4 +1,6 @@
-import { startup } from './scripts';
+import { firebaseInit, startup } from './scripts';
+
+firebaseInit();
 
 startup();
 

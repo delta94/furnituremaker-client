@@ -4,11 +4,13 @@
         "port": 3000
     },
     "dependencies": {
+        "@types/firebase": "^3.2.1",
         "ant-design-pro": "^2.0.0-beta.2",
         "antd": "^3.8.2",
         "autobind-decorator": "^2.1.0",
         "classnames": "2.2.6",
         "core-decorators": "^0.20.0",
+        "firebase": "^5.4.2",
         "history": "^4.7.2",
         "js-cookie": "^2.2.0",
         "jwt-decode": "^2.2.0",
