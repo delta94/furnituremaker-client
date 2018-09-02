@@ -6,6 +6,8 @@ import {
     restfulDataContainer
 } from 'react-restful';
 
+import { policies } from '@/app';
+import { sendNotificationToFirebase } from '@/firebase';
 import { genCodeWithCurrentDate } from '@/utilities/string';
 
 import { apiEntry } from '../apiEntry';
@@ -92,6 +94,18 @@ export const orderResources = {
         resourceType: orderResourceType,
         url: apiEntry('/order'),
         method: 'POST',
+        afterFetch: (params, fetchResult) => {
+            const isAdmin = policies.isAdminGroup();
+            if (!isAdmin) {
+                const now = new Date();
+                sendNotificationToFirebase('root', {
+                    action: `/order/${fetchResult.id}`,
+                    message: `${fetchResult.agencyOrderer.name} vừa đặt một đơn hàng.`,
+                    time: now.toISOString(),
+                    viewed: false
+                });
+            }
+        },
         mapDataToStore: (order, resourceType, store) => {
             store.mapRecord(resourceType, order);
             const orderDetailType = store.getRegisteredResourceType(nameof<OrderDetail>());

@@ -29,7 +29,7 @@ export const registerNotificationDatabasse = (firebase) => {
 };
 
 export const sendNotificationToFirebase = (ref, value) => {
-    const notificationChildRef = notificationRef.child(ref);
+    const notificationChildRef = notificationRef.child(`${ref}/notifications`);
     notificationChildRef.push()
         .set(value);
 };

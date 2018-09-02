@@ -13,9 +13,6 @@ const SenceProductInfoWrapper = styled.div`
     margin: 0 auto;
     padding: 15px;
     text-align: center;
-    background: rgba(255, 255, 255, .5);
-    border-radius: 10px;
-    border: 1px solid ${colorPrimary};
 `;
 
 const Price = styled.h3`

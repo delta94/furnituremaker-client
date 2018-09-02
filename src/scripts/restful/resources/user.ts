@@ -40,9 +40,6 @@ export const userResources = {
         method: 'GET',
         mapDataToStore: (data, resourceType, store) => {
             store.dataMapping(resourceType, data);
-        },
-        meta: {
-            silent: true
         }
     })
 };

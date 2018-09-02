@@ -7,7 +7,7 @@ import { AntdIcon, AntdPopover, Container } from '@/components';
 import { colorPrimary } from '@/configs';
 import { restfulStore, withCurrentUser, WithCurrentUserProps } from '@/restful';
 
-import { HeaderCart } from './deafult-layout-header';
+import { HeaderCart, HeaderNotification } from './deafult-layout-header';
 
 const HeaderWrapper = styled.div`
     background-color: #3D3D3D;
@@ -73,6 +73,7 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
                             <span>Thảnh thơi gom hàng với giá cực tốt</span>
                         </HeaderDescription>
                         <HeaderSearch />
+                        <HeaderNotification/>
                         <HeaderCart />
                         <AntdPopover
                             placement="bottomRight"

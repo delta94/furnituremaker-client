@@ -13,6 +13,7 @@ const columns: AntdColumnProps<OrderDetail>[] = [{
     title: 'Hình ảnh',
     dataIndex: nameof<OrderDetail>(o => o.previewImg),
     key: nameof.full<OrderDetail>(o => o.previewImg),
+    width: 112,
     render: (previewImg: OrderDetail['previewImg']) => {
         return <Img width="100" file={previewImg} />;
     }
