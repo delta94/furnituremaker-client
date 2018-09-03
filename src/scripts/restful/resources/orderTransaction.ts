@@ -1,5 +1,7 @@
 import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
 
+import { policies } from '@/app';
+import { sendNotificationToFirebase } from '@/firebase';
 import { apiEntry } from '@/restful/apiEntry';
 import { genCodeWithCurrentDate, randomString } from '@/utilities/string';
 
@@ -43,6 +45,21 @@ export const orderTransactionResources = {
         resourceType: orderTransactionType,
         url: apiEntry('/orderTransaction'),
         method: 'POST',
+        afterFetch: (params, fetchResult) => {
+            const isAdmin = policies.isAdminGroup();
+            if (isAdmin) {
+                const now = new Date();
+                sendNotificationToFirebase(
+                    fetchResult.order.createdBy,
+                    {
+                        type: 'new-order-transaction',
+                        orderId: fetchResult.order.id,
+                        orderRransactionId: fetchResult.id,
+                        time: now.toISOString()
+                    }
+                );
+            }
+        },
         mapDataToStore: (orderTransaction, resourceType, store) => {
             store.mapRecord(resourceType, orderTransaction);
         }

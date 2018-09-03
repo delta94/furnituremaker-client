@@ -12,7 +12,7 @@ import { Order } from './order';
 import { User } from './user';
 
 export interface Agency extends RecordType {
-    readonly id?: number;
+    readonly id?: string;
     readonly name: string;
     readonly address: string;
     readonly phone: string;

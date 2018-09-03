@@ -8,6 +8,7 @@ import {
 
 import { policies } from '@/app';
 import { sendNotificationToFirebase } from '@/firebase';
+import { User } from '@/restful/resources/user';
 import { genCodeWithCurrentDate } from '@/utilities/string';
 
 import { apiEntry } from '../apiEntry';
@@ -45,6 +46,7 @@ export interface Order extends RecordType {
     readonly code: string;
     readonly agencyOrderer: Agency;
     readonly orderTransactions: Array<OrderTransaction>;
+    readonly createdBy: User;
 }
 
 export const orderResourceType = new ResourceType({
@@ -99,10 +101,13 @@ export const orderResources = {
             if (!isAdmin) {
                 const now = new Date();
                 sendNotificationToFirebase('root', {
-                    action: `/order/${fetchResult.id}`,
-                    message: `${fetchResult.agencyOrderer.name} vừa đặt một đơn hàng.`,
-                    time: now.toISOString(),
-                    viewed: false
+                    type: 'new-order',
+                    orderId: fetchResult.id,
+                    fromAgency: fetchResult.agencyOrderer.id,
+                    fromAgencyName: fetchResult.agencyOrderer.name,
+                    fromUser: fetchResult.createdBy.id,
+                    fromUserName: fetchResult.createdBy.name,
+                    time: now.toISOString()
                 });
             }
         },

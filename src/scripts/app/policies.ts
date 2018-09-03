@@ -1,4 +1,4 @@
-import { RoleType } from '@/restful';
+import { RoleType, User } from '@/restful';
 
 import { Auth } from './Auth';
 
@@ -11,8 +11,8 @@ export const policies = {
         const canViewAllOrderRole: RoleType = 'root';
         return currentUser.role.type === canViewAllOrderRole;
     },
-    isAdminGroup: () => {
-        const currentUser = Auth.instance.currentUser;
+    isAdminGroup: (user?: User) => {
+        const currentUser = user || Auth.instance.currentUser;
         if (!currentUser.role) {
             return false;
         }

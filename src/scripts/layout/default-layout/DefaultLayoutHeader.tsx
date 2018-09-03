@@ -39,7 +39,7 @@ const HeaderSearch = styled.div`
 
 const HeaderButton = styled.div`
     height: 60px;
-    width: 60px;
+    min-width: 60px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -61,6 +61,7 @@ type DefaultLayoutHeaderProps = Partial<WithCurrentUserProps>;
 @withCurrentUser(restfulStore)
 export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProps> {
     render() {
+        const { user } = this.props;
         return (
             <HeaderWrapper>
                 <Container>
@@ -73,7 +74,7 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
                             <span>Thảnh thơi gom hàng với giá cực tốt</span>
                         </HeaderDescription>
                         <HeaderSearch />
-                        <HeaderNotification/>
+                        <HeaderNotification />
                         <HeaderCart />
                         <AntdPopover
                             placement="bottomRight"
@@ -92,7 +93,9 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
                             }
                         >
                             <HeaderButton>
-                                <AntdIcon type="user" />
+                                <div style={{padding: '0 10px'}}>
+                                    <small>{user.name || user.email}</small> <AntdIcon type="user" />
+                                </div>
                             </HeaderButton>
                         </AntdPopover>
                     </HeaderContent>

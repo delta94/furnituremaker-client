@@ -8,18 +8,22 @@ import { Router } from 'react-router';
 import { Switch } from 'react-router-dom';
 import { AnyAction, Store } from 'redux';
 
-import { initAppStore } from '@/app/initAppStore';
+import { queryNotifications } from '@/firebase/firebaseNotificationDB';
 import {
     discountByQuantitiesResources,
     furnutureMaterialResources,
+    OrderDetail,
     orderDetailResources,
     orderDetailUtils,
     productTypeResources,
+    restfulFetcher,
     User
 } from '@/restful';
-import { restfulFetcher } from '@/restful';
 
 import { Auth } from './Auth';
+import { initAppStore } from './initAppStore';
+import { notificationSubscriber } from './notificationSubscriber';
+import { policies } from './policies';
 import { changeAppStateToReady } from './readyState';
 
 export interface RootProps {
@@ -39,18 +43,23 @@ export class Root extends React.Component<RootProps> {
 
     constructor(props: RootProps) {
         super(props);
-
+        const { loginPath, store } = props;
         this.history = createBrowserHistory();
         this.authHelper = new Auth({
-            loginPath: props.loginPath,
-            store: props.store,
+            loginPath: loginPath,
+            store: store,
             history: this.history,
         });
         this.authHelper
             .isLoggedIn()
-            .then(this.appInit)
             .catch((toLoginPage: () => void) => {
-                return toLoginPage();
+                throw toLoginPage();
+            })
+            .then(this.appInit)
+            .then((user: User) => {
+                this.authHelper.currentUser = user;
+                notificationSubscriber(store, this.authHelper.currentUser);
+                changeAppStateToReady(store);
             });
     }
 
@@ -59,39 +68,54 @@ export class Root extends React.Component<RootProps> {
 
         return (
             <Provider store={store}>
-                <Router history={this.history}>
-                    <Switch>
-                        {this.props.children}
-                    </Switch>
-                </Router>
+                <React.Fragment>
+                    <Router history={this.history}>
+                        <Switch>
+                            {this.props.children}
+                        </Switch>
+                    </Router>
+                </React.Fragment>
             </Provider>
         );
     }
 
     @autobind
     async appInit(user: User) {
-        await Promise.all([
-            restfulFetcher.fetchResource(
-                orderDetailResources.find,
-                [
-                    orderDetailUtils.getTempOrderParameter(),
-                    {
-                        type: 'query',
-                        parameter: 'createBy',
-                        value: user.id
-                    }
-                ]
-            ),
-            restfulFetcher.fetchResource(furnutureMaterialResources.find, []),
-            restfulFetcher.fetchResource(productTypeResources.find, []),
-            restfulFetcher.fetchResource(discountByQuantitiesResources.find, [])
-        ]);
+        try {
+            await Promise.all([
+                restfulFetcher.fetchResource(
+                    orderDetailResources.find,
+                    [
+                        orderDetailUtils.getTempOrderParameter(),
+                        {
+                            type: 'query',
+                            parameter: nameof<OrderDetail>(o => o.createdBy),
+                            value: user.id
+                        }
+                    ]
+                ),
+                restfulFetcher.fetchResource(furnutureMaterialResources.find, []),
+                restfulFetcher.fetchResource(productTypeResources.find, []),
+                restfulFetcher.fetchResource(discountByQuantitiesResources.find, [])
+            ]);
 
-        initAppStore(this.props.store, {
-            history: this.history
-        });
+            initAppStore(this.props.store, {
+                history: this.history,
+                notifications: new Map()
+            });
 
-        this.authHelper.currentUser = user;
-        changeAppStateToReady(this.props.store);
+            return user;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    async initUserNotifications(user: User) {
+        const isAdmin = policies.isAdminGroup(user);
+        if (isAdmin) {
+            await queryNotifications('root');
+        } else {
+            await queryNotifications(user.id);
+        }
     }
 }

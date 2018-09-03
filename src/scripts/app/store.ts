@@ -61,7 +61,7 @@ export const storeValuesMiddleware = (store: Store) => next => (action: CheckSto
     return next(action);
 };
 
-export const setStoreValuesAction = (values: {}, source) => {
+export const setStoreValuesAction = <T = {}>(values: T, source) => {
     const keys = map(values, (value, key) => key);
     return {
         type: 'SET_VALUES',
@@ -105,3 +105,8 @@ export function withStoreValues<T = {}>(...keys: Array<keyof T>): any {
         return connect(mapStateToProps, mapDispatchToProps)(Component);
     };
 }
+
+export const getStoreValue = <T>(store: Store, key: string): T => {
+    const state = store.getState();
+    return state.values.get(key);
+};

@@ -68,7 +68,8 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                 promotionDiscount: promotionDiscount,
                 depositRequired: orderUtils.getDeposit(orderTotalOfPayment),
                 code: orderUtils.genCode(),
-                agencyOrderer: user.agency
+                agencyOrderer: user.agency,
+                createdBy: user
             };
 
             const createdOrder = await restfulFetcher.fetchResource(

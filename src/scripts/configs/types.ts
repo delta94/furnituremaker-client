@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { ExtendWithStoreValuesProps } from '@/app';
 import { ThreeSence } from '@/components';
+import { AppNotification } from '@/firebase/firebaseNotificationDB';
 import {
     City,
     FurnitureComponent,
@@ -17,6 +18,7 @@ import {
 
 export interface InitAppStoreProps {
     readonly history?: History;
+    readonly notifications?: Map<string, AppNotification>;
 }
 
 export interface CommonStoreValues extends InitAppStoreProps {
@@ -30,7 +32,7 @@ export interface CommonStoreValues extends InitAppStoreProps {
     readonly selectedProduct?: Product;
     readonly selectedPromotion?: Promotion;
     readonly selectedComponent?: FurnitureComponent;
-    
+
     readonly getCurrentRouteProps?: <T>() => RouteComponentProps<T>;
 
     readonly drawerVisible?: boolean;

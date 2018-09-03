@@ -1,0 +1,10 @@
+.header-notification {
+    margin: -15px;
+    width: 360px;
+    .ant-list-item {
+        padding: 15px;
+        &.new {
+            background: #fff4dd;
+        }
+    }
+}

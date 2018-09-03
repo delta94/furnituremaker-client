@@ -1,35 +1,83 @@
-// tslint:disable:no-console
+import { User } from '@/restful/resources/user';
 
-let initialDataLoaded = false;
+// tslint:disable:no-console
+const map = require('lodash/map');
+
+export type NotifiCationRefType = 'root' | User | string;
+
+export interface AppNotification {
+    readonly id?: string;
+    readonly time: string;
+    readonly type: 'new-order' | 'new-order-transaction';
+    readonly orderId?: string;
+    readonly orderRransactionId?: string;
+    readonly fromUser?: string;
+    readonly fromUserName?: string;
+    readonly fromAgency?: string;
+    readonly fromAgencyName?: string;
+    readonly viewedAt?: string;
+}
+
 let notificationRef;
 
-const notificationsRefUrl = 'https://furnituremaker-eaafa.firebaseio.com/notifications';
-
-const getRef = (firebase) => {
-    const firebaseDB = firebase.database();
-    return firebaseDB.refFromURL(notificationsRefUrl);
-};
-
-const onRefChildAdded = (snapshot) => {
-    if (!initialDataLoaded) {
-        return;
-    }
-
-    const value = snapshot.val();
-    console.log(value);
-    // implement...
-};
+const notificationsRefUrl = 'https://furnituremaker-eaafa.firebaseio.com';
 
 export const registerNotificationDatabasse = (firebase) => {
-    notificationRef = getRef(firebase);
-    notificationRef.on('child_added', onRefChildAdded);
-    notificationRef.once('value').then((snapshot) => {
-        initialDataLoaded = true;
-    });
+    const firebaseDB = firebase.database();
+    notificationRef = firebaseDB.refFromURL(notificationsRefUrl);
 };
 
-export const sendNotificationToFirebase = (ref, value) => {
+export const sendNotificationToFirebase = (ref: NotifiCationRefType, value: AppNotification) => {
     const notificationChildRef = notificationRef.child(`${ref}/notifications`);
     notificationChildRef.push()
         .set(value);
+};
+
+export const markNotificationViewed = (ref: NotifiCationRefType, notificationId: string) => {
+    const now = new Date();
+    notificationRef
+        .child(ref)
+        .child('notifications')
+        .child(notificationId)
+        .child(nameof<AppNotification>(o => o.viewedAt))
+        .set(now.toISOString());
+};
+
+const snapshotValToObject = (value, key) => ({
+    ...value,
+    id: key
+});
+
+export const queryNotifications = async (ref: NotifiCationRefType): Promise<AppNotification[]> => {
+    const notificationChildRef = notificationRef.child(`${ref}/notifications`);
+    const snapshot = await notificationChildRef
+        .limitToLast(10)
+        .once('value');
+    const values = snapshot.val();
+
+    if (!values) {
+        return [];
+    }
+
+    const result = map(values, snapshotValToObject);
+
+    return result;
+};
+
+export const registerSubcribeNotification = (
+    ref: NotifiCationRefType,
+    callback: (notification: AppNotification[]) => void
+) => {
+    notificationRef
+        .child(`${ref}/notifications`)
+        .limitToLast(10)
+        .on('value', (snapshot) => {
+            const notificationSnapshotVal = snapshot.val();
+            const notifications = map(notificationSnapshotVal, snapshotValToObject);
+
+            if (!notifications) {
+                return null;
+            }
+            callback(notifications);
+        });
 };
