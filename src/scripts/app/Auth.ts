@@ -70,11 +70,9 @@ export class Auth {
 
             saveToken(login.jwt, rememberMe);
 
-            changeAppStateToReady(this.props.store).then(() => {
-                const returnUrlParam = getUrlSearchParam('returnUrl');
-                const returnPath = returnUrlParam ? returnUrlParam : '/';
-                this.props.history.replace(returnPath);
-            });
+            const returnUrlParam = getUrlSearchParam('returnUrl');
+            const returnPath = returnUrlParam ? returnUrlParam : '/';
+            window.location.href = returnPath;
 
             return true;
         } catch (error) {

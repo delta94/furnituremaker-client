@@ -147,7 +147,7 @@ export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderP
 
     render() {
         const { notifications } = this.props;
-
+        
         return (
             <AntdPopover
                 title="Thông báo"
