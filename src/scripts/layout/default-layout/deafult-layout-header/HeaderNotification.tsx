@@ -152,7 +152,6 @@ export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderP
             <AntdPopover
                 title="Thông báo"
                 content={(notifications.size > 0) ? this.getNotificationList() : 'Không có thông báo nào'}
-
             >
                 <HeaderNotificationButtonWrapper>
                     <HeaderNotificationBadgeWapper>

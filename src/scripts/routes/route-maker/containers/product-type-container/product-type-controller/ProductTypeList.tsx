@@ -78,7 +78,7 @@ export class ProductTypeList extends React.Component<ProductTypeListProps> {
         infinite: false,
         speed: 500,
         slidesToShow: 5,
-        slidesToScroll: 1,
+        slidesToScroll: 1
     };
 
     render() {

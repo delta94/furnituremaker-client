@@ -16,15 +16,15 @@ const Wrapper = styled.div`
 
 interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
     readonly isSelected: boolean;
+    readonly canClick: boolean;
 }
 
 type ItemType = React.ComponentType<ItemProps>;
 const Item: ItemType = styled.div`
     text-align: center;
-    padding: 10px;
-    border-radius: 10px 10px 0 0;
+    border-radius: 5px 5px 0 0;
     transition: all .3s;
-    cursor: pointer;
+    cursor: ${(props) => props.canClick && 'pointer'};
     background-color: ${(props: ItemProps) => props.isSelected && '#F6F5F6'};
 `;
 
@@ -36,16 +36,19 @@ const ThumbnailWrapper = styled.div`
 
 const Label = styled.span`
     font-size: 14px;
+    display: block;
+    margin: 0 0 5px 0;
 `;
 
-interface ProductTypeGroupListProps extends CommonStoreProps {
+interface ProductTypeGroupListProps extends
+    Pick<CommonStoreProps, 'selectedProductTypeGroup'> {
     readonly productTypeGroups: ProductTypeGroup[];
     readonly onProductTypeGroupClick: (productTypeGroup: ProductTypeGroup) => void;
     readonly onProductTypeGroupHover: (productTypeGroup: ProductTypeGroup) => void;
     readonly onProductTypeGroupLeave: () => void;
 }
 
-@withStoreValues(nameof<CommonStoreProps>(o => o.selectedProductTypeGroup))
+@withStoreValues<ProductTypeGroupListProps>('selectedProductTypeGroup')
 export class ProductTypeGroupList extends React.Component<ProductTypeGroupListProps> {
     static readonly defaultProps: ProductTypeGroupListProps = {
         productTypeGroups: [],
@@ -62,6 +65,7 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
         slidesToScroll: 1
     };
 
+
     render() {
         const {
             selectedProductTypeGroup,
@@ -75,14 +79,27 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
                 <Slider {...ProductTypeGroupList.slickSettings}>
                     {
                         this.props.productTypeGroups.map(productTypeGroup => {
+                            const isSelected = selectedProductTypeGroup &&
+                                selectedProductTypeGroup.id === productTypeGroup.id;
+
+                            const canClick = (
+                                productTypeGroup &&
+                                productTypeGroup.productTypes
+                            ) && productTypeGroup.productTypes.length === 1;
+
                             return (
                                 <Item
                                     key={productTypeGroup.id}
-                                    isSelected={selectedProductTypeGroup ?
-                                        selectedProductTypeGroup.id === productTypeGroup.id : undefined}
+                                    isSelected={isSelected}
+                                    canClick={canClick}
                                     onClick={() => onProductTypeGroupClick(productTypeGroup)}
-                                    onMouseOver={() => onProductTypeGroupHover(productTypeGroup)}
-                                    onMouseLeave={onProductTypeGroupLeave}
+                                    onMouseOver={() => {
+                                        onProductTypeGroupHover(productTypeGroup);
+
+                                    }}
+                                    onMouseLeave={() => {
+                                        onProductTypeGroupLeave();
+                                    }}
                                 >
                                     <ThumbnailWrapper>
                                         <Img file={productTypeGroup.thumbnail} />

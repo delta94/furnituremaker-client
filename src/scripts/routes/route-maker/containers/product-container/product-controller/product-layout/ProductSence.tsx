@@ -68,7 +68,13 @@ export class ProductSence extends React.PureComponent<RouteHomeProps> {
         const { components, materials } = this.props;
 
         const componentData = components.find(o => o.id === object.name);
-        const sameTypeComponents = components.filter(o => o.componentType.id === componentData.componentType.id);
+        const sameTypeComponents = components.filter(o => {
+            if (!o.componentType) {
+                return false;
+            }
+
+            return o.componentType.id === componentData.componentType.id;
+        });
 
         const child = object.children[0] as THREE.Mesh;
         const objectMaterial = child.material as THREE.MeshPhongMaterial | THREE.MeshPhongMaterial[];

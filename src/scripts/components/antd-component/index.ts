@@ -1,6 +1,7 @@
 export * from './Affix';
 export * from './Alert';
 export * from './AntdForm';
+export * from './BackTop';
 export * from './Badge';
 export * from './Breadcrumb';
 export * from './Button';

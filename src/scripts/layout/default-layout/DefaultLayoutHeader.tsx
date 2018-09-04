@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Auth } from '@/app';
-import { AntdIcon, AntdPopover, Container } from '@/components';
+import { AntdAffix, AntdIcon, AntdPopover, Container } from '@/components';
 import { colorPrimary } from '@/configs';
 import { restfulStore, withCurrentUser, WithCurrentUserProps } from '@/restful';
 
@@ -63,44 +63,44 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
     render() {
         const { user } = this.props;
         return (
-            <HeaderWrapper>
-                <Container>
-                    <HeaderContent>
-                        <Link to="/">
-                            <HeaderLogo src="/static/assets/logo.svg" />
-                        </Link>
-                        <HeaderDescription>
-                            <span>Dễ dàng tùy biến sản phẩm</span>
-                            <span>Thảnh thơi gom hàng với giá cực tốt</span>
-                        </HeaderDescription>
-                        <HeaderSearch />
-                        <HeaderNotification />
-                        <HeaderCart />
-                        <AntdPopover
-                            placement="bottomRight"
-                            title="Tài Khoản"
-                            content={
-                                <React.Fragment>
-                                    <HeaderPopoverButton>
-                                        <Link to="/orders">Đơn hàng</Link>
-                                    </HeaderPopoverButton>
-                                    <HeaderPopoverButton>
-                                        <a key="logout" onClick={Auth.instance.logout}>
-                                            Đăng xuất
+            <AntdAffix>
+                <HeaderWrapper>
+                    <Container>
+                        <HeaderContent>
+                            <Link to="/">
+                                <HeaderLogo src="/static/assets/logo.svg" />
+                            </Link>
+                            <HeaderDescription>
+                                <span>Dễ dàng tùy biến sản phẩm</span>
+                                <span>Thảnh thơi gom hàng với giá cực tốt</span>
+                            </HeaderDescription>
+                            <HeaderSearch />
+                            <HeaderNotification />
+                            <HeaderCart />
+                            <AntdPopover
+                                placement="bottomRight"
+                                title="Tài Khoản"
+                                content={
+                                    <React.Fragment>
+                                        <HeaderPopoverButton>
+                                            <Link to="/orders">Đơn hàng</Link>
+                                        </HeaderPopoverButton>
+                                        <HeaderPopoverButton>
+                                            <a key="logout" onClick={Auth.instance.logout}>
+                                                Đăng xuất
                                         </a>
-                                    </HeaderPopoverButton>
-                                </React.Fragment>
-                            }
-                        >
-                            <HeaderButton>
-                                <div style={{padding: '0 10px'}}>
-                                    <small>{user.name || user.email}</small> <AntdIcon type="user" />
-                                </div>
-                            </HeaderButton>
-                        </AntdPopover>
-                    </HeaderContent>
-                </Container>
-            </HeaderWrapper >
+                                        </HeaderPopoverButton>
+                                    </React.Fragment>
+                                }
+                            >
+                                <HeaderButton>
+                                    <AntdIcon type="user" />
+                                </HeaderButton>
+                            </AntdPopover>
+                        </HeaderContent>
+                    </Container>
+                </HeaderWrapper >
+            </AntdAffix>
         );
     }
 }

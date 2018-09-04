@@ -1,12 +1,11 @@
 import * as React from 'react';
 
-import { ProductTypeGroup, productTypeGroupUtils } from '@/restful';
 import { withStoreValues } from '@/app';
 import { CommonStoreProps } from '@/configs';
+import { ProductTypeGroup, productTypeGroupUtils } from '@/restful';
 
-import { ProductTypeListStoreProps } from '../product-type-container';
 import { DesignModalProps } from '../product-design-container';
-
+import { ProductTypeListStoreProps } from '../product-type-container';
 import { ProductTypeGroupList } from './type-group-controller';
 
 interface TypeGroupControllerProps extends CommonStoreProps {
@@ -19,17 +18,11 @@ export class TypeGroupController extends React.Component<TypeGroupControllerProp
         super(props);
         const { productTypeGroups, setStore, checkStore } = props;
 
-        // * Set default product type group
-        checkStore<ProductTypeGroup>(nameof<CommonStoreProps>(o => o.selectedProductTypeGroup)).then(
-            (selectedProductTypeGroup) => {
-                if (!selectedProductTypeGroup) {
-                    const defaulTypeGroup = productTypeGroupUtils.getDefaultProductTypeGroup(productTypeGroups);
-                    setStore({
-                        [nameof<CommonStoreProps>(o => o.selectedProductTypeGroup)]: defaulTypeGroup
-                    });
-                }
-            }
-        );
+        const defaulTypeGroup = productTypeGroupUtils.getDefaultProductTypeGroup(productTypeGroups);
+        setStore<CommonStoreProps>({
+            selectedProductTypeGroup: defaulTypeGroup,
+            selectedProductType: defaulTypeGroup.productTypes[0]
+        });
     }
 
     render() {
@@ -61,7 +54,7 @@ export class TypeGroupController extends React.Component<TypeGroupControllerProp
                 }}
                 onProductTypeGroupLeave={() => {
                     setStore({
-                        [nameof<ProductTypeListStoreProps>(o => o.showProductTypeList)]: false,
+                        [nameof<ProductTypeListStoreProps>(o => o.showProductTypeList)]: false
                     });
                 }}
             />

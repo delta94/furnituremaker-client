@@ -17,7 +17,7 @@ export class ProductTypeContainer extends React.Component<CommonStoreProps> {
     render() {
         const { hoveredProductTypeGroup } = this.props;
         if (!hoveredProductTypeGroup) {
-            return true;
+            return null;
         }
 
         return (

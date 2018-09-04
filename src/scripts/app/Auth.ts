@@ -20,7 +20,6 @@ interface AuthProps {
 }
 
 export class Auth {
-
     // tslint:disable-next-line:readonly-keyword
     static _instance: Auth;
     static get instance() {

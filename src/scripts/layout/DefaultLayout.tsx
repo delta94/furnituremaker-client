@@ -1,9 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdLayout, Container } from '@/components';
+import { AntdBackTop, AntdButton, AntdLayout, Container } from '@/components';
 
-import { DefaultLayoutFooter, DefaultLayoutHeader } from './default-layout';
+import {
+    DefaultLayoutFooter,
+    DefaultLayoutHeader,
+    DefaultLayoutTopbar
+} from './default-layout';
 
 const Breadcrumb = styled.div`
     margin: 20px 0;
@@ -23,6 +27,7 @@ export class DefaultLayout extends React.Component<DefaultLayoutProps> {
 
         return (
             <AntdLayout style={{ minHeight: 'inherit', background: '#F7F7F7 ' }}>
+                <DefaultLayoutTopbar />
                 <DefaultLayoutHeader />
                 {
                     breadcrumb && (
@@ -37,6 +42,13 @@ export class DefaultLayout extends React.Component<DefaultLayoutProps> {
                     {this.props.children}
                 </AntdLayout.Content>
                 <DefaultLayoutFooter />
+                <AntdBackTop>
+                    <AntdButton
+                        type="primary"
+                        shape="circle"
+                        icon="up"
+                    />
+                </AntdBackTop>
             </AntdLayout>
         );
     }

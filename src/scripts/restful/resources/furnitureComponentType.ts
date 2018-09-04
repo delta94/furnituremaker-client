@@ -37,7 +37,10 @@ export const furnitureComponentTypeUtils = {
             furnitureComponent: FurnitureComponent
         ): FurnitureComponentType[] => {
             const furnitureComponentType = furnitureComponent.componentType;
-
+            if (!furnitureComponentType) {
+                return curentValues;
+            }
+            
             const existingFurnitureComponentType =
                 curentValues.find(o => o.id === furnitureComponentType.id);
 

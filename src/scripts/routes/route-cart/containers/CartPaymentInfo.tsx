@@ -42,7 +42,7 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
         const shippingDate = orderUtils.getShippingDate();
 
         return (
-            <AntdAffix>
+            <AntdAffix offset={70}>
                 <div>
                     <AntdRow>
                         <SectionTitle>Thông tin thanh toán</SectionTitle>

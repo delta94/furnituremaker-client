@@ -1,37 +1,30 @@
 import * as React from 'react';
 
 import { withStoreValues } from '@/app';
-import { ProductType, productTypeUtils } from '@/restful';
 import { CommonStoreProps } from '@/configs';
+import { ProductType, productTypeUtils } from '@/restful';
 
 import { DesignModalProps } from '../product-design-container';
-import { ProductTypeList, ProductTypeListStoreProps } from './product-type-controller';
+import {
+    ProductTypeList,
+    ProductTypeListStoreProps
+} from './product-type-controller';
 
 export {
     ProductTypeListStoreProps
 };
 
-interface ProductTypeContainerProps extends CommonStoreProps, ProductTypeListStoreProps {
+interface ProductTypeContainerProps extends
+    Pick<CommonStoreProps, 'setStore'>,
+    ProductTypeListStoreProps {
     readonly productTypes: ProductType[];
 }
 
-@withStoreValues()
+@withStoreValues<ProductTypeContainerProps>()
 export class ProductTypeController extends React.Component<ProductTypeContainerProps> {
 
     constructor(props: ProductTypeContainerProps) {
         super(props);
-        const { productTypes, setStore, checkStore } = props;
-
-        // * Set default product type
-        checkStore<ProductType>(nameof<CommonStoreProps>(o => o.selectedProductType)).then(
-            (selectedProductType) => {
-                if (!selectedProductType) {
-                    const defaulType = productTypeUtils.getDefaultProductType(productTypes);
-                    setStore({
-                        [nameof<CommonStoreProps>(o => o.selectedProductType)]: defaulType
-                    });
-                }
-            });
     }
 
     render() {
