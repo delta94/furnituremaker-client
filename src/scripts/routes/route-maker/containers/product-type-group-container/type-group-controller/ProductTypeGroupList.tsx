@@ -65,7 +65,6 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
         slidesToScroll: 1
     };
 
-
     render() {
         const {
             selectedProductTypeGroup,
