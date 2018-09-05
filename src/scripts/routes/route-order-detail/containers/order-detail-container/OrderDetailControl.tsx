@@ -11,6 +11,8 @@ import {
     Order,
     orderResources,
     orderResourceType,
+    OrderUpdateMeta,
+    orderUtils,
     restfulFetcher,
     restfulStore
 } from '@/restful';
@@ -49,23 +51,9 @@ OrderDetailControlComponentState> {
             status: 'cancel'
         };
 
-        await restfulFetcher.fetchResource(
-            orderResources.update,
-            [{
-                type: 'path',
-                parameter: 'id',
-                value: order.id
-            }, {
-                type: 'body',
-                value: updatingOrder
-            }]
-        );
-    }
-
-    readonly onOrderChange = async (order: Order) => {
-        const updatingOrder: Order = {
-            ...order,
-            status: 'change'
+        const meta: OrderUpdateMeta = {
+            sendNotificationTo: 'root',
+            notificationType: 'cancel-order'
         };
 
         await restfulFetcher.fetchResource(
@@ -77,7 +65,33 @@ OrderDetailControlComponentState> {
             }, {
                 type: 'body',
                 value: updatingOrder
-            }]
+            }],
+            meta
+        );
+    }
+
+    readonly onOrderChange = async (order: Order) => {
+        const updatingOrder: Order = {
+            ...order,
+            status: 'change'
+        };
+
+        const meta: OrderUpdateMeta = {
+            sendNotificationTo: 'root',
+            notificationType: 'change-order'
+        };
+
+        await restfulFetcher.fetchResource(
+            orderResources.update,
+            [{
+                type: 'path',
+                parameter: 'id',
+                value: order.id
+            }, {
+                type: 'body',
+                value: updatingOrder
+            }],
+            meta
         );
     }
 
@@ -91,16 +105,19 @@ OrderDetailControlComponentState> {
     render() {
         const { order, dispatch } = this.props;
         const { updateOrderModalVisibled } = this.state;
+        const adminCanUpdate = orderUtils.adminCanUpdate(order);
         return (
             <React.Fragment>
                 <Container>
                     <OrderDetail
                         order={order}
-                        onUpdateOrderClick={() => {
-                            this.setState({
-                                updateOrderModalVisibled: true
-                            });
-                        }}
+                        onUpdateOrderClick={
+                            adminCanUpdate && (() => {
+                                this.setState({
+                                    updateOrderModalVisibled: true
+                                });
+                            })
+                        }
                         onOrderCancel={() => {
                             AntdModal.confirm({
                                 title: 'Xác nhận',
@@ -118,7 +135,7 @@ OrderDetailControlComponentState> {
                             });
                         }}
                     />
-                    <OrderTransactions order={order}/>
+                    <OrderTransactions order={order} />
                 </Container>
                 <AntdModal
                     destroyOnClose={true}

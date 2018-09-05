@@ -5,9 +5,14 @@ import {
     ResourceType,
     restfulDataContainer
 } from 'react-restful';
+import { change } from 'redux-form';
 
 import { policies } from '@/app';
 import { sendNotificationToFirebase } from '@/firebase';
+import {
+    AppNotification,
+    NotifiCationRefType
+} from '@/firebase/firebaseNotificationDB';
 import { User } from '@/restful/resources/user';
 import { genCodeWithCurrentDate } from '@/utilities/string';
 
@@ -65,6 +70,11 @@ export const orderResourceType = new ResourceType({
     }]
 });
 
+export interface OrderUpdateMeta {
+    readonly sendNotificationTo: NotifiCationRefType;
+    readonly notificationType: AppNotification['type'];
+}
+
 export const orderResources = {
     find: new Resource<Order[]>({
         resourceType: orderResourceType,
@@ -96,18 +106,16 @@ export const orderResources = {
         resourceType: orderResourceType,
         url: apiEntry('/order'),
         method: 'POST',
-        afterFetch: (params, fetchResult) => {
+        afterFetch: (params, order) => {
             const isAdmin = policies.isAdminGroup();
             if (!isAdmin) {
-                const now = new Date();
                 sendNotificationToFirebase('root', {
                     type: 'new-order',
-                    orderId: fetchResult.id,
-                    fromAgency: fetchResult.agencyOrderer.id,
-                    fromAgencyName: fetchResult.agencyOrderer.name,
-                    fromUser: fetchResult.createdBy.id,
-                    fromUserName: fetchResult.createdBy.name,
-                    time: now.toISOString()
+                    orderId: order.id,
+                    fromAgency: order.agencyOrderer.id,
+                    fromAgencyName: order.agencyOrderer.name,
+                    fromUser: order.createdBy.id,
+                    fromUserName: order.createdBy.name
                 });
             }
         },
@@ -123,10 +131,20 @@ export const orderResources = {
             }
         }
     }),
-    update: new Resource<Order>({
+    update: new Resource<Order, OrderUpdateMeta>({
         resourceType: orderResourceType,
         url: apiEntry('/order/:id'),
         method: 'PUT',
+        afterFetch: (params, order, meta) => {
+            sendNotificationToFirebase(meta.sendNotificationTo, {
+                orderId: order.id,
+                fromAgency: order.agencyOrderer.id,
+                fromAgencyName: order.agencyOrderer.name,
+                fromUser: order.createdBy.id,
+                fromUserName: order.createdBy.name,
+                type: meta.notificationType
+            });
+        },
         mapDataToStore: (order, resourceType, store) => {
             store.mapRecord(resourceType, order);
         }
@@ -279,7 +297,21 @@ export const orderUtils = {
     canChange: (order: Order) => {
         return order.status === 'shipping';
     },
-    genCode: () => genCodeWithCurrentDate()
+    genCode: () => genCodeWithCurrentDate(),
+    getCreatedById: (order: Order) => {
+        if (!order || !order.createdBy) {
+            throw new Error('Who is owner?');
+        }
+
+        return (typeof order.createdBy === 'string') ?
+            order.createdBy :
+            order.createdBy.id;
+    },
+    adminCanUpdate: (order: Order) => {
+        return order.status !== 'cancel'
+            && order.status !== 'change'
+            && order.status !== 'done';
+    }
 };
 
 export interface WithOrdersProps {

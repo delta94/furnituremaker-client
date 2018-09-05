@@ -15,6 +15,7 @@ import {
     withCurrentUser,
     WithCurrentUserProps
 } from '@/restful';
+import { ShippingCost } from '@/routes/route-cart/containers/CartUI';
 import { formatCurrency } from '@/utilities';
 
 const TotalPrice = styled.div`
@@ -62,11 +63,21 @@ export class CardTotalOfPayment extends React.PureComponent<CardTotalOfPaymentPr
         const selectedPromotionDiscount = selectedPromotion ? selectedPromotion.discountPrice : 0;
         const totalDiscount = selectedPromotionDiscount + discountByAgencyLevel;
         const totalOfPayment = productTotalPayment + orderTransportFee - totalDiscount;
+        const deposit = orderUtils.getDeposit(totalOfPayment);
 
         return (
             <AntdRow>
                 <AntdCol span={12}>
-                    <span>Tổng thanh toán:</span>
+                    <div>
+                        Tổng thanh toán:
+                        <p>
+                            <i>
+                                Chú ý: bạn cần thanh toán trước 30%
+                                (<b>{formatCurrency(deposit)}</b>)
+                                để xác nhận đơn hàng này.
+                            </i>
+                        </p>
+                    </div>
                 </AntdCol>
                 <AntdCol span={12}>
                     <TotalPrice>

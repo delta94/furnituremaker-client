@@ -74,7 +74,7 @@ class CreateOrderFormComponent extends React.Component<
     }
 
     render() {
-        const { handleSubmit, error } = this.props;
+        const { handleSubmit, initialValues, error } = this.props;
         return (
             <Form onSubmit={handleSubmit}>
                 <FormError error={error} />
@@ -112,6 +112,7 @@ class CreateOrderFormComponent extends React.Component<
                             <FormWrapper>
                                 <OrderFormCityField
                                     fieldName={nameof<CreateOrderFormValues>(o => o.cityId)}
+                                    initValue={initialValues.cityId}
                                     onCityChange={this.onCityChange}
                                 />
                             </FormWrapper>
@@ -137,7 +138,7 @@ class CreateOrderFormComponent extends React.Component<
                                     component={renderTextArea}
                                     label="Ghi chú"
                                     inputProps={{
-                                        placeholder: 'Nhập ghi chú'
+                                        placeholder: 'Nhập ghi chú hoặc thông tin xuất hóa đơn'
                                     }}
                                 />
                             </FormWrapper>

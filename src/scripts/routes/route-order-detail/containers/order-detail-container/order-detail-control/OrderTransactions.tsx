@@ -95,7 +95,10 @@ export class OrderTransactions extends React.PureComponent<OrderTransactionsProp
                             return (
                                 <div style={{ float: 'right' }}>
                                     <AccessControl allowRoles="root">
-                                        <TransactionDeleteButton orderTransaction={orderTransaction} />
+                                        <TransactionDeleteButton
+                                            order={order}
+                                            orderTransaction={orderTransaction}
+                                        />
                                     </AccessControl>
                                 </div>
                             );

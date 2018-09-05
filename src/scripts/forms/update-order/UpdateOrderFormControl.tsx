@@ -1,9 +1,15 @@
 import * as moment from 'moment';
 import * as React from 'react';
-import { CommonFieldProps, submit } from 'redux-form';
+import { submit } from 'redux-form';
 
 import { CommonStoreProps } from '@/configs';
-import { Order, orderResources, restfulFetcher } from '@/restful';
+import {
+    Order,
+    orderResources,
+    OrderUpdateMeta,
+    orderUtils,
+    restfulFetcher
+} from '@/restful';
 
 import {
     UpdateOrderForm,
@@ -32,6 +38,11 @@ export class UpdateOrderFormControl extends React.Component<UpdateOrderFormContr
             shippingDate: formValues.shippingDate.toISOString()
         };
 
+        const fetchMeta: OrderUpdateMeta = {
+            sendNotificationTo: orderUtils.getCreatedById(order),
+            notificationType: 'update-order'
+        };
+
         await restfulFetcher.fetchResource(
             orderResources.update,
             [{
@@ -41,7 +52,8 @@ export class UpdateOrderFormControl extends React.Component<UpdateOrderFormContr
             }, {
                 type: 'body',
                 value: updatingOrder
-            }]
+            }],
+            fetchMeta
         );
     }
 

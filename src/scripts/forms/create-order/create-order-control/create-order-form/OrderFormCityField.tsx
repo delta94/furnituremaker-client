@@ -10,6 +10,7 @@ import {
 import { City, cityResources, restfulFetcher, restfulStore } from '@/restful';
 
 export interface OrderFormCityFieldProps {
+    readonly initValue: string;
     readonly fieldName: string;
     readonly onCityChange: (city: City) => void;
 }
@@ -18,13 +19,23 @@ export class OrderFormCityField extends React.PureComponent<OrderFormCityFieldPr
     static readonly cityValidates = [required('Nhập tỉnh thành')];
 
     render() {
-        const { fieldName, onCityChange } = this.props;
+        const { initValue, fieldName, onCityChange } = this.props;
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
                 store={restfulStore}
                 resource={cityResources.find}
                 parameters={[]}
+                onFetchCompleted={(data) => {
+                    if (!data) {
+                        return;
+                    }
+
+                    const initSelectedCity = data.find(o => o.id === initValue);
+                    if (initSelectedCity) {
+                        onCityChange(initSelectedCity);
+                    }
+                }}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
                         const cities = renderProps.data;
@@ -53,5 +64,4 @@ export class OrderFormCityField extends React.PureComponent<OrderFormCityFieldPr
             />
         );
     }
-
 }

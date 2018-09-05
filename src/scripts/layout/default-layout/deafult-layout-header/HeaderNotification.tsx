@@ -63,18 +63,53 @@ export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderP
         return orderBy(array, 'time', 'desc');
     }
 
+    readonly getNotificationTyleLabel = (notification) => {
+        switch (notification.type) {
+            case 'new-order':
+                return 'tạo một';
+            case 'update-order':
+                return 'cập nhật';
+            case 'cancel-order':
+                return 'hủy';
+            case 'change-order':
+                return 'yêu cầu đổi trả';
+            default:
+                return '';
+        }
+    }
+
     readonly renderListMeta = (notification: AppNotification) => {
         switch (notification.type) {
             case 'new-order':
+            case 'cancel-order':
+            case 'change-order':
+                const label = this.getNotificationTyleLabel(notification);
                 return (
                     <AntdList.Item.Meta
                         title={(
                             <p>
                                 <Link to={`/profile/${notification.fromUser}`}>
                                     {notification.fromUserName}
-                                </Link> vừa đặt một <Link to={`/orders/${notification.orderId}`}>
+                                </Link> vừa {label} <Link to={`/orders/${notification.orderId}`}>
                                     đơn hàng
                                 </Link>
+                            </p>
+                        )}
+                        description={(
+                            <small>
+                                {`Vào lúc ${formatDate(notification.time, 'HH:mm DD/MM/YYYY')}`}
+                            </small>
+                        )}
+                    />
+                );
+            case 'update-order':
+                return (
+                    <AntdList.Item.Meta
+                        title={(
+                            <p>
+                                Thông tin <Link to={`/orders/${notification.orderId}`}>
+                                    đơn hàng
+                                </Link> của bạn vừa được cập nhật
                             </p>
                         )}
                         description={(
@@ -90,9 +125,9 @@ export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderP
                     <AntdList.Item.Meta
                         title={(
                             <p>
-                                Thông tin giao dịch <Link to={`/orders/${notification.orderId}`}>
+                                Lịch sử giao dịch của <Link to={`/orders/${notification.orderId}`}>
                                     đơn hàng
-                                </Link> của bạn vừa được cập nhật
+                                </Link> vừa được cập nhật
                             </p>
                         )}
                         description={(
@@ -147,7 +182,7 @@ export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderP
 
     render() {
         const { notifications } = this.props;
-        
+
         return (
             <AntdPopover
                 title="Thông báo"

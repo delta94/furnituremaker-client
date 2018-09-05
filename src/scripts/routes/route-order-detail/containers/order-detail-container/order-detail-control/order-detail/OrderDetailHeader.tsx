@@ -113,12 +113,16 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                     action={(
                         <AccessControl allowRoles="root">
                             <AllowAccess>
-                                <AntdButton
-                                    icon="edit"
-                                    onClick={() => onUpdateOrderClick(order)}
-                                >
-                                    Cập nhật đơn hàng
-                                </AntdButton>
+                                {
+                                    onUpdateOrderClick && (
+                                        <AntdButton
+                                            icon="edit"
+                                            onClick={() => onUpdateOrderClick(order)}
+                                        >
+                                            Cập nhật đơn hàng
+                                        </AntdButton>
+                                    )
+                                }
                             </AllowAccess>
                             <DenyAccess>
                                 <AntdButton.Group>

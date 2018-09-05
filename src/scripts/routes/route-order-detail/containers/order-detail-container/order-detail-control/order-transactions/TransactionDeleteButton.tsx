@@ -2,13 +2,16 @@ import * as React from 'react';
 
 import { AntdButton, AntdMessage, AntdModal } from '@/components';
 import {
+    Order,
     OrderTransaction,
     orderTransactionResources,
+    orderUtils,
     restfulFetcher
 } from '@/restful';
 
 export interface TransactionDeleteButtonProps {
     readonly orderTransaction: OrderTransaction;
+    readonly order: Order;
 }
 
 export class TransactionDeleteButton extends React.PureComponent<TransactionDeleteButtonProps> {
@@ -28,6 +31,7 @@ export class TransactionDeleteButton extends React.PureComponent<TransactionDele
     }
 
     public render() {
+        const { order } = this.props;
         return (
             <AntdButton
                 onClick={() => {
@@ -43,6 +47,7 @@ export class TransactionDeleteButton extends React.PureComponent<TransactionDele
                 type="danger"
                 icon="delete"
                 shape="circle"
+                hidden={!orderUtils.adminCanUpdate(order)}
             />
         );
     }

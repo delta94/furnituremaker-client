@@ -38,6 +38,7 @@ const HeaderSearch = styled.div`
 `;
 
 const HeaderButton = styled.div`
+    text-align: center;
     height: 60px;
     min-width: 60px;
     display: flex;
@@ -61,7 +62,6 @@ type DefaultLayoutHeaderProps = Partial<WithCurrentUserProps>;
 @withCurrentUser(restfulStore)
 export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProps> {
     render() {
-        const { user } = this.props;
         return (
             <AntdAffix>
                 <HeaderWrapper>
@@ -83,18 +83,17 @@ export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProp
                                 content={
                                     <React.Fragment>
                                         <HeaderPopoverButton>
-                                            <Link to="/orders">Đơn hàng</Link>
-                                        </HeaderPopoverButton>
-                                        <HeaderPopoverButton>
                                             <a key="logout" onClick={Auth.instance.logout}>
                                                 Đăng xuất
-                                        </a>
+                                            </a>
                                         </HeaderPopoverButton>
                                     </React.Fragment>
                                 }
                             >
                                 <HeaderButton>
-                                    <AntdIcon type="user" />
+                                    <span>
+                                        <AntdIcon type="user" />
+                                    </span>
                                 </HeaderButton>
                             </AntdPopover>
                         </HeaderContent>

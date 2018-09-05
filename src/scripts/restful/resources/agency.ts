@@ -6,9 +6,9 @@ import {
 } from 'react-restful';
 
 import { apiEntry } from '@/restful/apiEntry';
+import { City } from '@/restful/resources/city';
 
 import { AgencyLevel } from './agencyLevel';
-import { Order } from './order';
 import { User } from './user';
 
 export interface Agency extends RecordType {
@@ -19,6 +19,7 @@ export interface Agency extends RecordType {
     readonly email: string;
     readonly level: AgencyLevel;
     readonly user: User;
+    readonly city: City;
 }
 
 export const agencyResourceType = new ResourceType<Agency>({

@@ -7,8 +7,8 @@ export type NotifiCationRefType = 'root' | User | string;
 
 export interface AppNotification {
     readonly id?: string;
-    readonly time: string;
-    readonly type: 'new-order' | 'new-order-transaction';
+    readonly time?: string;
+    readonly type: 'new-order' | 'update-order' | 'cancel-order' | 'change-order' | 'new-order-transaction';
     readonly orderId?: string;
     readonly orderRransactionId?: string;
     readonly fromUser?: string;
@@ -21,6 +21,7 @@ export interface AppNotification {
 let notificationRef;
 
 const notificationsRefUrl = 'https://furnituremaker-eaafa.firebaseio.com';
+const getNowIsoString = () => (new Date()).toISOString();
 
 export const registerNotificationDatabasse = (firebase) => {
     const firebaseDB = firebase.database();
@@ -30,17 +31,20 @@ export const registerNotificationDatabasse = (firebase) => {
 export const sendNotificationToFirebase = (ref: NotifiCationRefType, value: AppNotification) => {
     const notificationChildRef = notificationRef.child(`${ref}/notifications`);
     notificationChildRef.push()
-        .set(value);
+        .set(value.time ? value : {
+            ...value,
+            time: getNowIsoString()
+        });
 };
 
 export const markNotificationViewed = (ref: NotifiCationRefType, notificationId: string) => {
-    const now = new Date();
+    const now = getNowIsoString();
     notificationRef
         .child(ref)
         .child('notifications')
         .child(notificationId)
         .child(nameof<AppNotification>(o => o.viewedAt))
-        .set(now.toISOString());
+        .set(now);
 };
 
 const snapshotValToObject = (value, key) => ({
