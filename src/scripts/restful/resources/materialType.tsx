@@ -1,3 +1,4 @@
+import { UploadFile } from 'antd/lib/upload/interface';
 import * as React from 'react';
 import {
     RecordType,
@@ -14,6 +15,8 @@ export interface MaterialType extends RecordType {
     readonly id: string;
     readonly name: string;
     readonly materials?: FurnutureMaterial[];
+    readonly view_normalMap: UploadFile;
+    readonly view_shiny?: number;
 }
 
 export const materialTypeResourceType = new ResourceType({

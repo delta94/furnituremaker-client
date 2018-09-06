@@ -26,6 +26,7 @@ export class CartDrawerContent extends React.Component<CartDrawerContentProps> {
                     renderItem={(item: OrderDetail) => {
                         return (
                             <OrderDetailItem
+                                key={item.productCode}
                                 productType={item.productType}
                                 orderDetail={item}
                             />

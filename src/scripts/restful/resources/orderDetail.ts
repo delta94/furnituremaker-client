@@ -7,6 +7,7 @@ import {
 } from 'react-restful';
 
 import { User } from '@/restful/resources/user';
+import { roundTo } from '@/utilities';
 
 import { apiEntry } from '../apiEntry';
 import { Order } from './order';
@@ -159,7 +160,7 @@ export const orderDetailUtils = {
     getTotalVolume: (orderDetails) => orderDetails.reduce(
         (totalVolumeValue, orderDetail) => {
             const orderDetailVolume = orderDetail.productType.volume * orderDetail.quantity;
-            return totalVolumeValue += (orderDetailVolume || 0);
+            return totalVolumeValue += roundTo(orderDetailVolume, 2);
         },
         0
     )

@@ -1,6 +1,10 @@
 const replace = require('lodash/replace');
 
-function roundTo(n: number, digits: number) {
+export function roundTo(n: number, digits: number) {
+    if (!n) {
+        return 0;
+    }
+    
     if (digits === undefined) {
         digits = 0;
     }

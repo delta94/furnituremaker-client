@@ -88,7 +88,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                             material.opacity = 0;
                             if (material['map']) {
                                 material['map'].anisotropy = 16;
-                                material['shininess'] = 0;
+                                material['shininess'] = productModule.material.materialType.view_shiny || 0;
                             }
 
                             // * Normal map test!
