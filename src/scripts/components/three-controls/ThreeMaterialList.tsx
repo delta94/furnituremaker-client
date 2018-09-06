@@ -64,7 +64,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                                 const isNextSelected = nextSelectMaterial && (nextSelectMaterial.id === material.id);
 
                                 return (
-                                    <AntdList.Item>
+                                    <AntdList.Item key={material.id}>
                                         <AntdTooltip
                                             title={material.description || material.name}
                                         >

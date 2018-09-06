@@ -157,6 +157,7 @@ export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderP
                     dataSource={this.notificationMapToArray(notifications)}
                     renderItem={(notification: AppNotification) => (
                         <ListItemWrapper
+                            key={notification.id}
                             onClick={() => this.onNotificationItemClick(notification)}
                         >
                             <AntdList.Item

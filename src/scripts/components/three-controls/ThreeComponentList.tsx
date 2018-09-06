@@ -128,7 +128,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                         const isNextSelected = nextSelectComponent && (nextSelectComponent.id === component.id);
 
                         return (
-                            <AntdList.Item>
+                            <AntdList.Item key={component.id}>
                                 <div
                                     className={classNames(
                                         'three-component-list-component',
