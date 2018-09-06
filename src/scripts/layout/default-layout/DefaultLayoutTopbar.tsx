@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Auth } from '@/app';
-import { AntdIcon, Container } from '@/components';
+import { AntdDivider, AntdIcon, Container } from '@/components';
 
 const DefaultLayoutTopbarWrapper = styled.div`
    background: #D59B01; 
@@ -38,11 +38,13 @@ export class DefaultLayoutTopbar extends React.Component {
                             Xin chào, {Auth.instance.currentUser.name}!
                         </div>
                         <Menu>
-                            <li>
-                                <Link to="/orders" className="link">
-                                    <AntdIcon type="copy" /> Đơn hàng
-                                </Link>
-                            </li>
+                            <Link to="/maker" className="link">
+                                <AntdIcon type="bulb" theme="outlined" /> Tự thiết kế
+                            </Link>
+                            <AntdDivider type="vertical" />
+                            <Link to="/orders" className="link">
+                                <AntdIcon type="copy" /> Đơn hàng
+                            </Link>
                         </Menu>
                     </DefaultLayoutTopbarContent>
                 </Container>

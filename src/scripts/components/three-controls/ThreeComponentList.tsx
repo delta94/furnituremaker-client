@@ -11,7 +11,8 @@ import {
     AntdDivider,
     AntdIcon,
     AntdPopover,
-    AntdRow
+    AntdRow,
+    AntdTooltip
 } from '@/components/antd-component';
 import { Loading } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
@@ -129,22 +130,26 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
 
                         return (
                             <AntdList.Item key={component.id}>
-                                <div
-                                    className={classNames(
-                                        'three-component-list-component',
-                                        { selected: isSelected }
-                                    )}
+                                <AntdTooltip
+                                    title={component.displayName}
                                 >
-                                    <Img
-                                        file={component.thumbnail}
-                                        size="img256x256"
-                                        onClick={() => this.onComponentSelect(component)}
-                                    />
-                                    <AccessControl allowRoles="root">
-                                        {this.renderPopover(component)}
-                                    </AccessControl>
-                                    {(loading && isNextSelected) && (<Loading />)}
-                                </div>
+                                    <div
+                                        className={classNames(
+                                            'three-component-list-component',
+                                            { selected: isSelected }
+                                        )}
+                                    >
+                                        <Img
+                                            file={component.thumbnail}
+                                            size="img256x256"
+                                            onClick={() => this.onComponentSelect(component)}
+                                        />
+                                        <AccessControl allowRoles="root">
+                                            {this.renderPopover(component)}
+                                        </AccessControl>
+                                        {(loading && isNextSelected) && (<Loading />)}
+                                    </div>
+                                </AntdTooltip>
                             </AntdList.Item>
                         );
                     }}
