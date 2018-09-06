@@ -6,7 +6,7 @@ import { withStoreValues } from '@/app';
 import { AntdAffix, ThreeSence } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
-    Product,
+    ProductExtended,
     restfulStore,
     uploadedFileUtils,
     withComponents,
@@ -24,7 +24,7 @@ interface RouteHomeProps extends
     WithComponentsProps,
     WithMaterialProps {
     readonly selectedObject?: THREE.Group | null;
-    readonly product: Product;
+    readonly product: ProductExtended;
 }
 @withComponents(restfulStore)
 @withMaterials(restfulStore)

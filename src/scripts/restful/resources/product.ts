@@ -1,3 +1,7 @@
+import { Resource, ResourceType } from 'react-restful';
+
+import { apiEntry } from '@/restful/apiEntry';
+import { UploadedFile } from '@/restful/resources/uploadedFile';
 import { formatCurrency } from '@/utilities';
 
 import { FurnitureComponentType } from './furnitureComponentType';
@@ -10,10 +14,45 @@ export interface Product {
     readonly id?: string;
     readonly design: ProductDesign;
     readonly productType: ProductType;
-    readonly modules: ProductModule[];
     readonly totalPrice: number;
     readonly code: string;
+    readonly isFeature?: boolean;
+    readonly thumbnail?: UploadedFile;
+    readonly displayName?: string;
 }
+
+export interface ProductExtended extends Product {
+    readonly modules: ProductModule[];
+}
+
+export const productResourceType = new ResourceType({
+    name: nameof<Product>(),
+    schema: [{
+        field: 'id',
+        type: 'PK'
+    }]
+});
+
+export const productResources = {
+    find: new Resource<Product[]>({
+        resourceType: productResourceType,
+        method: 'GET',
+        url: apiEntry('/product'),
+        mapDataToStore: (products, resourceType, store) => {
+            for (const product of products) {
+                store.mapRecord(resourceType, product);
+            }
+        }
+    }),
+    findOne: new Resource<Product>({
+        resourceType: productResourceType,
+        method: 'GET',
+        url: apiEntry('/product/:id'),
+        mapDataToStore: (product, resourceType, store) => {
+            store.mapRecord(resourceType, product);
+        }
+    }),
+};
 
 export const productUtils = {
     getTotalPriceFromModules: (productModules: ProductModule[], startValue: number) => {
@@ -28,7 +67,7 @@ export const productUtils = {
         productType: ProductType,
         furnitureComponentTypes: FurnitureComponentType[],
         materialTypes: MaterialType[]
-    ): Product => {
+    ): ProductExtended => {
         const modules: ProductModule[] = furnitureComponentTypes.map(furnitureComponentType => {
             const defaultComponent = furnitureComponentType.components[0];
             const defaultComponentMaterialType = defaultComponent.materialTypes[0];
@@ -47,7 +86,7 @@ export const productUtils = {
             };
         });
 
-        const product: Product = {
+        const product: ProductExtended = {
             code: null,
             design,
             productType,
@@ -56,10 +95,10 @@ export const productUtils = {
         };
         return product;
     },
-    getProductName: (product: Product) => {
+    getProductName: (product: ProductExtended) => {
         return `${product.productType.name}`;
     },
-    getOriginPrice: (product: Product) => {
+    getOriginPrice: (product: ProductExtended) => {
         if (product.totalPrice) {
             return product.totalPrice;
         }
@@ -72,8 +111,8 @@ export const productUtils = {
             0
         );
     },
-    formatPrice: (product: Product) => formatCurrency(productUtils.getOriginPrice(product)),
-    getProductCode: (product: Product) => {
+    formatPrice: (product: ProductExtended) => formatCurrency(productUtils.getOriginPrice(product)),
+    getProductCode: (product: ProductExtended) => {
         const moduleCodes = product.modules.map(o => {
             return o.component.code + o.material.code;
         });
@@ -90,3 +129,7 @@ export const productUtils = {
         return componentCodes.map(o => String(o));
     }
 };
+
+export interface WithProductsProps {
+    readonly products?: Product[];
+}

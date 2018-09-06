@@ -19,7 +19,7 @@ import { AddProductToCartControl } from '@/forms/add-product-to-cart';
 import {
     discountByQuantitiesResources,
     DiscountByQuantity,
-    Product,
+    ProductExtended,
     productModuleUtils,
     productUtils,
     restfulFetcher,
@@ -77,7 +77,7 @@ export interface ProductInfoProps extends
     CommonStoreProps,
     WithStoreValuesDispatchs,
     Partial<Pick<ThreeComponentListProps, 'selectedObject'>> {
-    readonly product: Product;
+    readonly product: ProductExtended;
     readonly showDesignModal: () => void;
 }
 

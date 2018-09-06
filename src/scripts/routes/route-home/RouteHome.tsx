@@ -2,7 +2,15 @@ import * as React from 'react';
 import { RouteComponentProps, RouteProps } from 'react-router';
 
 import { readyState, withStoreValues } from '@/app';
+import { Container, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
+import { DefaultLayout } from '@/layout';
+
+import {
+    HomeProductDesign,
+    HomeProductType,
+    HomeProductTypeGroup
+} from './containers';
 
 type RouteHomeProps = CommonStoreProps & RouteComponentProps<{}>;
 
@@ -16,11 +24,20 @@ export class RouteHome extends React.Component<RouteHomeProps> {
 
     constructor(props: RouteHomeProps) {
         super(props);
-
-        props.history.replace('/maker');
     }
 
     render() {
-        return null;
+        const routeProps = Page.getRouteProps(this.props);
+        return (
+            <Page routeProps={routeProps}>
+                <DefaultLayout>
+                    <HomeProductTypeGroup />
+                    <HomeProductType />
+                    <Container>
+                        <HomeProductDesign/>
+                    </Container>
+                </DefaultLayout>
+            </Page>
+        );
     }
 }

@@ -11,7 +11,7 @@ import { Loading } from '@/components/domain-components/generic/Loading';
 import { colorPrimary, CommonStoreProps } from '@/configs';
 import {
     FurnutureMaterial,
-    Product,
+    ProductExtended,
     restfulStore,
     uploadedFileUtils,
     WithMaterialProps,
@@ -110,7 +110,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                 meshPhongMaterial.needsUpdate = true;
             }
 
-            const nextSelectedProduct: Product = {
+            const nextSelectedProduct: ProductExtended = {
                 ...selectedProduct,
                 modules: selectedProduct.modules.map(productModule => {
 

@@ -17,7 +17,7 @@ import {
     discountByQuantitiesUtils,
     DiscountByQuantity,
     OrderDetail,
-    Product
+    ProductExtended
 } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
@@ -38,7 +38,7 @@ const TotalValue = styled.div`
 `;
 
 interface AddProductToCartFormOwnProps {
-    readonly product: Product;
+    readonly product: ProductExtended;
     readonly discountByQuantities: DiscountByQuantity[];
 }
 

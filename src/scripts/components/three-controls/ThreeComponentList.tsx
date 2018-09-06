@@ -18,7 +18,7 @@ import { CommonStoreProps } from '@/configs';
 import { CreateComponentFormControl } from '@/forms/create-component';
 import {
     FurnitureComponent,
-    Product,
+    ProductExtended,
     productUtils,
     uploadedFileUtils
 } from '@/restful';
@@ -192,7 +192,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                 };
             });
 
-            const nextSelectedProduct: Product = {
+            const nextSelectedProduct: ProductExtended = {
                 ...selectedProduct,
                 modules: nextModules,
                 totalPrice: productUtils.getTotalPriceFromModules(nextModules, 0)

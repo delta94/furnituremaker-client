@@ -8,9 +8,9 @@ import {
     City,
     FurnitureComponent,
     MaterialType,
-    Product,
     ProductDesign,
     ProductDesignGroup,
+    ProductExtended,
     ProductType,
     ProductTypeGroup,
     Promotion
@@ -29,7 +29,7 @@ export interface CommonStoreValues extends InitAppStoreProps {
     readonly selectedProductDesignGroup?: ProductDesignGroup;
     readonly selectedProductDesign?: ProductDesign;
     readonly selectedMaterialType?: MaterialType;
-    readonly selectedProduct?: Product;
+    readonly selectedProduct?: ProductExtended;
     readonly selectedPromotion?: Promotion;
     readonly selectedComponent?: FurnitureComponent;
 

@@ -10,7 +10,7 @@ import {
     FurnitureComponent,
     furnitureComponentResources,
     furnutureMaterialResouceType,
-    Product,
+    ProductExtended,
     ProductModule,
     productType,
     productUtils,
@@ -32,7 +32,7 @@ export interface RouteMakerRouterProps {
 type RouteMakerProps = CommonStoreProps & RouteComponentProps<RouteMakerRouterProps>;
 interface RouteMakerState {
     readonly selectedProductCode?: string;
-    readonly loadedProduct?: Product;
+    readonly loadedProduct?: ProductExtended;
     readonly pageReady: boolean;
 }
 
@@ -61,7 +61,7 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
         return null;
     }
 
-    readonly getProduct = async (productCode: string): Promise<Product> => {
+    readonly getProduct = async (productCode: string): Promise<ProductExtended> => {
         const componentCodes = productUtils.getComponentCodes(productCode);
         const fetchComponentParams = componentCodes.map((componentCode): ResourceParameter => ({
             type: 'query',

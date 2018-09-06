@@ -4,7 +4,7 @@ import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
 import { formatCurrency } from '@/utilities';
 
 import { apiEntry } from '../apiEntry';
-import { Product, productUtils } from './product';
+import { ProductExtended, productUtils } from './product';
 import { ProductType } from './productType';
 
 const sortBy = require('lodash/sortBy');
@@ -38,7 +38,7 @@ export const discountByQuantitiesResources = {
 };
 
 export const discountByQuantitiesUtils = {
-    format: (discountByQuantity: DiscountByQuantity, product: Product) => {
+    format: (discountByQuantity: DiscountByQuantity, product: ProductExtended) => {
         const { quantity, discountPerProduct } = discountByQuantity;
         const rawPrice = productUtils.getOriginPrice(product) - (discountPerProduct);
         const price = Math.abs(rawPrice);
