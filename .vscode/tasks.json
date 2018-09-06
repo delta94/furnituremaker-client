@@ -6,21 +6,40 @@
 // ${fileExtname}: the current opened file's extension
 // ${cwd}: the current working directory of the spawned process
 {
-    "version": "0.1.0",
+    "version": "2.0.0",
     "command": "npm",
-    "isShellCommand": true,
     "echoCommand": false,
-    "suppressTaskName": true,
-    "showOutput": "always",
-    "tasks": [{
+    "windows": {
+        "options": {
+            "shell": {
+                "executable": "${env:windir}/System32/WindowsPowerShell/v1.0/powershell.exe",
+                "args": [
+                    "-NoProfile",
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-Command"
+                ]
+            }
+        }
+    },
+    "tasks": [
+        {
+            "label": "start",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            },
+            "type": "shell",
             "args": [
-                "run",
-                "start",
                 "--silent",
                 "--react-hot-boilerplate-vscode:port=3000",
                 "--react-hot-boilerplate-vscode:host=localhost" // use these command line args to override host and port of the dev-server. default values are defined in package.json config section.
             ],
-            "problemMatcher": [{
+            "problemMatcher": [
+                {
                     "owner": "custom",
                     "pattern": {
                         "regexp": "____________"
@@ -36,20 +55,23 @@
                     "severity": "error",
                     "applyTo": "closedDocuments",
                     "fileLocation": "absolute",
-                    "pattern": [{
-                        "regexp": "^(Module build failed:\\s.*?:\\s(.*):(.*?))[\\s+](?:\\(([\\d-]+):([\\d-]+)\\))?$",
-                        "message": 3,
-                        "file": 2,
-                        "line": 4,
-                        "column": 5
-                    }]
+                    "pattern": [
+                        {
+                            "regexp": "^(Module build failed:\\s.*?:\\s(.*):(.*?))[\\s+](?:\\(([\\d-]+):([\\d-]+)\\))?$",
+                            "message": 3,
+                            "file": 2,
+                            "line": 4,
+                            "column": 5
+                        }
+                    ]
                 },
                 {
                     "owner": "javascript",
                     "severity": "error",
                     "applyTo": "closedDocuments",
                     "fileLocation": "relative",
-                    "pattern": [{
+                    "pattern": [
+                        {
                             "regexp": "^ERROR in ./(.*)\\s?$",
                             "file": 1
                         },
@@ -67,8 +89,7 @@
                     ]
                 }
             ],
-            "isBackground": true,
-            "taskName": "start"
+            "isBackground": true
         }
     ]
 }
