@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { RouteComponentProps, RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 
 import { PageProps, readyState, withStoreValues } from '@/app';
-import { Container, Page } from '@/components';
+import { Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
 
 import {
+    HomeFeatureProducts,
     HomeProductDesign,
+    HomeProductList,
     HomeProductType,
     HomeProductTypeGroup
 } from './containers';
@@ -27,9 +29,16 @@ export class RouteHome extends React.Component<RouteHomeProps> {
                 <DefaultLayout>
                     <HomeProductTypeGroup />
                     <HomeProductType />
-                    <Container>
-                        <HomeProductDesign />
-                    </Container>
+                    <HomeProductDesign />
+                    <div
+                        style={{
+                            background: '#fff',
+                            padding: '30px 0 30px 0'
+                        }}
+                    >
+                        <HomeFeatureProducts />
+                        <HomeProductList />
+                    </div>
                 </DefaultLayout>
             </Page>
         );

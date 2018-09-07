@@ -16,9 +16,10 @@ export interface Product {
     readonly productType: ProductType;
     readonly totalPrice: number;
     readonly code: string;
-    readonly isFeature?: boolean;
+    readonly isFeatureProduct?: boolean;
     readonly thumbnail?: UploadedFile;
-    readonly displayName?: string;
+    readonly name?: string;
+    readonly invenstory?: number;
 }
 
 export interface ProductExtended extends Product {
