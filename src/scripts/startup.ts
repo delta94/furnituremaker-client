@@ -8,25 +8,26 @@ import {
     storeValuesMiddleware,
     storeValuesRecuder
 } from '@/app';
+import { loginPath } from '@/configs';
 import {
-    RouteCart,
-    RouteHome,
-    RouteLogin,
-    RouteMaker,
-    RouteOrderDetail,
-    RouteOrders,
-    RouteTransportPolicy
+    RouteCartLoadable,
+    RouteHomeLoadable,
+    RouteLoginLoadable,
+    RouteMakerLoadable,
+    RouteOrderDetailLoadable,
+    RouteOrdersLoadable,
+    RouteTransportPolicyLoadable
 } from '@/routes';
 
 export function startup() {
     const appRoutes = [
-        RouteLogin,
-        RouteHome,
-        RouteOrders,
-        RouteOrderDetail,
-        RouteMaker,
-        RouteCart,
-        RouteTransportPolicy
+        RouteCartLoadable,
+        RouteHomeLoadable,
+        RouteLoginLoadable,
+        RouteMakerLoadable,
+        RouteOrderDetailLoadable,
+        RouteOrdersLoadable,
+        RouteTransportPolicyLoadable
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);
@@ -46,7 +47,7 @@ export function startup() {
             },
             []
         ),
-        loginPath: RouteLogin.routeProps.path
+        loginPath: loginPath
     };
     return render(configuration);
 }

@@ -1,1 +1,1 @@
-export * from './RouteHome';
+export * from './RouteHomeLoadable';

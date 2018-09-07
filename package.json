@@ -5,6 +5,7 @@
     },
     "dependencies": {
         "@types/firebase": "^3.2.1",
+        "@types/react-loadable": "^5.4.1",
         "ant-design-pro": "^2.0.0",
         "antd": "^3.9.1",
         "autobind-decorator": "^2.1.0",
@@ -19,6 +20,7 @@
         "moment-range": "^4.0.1",
         "react": "^16.4.2",
         "react-dom": "^16.4.2",
+        "react-loadable": "^5.5.0",
         "react-redux": "^5.0.6",
         "react-redux-router": "^0.0.14",
         "react-restful": "^1.1.5",
@@ -101,7 +103,8 @@
         "build:test": "cross-env NODE_ENV=production webpack --display=errors-only --progress --colors --config webpack.config.test.js",
         "build:copy-static": "ncp ./static ./dist/static",
         "build:copy-bin": "ncp ./bin ./dist",
-        "analyzer": "cross-env NODE_ENV=production webpack --display=errors-only --progress --colors --config webpack.config.analyzer.js"
+        "analyzer": "npm run clean && npm run analyzer:build",
+        "analyzer:build": "cross-env NODE_ENV=production webpack --display=errors-only --progress --colors --config webpack.config.analyzer.js"
     },
     "version": "1.0.0"
 }

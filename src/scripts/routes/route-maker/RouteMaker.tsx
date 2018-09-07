@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ResourceParameter } from 'react-restful';
 import { RouteComponentProps, RouteProps } from 'react-router';
 
-import { readyState, withStoreValues } from '@/app';
+import { PageProps, readyState, withStoreValues } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Container, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
@@ -24,12 +24,13 @@ import {
     ProductTypeContainer,
     ProductTypeGroupContainer
 } from './containers';
+import { RouteMakerRouterProps } from './Types';
 
-export interface RouteMakerRouterProps {
-    readonly productCode: string;
-}
+type RouteMakerProps =
+    CommonStoreProps &
+    RouteComponentProps<RouteMakerRouterProps> &
+    PageProps;
 
-type RouteMakerProps = CommonStoreProps & RouteComponentProps<RouteMakerRouterProps>;
 interface RouteMakerState {
     readonly selectedProductCode?: string;
     readonly loadedProduct?: ProductExtended;
@@ -39,12 +40,6 @@ interface RouteMakerState {
 @readyState()
 @withStoreValues()
 export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState> {
-
-    static readonly routeProps: RouteProps = {
-        path: `/maker/:${nameof<RouteMakerRouterProps>(o => o.productCode)}?`,
-        exact: true
-    };
-
     static getDerivedStateFromProps(
         nextProps: RouteMakerProps,
         prevState: RouteMakerState

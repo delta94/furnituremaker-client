@@ -1,1 +1,1 @@
-export * from './RouteMaker';
+export * from './RouteMakerLoadable';

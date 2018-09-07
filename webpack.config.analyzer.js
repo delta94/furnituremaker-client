@@ -21,13 +21,19 @@ module.exports = {
     },
     optimization: {
         minimizer: [new UglifyJsPlugin({ cache: true, sourceMap: true })],
-        runtimeChunk: 'single',
+        runtimeChunk: true,
+        namedModules: true,
+        namedChunks: true,
         splitChunks: {
             cacheGroups: {
-                commons: {
+                vendors: {
                     test: /[\\/]node_modules[\\/]/,
-                    name: "vendors",
-                    chunks: "all"
+                    priority: -10
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true
                 }
             }
         },

@@ -2,29 +2,18 @@ import * as React from 'react';
 import { RouteComponentProps, RouteProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { readyState, withStoreValues } from '@/app';
+import { PageProps, readyState, withStoreValues } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Container, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
 
 import { TransportFeeByCity } from './containers';
 
-type RouteTransportPolicyProps = CommonStoreProps & RouteComponentProps<{}>;
-
-export const transportPolicyRoutePath = '/transport-policy';
+type RouteTransportPolicyProps = CommonStoreProps & RouteComponentProps<{}> & PageProps;
 
 @readyState()
 @withStoreValues()
 export class RouteTransportPolicy extends React.Component<RouteTransportPolicyProps> {
-    static readonly routeProps: RouteProps = {
-        path: transportPolicyRoutePath,
-        exact: true
-    };
-
-    constructor(props: RouteTransportPolicyProps) {
-        super(props);
-    }
-
     render() {
         return (
             <Page routeProps={this.props}>
