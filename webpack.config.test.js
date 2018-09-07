@@ -23,10 +23,15 @@ module.exports = {
         runtimeChunk: 'single',
         splitChunks: {
             cacheGroups: {
-                commons: {
+                vendors: {
                     test: /[\\/]node_modules[\\/]/,
-                    name: "vendors",
-                    chunks: "all"
+                    priority: -10,
+                    chunks: 'initial'
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true
                 }
             }
         },
