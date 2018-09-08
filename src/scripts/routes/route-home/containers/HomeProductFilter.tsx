@@ -16,6 +16,8 @@ interface HomeProductFilterProps extends Pick<CommonStoreProps, 'history'> {
 @withStoreValues<HomeProductFilterProps>('history')
 export class HomeProductFilter extends React.PureComponent<HomeProductFilterProps> {
     render() {
+        const { history } = this.props;
+
         return (
             <HomeProductFilterWrapper>
                 <Container>
@@ -23,7 +25,9 @@ export class HomeProductFilter extends React.PureComponent<HomeProductFilterProp
                         placeholder="Sắp xếp sản phẩm"
                         style={{ minWidth: 160 }}
                         onChange={(value: string) => {
-                            // ...
+                            const currentSearchParams = new URLSearchParams(location.search);
+                            currentSearchParams.set('_sort', value);
+                            history.push(`?${currentSearchParams.toString()}`);
                         }}
                     >
                         <AntdSelect.Option value="totalPrice:asc">Giá cao đến thấp</AntdSelect.Option>

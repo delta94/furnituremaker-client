@@ -3,7 +3,13 @@ import styled from 'styled-components';
 
 import { AntdButton, Img } from '@/components';
 import { colorPrimary } from '@/configs';
-import { Product } from '@/restful';
+import {
+    Product,
+    productDiscountUtils,
+    restfulStore,
+    WithProductDiscounts,
+    withProductDiscounts
+} from '@/restful';
 import { formatCurrency } from '@/utilities';
 
 const ItemWrapper = styled.div`
@@ -22,6 +28,17 @@ const ItemWrapper = styled.div`
             opacity: 1;
         }
     }
+`;
+
+const ItemDiscount = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/static/assets/sale.png');
+    background-size: 100%;
+    position: absolute;
+    padding: 5px 20px 5px 5px;
+    color: #fff;
 `;
 
 const ItemContent = styled.div`
@@ -90,15 +107,32 @@ const ItemInfoActions = styled.div`
     text-align: center;
 `;
 
-export interface HomeFeatureProductItemProps {
+export interface HomeFeatureProductItemProps
+    extends WithProductDiscounts {
     readonly product: Product;
 }
 
+@withProductDiscounts(restfulStore)
 export class HomeFeatureProductItem extends React.PureComponent<HomeFeatureProductItemProps> {
     public render() {
-        const { product } = this.props;
+        const { product, productDiscounts } = this.props;
+
+        const productDiscount =
+            productDiscountUtils.getDiscountByProduct(productDiscounts, product);
+
         return (
             <ItemWrapper>
+                {
+                    productDiscount && (
+                        <ItemDiscount>
+                            Giảm ngay {
+                                productDiscount.discountMoney ?
+                                    formatCurrency(productDiscount.discountMoney) :
+                                    `${productDiscount.discountPercent} %`
+                            }
+                        </ItemDiscount>
+                    )
+                }
                 <ItemContent>
                     <ItemThumbWapper>
                         <Img file={product.thumbnail} />

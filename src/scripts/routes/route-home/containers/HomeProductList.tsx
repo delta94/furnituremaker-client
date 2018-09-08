@@ -20,8 +20,37 @@ import {
     HomeProductListViewMoreBtn
 } from './home-product-list';
 
+const getDefaultSearchParams = (): ResourceParameter[] => [
+    {
+        type: 'query',
+        parameter: `${nameof<Product>(o => o.isFeatureProduct)}_ne`,
+        value: true
+    },
+    {
+        type: 'query',
+        parameter: '_limit',
+        value: 4
+    },
+    {
+        type: 'query',
+        parameter: 'design',
+        value: undefined
+    },
+    {
+        type: 'query',
+        parameter: '_sort',
+        value: undefined
+    },
+    {
+        type: 'query',
+        parameter: '_start',
+        value: undefined
+    }
+];
+
 interface HomeProductListProps extends
     Pick<CommonStoreProps, 'selectedProductType'>,
+    Pick<CommonStoreProps, 'selectedProductDesign'>,
     Pick<CommonStoreProps, 'history'> {
 }
 
@@ -32,32 +61,56 @@ interface HomeProductListState {
 
 @withStoreValues<HomeProductListProps>(
     'selectedProductType',
+    'selectedProductDesign',
     'history'
 )
 export class HomeProductList extends React.PureComponent<HomeProductListProps, HomeProductListState> {
-    static readonly defaultFetchParams = [{
-        type: 'query',
-        parameter: `${nameof<Product>(o => o.isFeatureProduct)}_ne`,
-        value: true
-    } as ResourceParameter, {
-        type: 'query',
-        parameter: '_limit',
-        value: 4
-    } as ResourceParameter
-    ];
-
-    readonly state = {
-        fetchedProducts: [],
-        fetchParams: HomeProductList.defaultFetchParams
-    };
-
     // tslint:disable-next-line:readonly-keyword
     unregisterCallback: UnregisterCallback;
+
+    static readonly getDerivedStateFromProps =
+        (nextProps: HomeProductListProps, prevState: HomeProductListState) => {
+            // * for init design param
+            const designParam = prevState.fetchParams.find(param =>
+                param.parameter === nameof<Product>(product => product.design)
+            );
+            const { selectedProductDesign } = nextProps;
+
+            if (
+                selectedProductDesign &&
+                selectedProductDesign.id !== designParam.value
+            ) {
+                const defaultSearchParams = getDefaultSearchParams();
+                const defaultDesignParams = defaultSearchParams.find(param =>
+                    param.parameter === nameof<Product>(product => product.design)
+                );
+                defaultDesignParams.value = selectedProductDesign.id;
+
+                return {
+                    ...prevState,
+                    fetchParams: [...defaultSearchParams]
+                };
+            }
+
+            if (!designParam.value && selectedProductDesign) {
+                designParam.value = selectedProductDesign.id;
+                return {
+                    ...prevState,
+                    fetchParams: [...prevState.fetchParams]
+                };
+            }
+
+            return null;
+        }
 
     constructor(props: HomeProductListProps) {
         super(props);
         const { history } = props;
         this.unregisterCallback = history.listen(this.onRouteChange);
+        this.state = {
+            fetchedProducts: [],
+            fetchParams: getDefaultSearchParams()
+        };
     }
 
     componentWillUnmount() {
@@ -65,38 +118,25 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
     }
 
     readonly onRouteChange = (location: Location) => {
+        const { fetchParams } = this.state;
+        const prevFetchSortParam = fetchParams.find(o => o.parameter === '_sort');
+        const prevFetchStartParam = fetchParams.find(o => o.parameter === '_start');
+
         const currentSearchParams = new URLSearchParams(location.search);
-        const currentDesignId = currentSearchParams.get('design');
-        this.setState((state) => {
-            const prevFetchDesignParam = state.fetchParams.find(o => o.parameter === 'design');
+        const currentSearchSortParam = currentSearchParams.get('_sort');
 
-            if (!prevFetchDesignParam) {
-                return {
-                    fetchParams: [
-                        ...HomeProductList.defaultFetchParams,
-                        {
-                            type: 'query',
-                            parameter: 'design',
-                            value: currentDesignId
-                        }
-                    ],
-                    fetchedProducts: []
-                };
-            }
+        if (prevFetchSortParam.value === currentSearchSortParam) {
+            return null;
+        }
 
-            if (prevFetchDesignParam.value === currentDesignId) {
-                return null;
-            }
-
-            prevFetchDesignParam.value = currentDesignId;
-
-            return {
-                fetchParams: [
-                    ...HomeProductList.defaultFetchParams,
-                    prevFetchDesignParam
-                ],
-                fetchedProducts: []
-            };
+        prevFetchSortParam.value = currentSearchSortParam || undefined;
+        prevFetchStartParam.value = 0;
+        
+        this.setState({
+            fetchParams: [
+                ...fetchParams
+            ],
+            fetchedProducts: []
         });
     }
 
@@ -113,15 +153,11 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
                     loadedProducts={fetchedProducts.length}
                     fetching={renderProps.fetching}
                     onButtonClick={() => {
+                        const start = fetchParams.find(o => o.parameter === '_start');
+                        start.value = fetchedProducts.length;
+
                         this.setState({
-                            fetchParams: [
-                                ...HomeProductList.defaultFetchParams,
-                                {
-                                    type: 'query',
-                                    parameter: '_start',
-                                    value: fetchedProducts.length
-                                }
-                            ]
+                            fetchParams: [...fetchParams]
                         });
                     }}
                 />
@@ -130,9 +166,12 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
     }
 
     render() {
-        const { selectedProductType } = this.props;
-        if (!selectedProductType) {
-            return true;
+        const { selectedProductType, selectedProductDesign } = this.props;
+
+        if (!selectedProductType
+            || !selectedProductDesign
+        ) {
+            return null;
         }
 
         const { fetchedProducts, fetchParams } = this.state;

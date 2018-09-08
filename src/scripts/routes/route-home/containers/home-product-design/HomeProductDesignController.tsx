@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import Slider, { Settings } from 'react-slick';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { Container, Img } from '@/components';
+import { Container } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { ProductDesign } from '@/restful';
+
+import { HomeProductDesignItem } from './home-product-design-controller';
 
 const Wrapper = styled.div`
     position: relative;
@@ -18,51 +19,14 @@ const Wrapper = styled.div`
     }
 `;
 
-const ItemSquare = styled.div`
-    position: relative;
-`;
-
-const ItemRectangle = styled.div`
-    position: relative;
-`;
-
-interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
-    readonly isSelected: boolean;
-}
-
-const ThumbnailWrapper: React.ComponentType<ItemProps> = styled.div`
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 0 10px;
-    opacity: ${(props: ItemProps) => props.isSelected ? 1 : 0.5};
-    cursor: pointer;
-    transition: all .3s;
-    &:hover {
-        opacity: 1;
-    }
-`;
-
-const Label = styled.span`
-    color: #fff;
-    font-size: 14px;
-    position: absolute;
-    top: 15px;
-    right: 25px;
-    line-height: normal;
-    font-size: 18px;
-    text-transform: uppercase;
-`;
-
 interface ProductDesignControllerProps
     extends Pick<CommonStoreProps, 'setStore'>,
-    Pick<CommonStoreProps, 'selectedProductType'>,
     Pick<CommonStoreProps, 'selectedProductDesign'> {
     readonly productDesigns: ProductDesign[];
 }
 
 @withStoreValues<ProductDesignControllerProps>(
     'setStore',
-    'selectedProductType',
     'selectedProductDesign'
 )
 export class HomeProductDesignController extends React.PureComponent<ProductDesignControllerProps> {
@@ -74,38 +38,30 @@ export class HomeProductDesignController extends React.PureComponent<ProductDesi
         slidesToScroll: 10
     };
 
+    constructor(props: ProductDesignControllerProps) {
+        super(props);
+        const { selectedProductDesign, productDesigns, setStore } = this.props;
+
+        if (!selectedProductDesign) {
+            setStore<ProductDesignControllerProps>({
+                selectedProductDesign: productDesigns[0]
+            });
+        }
+    }
+
     render() {
-        const { productDesigns, selectedProductDesign, setStore } = this.props;
+        const { productDesigns } = this.props;
         return (
             <Wrapper>
                 <Container>
                     <Slider {...HomeProductDesignController.slickSettings}>
                         {
                             productDesigns.map(o => {
-                                const ItemWrapper = o.coverPhotoShape === 'rectangle' ? ItemRectangle : ItemSquare;
-                                const isSelected = selectedProductDesign && (
-                                    selectedProductDesign.id === o.id
-                                );
-
                                 return (
-                                    <ItemWrapper
+                                    <HomeProductDesignItem
                                         key={o.id}
-                                        onClick={() => {
-                                            setStore<ProductDesignControllerProps>({
-                                                selectedProductDesign: o
-                                            });
-                                        }}
-                                    >
-                                        <Link to={`?design=${o.id}`}>
-                                            <ThumbnailWrapper isSelected={isSelected}>
-                                                <Img
-                                                    className="mw-100 w-100"
-                                                    file={o.coverPhoto}
-                                                />
-                                            </ThumbnailWrapper>
-                                            <Label>{o.title || o.name}</Label>
-                                        </Link>
-                                    </ItemWrapper>
+                                        productDesign={o}
+                                    />
                                 );
                             })
                         }

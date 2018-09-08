@@ -3,7 +3,13 @@ import styled from 'styled-components';
 
 import { AntdButton, Img } from '@/components';
 import { colorPrimary } from '@/configs';
-import { Product } from '@/restful';
+import {
+    Product,
+    productDiscountUtils,
+    restfulStore,
+    withProductDiscounts,
+    WithProductDiscounts
+} from '@/restful';
 import { formatCurrency } from '@/utilities';
 
 const ItemWrapper = styled.div`
@@ -15,6 +21,7 @@ const ItemWrapper = styled.div`
     padding: 15px 0;
     transition: all .3s;
     position: relative;
+    margin: 0 0 20px 0;
     &:hover {
         border-color: ${colorPrimary};
         > .item-info {
@@ -22,6 +29,17 @@ const ItemWrapper = styled.div`
             opacity: 1;
         }
     }
+`;
+
+const ItemDiscount = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/static/assets/sale.png');
+    background-size: 100%;
+    position: absolute;
+    padding: 5px 20px 5px 5px;
+    color: #fff;
 `;
 
 const ItemContent = styled.div`
@@ -90,15 +108,32 @@ const ItemInfoActions = styled.div`
     text-align: center;
 `;
 
-export interface HomeProductListItemProps {
+export interface HomeProductListItemProps
+    extends WithProductDiscounts {
     readonly product: Product;
 }
 
+@withProductDiscounts(restfulStore)
 export class HomeProductListItem extends React.PureComponent<HomeProductListItemProps> {
     public render() {
-        const { product } = this.props;
+        const { product, productDiscounts } = this.props;
+
+        const productDiscount =
+            productDiscountUtils.getDiscountByProduct(productDiscounts, product);
+
         return (
             <ItemWrapper>
+                {
+                    productDiscount && (
+                        <ItemDiscount>
+                            Giảm ngay {
+                                productDiscount.discountMoney ?
+                                    formatCurrency(productDiscount.discountMoney) :
+                                    `${productDiscount.discountPercent} %`
+                            }
+                        </ItemDiscount>
+                    )
+                }
                 <ItemContent>
                     <ItemThumbWapper>
                         <Img file={product.thumbnail} />

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { AntdList, Container } from '@/components';
+import { AntdCol, AntdRow, Container } from '@/components';
 import { Product } from '@/restful';
 
 import { HomeProductListItem } from './home-product-list-controller';
@@ -14,17 +14,17 @@ export class HomeProductListController extends React.PureComponent<HomeProductLi
         const { products } = this.props;
         return (
             <Container>
-                <AntdList
-                    grid={{ gutter: 20, column: 4 }}
-                    dataSource={products}
-                    renderItem={product => (
-                        <AntdList.Item key={product.id}>
-                            <HomeProductListItem
-                                product={product}
-                            />
-                        </AntdList.Item>
-                    )}
-                />
+                <AntdRow gutter={20} type="flex">
+                    {
+                        products.map(product => {
+                            return (
+                                <AntdCol key={product.id} span={6}>
+                                    <HomeProductListItem product={product}/>
+                                </AntdCol>
+                            );
+                        })
+                    }
+                </AntdRow>
             </Container>
         );
     }
