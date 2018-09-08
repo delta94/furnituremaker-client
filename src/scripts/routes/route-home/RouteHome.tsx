@@ -9,6 +9,7 @@ import { DefaultLayout } from '@/layout';
 import {
     HomeFeatureProducts,
     HomeProductDesign,
+    HomeProductFilter,
     HomeProductList,
     HomeProductType,
     HomeProductTypeGroup
@@ -36,6 +37,7 @@ export class RouteHome extends React.Component<RouteHomeProps> {
                             padding: '30px 0 30px 0'
                         }}
                     >
+                        <HomeProductFilter />
                         <HomeFeatureProducts />
                         <HomeProductList />
                     </div>

@@ -15,11 +15,11 @@ export interface Product {
     readonly design: ProductDesign;
     readonly productType: ProductType;
     readonly totalPrice: number;
-    readonly code: string;
+    readonly produceCode: string;
     readonly isFeatureProduct?: boolean;
     readonly thumbnail?: UploadedFile;
     readonly name?: string;
-    readonly invenstory?: number;
+    readonly inventory?: number;
 }
 
 export interface ProductExtended extends Product {
@@ -53,6 +53,11 @@ export const productResources = {
             store.mapRecord(resourceType, product);
         }
     }),
+    count: new Resource<number>({
+        resourceType: productResourceType,
+        method: 'GET',
+        url: apiEntry('/product/count')
+    })
 };
 
 export const productUtils = {
@@ -88,7 +93,7 @@ export const productUtils = {
         });
 
         const product: ProductExtended = {
-            code: null,
+            produceCode: null,
             design,
             productType,
             modules: modules,

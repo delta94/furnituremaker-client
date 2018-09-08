@@ -80,7 +80,7 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
         );
 
         return {
-            code: productCode,
+            produceCode: productCode,
             design: selectedComponentDesign,
             modules: components.map((o, i): ProductModule => {
                 const material = restfulStore.findOneRecord(

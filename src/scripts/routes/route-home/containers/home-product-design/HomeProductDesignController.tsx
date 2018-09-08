@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Slider, { Settings } from 'react-slick';
 import styled from 'styled-components';
 
@@ -95,13 +96,15 @@ export class HomeProductDesignController extends React.PureComponent<ProductDesi
                                             });
                                         }}
                                     >
-                                        <ThumbnailWrapper isSelected={isSelected}>
-                                            <Img
-                                                className="mw-100 w-100"
-                                                file={o.coverPhoto}
-                                            />
-                                        </ThumbnailWrapper>
-                                        <Label>{o.title || o.name}</Label>
+                                        <Link to={`?design=${o.id}`}>
+                                            <ThumbnailWrapper isSelected={isSelected}>
+                                                <Img
+                                                    className="mw-100 w-100"
+                                                    file={o.coverPhoto}
+                                                />
+                                            </ThumbnailWrapper>
+                                            <Label>{o.title || o.name}</Label>
+                                        </Link>
                                     </ItemWrapper>
                                 );
                             })
