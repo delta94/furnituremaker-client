@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { CommonFieldProps } from 'redux-form';
 import styled from 'styled-components';
 
+import { withStoreValues } from '@/app';
 import { AntdButton, Img } from '@/components';
-import { colorPrimary } from '@/configs';
+import { colorPrimary, CommonStoreProps } from '@/configs';
 import {
     Product,
     productDiscountUtils,
@@ -10,6 +12,7 @@ import {
     WithProductDiscounts,
     withProductDiscounts
 } from '@/restful';
+import { getProductLink } from '@/routes/route-product';
 import { formatCurrency } from '@/utilities';
 
 const ItemWrapper = styled.div`
@@ -107,19 +110,21 @@ const ItemInfoActions = styled.div`
     text-align: center;
 `;
 
-export interface HomeFeatureProductItemProps
-    extends WithProductDiscounts {
+export interface HomeFeatureProductItemProps extends
+    Pick<CommonStoreProps, 'history'>,
+    WithProductDiscounts {
     readonly product: Product;
 }
 
+@withStoreValues<HomeFeatureProductItemProps>('history')
 @withProductDiscounts(restfulStore)
 export class HomeFeatureProductItem extends React.PureComponent<HomeFeatureProductItemProps> {
     public render() {
-        const { product, productDiscounts } = this.props;
+        const { product, productDiscounts, history } = this.props;
 
         const productDiscount =
             productDiscountUtils.getDiscountByProduct(productDiscounts, product);
-
+        const productLink = getProductLink(product);
         return (
             <ItemWrapper>
                 {
@@ -154,7 +159,11 @@ export class HomeFeatureProductItem extends React.PureComponent<HomeFeatureProdu
                     </ItemInfoPrice>
                     <ItemInfoActions>
                         <AntdButton
-                            href={`/product/${product.id}`}
+                            href={productLink}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                history.push(productLink);
+                            }}
                             size="large"
                         >
                             Mua hàng

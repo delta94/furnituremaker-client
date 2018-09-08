@@ -16,6 +16,7 @@ import {
     RouteMakerLoadable,
     RouteOrderDetailLoadable,
     RouteOrdersLoadable,
+    RouteProductLoadable,
     RouteTransportPolicyLoadable
 } from '@/routes';
 
@@ -27,7 +28,8 @@ export function startup() {
         RouteMakerLoadable,
         RouteOrderDetailLoadable,
         RouteOrdersLoadable,
-        RouteTransportPolicyLoadable
+        RouteTransportPolicyLoadable,
+        RouteProductLoadable
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);
