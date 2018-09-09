@@ -1,8 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdDivider } from '@/components';
+import { AntdDivider, Img } from '@/components';
+import { AddProductToCartControl } from '@/forms/add-product-to-cart';
 import { Product } from '@/restful';
+import {
+    HomeProductTransport
+} from '@/routes/route-product/containers/product-container/product-detail/home-product-info';
 
 const ProductName = styled.h1`
     line-height: 24px;
@@ -28,6 +32,9 @@ export class HomeProductInfo extends React.PureComponent<HomeProductInfoProps> {
                     Mã sản phẩm: {product.produceCode}
                 </span>
                 <AntdDivider />
+                <HomeProductTransport product={product} />
+                <AntdDivider />
+                <AddProductToCartControl discountByQuantities={[]} />
             </div>
         );
     }

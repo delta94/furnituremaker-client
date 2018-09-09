@@ -20,6 +20,7 @@ export interface Product {
     readonly thumbnail?: UploadedFile;
     readonly name?: string;
     readonly inventory?: number;
+    readonly componentsCode?: string;
 }
 
 export interface ProductExtended extends Product {
@@ -118,7 +119,11 @@ export const productUtils = {
         );
     },
     formatPrice: (product: ProductExtended) => formatCurrency(productUtils.getOriginPrice(product)),
-    getProductCode: (product: ProductExtended) => {
+    getProductModuleCode: (product: ProductExtended) => {
+        if (product.componentsCode) {
+            return product.componentsCode;
+        }
+
         const moduleCodes = product.modules.map(o => {
             return o.component.code + o.material.code;
         });

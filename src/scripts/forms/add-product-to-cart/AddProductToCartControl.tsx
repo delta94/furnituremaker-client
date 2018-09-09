@@ -47,7 +47,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
         return {
             design: selectedProduct.design,
             productType: selectedProduct.productType,
-            productCode: productUtils.getProductCode(selectedProduct),
+            productCode: productUtils.getProductModuleCode(selectedProduct),
             quantity: quantity,
             subTotalPrice: subTotalPrice,
             totalPrice: totalPrice,
@@ -103,7 +103,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
         const discount = discountByQuantities[0];
         const initQuantity = discount ? discount.quantity : 1;
 
-        const selectedProductCode = productUtils.getProductCode(selectedProduct);
+        const selectedProductCode = productUtils.getProductModuleCode(selectedProduct);
         const existingOrderDetail = orderDetails.find(o => o.productCode === selectedProductCode);
 
         return (
