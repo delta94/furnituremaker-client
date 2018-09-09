@@ -148,11 +148,18 @@ export const productUtils = {
         return moduleCodes.join('-');
     },
     getComponentCodes: (modulesCode: string) => {
+        if (!modulesCode) {
+            return [];
+        }
+
         // three chars
         const componentCodes = modulesCode.match(/\w{3}/g);
         return componentCodes.map(o => String(o));
     },
     getMaterialCodes: (modulesCode: string) => {
+        if (!modulesCode) {
+            return [];
+        }
         // two chars after component code
         const componentCodes = modulesCode.match(/((?!\w{3})\w{2})/g);
         return componentCodes.map(o => String(o));

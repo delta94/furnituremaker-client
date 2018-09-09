@@ -32,7 +32,11 @@ export class HomeFeatureProducts extends React.PureComponent<CommonStoreProps> {
                 }]}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
-                        return (<HomeFeatureProductsController products={renderProps.data} />);
+                        return (
+                            <HomeFeatureProductsController
+                                products={renderProps.data}
+                            />
+                        );
                     }
                     return null;
                 }}
