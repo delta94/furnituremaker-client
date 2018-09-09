@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import { withStoreValues } from '@/app';
 import { Container } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { ProductDesign } from '@/restful';
+import { Product, ProductDesign } from '@/restful';
+import { getUrlSearchParam } from '@/utilities';
 
 import { HomeProductDesignItem } from './home-product-design-controller';
 
@@ -40,13 +41,18 @@ export class HomeProductDesignController extends React.PureComponent<ProductDesi
 
     constructor(props: ProductDesignControllerProps) {
         super(props);
-        const { selectedProductDesign, productDesigns, setStore } = this.props;
+        const { productDesigns, setStore } = this.props;
 
-        if (!selectedProductDesign) {
-            setStore<ProductDesignControllerProps>({
-                selectedProductDesign: productDesigns[0]
-            });
-        }
+        const urlSearchDesign = getUrlSearchParam(
+            nameof<Product>(o => o.design),
+            location.search
+        );
+
+        const wantedDesign = productDesigns.find(o => o.id === urlSearchDesign);
+
+        setStore<ProductDesignControllerProps>({
+            selectedProductDesign: wantedDesign || productDesigns[0]
+        });
     }
 
     render() {

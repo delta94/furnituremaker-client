@@ -1,39 +1,43 @@
 import * as React from 'react';
-import { RouteComponentProps, RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { PageProps, readyState, withStoreValues } from '@/app';
-import { AntdBreadcrumb, AntdIcon, Container, Page } from '@/components';
+import { Container, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
 
-import { ProductDetail } from './containers';
+import {
+    ProductContainer,
+    ProductDesignContainer,
+    ProductTypeContainer,
+    ProductTypeGroupContainer
+} from './containers';
 
-type RouteProductProps = CommonStoreProps & RouteComponentProps<{}> & PageProps;
+type RouteProductProps =
+    CommonStoreProps &
+    RouteComponentProps<{ readonly id: number }> &
+    PageProps;
 
 @readyState()
 @withStoreValues()
 export class RouteProduct extends React.Component<RouteProductProps> {
     render() {
+        const { match } = this.props;
+
         return (
             <Page routeProps={this.props}>
-                <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
-                    <Container>
-                        <ProductDetail />
+                <DefaultLayout>
+                    <ProductTypeGroupContainer />
+                    <ProductTypeContainer />
+                    <ProductDesignContainer />
+                    <Container style={{padding: '30px 0 0 0 '}}>
+                        <ProductContainer
+                            productId={match.params.id}
+                        />
                     </Container>
                 </DefaultLayout>
             </Page>
-        );
-    }
-
-    renderBreadcrumb() {
-        return (
-            <AntdBreadcrumb>
-                <AntdBreadcrumb.Item>
-                    <Link to="/"><AntdIcon type="home" /></Link>
-                </AntdBreadcrumb.Item>
-                <AntdBreadcrumb.Item>Xem sản phẩm</AntdBreadcrumb.Item>
-            </AntdBreadcrumb>
         );
     }
 }

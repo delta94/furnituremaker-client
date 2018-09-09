@@ -33,8 +33,6 @@ export interface CommonStoreValues extends InitAppStoreProps {
     readonly selectedPromotion?: Promotion;
     readonly selectedComponent?: FurnitureComponent;
 
-    readonly getCurrentRouteProps?: <T>() => RouteComponentProps<T>;
-
     readonly drawerVisible?: boolean;
     readonly product3Dsence?: ThreeSence;
 
