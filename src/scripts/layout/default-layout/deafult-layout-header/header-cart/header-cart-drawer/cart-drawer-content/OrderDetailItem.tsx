@@ -17,7 +17,9 @@ import {
     OrderDetail,
     orderDetailResources,
     orderDetailUtils,
+    Product,
     productDiscountUtils,
+    productResources,
     productUtils,
     restfulFetcher,
     restfulStore,
@@ -55,11 +57,25 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
             productDiscounts
         } = this.props;
 
+        let product: Product = null;
+
+        if (orderDetail.productCode) {
+            const fetchProductsWithCode = await restfulFetcher.fetchResource(
+                productResources.find,
+                [{
+                    parameter: nameof<Product>(o => o.produceCode),
+                    type: 'query',
+                    value: orderDetail.productCode
+                }]
+            );
+            product = fetchProductsWithCode[0];
+        }
+
         const nextDiscoutPerProduct = productUtils.getDiscount(
-            orderDetail.product,
+            product,
             nextQuantity,
             discountByQuantities,
-            productDiscountUtils.getDiscountByProduct(productDiscounts, orderDetail.product)
+            productDiscountUtils.getDiscountByProduct(productDiscounts, product)
         );
 
         const updateOrderDetail = orderDetailUtils.updateTheOrderDetail(
