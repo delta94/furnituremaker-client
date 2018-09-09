@@ -24,7 +24,9 @@ export interface OrderDetail extends RecordType {
     readonly subTotalPrice: number;
     readonly totalPrice: number;
     readonly productPrice: number;
-    readonly productDiscount: number;
+    readonly discountMoneyByInventoryProduct?: number;
+    readonly discountPercentByInventoryProduct?: number;
+    readonly totalDiscountPerProduct: number;
     readonly order?: Order;
     readonly status: 'temp' | 'order';
     readonly discount: number;
@@ -128,7 +130,7 @@ export const orderDetailUtils = {
         const updateOrderDetail: OrderDetail = {
             ...orderDetail,
             quantity: quantity,
-            productDiscount: discountPerProduct,
+            totalDiscountPerProduct: discountPerProduct,
             subTotalPrice: nextSubTotalPrice,
             discount: nextTotalDiscount,
             totalPrice: nextTotalPrice,

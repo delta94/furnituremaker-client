@@ -40,8 +40,8 @@ const columns: AntdColumnProps<OrderDetail>[] = [{
     render: (productPrice: number) => formatCurrency(productPrice)
 }, {
     title: 'Giảm giá/sản phẩm',
-    dataIndex: nameof<OrderDetail>(o => o.productDiscount),
-    key: nameof<OrderDetail>(o => o.productDiscount),
+    dataIndex: nameof<OrderDetail>(o => o.totalDiscountPerProduct),
+    key: nameof<OrderDetail>(o => o.totalDiscountPerProduct),
     render: (productDiscount: number) => formatCurrency(productDiscount)
 }, {
     title: 'Tổng tiền',

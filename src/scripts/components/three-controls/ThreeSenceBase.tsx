@@ -309,7 +309,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     onTouchMove(event: MouseEvent & TouchEvent) {
-        if (this.isMouseHold) {
+        if (this.isMouseHold || !this.props.onObjectSelect) {
             return;
         }
 
@@ -328,7 +328,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     onClick() {
-        if (this.isMouseHold) {
+        if (this.isMouseHold || !this.props.onObjectSelect) {
             return;
         }
         const { onObjectSelect } = this.props;
