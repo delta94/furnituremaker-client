@@ -9,6 +9,8 @@ import {
     OrderDetail,
     orderDetailResources,
     orderDetailUtils,
+    ProductDiscount,
+    productDiscountUtils,
     productUtils,
     restfulFetcher,
     restfulStore,
@@ -22,32 +24,45 @@ import {
 } from './add-product-cart-control';
 
 interface ProductAddCartControlProps extends
-    CommonStoreProps,
+    Pick<CommonStoreProps, 'setStore'>,
+    Pick<CommonStoreProps, 'selectedProduct'>,
+    Pick<CommonStoreProps, 'product3Dsence'>,
     WithTempOrderDetails {
     readonly discountByQuantities: DiscountByQuantity[];
+    readonly productDiscount?: ProductDiscount;
 }
 
 @withTempOrderDetails(restfulStore)
-@withStoreValues(
-    nameof<CommonStoreProps>(o => o.selectedProduct),
-    nameof<CommonStoreProps>(o => o.product3Dsence)
-)
+@withStoreValues<CommonStoreProps>('selectedProduct', 'product3Dsence')
 export class AddProductToCartControl extends React.PureComponent<ProductAddCartControlProps> {
     readonly createNewOrderDetail = async (quantity: number): Promise<OrderDetail> => {
-        const { selectedProduct, discountByQuantities, product3Dsence } = this.props;
-        const productPrice = productUtils.getOriginPrice(selectedProduct);
-        const discountPerProduct = discountByQuantitiesUtils.getDiscountValue(
+        const {
+            selectedProduct,
             discountByQuantities,
-            quantity
+            product3Dsence,
+            productDiscount
+        } = this.props;
+
+        const productPrice = productUtils.getOriginPrice(selectedProduct);
+
+        const discountPerProduct = productUtils.getDiscount(
+            selectedProduct,
+            quantity,
+            discountByQuantities,
+            productDiscount
         );
+
         const subTotalPrice = productPrice * quantity;
         const totalPrice = subTotalPrice - (discountPerProduct * quantity);
-        const previewImg = await product3Dsence.takeScreenshot();
+
+        const previewImg = selectedProduct.thumbnail ?
+            selectedProduct.thumbnail.url :
+            await product3Dsence.takeScreenshot();
 
         return {
             design: selectedProduct.design,
             productType: selectedProduct.productType,
-            productCode: productUtils.getProductModuleCode(selectedProduct),
+            productModulesCode: productUtils.getProductModulesCode(selectedProduct),
             quantity: quantity,
             subTotalPrice: subTotalPrice,
             totalPrice: totalPrice,
@@ -56,7 +71,9 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
             discount: discountPerProduct * quantity,
             status: 'temp',
             previewImg: previewImg,
-            createdBy: Auth.instance.currentUser
+            createdBy: Auth.instance.currentUser,
+            productCode: selectedProduct.produceCode,
+            product: selectedProduct.produceCode && selectedProduct
         };
     }
 
@@ -73,15 +90,19 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
     }
 
     readonly onUpdateOrderDetail = async (values: AddToCartFormValues) => {
-        const { discountByQuantities } = this.props;
+        const { discountByQuantities, productDiscount, selectedProduct } = this.props;
 
         try {
-            const { orderDetail, selectQuantity } = values;
+            const { orderDetail, selectQuantity, } = values;
             const nextQuantity = orderDetail.quantity + (+selectQuantity);
-            const nextDiscoutPerProduct = discountByQuantitiesUtils.getDiscountValue(
+
+            const nextDiscoutPerProduct = productUtils.getDiscount(
+                selectedProduct,
+                nextQuantity,
                 discountByQuantities,
-                nextQuantity
+                productDiscount
             );
+
             const updateOrderDetail = orderDetailUtils.updateTheOrderDetail(
                 orderDetail,
                 nextQuantity,
@@ -98,17 +119,20 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
         const {
             selectedProduct,
             discountByQuantities,
-            orderDetails
+            orderDetails,
+            productDiscount
         } = this.props;
+
         const discount = discountByQuantities[0];
         const initQuantity = discount ? discount.quantity : 1;
 
-        const selectedProductCode = productUtils.getProductModuleCode(selectedProduct);
-        const existingOrderDetail = orderDetails.find(o => o.productCode === selectedProductCode);
+        const selectedProductModulesCode = productUtils.getProductModulesCode(selectedProduct);
+        const existingOrderDetail = orderDetails.find(o => o.productModulesCode === selectedProductModulesCode);
 
         return (
             <AddProductToCartForm
                 product={selectedProduct}
+                productDiscount={productDiscount}
                 discountByQuantities={discountByQuantities}
                 initialValues={{
                     orderDetail: existingOrderDetail,

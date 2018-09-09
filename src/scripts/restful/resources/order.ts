@@ -167,12 +167,14 @@ export interface OrderStatusInfo {
 }
 
 export const orderUtils = {
-    getShippingDate: (date?: Date, format?: string) => {
-        const shippingDateMoment = date ?
-            moment(date) :
-            moment();
+    getShippingDate: (options: {
+        readonly inventoryProduct?: boolean
+    } = {}) => {
+        const shippingDateMoment = moment();
 
-        shippingDateMoment.add(14, 'days');
+        const initDayCount = options.inventoryProduct ? 2 : 14;
+
+        shippingDateMoment.add(initDayCount, 'days');
         const targetDay = shippingDateMoment.day();
         if (targetDay === 0) {
             shippingDateMoment.add(1, 'day');

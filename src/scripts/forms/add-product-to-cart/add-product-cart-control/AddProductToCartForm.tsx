@@ -17,7 +17,10 @@ import {
     discountByQuantitiesUtils,
     DiscountByQuantity,
     OrderDetail,
-    ProductExtended
+    ProductDiscount,
+    productDiscountUtils,
+    ProductExtended,
+    productUtils
 } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
@@ -40,6 +43,7 @@ const TotalValue = styled.div`
 interface AddProductToCartFormOwnProps {
     readonly product: ProductExtended;
     readonly discountByQuantities: DiscountByQuantity[];
+    readonly productDiscount?: ProductDiscount;
 }
 
 export interface AddToCartFormValues {
@@ -111,12 +115,22 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
 
     constructor(props: AddProductToCartFormProps) {
         super(props);
-        const { discountByQuantities, product } = props;
+        const { discountByQuantities, product, productDiscount } = props;
+
+        const productDiscountValue =
+            productDiscountUtils.getDiscountMoney(productDiscount, product);
+
         this.state = {
-            discountByQuantitySelectItems: discountByQuantities.map(o => ({
-                value: o.quantity,
-                title: discountByQuantitiesUtils.format(o, product)
-            }))
+            discountByQuantitySelectItems: discountByQuantities.map(discountByQuantity => {
+                return {
+                    value: discountByQuantity.quantity,
+                    title: discountByQuantitiesUtils.format(
+                        discountByQuantity,
+                        product,
+                        (rawPrice) => rawPrice - productDiscountValue
+                    )
+                };
+            })
         };
     }
 
@@ -124,6 +138,7 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
         const {
             discountByQuantities,
             product,
+            productDiscount,
             handleSubmit,
             submitting,
             error,
@@ -185,10 +200,18 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                                             return null;
                                         }
 
-                                        const discountValue = discountByQuantitiesUtils
+                                        const productDiscountValue =
+                                            productDiscountUtils.getDiscountMoney(productDiscount, product);
+
+                                        const discountByQuantityValue = discountByQuantitiesUtils
                                             .getDiscountValue(discountByQuantities, quantity);
+
+                                        const discountValue = productDiscountValue + discountByQuantityValue;
+
                                         const totalDiscount = quantity * discountValue;
-                                        const productPriceAfterDiscount = (product.totalPrice - discountValue);
+                                        const productPriceAfterDiscount =
+                                            (product.totalPrice - discountValue);
+
                                         const totalPriceBeforeDiscont = quantity * product.totalPrice;
                                         const totalPrice = quantity * productPriceAfterDiscount;
 

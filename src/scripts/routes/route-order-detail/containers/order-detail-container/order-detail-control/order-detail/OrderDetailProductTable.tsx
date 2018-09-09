@@ -26,8 +26,8 @@ const columns: AntdColumnProps<OrderDetail>[] = [{
     }
 }, {
     title: 'Mã sản phẩm',
-    dataIndex: nameof<OrderDetail>(o => o.productCode),
-    key: nameof<OrderDetail>(o => o.productCode),
+    dataIndex: nameof<OrderDetail>(o => o.productModulesCode),
+    key: nameof<OrderDetail>(o => o.productModulesCode),
     render: (productCode: string) => (<Link to={`/maker/${productCode}`}>{productCode}</Link>)
 }, {
     title: 'Số lượng',

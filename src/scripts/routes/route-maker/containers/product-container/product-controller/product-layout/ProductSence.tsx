@@ -34,14 +34,14 @@ interface RouteHomeProps extends
 )
 export class ProductSence extends React.PureComponent<RouteHomeProps> {
     render() {
-        const { setStore, selectedProduct } = this.props;
+        const { setStore, selectedProduct, selectedObject, product } = this.props;
         return (
             <AntdAffix offsetTop={10}>
                 <ProductSenceWrapper>
                     <ThreeSence
                         onObjectSelect={this.onObjectSelect}
-                        selectedObject={this.props.selectedObject}
-                        productModules={this.props.product.modules}
+                        selectedObject={selectedObject}
+                        productModules={product.modules}
                         productType={selectedProduct.productType}
                         setSence={(threeScreen) => {
                             setStore({

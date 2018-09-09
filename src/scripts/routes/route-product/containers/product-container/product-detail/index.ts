@@ -1,2 +1,2 @@
-export * from './HomeProductInfo';
-export * from './HomeProductPreview';
+export * from './InventoryProductInfo';
+export * from './InventoryProductPreview';

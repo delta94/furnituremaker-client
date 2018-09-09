@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import { PageProps, readyState, withStoreValues } from '@/app';
 import { Container, Page } from '@/components';
@@ -15,12 +14,12 @@ import {
 } from './containers';
 
 type RouteProductProps =
-    CommonStoreProps &
+    Pick<CommonStoreProps, 'setStore'> &
     RouteComponentProps<{ readonly id: number }> &
     PageProps;
 
 @readyState()
-@withStoreValues()
+@withStoreValues<CommonStoreProps>()
 export class RouteProduct extends React.Component<RouteProductProps> {
     render() {
         const { match } = this.props;
@@ -31,7 +30,7 @@ export class RouteProduct extends React.Component<RouteProductProps> {
                     <ProductTypeGroupContainer />
                     <ProductTypeContainer />
                     <ProductDesignContainer />
-                    <Container style={{padding: '30px 0 0 0 '}}>
+                    <Container style={{ padding: '30px 0 0 0 ' }}>
                         <ProductContainer
                             productId={match.params.id}
                         />

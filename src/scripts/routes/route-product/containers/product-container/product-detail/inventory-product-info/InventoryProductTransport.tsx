@@ -2,7 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { Img } from '@/components';
-import { Product } from '@/restful';
+import { orderUtils, Product } from '@/restful';
+import { formatDate } from '@/utilities';
 
 const ProductTransportWrapper = styled.div`
     display: flex;
@@ -17,12 +18,16 @@ const ProductTransportContent = styled.div`
     line-height: 1.5;
 `;
 
-export interface ProductTransportProps {
+export interface InventoryProductTransportProps {
     readonly product: Product;
 }
 
-export class HomeProductTransport extends React.PureComponent<ProductTransportProps> {
+export class InventoryProductTransport extends React.PureComponent<InventoryProductTransportProps> {
     public render() {
+        const shippingDate = orderUtils.getShippingDate({
+            inventoryProduct: true
+        });
+
         return (
             <ProductTransportWrapper>
                 <ProductTransportIcon>
@@ -31,7 +36,7 @@ export class HomeProductTransport extends React.PureComponent<ProductTransportPr
                     />
                 </ProductTransportIcon>
                 <ProductTransportContent>
-                    Đặt hàng hôm nay dự kiến giao hàng vào 18/7/2016
+                    Đặt hàng hôm nay dự kiến giao hàng vào {formatDate(shippingDate, 'DD/MM/YYYY')}
                     <div style={{ fontSize: 20 }}>
                         Nhận hàng trong <b>2 ngày</b>
                     </div>

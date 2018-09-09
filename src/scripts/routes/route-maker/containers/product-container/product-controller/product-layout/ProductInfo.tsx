@@ -113,7 +113,7 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                                 <ProductName>
                                     {productUtils.getProductName(product)}
                                 </ProductName>
-                                <ProductCode>{productUtils.getProductModuleCode(product)}</ProductCode>
+                                <ProductCode>{productUtils.getProductModulesCode(product)}</ProductCode>
                                 <AntdDivider />
                                 <AntdRow>
                                     <AntdCol span={13}>

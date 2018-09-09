@@ -10,9 +10,8 @@ type RouteLoginProps = RouteComponentProps<{}> & PageProps;
 
 export class RouteLogin extends React.Component<RouteLoginProps> {
     render() {
-        const routeProps = Page.getRouteProps(this.props);
         return (
-            <Page routeProps={routeProps}>
+            <Page routeProps={this.props}>
                 <AppLogin />
             </Page>
         );

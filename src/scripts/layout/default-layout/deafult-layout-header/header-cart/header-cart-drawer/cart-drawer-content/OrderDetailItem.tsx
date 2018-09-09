@@ -17,12 +17,14 @@ import {
     OrderDetail,
     orderDetailResources,
     orderDetailUtils,
+    productUtils,
     restfulFetcher,
     restfulStore,
     withDiscountByQuantities,
     WithDiscountByQuantities,
     WithDiscountByQuantitiesOwnProps
 } from '@/restful';
+import { apiEntry, fileHostEntry } from '@/restful/apiEntry';
 import { formatCurrency } from '@/utilities';
 
 interface OrderDetailItemProps extends
@@ -42,15 +44,20 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
 
     readonly updateOrderDetailQuantity = async (nextQuantity: number) => {
         const { orderDetail, discountByQuantities } = this.props;
-        const nextDiscoutPerProduct = discountByQuantitiesUtils.getDiscountValue(
+
+        const nextDiscoutPerProduct = productUtils.getDiscount(
+            orderDetail.product,
+            nextQuantity,
             discountByQuantities,
-            nextQuantity
+            null
         );
+
         const updateOrderDetail = orderDetailUtils.updateTheOrderDetail(
             orderDetail,
             nextQuantity,
             nextDiscoutPerProduct
         );
+        
         const updateParams = orderDetailUtils.createUpdateParams(updateOrderDetail);
         return await restfulFetcher.fetchResource(
             orderDetailResources.update,
@@ -127,7 +134,11 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                     <img
                         width={120}
                         alt="logo"
-                        src={orderDetail.previewImg}
+                        src={
+                            orderDetail.previewImg.startsWith('/uploads') ?
+                                fileHostEntry(orderDetail.previewImg) :
+                                orderDetail.previewImg
+                        }
                     />
                 }
             >
@@ -135,7 +146,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                     title={orderDetail.productType.name}
                     description={(
                         <div>
-                            <Link to={`/maker/${orderDetail.productCode}`}>
+                            <Link to={`/maker/${orderDetail.productModulesCode}`}>
                                 Xem sản phẩm
                             </Link>
                         </div>
@@ -144,7 +155,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                 <div>Số lượng mua: {orderDetail.quantity}</div>
                 <div>Đơn giá: {formatCurrency(orderDetail.productPrice)}</div>
                 <div>Giảm giá mỗi sản phẩm: {formatCurrency(orderDetail.productDiscount)}</div>
-                <br/>
+                <br />
                 <div>Tổng giảm giá: {formatCurrency(orderDetail.discount)}</div>
                 <div>
                     Thành tiền: <b style={{ color: colorPrimary }}>

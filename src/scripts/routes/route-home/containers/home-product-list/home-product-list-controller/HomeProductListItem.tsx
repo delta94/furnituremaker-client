@@ -1,8 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { withStoreValues } from '@/app';
 import { AntdButton, Img } from '@/components';
-import { colorPrimary } from '@/configs';
+import { colorPrimary, CommonStoreProps } from '@/configs';
 import {
     Product,
     productDiscountUtils,
@@ -10,6 +11,7 @@ import {
     withProductDiscounts,
     WithProductDiscounts
 } from '@/restful';
+import { getProductLink } from '@/routes/route-product';
 import { formatCurrency } from '@/utilities';
 
 const ItemWrapper = styled.div`
@@ -108,18 +110,22 @@ const ItemInfoActions = styled.div`
     text-align: center;
 `;
 
-export interface HomeProductListItemProps
-    extends WithProductDiscounts {
+export interface HomeProductListItemProps extends
+    Pick<CommonStoreProps, 'history'>,
+    WithProductDiscounts {
     readonly product: Product;
 }
 
+@withStoreValues<HomeProductListItemProps>('history')
 @withProductDiscounts(restfulStore)
 export class HomeProductListItem extends React.PureComponent<HomeProductListItemProps> {
     public render() {
-        const { product, productDiscounts } = this.props;
+        const { product, productDiscounts, history } = this.props;
 
         const productDiscount =
             productDiscountUtils.getDiscountByProduct(productDiscounts, product);
+
+        const productLink = getProductLink(product);
 
         return (
             <ItemWrapper>
@@ -155,7 +161,12 @@ export class HomeProductListItem extends React.PureComponent<HomeProductListItem
                     </ItemInfoPrice>
                     <ItemInfoActions>
                         <AntdButton
-                            href={`/product/${product.id}`}
+                            href={productLink
+                            }
+                            onClick={(e) => {
+                                e.preventDefault();
+                                history.push(productLink);
+                            }}
                         >
                             Mua hàng
                         </AntdButton>

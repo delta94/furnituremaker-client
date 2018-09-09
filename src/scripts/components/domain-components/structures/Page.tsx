@@ -7,9 +7,12 @@ import { CommonStoreProps } from '@/configs';
 
 import { PageLoading } from './PageLoading';
 
-type PageProps = React.DOMAttributes<{}> & CommonStoreProps & {
-    readonly routeProps: RouteComponentProps<{}>;
-};
+type PageProps =
+    React.DOMAttributes<{}> &
+    Pick<CommonStoreProps, 'setStore'> &
+    {
+        readonly routeProps: RouteComponentProps<{}>;
+    };
 
 const PageContent = styled.div`
     min-height: inherit;

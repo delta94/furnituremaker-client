@@ -5,6 +5,7 @@ import { formatCurrency } from '@/utilities';
 
 import { apiEntry } from '../apiEntry';
 import { ProductExtended, productUtils } from './product';
+import { ProductDiscount, productDiscountUtils } from './productDiscount';
 import { ProductType } from './productType';
 
 const sortBy = require('lodash/sortBy');
@@ -38,10 +39,18 @@ export const discountByQuantitiesResources = {
 };
 
 export const discountByQuantitiesUtils = {
-    format: (discountByQuantity: DiscountByQuantity, product: ProductExtended) => {
+    format: (
+        discountByQuantity: DiscountByQuantity,
+        product: ProductExtended,
+        getPrice?: (rawPrice: number) => number
+    ) => {
         const { quantity, discountPerProduct } = discountByQuantity;
         const rawPrice = productUtils.getOriginPrice(product) - (discountPerProduct);
-        const price = Math.abs(rawPrice);
+        const absPrice = Math.abs(rawPrice);
+        const price = getPrice ?
+            getPrice(absPrice) :
+            absPrice;
+
         return `mua ${quantity} - ${formatCurrency(price)}/cái`;
     },
     getDiscountValue: (

@@ -44,13 +44,26 @@ export const productDiscountUtils = {
         if (!productDiscounts || !product) {
             return null;
         }
-        
+
         return productDiscounts.find((productDiscount) => {
             if (!productDiscount.products) {
                 return false;
             }
             return productDiscount.products.find(o => o.id === product.id) !== undefined;
         });
+    },
+    getDiscountMoney: (productDiscount: ProductDiscount, product: Product) => {
+        if (!productDiscount || !product) {
+            return 0;
+        }
+
+        if (productDiscount.discountMoney) {
+            return productDiscount.discountMoney;
+        } else if (productDiscount.discountPercent) {
+            return product.totalPrice * (productDiscount.discountPercent * 0.01);
+        }
+        
+        return 0;
     }
 };
 

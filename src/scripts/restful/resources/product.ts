@@ -1,6 +1,16 @@
 import { Resource, ResourceType } from 'react-restful';
 
 import { apiEntry } from '@/restful/apiEntry';
+import {
+    discountByQuantitiesUtils,
+    DiscountByQuantity
+} from '@/restful/resources/discountByQuantities';
+import { FurnitureComponent } from '@/restful/resources/furnitureComponent';
+import { FurnutureMaterial } from '@/restful/resources/furnutureMaterial';
+import {
+    ProductDiscount,
+    productDiscountUtils
+} from '@/restful/resources/productDiscount';
 import { UploadedFile } from '@/restful/resources/uploadedFile';
 import { formatCurrency } from '@/utilities';
 
@@ -20,7 +30,7 @@ export interface Product {
     readonly thumbnail?: UploadedFile;
     readonly name?: string;
     readonly inventory?: number;
-    readonly componentsCode?: string;
+    readonly modulesCode?: string;
 }
 
 export interface ProductExtended extends Product {
@@ -68,6 +78,14 @@ export const productUtils = {
             return currentTotalPrice;
         };
         return productModules.reduce(reducer, startValue);
+    },
+    createModule: (component: FurnitureComponent, material: FurnutureMaterial): ProductModule => {
+        return {
+            component: component,
+            componentPrice: component.price || 0,
+            material: material,
+            materialPrice: material.price || 0
+        };
     },
     createDefaultProduct: (
         design: ProductDesign,
@@ -119,9 +137,9 @@ export const productUtils = {
         );
     },
     formatPrice: (product: ProductExtended) => formatCurrency(productUtils.getOriginPrice(product)),
-    getProductModuleCode: (product: ProductExtended) => {
-        if (product.componentsCode) {
-            return product.componentsCode;
+    getProductModulesCode: (product: ProductExtended) => {
+        if (product.modulesCode) {
+            return product.modulesCode;
         }
 
         const moduleCodes = product.modules.map(o => {
@@ -129,15 +147,31 @@ export const productUtils = {
         });
         return moduleCodes.join('-');
     },
-    getComponentCodes: (productCode: string) => {
+    getComponentCodes: (modulesCode: string) => {
         // three chars
-        const componentCodes = productCode.match(/\w{3}/g);
+        const componentCodes = modulesCode.match(/\w{3}/g);
         return componentCodes.map(o => String(o));
     },
-    getMaterialCodes: (productCode: string) => {
+    getMaterialCodes: (modulesCode: string) => {
         // two chars after component code
-        const componentCodes = productCode.match(/((?!\w{3})\w{2})/g);
+        const componentCodes = modulesCode.match(/((?!\w{3})\w{2})/g);
         return componentCodes.map(o => String(o));
+    },
+    getDiscount: (
+        product: Product,
+        quantity: number,
+        discountByQuantities: DiscountByQuantity[],
+        productDiscount: ProductDiscount
+    ) => {
+        const discountByProduct =
+            productDiscountUtils.getDiscountMoney(productDiscount, product);
+
+        const discountByQuantity = discountByQuantitiesUtils.getDiscountValue(
+            discountByQuantities,
+            quantity
+        );
+        const discountPerProduct = discountByQuantity + discountByProduct;
+        return discountPerProduct;
     }
 };
 
