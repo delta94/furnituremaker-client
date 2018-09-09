@@ -13,6 +13,8 @@ import {
     orderResourceType,
     orderTransactionType,
     productDesign,
+    productDiscountResourceType,
+    productResourceType,
     productType,
     productTypeGroupResourceType,
     promotionResourceType,
@@ -37,3 +39,5 @@ restfulStore.registerRecordType(cityResourceType);
 restfulStore.registerRecordType(countyResourceType);
 restfulStore.registerRecordType(agencyResourceType);
 restfulStore.registerRecordType(orderTransactionType);
+restfulStore.registerRecordType(productResourceType);
+restfulStore.registerRecordType(productDiscountResourceType);

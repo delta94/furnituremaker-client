@@ -1,26 +1,48 @@
 import * as React from 'react';
-import { RouteComponentProps, RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 
-import { readyState, withStoreValues } from '@/app';
+import { PageProps, readyState, withStoreValues } from '@/app';
+import { Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
+import { DefaultLayout } from '@/layout';
 
-type RouteHomeProps = CommonStoreProps & RouteComponentProps<{}>;
+import {
+    HomeFeatureProducts,
+    HomeProductDesign,
+    HomeProductFilter,
+    HomeProductList,
+    HomeProductType,
+    HomeProductTypeGroup
+} from './containers';
+
+type RouteHomeProps =
+    Pick<CommonStoreProps, 'setStore'> &
+    RouteComponentProps<{}> &
+    PageProps;
 
 @readyState()
-@withStoreValues()
+@withStoreValues<RouteHomeProps>()
 export class RouteHome extends React.Component<RouteHomeProps> {
-    static readonly routeProps: RouteProps = {
-        path: '/',
-        exact: true
-    };
-
-    constructor(props: RouteHomeProps) {
-        super(props);
-
-        props.history.replace('/maker');
-    }
-
     render() {
-        return null;
+        const routeProps = Page.getRouteProps(this.props);
+        return (
+            <Page routeProps={routeProps}>
+                <DefaultLayout>
+                    <HomeProductTypeGroup />
+                    <HomeProductType />
+                    <HomeProductDesign />
+                    <div
+                        style={{
+                            background: '#fff',
+                            padding: '30px 0 30px 0'
+                        }}
+                    >
+                        <HomeProductFilter />
+                        <HomeFeatureProducts />
+                        <HomeProductList />
+                    </div>
+                </DefaultLayout>
+            </Page>
+        );
     }
 }

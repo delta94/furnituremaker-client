@@ -6,7 +6,7 @@ import { withStoreValues } from '@/app';
 import { AntdAffix, ThreeSence } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
-    Product,
+    ProductExtended,
     restfulStore,
     uploadedFileUtils,
     withComponents,
@@ -24,7 +24,7 @@ interface RouteHomeProps extends
     WithComponentsProps,
     WithMaterialProps {
     readonly selectedObject?: THREE.Group | null;
-    readonly product: Product;
+    readonly product: ProductExtended;
 }
 @withComponents(restfulStore)
 @withMaterials(restfulStore)
@@ -34,14 +34,14 @@ interface RouteHomeProps extends
 )
 export class ProductSence extends React.PureComponent<RouteHomeProps> {
     render() {
-        const { setStore, selectedProduct } = this.props;
+        const { setStore, selectedProduct, selectedObject, product } = this.props;
         return (
             <AntdAffix offsetTop={10}>
                 <ProductSenceWrapper>
                     <ThreeSence
                         onObjectSelect={this.onObjectSelect}
-                        selectedObject={this.props.selectedObject}
-                        productModules={this.props.product.modules}
+                        selectedObject={selectedObject}
+                        productModules={product.modules}
                         productType={selectedProduct.productType}
                         setSence={(threeScreen) => {
                             setStore({

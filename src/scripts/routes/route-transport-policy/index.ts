@@ -1,1 +1,1 @@
-export * from './RouteTransportPolicy';
+export * from './RouteTransportPolicyLoadable';

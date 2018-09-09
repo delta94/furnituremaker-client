@@ -7,9 +7,12 @@ import { CommonStoreProps } from '@/configs';
 
 import { PageLoading } from './PageLoading';
 
-type PageProps = React.DOMAttributes<{}> & CommonStoreProps & {
-    readonly routeProps: RouteComponentProps<{}>;
-};
+type PageProps =
+    React.DOMAttributes<{}> &
+    Pick<CommonStoreProps, 'setStore'> &
+    {
+        readonly routeProps: RouteComponentProps<{}>;
+    };
 
 const PageContent = styled.div`
     min-height: inherit;
@@ -25,13 +28,22 @@ export class Page extends React.Component<PageProps> {
             staticContext: props.staticContext
         })
 
-    readonly getCurrentRouteProps = () => this.props.routeProps;
+    readonly resetAppState = () => {
+        this.props.setStore<CommonStoreProps>({
+            selectedComponent: null,
+            selectedMaterialType: null,
+            selectedProduct: null,
+            selectedProductDesign: null,
+            selectedProductDesignGroup: null,
+            selectedProductType: null,
+            selectedProductTypeGroup: null,
+            selectedPromotion: null
+        });
+    }
 
     constructor(props: PageProps) {
         super(props);
-        this.props.setStore({
-            [nameof<CommonStoreProps>(o => o.getCurrentRouteProps)]: this.getCurrentRouteProps
-        });
+        this.resetAppState();
     }
 
     componentDidMount() {

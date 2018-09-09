@@ -6,6 +6,7 @@ import {
     restfulDataContainer
 } from 'react-restful';
 
+import { Product } from '@/restful/resources/product';
 import { User } from '@/restful/resources/user';
 import { roundTo } from '@/utilities';
 
@@ -17,18 +18,22 @@ import { ProductType } from './productType';
 export interface OrderDetail extends RecordType {
     readonly id?: string;
     readonly quantity: number;
-    readonly productCode: string;
+    readonly productModulesCode: string;
     readonly productType: ProductType;
     readonly design: ProductDesign;
     readonly subTotalPrice: number;
     readonly totalPrice: number;
     readonly productPrice: number;
-    readonly productDiscount: number;
+    readonly discountMoneyByInventoryProduct?: number;
+    readonly discountPercentByInventoryProduct?: number;
+    readonly totalDiscountPerProduct: number;
     readonly order?: Order;
     readonly status: 'temp' | 'order';
     readonly discount: number;
     readonly previewImg?: string;
     readonly createdBy?: User;
+    readonly productCode?: string;
+    readonly product?: Product;
 }
 
 export const orderDetailResourceType = new ResourceType({
@@ -125,7 +130,7 @@ export const orderDetailUtils = {
         const updateOrderDetail: OrderDetail = {
             ...orderDetail,
             quantity: quantity,
-            productDiscount: discountPerProduct,
+            totalDiscountPerProduct: discountPerProduct,
             subTotalPrice: nextSubTotalPrice,
             discount: nextTotalDiscount,
             totalPrice: nextTotalPrice,

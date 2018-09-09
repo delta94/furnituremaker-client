@@ -12,10 +12,6 @@ import { setStoreValuesAction, withStoreValues } from './store';
  */
 export function readyState() {
     return (Component: AppRouteComponent) => {
-        if (!Component.routeProps) {
-            throw new Error(`Apply for Route's Component only!`);
-        }
-
         const withAppState = withStoreValues(
             nameof<CommonStoreProps>(o => o.appState)
         )((props: CommonStoreProps) => {
@@ -26,7 +22,6 @@ export function readyState() {
             return <Component {...props as any}/>;
         });
 
-        withAppState.routeProps = Component.routeProps;
         return withAppState;
     };
 }

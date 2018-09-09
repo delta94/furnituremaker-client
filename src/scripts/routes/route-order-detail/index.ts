@@ -1,1 +1,1 @@
-export * from './RouteOrderDetail';
+export * from './RouteOrderDetailLoadable';

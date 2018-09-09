@@ -218,7 +218,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             this.scene.add(dirLighLefttHeper);
             const dirLightRightHeper = new THREE.DirectionalLightHelper(dirLightright, 10);
             this.scene.add(dirLightRightHeper);
-            
+
             const dirLightBackHeper = new THREE.DirectionalLightHelper(dirLightBack, 10);
             this.scene.add(dirLightBackHeper);
         }
@@ -309,7 +309,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     onTouchMove(event: MouseEvent & TouchEvent) {
-        if (this.isMouseHold) {
+        if (this.isMouseHold || !this.props.onObjectSelect) {
             return;
         }
 
@@ -328,10 +328,10 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     onClick() {
-        if (this.isMouseHold) {
+        if (this.isMouseHold || !this.props.onObjectSelect) {
             return;
         }
-
+        const { onObjectSelect } = this.props;
         this.raycaster.setFromCamera(this.mouse, this.camera);
         var intersects = this.raycaster.intersectObjects([this.scene], true);
         if (intersects.length > 0) {
@@ -340,10 +340,14 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
                 selectedObject = null;
             }
             this.selectObject(selectedObject);
-            this.props.onObjectSelect(selectedObject.parent as THREE.Group);
+            if (onObjectSelect) {
+                onObjectSelect(selectedObject.parent as THREE.Group);
+            }
         } else {
             this.selectObject(null);
-            this.props.onObjectSelect(null);
+            if (onObjectSelect) {
+                onObjectSelect(null);
+            }
         }
     }
 

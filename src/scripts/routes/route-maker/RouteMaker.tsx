@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ResourceParameter } from 'react-restful';
 import { RouteComponentProps, RouteProps } from 'react-router';
 
-import { readyState, withStoreValues } from '@/app';
+import { PageProps, readyState, withStoreValues } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Container, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
@@ -10,7 +10,7 @@ import {
     FurnitureComponent,
     furnitureComponentResources,
     furnutureMaterialResouceType,
-    Product,
+    ProductExtended,
     ProductModule,
     productType,
     productUtils,
@@ -24,27 +24,22 @@ import {
     ProductTypeContainer,
     ProductTypeGroupContainer
 } from './containers';
+import { RouteMakerRouterProps } from './Types';
 
-export interface RouteMakerRouterProps {
-    readonly productCode: string;
-}
+type RouteMakerProps =
+    CommonStoreProps &
+    RouteComponentProps<RouteMakerRouterProps> &
+    PageProps;
 
-type RouteMakerProps = CommonStoreProps & RouteComponentProps<RouteMakerRouterProps>;
 interface RouteMakerState {
     readonly selectedProductCode?: string;
-    readonly loadedProduct?: Product;
+    readonly loadedProduct?: ProductExtended;
     readonly pageReady: boolean;
 }
 
 @readyState()
 @withStoreValues()
 export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState> {
-
-    static readonly routeProps: RouteProps = {
-        path: `/maker/:${nameof<RouteMakerRouterProps>(o => o.productCode)}?`,
-        exact: true
-    };
-
     static getDerivedStateFromProps(
         nextProps: RouteMakerProps,
         prevState: RouteMakerState
@@ -61,7 +56,7 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
         return null;
     }
 
-    readonly getProduct = async (productCode: string): Promise<Product> => {
+    readonly getProduct = async (productCode: string): Promise<ProductExtended> => {
         const componentCodes = productUtils.getComponentCodes(productCode);
         const fetchComponentParams = componentCodes.map((componentCode): ResourceParameter => ({
             type: 'query',
@@ -85,7 +80,7 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
         );
 
         return {
-            code: productCode,
+            produceCode: productCode,
             design: selectedComponentDesign,
             modules: components.map((o, i): ProductModule => {
                 const material = restfulStore.findOneRecord(

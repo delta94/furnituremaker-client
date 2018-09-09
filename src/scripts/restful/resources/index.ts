@@ -14,6 +14,7 @@ export * from './orderTransaction';
 export * from './product';
 export * from './productDesign';
 export * from './productDesignGroup';
+export * from './productDiscount';
 export * from './productModule';
 export * from './productType';
 export * from './productTypeGroup';

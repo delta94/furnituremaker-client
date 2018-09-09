@@ -15,6 +15,7 @@ import {
     OrderDetail,
     orderDetailResources,
     orderDetailUtils,
+    productDiscountResources,
     productTypeResources,
     restfulFetcher,
     User
@@ -96,7 +97,12 @@ export class Root extends React.Component<RootProps> {
                 ),
                 restfulFetcher.fetchResource(furnutureMaterialResources.find, []),
                 restfulFetcher.fetchResource(productTypeResources.find, []),
-                restfulFetcher.fetchResource(discountByQuantitiesResources.find, [])
+                restfulFetcher.fetchResource(discountByQuantitiesResources.find, []),
+                restfulFetcher.fetchResource(productDiscountResources.find, [{
+                    type: 'query',
+                    parameter: 'enabled',
+                    value: undefined
+                }])
             ]);
 
             initAppStore(this.props.store, {

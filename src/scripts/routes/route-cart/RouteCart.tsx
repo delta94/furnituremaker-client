@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps, RouteProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { readyState, withStoreValues } from '@/app';
+import { PageProps, readyState, withStoreValues } from '@/app';
 import {
     AntdBreadcrumb,
     AntdCol,
@@ -16,16 +16,14 @@ import { DefaultLayout } from '@/layout';
 
 import { CartPaymentInfo, CartProducts, CartShippingInfo } from './containers';
 
-type RouteHomeProps = CommonStoreProps & RouteComponentProps<{}>;
+type RouteHomeProps =
+    Pick<CommonStoreProps, 'setStore'> &
+    RouteComponentProps<{}> &
+    PageProps;
 
 @readyState()
-@withStoreValues()
+@withStoreValues<RouteHomeProps>('setStore')
 export class RouteCart extends React.Component<RouteHomeProps> {
-    static readonly routeProps: RouteProps = {
-        path: '/send-order',
-        exact: true
-    };
-
     constructor(props: RouteHomeProps) {
         super(props);
         const { setStore } = this.props;

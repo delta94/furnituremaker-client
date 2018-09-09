@@ -2,20 +2,16 @@ import * as React from 'react';
 import { RouteProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { AppRouteComponentProps, readyState } from '@/app';
+import { AppRouteComponentProps, PageProps, readyState } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
 import { DefaultLayout } from '@/layout';
 
 import { OrderDetailContainer } from './containers';
 
-type RouteOrderDetailProps = AppRouteComponentProps<{ readonly id: string }>;
+type RouteOrderDetailProps = AppRouteComponentProps<{ readonly id: string }> & PageProps;
 
 @readyState()
 export class RouteOrderDetail extends React.Component<RouteOrderDetailProps> {
-    static readonly routeProps: RouteProps = {
-        path: '/orders/:id'
-    };
-
     render() {
         const { match } = this.props;
         const routeProps = Page.getRouteProps(this.props);
