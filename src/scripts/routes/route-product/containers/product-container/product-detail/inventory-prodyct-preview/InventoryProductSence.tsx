@@ -15,20 +15,21 @@ import {
 } from '@/restful';
 
 export interface InventoryProductSenceProps extends
-    Pick<CommonStoreProps, 'setStore'> {
+    Pick<CommonStoreProps, 'setStore'>,
+    Pick<CommonStoreProps, 'selectedProductType'> {
     readonly product: CommonStoreProps['selectedProduct'];
 }
 
-@withStoreValues<InventoryProductSenceProps>()
+@withStoreValues<InventoryProductSenceProps>('selectedProductType')
 export class InventoryProductSence extends React.PureComponent<InventoryProductSenceProps> {
     public render() {
-        const { product, setStore } = this.props;
+        const { product, selectedProductType, setStore } = this.props;
         return (
             <ThreeSence
                 onObjectSelect={null}
                 selectedObject={null}
                 productModules={product.modules}
-                productType={product.productType}
+                productType={selectedProductType}
                 setSence={(threeScreen) => {
                     setStore<CommonStoreProps>({
                         product3Dsence: threeScreen
