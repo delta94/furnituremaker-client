@@ -166,7 +166,10 @@ export const orderDetailUtils = {
     },
     getTotalVolume: (orderDetails) => orderDetails.reduce(
         (totalVolumeValue, orderDetail) => {
-            const orderDetailVolume = orderDetail.productType.volume * orderDetail.quantity;
+            if (!orderDetail.productType) {
+                return totalVolumeValue;
+            }
+            const orderDetailVolume = orderDetail.productType.volume * (orderDetail.quantity || 0);
             return totalVolumeValue += roundTo(orderDetailVolume, 2);
         },
         0

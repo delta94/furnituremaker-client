@@ -83,16 +83,20 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
             product = fetchProductsWithCode[0];
         }
 
+        const notEnoughInventory = product.inventory ?
+            product.inventory < nextQuantity :
+            false;
+        const quantity = notEnoughInventory ? product.inventory : nextQuantity;
         const nextDiscoutPerProduct = productUtils.getDiscount(
             product,
-            nextQuantity,
+            quantity,
             discountByQuantities,
             productDiscountUtils.getDiscountByProduct(productDiscounts, product)
         );
 
         const updateOrderDetail = orderDetailUtils.updateTheOrderDetail(
             orderDetail,
-            nextQuantity,
+            quantity,
             nextDiscoutPerProduct
         );
 
@@ -181,7 +185,9 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                 }
             >
                 <AntdList.Item.Meta
-                    title={typeof orderDetail.productType !== 'string' && orderDetail.productType.name}
+                    title={
+                        (orderDetail.productType && typeof orderDetail.productType !== 'string')
+                        && orderDetail.productType.name}
                     description={(
                         <div>
                             <Link to={`/maker/${orderDetail.productModulesCode}`}>

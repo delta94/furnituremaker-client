@@ -60,6 +60,7 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
     readonly state: {
         readonly discountByQuantitySelectItems: AntdSelectOptionProps[];
     };
+    readonly getMaxProductCanBuy = () => this.props.product.inventory || 50;
 
     readonly restToMinimumQuantity = () => {
         const { change } = this.props;
@@ -68,7 +69,10 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
 
     readonly restToMaxiumQuantity = () => {
         const { change } = this.props;
-        change(nameof<AddToCartFormValues>(o => o.selectQuantity), 50);
+        change(
+            nameof<AddToCartFormValues>(o => o.selectQuantity),
+            this.getMaxProductCanBuy()
+        );
     }
 
     readonly changeDiscountSelectValue = (currentQuantity: number) => {
@@ -177,7 +181,7 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                                 inputProps={{
                                     className: 'w-100',
                                     min: 1,
-                                    max: 50
+                                    max: this.getMaxProductCanBuy()
                                 }}
                                 onChange={(event, value) => {
                                     this.changeDiscountSelectValue(value);
@@ -195,7 +199,7 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                                         if (!quantity) {
                                             this.restToMinimumQuantity();
                                             return null;
-                                        } else if (quantity > 30) {
+                                        } else if (quantity > this.getMaxProductCanBuy()) {
                                             this.restToMaxiumQuantity();
                                             return null;
                                         }

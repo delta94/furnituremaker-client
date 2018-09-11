@@ -58,7 +58,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
 
         return {
             design: selectedProduct.design.id,
-            productType: selectedProduct.productType.id,
+            productType: selectedProduct.productType,
             productModulesCode: productUtils.getProductModulesCode(selectedProduct),
             quantity: quantity,
             subTotalPrice: subTotalPrice,
