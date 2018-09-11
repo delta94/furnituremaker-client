@@ -76,6 +76,7 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
             );
             const { selectedProductDesign } = nextProps;
 
+            // * design has changed
             if (
                 selectedProductDesign &&
                 selectedProductDesign.id !== designParam.value
@@ -91,15 +92,6 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
                     fetchParams: [...defaultSearchParams]
                 };
             }
-
-            if (!designParam.value && selectedProductDesign) {
-                designParam.value = selectedProductDesign.id;
-                return {
-                    ...prevState,
-                    fetchParams: [...prevState.fetchParams]
-                };
-            }
-
             return null;
         }
 
@@ -131,7 +123,7 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
 
         prevFetchSortParam.value = currentSearchSortParam || undefined;
         prevFetchStartParam.value = 0;
-        
+
         this.setState({
             fetchParams: [
                 ...fetchParams

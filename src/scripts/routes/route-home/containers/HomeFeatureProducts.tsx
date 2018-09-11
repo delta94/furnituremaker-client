@@ -48,11 +48,36 @@ interface HomeFeatureProductsState {
     'history'
 )
 
-@withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductType))
+@withStoreValues<HomeFeatureProductsProps>('selectedProductType')
 export class HomeFeatureProducts extends React.PureComponent<HomeFeatureProductsProps, HomeFeatureProductsState> {
     // tslint:disable-next-line:readonly-keyword
     unregisterCallback: UnregisterCallback;
+    static readonly getDerivedStateFromProps =
+        (nextProps: HomeFeatureProductsProps, prevState: HomeFeatureProductsState) => {
+            // * for init design param
+            const designParam = prevState.fetchParams.find(param =>
+                param.parameter === nameof<Product>(product => product.design)
+            );
+            const { selectedProductDesign } = nextProps;
 
+            // * design has changed
+            if (
+                selectedProductDesign &&
+                selectedProductDesign.id !== designParam.value
+            ) {
+                const defaultSearchParams = getDefaultSearchParams();
+                const defaultDesignParams = defaultSearchParams.find(param =>
+                    param.parameter === nameof<Product>(product => product.design)
+                );
+                defaultDesignParams.value = selectedProductDesign.id;
+
+                return {
+                    ...prevState,
+                    fetchParams: [...defaultSearchParams]
+                };
+            }
+            return null;
+        }
     constructor(props: HomeFeatureProductsProps) {
         super(props);
         const { history } = props;
