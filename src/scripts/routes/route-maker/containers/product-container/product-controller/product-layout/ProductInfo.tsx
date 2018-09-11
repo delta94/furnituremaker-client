@@ -9,7 +9,6 @@ import {
     AntdDivider,
     AntdIcon,
     AntdRow,
-    Condition,
     ThreeComponentList,
     ThreeComponentListProps,
     ThreeMaterialList
@@ -20,7 +19,6 @@ import {
     discountByQuantitiesResources,
     DiscountByQuantity,
     ProductExtended,
-    productModuleUtils,
     productUtils,
     restfulFetcher,
     restfulStore
@@ -46,19 +44,6 @@ const ChangeDesign = styled.div`
     text-align: right;
     cursor: pointer;
     color: ${colorPrimary};
-`;
-
-const FurnitureModules = styled.div`
-    border: 1px solid ${colorGray};
-    padding: 15px;
-    border-radius: 3px;
-`;
-
-const FurnitureModuleItem = styled.div`
-    margin: 0 0 10px 0;
-    &:last-child {
-        margin: 0 0 0 0;
-    }
 `;
 
 const ProductInfoWrapper = styled.div`
@@ -125,20 +110,6 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                                         </ChangeDesign>
                                     </AntdCol>
                                 </AntdRow>
-                                <div style={{ margin: '0 0 15px 0' }}>
-                                    <h4>Cấu kiện và vật liệu</h4>
-                                    <FurnitureModules>
-                                        {
-                                            product.modules.map((productModule, index) => {
-                                                return (
-                                                    <FurnitureModuleItem key={index}>
-                                                        {productModuleUtils.getName(productModule)}
-                                                    </FurnitureModuleItem>
-                                                );
-                                            })
-                                        }
-                                    </FurnitureModules>
-                                </div>
                                 <AntdRow>
                                     <AntdCol span={24}>
                                         <h4>Thông số sản phẩm</h4>

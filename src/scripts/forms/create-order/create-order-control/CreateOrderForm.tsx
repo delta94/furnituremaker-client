@@ -153,5 +153,6 @@ class CreateOrderFormComponent extends React.Component<
 export const createOrderForm = 'CreateOrderForm';
 
 export const CreateOrderForm = reduxForm<CreateOrderFormValues, CreateOrderFormProps>({
-    form: createOrderForm
+    form: createOrderForm,
+    destroyOnUnmount: false
 })(CreateOrderFormComponent);
