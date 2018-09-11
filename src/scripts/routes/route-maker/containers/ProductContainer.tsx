@@ -18,7 +18,7 @@ type ProductContainerProps = CommonStoreProps & WithMaterialTypesProps;
 
 @withMaterialTypes()
 @withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductDesign))
-export class ProductContainer extends React.Component<ProductContainerProps> {
+export class ProductContainer extends React.PureComponent<ProductContainerProps> {
 
     constructor(props: ProductContainerProps) {
         super(props);

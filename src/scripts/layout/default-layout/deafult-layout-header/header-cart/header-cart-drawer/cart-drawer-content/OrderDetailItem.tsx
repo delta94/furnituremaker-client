@@ -49,6 +49,19 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
     // tslint:disable-next-line:readonly-keyword
     changeQuantityTimeOut = null;
 
+    static readonly getDerivedStateFromProps = (
+        nextProps: OrderDetailItemProps,
+        currentState: OrderDetailItemState): Partial<OrderDetailItemState> => {
+
+        if (
+            nextProps.orderDetail.updatedAt !== currentState.updatedAt
+        ) {
+            return nextProps.orderDetail;
+        }
+
+        return null;
+    }
+
     readonly updateOrderDetailQuantity = async (nextQuantity: number) => {
         const {
             orderDetail,
@@ -168,7 +181,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                 }
             >
                 <AntdList.Item.Meta
-                    title={orderDetail.productType.name}
+                    title={typeof orderDetail.productType !== 'string' && orderDetail.productType.name}
                     description={(
                         <div>
                             <Link to={`/maker/${orderDetail.productModulesCode}`}>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ResourceParameter } from 'react-restful';
 import { RouteComponentProps, RouteProps } from 'react-router';
 
-import { PageProps, readyState, withStoreValues } from '@/app';
+import { AppPage, PageProps, readyState, withStoreValues } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Container, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
@@ -32,46 +32,49 @@ type RouteMakerProps =
     PageProps;
 
 interface RouteMakerState {
-    readonly selectedProductCode?: string;
+    readonly selectedModulesCode?: string;
     readonly loadedProduct?: ProductExtended;
     readonly pageReady: boolean;
 }
 
 @readyState()
 @withStoreValues()
-export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState> {
+export class RouteMaker extends AppPage<RouteMakerProps, RouteMakerState> {
     static getDerivedStateFromProps(
         nextProps: RouteMakerProps,
         prevState: RouteMakerState
-    ): RouteMakerState {
-        if (prevState.selectedProductCode !== nextProps.match.params.productCode) {
+    ): Partial<RouteMakerState> {
+        if (!nextProps.match.params.modulesCode &&
+            prevState.selectedModulesCode) {
+            return {
+                loadedProduct: null,
+                selectedModulesCode: null
+            };
+        }
+        
+        if (nextProps.match.params.modulesCode &&
+            !prevState.selectedModulesCode) {
+            return {
+                loadedProduct: null,
+                selectedModulesCode: nextProps.match.params.modulesCode
+            };
+        }
+
+        if (nextProps.match.params.modulesCode !== prevState.selectedModulesCode) {
             return {
                 ...prevState,
                 pageReady: false,
                 loadedProduct: null,
-                selectedProductCode: nextProps.match.params.productCode
+                selectedModulesCode: nextProps.match.params.modulesCode
             };
         }
 
         return null;
     }
 
-    readonly getProduct = async (productCode: string): Promise<ProductExtended> => {
-        const componentCodes = productUtils.getComponentCodes(productCode);
-        const fetchComponentParams = componentCodes.map((componentCode): ResourceParameter => ({
-            type: 'query',
-            parameter: `${nameof<FurnitureComponent>(o => o.code)}_in`,
-            value: componentCode
-        }));
-
-        const materialCodes = productUtils.getMaterialCodes(productCode);
-
-        const components = await restfulFetcher.fetchResource(
-            furnitureComponentResources.find,
-            fetchComponentParams
-        ) as ReadonlyArray<FurnitureComponent>;
-
-        const standardComponent = components[0];
+    readonly getProduct = async (modulesCode: string): Promise<ProductExtended> => {
+        const modules = await productUtils.fetchModules(modulesCode);
+        const standardComponent = modules[0].component;
 
         const selectedComponentDesign = standardComponent.design;
         const selectedComponentType = restfulStore.findOneRecord(
@@ -80,28 +83,17 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
         );
 
         return {
-            produceCode: productCode,
+            produceCode: modulesCode,
             design: selectedComponentDesign,
-            modules: components.map((o, i): ProductModule => {
-                const material = restfulStore.findOneRecord(
-                    furnitureMaterialResouceType,
-                    (materialInstance) => materialInstance.code === materialCodes[i]
-                );
-                return {
-                    component: o,
-                    componentPrice: 0,
-                    material: material,
-                    materialPrice: 0
-                };
-            }),
+            modules: modules,
             productType: selectedComponentType,
-            totalPrice: 0
+            totalPrice: productUtils.getTotalPriceFromModules(modules, 0)
         };
     }
 
-    readonly loadProduct = async (productCode: string) => {
+    readonly loadProduct = async (modulesCode: string) => {
         const { setStore } = this.props;
-        const product = await this.getProduct(productCode);
+        const product = await this.getProduct(modulesCode);
         setStore({
             [nameof<CommonStoreProps>(o => o.selectedProductType)]: product.productType,
             [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: product.design,
@@ -111,7 +103,7 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
         this.setState({
             pageReady: true,
             loadedProduct: product,
-            selectedProductCode: productCode
+            selectedModulesCode: modulesCode
         });
     }
 
@@ -119,12 +111,11 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
         super(props);
 
         const { match } = props;
-        const productCode = match.params.productCode;
+        const productCode = match.params.modulesCode;
         if (productCode) {
-            this.loadProduct(productCode);
             this.state = {
                 pageReady: false,
-                selectedProductCode: productCode
+                selectedModulesCode: productCode
             };
         } else {
             this.state = {
@@ -133,19 +124,19 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
         }
     }
 
-    componentDidUpdate() {
-        if (this.state.selectedProductCode && !this.state.loadedProduct) {
-            this.loadProduct(this.state.selectedProductCode);
-        }
+    componentDidMount() {
+        this.loadProductIfNeeded();
     }
 
-    componentWillUnmount() {
-        const { setStore } = this.props;
-        setStore({
-            [nameof<CommonStoreProps>(o => o.selectedProductType)]: null,
-            [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: null,
-            [nameof<CommonStoreProps>(o => o.selectedProduct)]: null
-        });
+    componentDidUpdate() {
+        this.loadProductIfNeeded();
+    }
+
+    loadProductIfNeeded() {
+        const { selectedModulesCode, loadedProduct } = this.state;
+        if (selectedModulesCode && !loadedProduct) {
+            this.loadProduct(selectedModulesCode);
+        }
     }
 
     render() {
@@ -153,9 +144,8 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
             return null;
         }
 
-        const routeProps = Page.getRouteProps(this.props);
         return (
-            <Page routeProps={routeProps}>
+            <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <ProductTypeGroupContainer />
                     <ProductTypeContainer />

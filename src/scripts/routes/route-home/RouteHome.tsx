@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { PageProps, readyState, withStoreValues } from '@/app';
+import { AppPage, PageProps, readyState, withStoreValues } from '@/app';
 import { Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
@@ -22,11 +22,10 @@ type RouteHomeProps =
 
 @readyState()
 @withStoreValues<RouteHomeProps>()
-export class RouteHome extends React.Component<RouteHomeProps> {
+export class RouteHome extends AppPage<RouteHomeProps> {
     render() {
-        const routeProps = Page.getRouteProps(this.props);
         return (
-            <Page routeProps={routeProps}>
+            <Page>
                 <DefaultLayout>
                     <HomeProductTypeGroup />
                     <HomeProductType />

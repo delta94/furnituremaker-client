@@ -11,27 +11,27 @@ import {
 import { ProductDetail } from './product-container';
 
 interface ProductContainerProps {
-    readonly productId: number;
+    readonly productCode: number;
 }
 
 export class ProductContainer extends React.Component<ProductContainerProps> {
     render() {
-        const { productId } = this.props;
+        const { productCode } = this.props;
         return (
             <RestfulRender
                 store={restfulStore}
                 fetcher={restfulFetcher}
                 parameters={[{
-                    type: 'path',
-                    parameter: nameof<Product>(o => o.id),
-                    value: productId
+                    type: 'query',
+                    parameter: nameof<Product>(o => o.produceCode),
+                    value: productCode
                 }]}
-                resource={productResources.findOne}
+                resource={productResources.find}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
                         return (
                             <ProductDetail
-                                product={renderProps.data}
+                                product={renderProps.data[0]}
                             />
                         );
                     }

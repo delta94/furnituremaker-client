@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps, RouteProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { PageProps, readyState, withStoreValues } from '@/app';
+import { AppPage, PageProps, readyState, withStoreValues } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Container, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
@@ -13,10 +13,10 @@ type RouteTransportPolicyProps = CommonStoreProps & RouteComponentProps<{}> & Pa
 
 @readyState()
 @withStoreValues()
-export class RouteTransportPolicy extends React.Component<RouteTransportPolicyProps> {
+export class RouteTransportPolicy extends AppPage<RouteTransportPolicyProps> {
     render() {
         return (
-            <Page routeProps={this.props}>
+            <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <Container>
                         <TransportFeeByCity />

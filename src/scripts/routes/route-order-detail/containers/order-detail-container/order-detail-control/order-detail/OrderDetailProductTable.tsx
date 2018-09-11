@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import { AntdCard, AntdColumnProps, AntdTable, Img } from '@/components';
-import { Order, OrderDetail } from '@/restful';
+import { Order, OrderDetail, ProductType } from '@/restful';
+import { getProductLink } from '@/routes/route-product';
 import { formatCurrency } from '@/utilities';
 
 export interface OrderDetailProductTableProps {
@@ -18,21 +19,40 @@ const columns: AntdColumnProps<OrderDetail>[] = [{
         return <Img width="100" file={previewImg} />;
     }
 }, {
-    title: 'Tên',
+    title: 'Loại sản phẩm',
     dataIndex: nameof<OrderDetail>(o => o.productType),
     key: nameof<OrderDetail>(o => o.productType),
-    render: (productType: OrderDetail['productType']) => {
-        return productType.name;
+        render: (productType: ProductType, orderDetail) => {
+        return (
+            <div>
+                <label>
+                    <b> {productType.name}</b>
+                </label>
+                <br />
+                {
+                    orderDetail.productModulesCode &&
+                    (<Link to={`/maker/${orderDetail.productModulesCode}`}>Xem Thiết kế</Link>)
+                }
+            </div>
+        );
     }
 }, {
     title: 'Mã sản phẩm',
-    dataIndex: nameof<OrderDetail>(o => o.productModulesCode),
-    key: nameof<OrderDetail>(o => o.productModulesCode),
-    render: (productCode: string) => (<Link to={`/maker/${productCode}`}>{productCode}</Link>)
+    dataIndex: nameof<OrderDetail>(o => o.productCode),
+    key: nameof<OrderDetail>(o => o.productCode),
+    render: (produceCode: string) => {
+        if (!produceCode) {
+            return (<i>Đang cập nhật...</i>);
+        }
+        return (
+            (<Link to={getProductLink({ produceCode })}>{produceCode}</Link>)
+        );
+    }
 }, {
     title: 'Số lượng',
     dataIndex: nameof<OrderDetail>(o => o.quantity),
-    key: nameof<OrderDetail>(o => o.quantity)
+    key: nameof<OrderDetail>(o => o.quantity),
+    render: (quantity: number) => `${quantity} sản phẩm`
 }, {
     title: 'Đơn giá',
     dataIndex: nameof<OrderDetail>(o => o.productPrice),

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps, RouteProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { PageProps, readyState } from '@/app';
+import { AppPage, PageProps, readyState } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
@@ -12,12 +12,10 @@ import { OrderListContainer, OrderPageHeader } from './containers';
 type RouteOrdersProps = CommonStoreProps & RouteComponentProps<{}> & PageProps;
 
 @readyState()
-export class RouteOrders extends React.Component<RouteOrdersProps> {
+export class RouteOrders extends AppPage<RouteOrdersProps> {
     render() {
-        const routeProps = Page.getRouteProps(this.props);
-
         return (
-            <Page routeProps={routeProps}>
+            <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <OrderPageHeader />
                     <OrderListContainer />

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { RouteComponentProps, RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { PageProps, readyState, withStoreValues } from '@/app';
+import { AppPage, PageProps, readyState, withStoreValues } from '@/app';
 import {
     AntdBreadcrumb,
     AntdCol,
@@ -23,7 +23,7 @@ type RouteHomeProps =
 
 @readyState()
 @withStoreValues<RouteHomeProps>('setStore')
-export class RouteCart extends React.Component<RouteHomeProps> {
+export class RouteCart extends AppPage<RouteHomeProps> {
     constructor(props: RouteHomeProps) {
         super(props);
         const { setStore } = this.props;
@@ -34,7 +34,7 @@ export class RouteCart extends React.Component<RouteHomeProps> {
 
     render() {
         return (
-            <Page routeProps={this.props}>
+            <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <Container>
                         <AntdRow type="flex" gutter={30}>

@@ -9,15 +9,25 @@ interface ImgProps extends React.ImgHTMLAttributes<{}> {
 
 export class Img extends React.Component<ImgProps> {
     static readonly getDefaultImgSrc = () => `/static/assets/no-image.png`;
+    readonly getSrc = () => {
+        const { file, size } = this.props;
+
+        if (!file) {
+            return Img.getDefaultImgSrc();
+        }
+
+        if (typeof file === 'string') {
+            if (file.startsWith('/uploads')) {
+                return uploadedFileUtils.addHostToPath(file);
+            }
+            return file;
+        }
+
+        return uploadedFileUtils.getUrl(file, size);
+    }
 
     render() {
-        const { file, size } = this.props;
-        const imgSrc = file ?
-            ((typeof file === 'string') ?
-                file :
-                uploadedFileUtils.getUrl(file, size)
-            ) :
-            Img.getDefaultImgSrc();
+        const imgSrc = this.getSrc();
 
         const passedProps = { ...this.props, file: undefined };
         return <img style={{ maxWidth: '100%' }} {...passedProps} src={imgSrc} />;

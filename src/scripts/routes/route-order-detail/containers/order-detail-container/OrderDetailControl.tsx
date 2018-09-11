@@ -27,7 +27,6 @@ export interface OrderDetailControlProps extends
     Pick<OrderDetailProps, 'order'>,
     Pick<InitAppStoreProps, 'history'>,
     Pick<CommonStoreProps, 'dispatch'> {
-    readonly orders?: Order[];
 }
 
 export interface OrderDetailControlComponentState {
@@ -173,7 +172,9 @@ class OrderDetailControlComponent extends React.Component<
 export const OrderDetailControl = restfulDataContainer<Order, OrderDetailControlProps, OrderDetailControlProps>({
     store: restfulStore,
     resourceType: orderResourceType,
-    dataPropsKey: nameof<OrderDetailControlProps>(o => o.orders),
+    getMappingDataFromProps: (ownProps) => {    
+        return [ownProps.order];
+    },
     mapToProps: (data) => {
         return {
             order: data[0]

@@ -19,8 +19,8 @@ export interface OrderDetail extends RecordType {
     readonly id?: string;
     readonly quantity: number;
     readonly productModulesCode: string;
-    readonly productType: ProductType;
-    readonly design: ProductDesign;
+    readonly productType: ProductType | string;
+    readonly design: ProductDesign | string;
     readonly subTotalPrice: number;
     readonly totalPrice: number;
     readonly productPrice: number;
@@ -34,6 +34,7 @@ export interface OrderDetail extends RecordType {
     readonly createdBy?: User;
     readonly productCode?: string;
     readonly product?: Product;
+    readonly updatedAt?: string;
 }
 
 export const orderDetailResourceType = new ResourceType<OrderDetail>({

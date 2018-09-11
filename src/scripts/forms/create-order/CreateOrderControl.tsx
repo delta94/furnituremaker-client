@@ -41,7 +41,8 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                 orderDetails,
                 shippingToCity: order.shippingToCity
             });
-            const orderTotalPrice = productsTotalPayment + transportFee;
+
+            const orderTotalPrice = productsTotalPayment;
 
             // * Discount
             const productsDiscount = orderDetailUtils.getTotalDiscount(orderDetails);
@@ -49,7 +50,7 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
             const orderTotalDiscount = promotionDiscount + productsDiscount;
             // * End Discount
 
-            const orderTotalOfPayment = orderTotalPrice - orderTotalDiscount;
+            const orderTotalOfPayment = orderTotalPrice + transportFee - orderTotalDiscount;
 
             const newOrder: Partial<Order> = {
                 ...order,

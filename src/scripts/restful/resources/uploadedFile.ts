@@ -14,6 +14,9 @@ export interface UploadedFile {
 export type ImgSize = 'img256x256' | 'img512x512' | 'img1024x1024';
 
 export const uploadedFileUtils = {
+    addHostToPath: (url: string) => {
+        return `${FILE_HOST}${url}`;
+    },
     getUrl: (uploadedFile: UploadedFile, size?: ImgSize) => {
         if (size) {
             const fileUrl = uploadedFile[size];
@@ -26,7 +29,7 @@ export const uploadedFileUtils = {
         const url = (uploadedFile.url && uploadedFile.url.startsWith('http://')) ?
             (new URL(uploadedFile.url)).pathname :
             uploadedFile.url;
-        
-        return `${FILE_HOST}${url}`;
+
+        return uploadedFileUtils.addHostToPath(url);
     }
 };

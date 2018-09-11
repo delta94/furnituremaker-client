@@ -3,10 +3,12 @@ import * as Loadable from 'react-loadable';
 
 import { Product } from '@/restful';
 
-export const productRoutePath = '/product/:id';
+import { RouteParams } from './RouteProduct';
 
-export const getProductLink = (product: Product) => {
-    return productRoutePath.replace(':id', product.id);
+export const productRoutePath = `/product/:${nameof<RouteParams>(o => o.productCode)}`;
+
+export const getProductLink = (product: Partial<Product>) => {
+    return productRoutePath.replace(`:${nameof<RouteParams>(o => o.productCode)}`, product.produceCode);
 };
 
 export const RouteProductLoadable = Loadable({

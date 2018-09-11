@@ -1,3 +1,3 @@
 export interface RouteMakerRouterProps {
-    readonly productCode: string;
+    readonly modulesCode: string;
 }

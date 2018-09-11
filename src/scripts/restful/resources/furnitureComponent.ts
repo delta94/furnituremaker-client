@@ -7,9 +7,9 @@ import {
 } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
-import { MaterialType } from '@/restful/resources/materialType';
 
 import { FurnitureComponentType } from './furnitureComponentType';
+import { MaterialType } from './materialType';
 import { ProductDesign } from './productDesign';
 import { UploadedFile } from './uploadedFile';
 

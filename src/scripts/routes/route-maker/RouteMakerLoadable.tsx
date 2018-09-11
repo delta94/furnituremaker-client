@@ -10,7 +10,7 @@ export const RouteMakerLoadable = Loadable({
 
 RouteMakerLoadable.defaultProps = {
     routeProps: {
-        path: `/maker/:${nameof<RouteMakerRouterProps>(o => o.productCode)}?`,
+        path: `/maker/:${nameof<RouteMakerRouterProps>(o => o.modulesCode)}?`,
         exact: true
     }
 };

@@ -35,58 +35,13 @@ export interface ProductDetailProps extends
 export class ProductDetail extends React.PureComponent<ProductDetailProps> {
     async componentDidMount() {
         const { product, setStore } = this.props;
-        const fetchedModules = await this.fetchModules(product);
+        const fetchedModules = await productUtils.fetchModules(product.modulesCode);
         setStore<CommonStoreProps>({
             selectedProduct: {
                 ...product,
                 modules: fetchedModules
             }
         });
-    }
-
-    readonly fetchModules = async (product: Product) => {
-        const componentCodes = productUtils.getComponentCodes(product.modulesCode);
-        const materialCodes = productUtils.getMaterialCodes(product.modulesCode);
-
-        const componentParamsFetchList = componentCodes.map((code): ResourceParameter => {
-            return {
-                type: 'query',
-                parameter: nameof<FurnitureComponent>(o => o.code),
-                value: code
-            };
-        });
-
-        const materialParamsFetchList = materialCodes.map((code): ResourceParameter => {
-            return {
-                type: 'query',
-                parameter: nameof<FurnitureMaterial>(o => o.code),
-                value: code
-            };
-        });
-
-        const componentsMaterials = await Promise.all([
-            Promise.all<FurnitureComponent[]>(componentParamsFetchList.map((param) =>
-                restfulFetcher.fetchResource(
-                    furnitureComponentResources.find,
-                    [param]
-                )
-            )),
-            Promise.all<FurnitureMaterial[]>(materialParamsFetchList.map((param) =>
-                restfulFetcher.fetchResource(
-                    furnitureMaterialResources.find,
-                    [param]
-                )
-            ))
-        ]);
-
-        const componentList = componentsMaterials[0];
-        const materialList = componentsMaterials[1];
-
-        const modules = componentList.map((component, index) =>
-            productUtils.createModule(component[0], materialList[index][0])
-        );
-
-        return modules;
     }
 
     public render() {

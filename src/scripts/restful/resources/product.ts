@@ -1,15 +1,21 @@
-import { Resource, ResourceType } from 'react-restful';
+import { Resource, ResourceParameter, ResourceType } from 'react-restful';
 
-import { apiEntry, restfulStore } from '@/restful/environment';
+import { apiEntry, restfulFetcher, restfulStore } from '@/restful/environment';
 import { formatCurrency } from '@/utilities';
 
 import {
     discountByQuantitiesUtils,
     DiscountByQuantity
 } from './discountByQuantities';
-import { FurnitureComponent } from './furnitureComponent';
+import {
+    FurnitureComponent,
+    furnitureComponentResources
+} from './furnitureComponent';
 import { FurnitureComponentType } from './furnitureComponentType';
-import { FurnitureMaterial } from './furnutureMaterial';
+import {
+    FurnitureMaterial,
+    furnitureMaterialResources
+} from './furnutureMaterial';
 import { MaterialType, materialTypeUtils } from './materialType';
 import { ProductDesign } from './productDesign';
 import { ProductDiscount, productDiscountUtils } from './productDiscount';
@@ -177,6 +183,50 @@ export const productUtils = {
         );
         const discountPerProduct = discountByQuantity + discountByProduct;
         return discountPerProduct;
+    },
+    fetchModules: async (modulesCode: string) => {
+        const componentCodes = productUtils.getComponentCodes(modulesCode);
+        const materialCodes = productUtils.getMaterialCodes(modulesCode);
+
+        const componentParamsFetchList = componentCodes.map((code): ResourceParameter => {
+            return {
+                type: 'query',
+                parameter: nameof<FurnitureComponent>(o => o.code),
+                value: code
+            };
+        });
+
+        const materialParamsFetchList = materialCodes.map((code): ResourceParameter => {
+            return {
+                type: 'query',
+                parameter: nameof<FurnitureMaterial>(o => o.code),
+                value: code
+            };
+        });
+
+        const componentsMaterials = await Promise.all([
+            Promise.all<FurnitureComponent[]>(componentParamsFetchList.map((param) =>
+                restfulFetcher.fetchResource(
+                    furnitureComponentResources.find,
+                    [param]
+                )
+            )),
+            Promise.all<FurnitureMaterial[]>(materialParamsFetchList.map((param) =>
+                restfulFetcher.fetchResource(
+                    furnitureMaterialResources.find,
+                    [param]
+                )
+            ))
+        ]);
+
+        const componentList = componentsMaterials[0];
+        const materialList = componentsMaterials[1];
+
+        const modules = componentList.map((component, index) =>
+            productUtils.createModule(component[0], materialList[index][0])
+        );
+
+        return modules;
     }
 };
 

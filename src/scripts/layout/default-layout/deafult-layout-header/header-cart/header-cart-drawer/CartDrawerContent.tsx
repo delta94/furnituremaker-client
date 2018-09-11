@@ -23,6 +23,10 @@ export class CartDrawerContent extends React.Component<CartDrawerContentProps> {
                     itemLayout="vertical"
                     dataSource={orderDetails}
                     renderItem={(item: OrderDetail) => {
+                        if (typeof item.productType === 'string') {
+                            return null;
+                        }
+
                         return (
                             <OrderDetailItem
                                 key={item.productModulesCode}

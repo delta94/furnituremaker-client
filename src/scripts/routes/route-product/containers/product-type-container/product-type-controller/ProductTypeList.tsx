@@ -32,6 +32,7 @@ const Content: React.ComponentType<ContentProps> = styled.div`
 interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
     readonly isSelected: boolean;
 }
+
 const Item: React.ComponentType<ItemProps> = styled.div`
     text-align: center;
     padding: 10px;
@@ -39,6 +40,7 @@ const Item: React.ComponentType<ItemProps> = styled.div`
     transition: all .3s;
     opacity: ${(props: ItemProps) => props.isSelected ? 1 : 0.5};
     cursor: pointer;
+    max-width: 300px;
 `;
 
 const ThumbnailWrapper = styled.div`

@@ -36,25 +36,19 @@ interface ProductLayoutProps extends
 export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
     constructor(props: ProductLayoutProps) {
         super(props);
+        const { selectedProduct } = this.props;
+        if (!selectedProduct) {
+            const defaultProduct = productUtils.createDefaultProduct(
+                props.selectedProductDesign,
+                props.selectedProductType,
+                props.furnitureComponentTypes,
+                props.materialTypes
+            );
 
-        const defaultProduct = productUtils.createDefaultProduct(
-            props.selectedProductDesign,
-            props.selectedProductType,
-            props.furnitureComponentTypes,
-            props.materialTypes
-        );
-
-        props.setStore({
-            [nameof<ProductLayoutProps>(o => o.selectedProduct)]: defaultProduct
-        });
-    }
-
-    componentWillUnmount() {
-        this.props.setStore({
-            [nameof<ProductLayoutProps>(o => o.selectedProduct)]: null,
-            [nameof<ThreeComponentListProps>(o => o.selectedObject)]: null,
-            [nameof<ThreeMaterialListProps>(o => o.selectedMaterial)]: null,
-        });
+            props.setStore({
+                [nameof<ProductLayoutProps>(o => o.selectedProduct)]: defaultProduct
+            });
+        }
     }
 
     render() {

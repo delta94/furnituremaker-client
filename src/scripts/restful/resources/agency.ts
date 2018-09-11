@@ -6,9 +6,9 @@ import {
 } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
-import { City } from '@/restful/resources/city';
 
 import { AgencyLevel } from './agencyLevel';
+import { City } from './city';
 import { User } from './user';
 
 export interface Agency extends RecordType {
