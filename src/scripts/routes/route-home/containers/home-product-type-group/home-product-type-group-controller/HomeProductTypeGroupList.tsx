@@ -41,20 +41,21 @@ const Label = styled.span`
 `;
 
 interface HomeProductTypeGroupListProps extends
-    Pick<CommonStoreProps, 'selectedProductTypeGroup'> {
+    Pick<CommonStoreProps, 'selectedProductTypeGroup'>,
+    Pick<CommonStoreProps, 'hoveredProductTypeGroup'> {
     readonly productTypeGroups: ProductTypeGroup[];
     readonly onProductTypeGroupClick: (productTypeGroup: ProductTypeGroup) => void;
     readonly onProductTypeGroupHover: (productTypeGroup: ProductTypeGroup) => void;
     readonly onProductTypeGroupLeave: () => void;
 }
 
-@withStoreValues<HomeProductTypeGroupListProps>('selectedProductTypeGroup')
+@withStoreValues<HomeProductTypeGroupListProps>(
+    'hoveredProductTypeGroup',
+    'selectedProductTypeGroup'
+)
 export class HomeProductTypeGroupList extends React.Component<HomeProductTypeGroupListProps> {
-    static readonly defaultProps: HomeProductTypeGroupListProps = {
-        productTypeGroups: [],
-        onProductTypeGroupClick: () => { /** onProductTypeGroupHover */ },
-        onProductTypeGroupHover: () => { /** onProductTypeGroupHover */ },
-        onProductTypeGroupLeave: () => { /** onProductTypeGroupHover */ }
+    static readonly defaultProps: Partial<HomeProductTypeGroupListProps> = {
+        productTypeGroups: []
     };
 
     static readonly slickSettings: Settings = {
@@ -67,6 +68,7 @@ export class HomeProductTypeGroupList extends React.Component<HomeProductTypeGro
 
     render() {
         const {
+            hoveredProductTypeGroup,
             selectedProductTypeGroup,
             onProductTypeGroupHover,
             onProductTypeGroupLeave,
@@ -78,8 +80,12 @@ export class HomeProductTypeGroupList extends React.Component<HomeProductTypeGro
                 <Slider {...HomeProductTypeGroupList.slickSettings}>
                     {
                         this.props.productTypeGroups.map(productTypeGroup => {
-                            const isSelected = selectedProductTypeGroup &&
-                                selectedProductTypeGroup.id === productTypeGroup.id;
+                            const isSelected = hoveredProductTypeGroup ?
+                                hoveredProductTypeGroup.id === productTypeGroup.id :
+                                (
+                                    selectedProductTypeGroup &&
+                                    selectedProductTypeGroup.id === productTypeGroup.id
+                                );
 
                             const canClick = (
                                 productTypeGroup &&

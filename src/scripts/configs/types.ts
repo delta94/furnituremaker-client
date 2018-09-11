@@ -23,7 +23,10 @@ export interface InitAppStoreProps {
 
 export interface CommonStoreValues extends InitAppStoreProps {
     readonly appState?: 'PENDING' | 'READY';
+
     readonly hoveredProductTypeGroup?: ProductTypeGroup;
+    readonly leaveProductTypeGroupTimeout?: number ;
+
     readonly selectedProductTypeGroup?: ProductTypeGroup;
     readonly selectedProductType?: ProductType;
     readonly selectedProductDesignGroup?: ProductDesignGroup;

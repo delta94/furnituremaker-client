@@ -8,15 +8,19 @@ import { DesignModalProps } from '../product-design-container';
 import { ProductTypeListStoreProps } from '../product-type-container';
 import { ProductTypeGroupList } from './type-group-controller';
 
-interface TypeGroupControllerProps extends CommonStoreProps {
+interface TypeGroupControllerProps extends
+    Pick<CommonStoreProps, 'setStore'>,
+    Pick<CommonStoreProps, 'leaveProductTypeGroupTimeout'>,
+    Pick<CommonStoreProps, 'hoveredProductTypeGroup'>,
+    ProductTypeListStoreProps {
     readonly productTypeGroups: ProductTypeGroup[];
 }
 
-@withStoreValues()
+@withStoreValues<TypeGroupControllerProps>('leaveProductTypeGroupTimeout')
 export class TypeGroupController extends React.Component<TypeGroupControllerProps> {
     constructor(props: TypeGroupControllerProps) {
         super(props);
-        const { productTypeGroups, setStore, checkStore } = props;
+        const { productTypeGroups, setStore } = props;
 
         const defaulTypeGroup = productTypeGroupUtils.getDefaultProductTypeGroup(productTypeGroups);
         setStore<CommonStoreProps>({
@@ -26,7 +30,11 @@ export class TypeGroupController extends React.Component<TypeGroupControllerProp
     }
 
     render() {
-        const { productTypeGroups, setStore } = this.props;
+        const {
+            leaveProductTypeGroupTimeout,
+            productTypeGroups,
+            setStore
+        } = this.props;
 
         return (
             <ProductTypeGroupList
@@ -47,14 +55,32 @@ export class TypeGroupController extends React.Component<TypeGroupControllerProp
                         return;
                     }
 
-                    setStore({
-                        [nameof<CommonStoreProps>(o => o.hoveredProductTypeGroup)]: productTypeGroup,
-                        [nameof<ProductTypeListStoreProps>(o => o.showProductTypeList)]: true
+                    if (leaveProductTypeGroupTimeout) {
+                        clearTimeout(leaveProductTypeGroupTimeout);
+                        setStore<TypeGroupControllerProps>({
+                            leaveProductTypeGroupTimeout: null
+                        });
+                    }
+
+                    setStore<TypeGroupControllerProps>({
+                        hoveredProductTypeGroup: productTypeGroup,
+                        showProductTypeList: true
                     });
                 }}
                 onProductTypeGroupLeave={() => {
-                    setStore({
-                        [nameof<ProductTypeListStoreProps>(o => o.showProductTypeList)]: false
+                    const leaveTimeout = setTimeout(
+                        () => {
+                            setStore<CommonStoreProps>({
+                                hoveredProductTypeGroup: null,
+                            });
+                        },
+                        100
+                    // tslint:disable-next-line:no-any
+                    ) as any;
+
+                    setStore<TypeGroupControllerProps>({
+                        leaveProductTypeGroupTimeout: leaveTimeout,
+                        showProductTypeList: false
                     });
                 }}
             />

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { withStoreValues } from '@/app';
 import { CommonStoreProps } from '@/configs';
-import { ProductType, productTypeUtils } from '@/restful';
+import { ProductType } from '@/restful';
 
 import { DesignModalProps } from '../product-design-container';
 import {
@@ -16,19 +16,42 @@ export {
 
 interface ProductTypeContainerProps extends
     Pick<CommonStoreProps, 'setStore'>,
+    Pick<CommonStoreProps, 'hoveredProductTypeGroup'>,
+    Pick<CommonStoreProps, 'leaveProductTypeGroupTimeout'>,
     ProductTypeListStoreProps {
     readonly productTypes: ProductType[];
 }
 
-@withStoreValues<ProductTypeContainerProps>()
-export class ProductTypeController extends React.Component<ProductTypeContainerProps> {
+@withStoreValues<ProductTypeContainerProps>(
+    'leaveProductTypeGroupTimeout',
+    'showProductTypeList'
+)
+export class ProductTypeController extends React.PureComponent<ProductTypeContainerProps> {
 
     constructor(props: ProductTypeContainerProps) {
         super(props);
     }
 
+    componentDidUpdate() {
+        const {
+            showProductTypeList,
+            leaveProductTypeGroupTimeout,
+            setStore
+        } = this.props;
+
+        if (showProductTypeList && leaveProductTypeGroupTimeout) {
+            clearTimeout(leaveProductTypeGroupTimeout);
+            setStore<ProductTypeContainerProps>({
+                leaveProductTypeGroupTimeout: null
+            });
+        }
+    }
+
     render() {
-        const { productTypes, setStore } = this.props;
+        const {
+            productTypes,
+            setStore
+        } = this.props;
 
         return (
             <ProductTypeList
@@ -40,14 +63,15 @@ export class ProductTypeController extends React.Component<ProductTypeContainerP
                     });
                 }}
                 onMouseHoverOnList={() => {
-                    setStore({
-                        [nameof<ProductTypeListStoreProps>(o => o.showProductTypeList)]: true
+                    setStore<ProductTypeContainerProps>({
+                        showProductTypeList: true
                     });
                 }
                 }
                 onMouseLeaveList={() => {
-                    setStore({
-                        [nameof<ProductTypeListStoreProps>(o => o.showProductTypeList)]: false
+                    setStore<ProductTypeContainerProps>({
+                        showProductTypeList: false,
+                        hoveredProductTypeGroup: null
                     });
                 }}
             />

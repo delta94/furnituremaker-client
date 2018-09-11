@@ -18,11 +18,17 @@ const PageHeader = styled.h1`
     color: #4A4A4A;
 `;
 
-interface HomeProductTypeGroupControllerProps extends CommonStoreProps {
+interface HomeProductTypeGroupControllerProps extends
+    Pick<CommonStoreProps, 'setStore'>,
+    Pick<CommonStoreProps, 'leaveProductTypeGroupTimeout'>,
+    Pick<CommonStoreProps, 'hoveredProductTypeGroup'>,
+    HomeProductTypeListStoreProps {
     readonly productTypeGroups: ProductTypeGroup[];
 }
 
-@withStoreValues()
+@withStoreValues<HomeProductTypeGroupControllerProps>(
+    'leaveProductTypeGroupTimeout'
+)
 export class HomeProductTypeGroupController extends React.Component<HomeProductTypeGroupControllerProps> {
     constructor(props: HomeProductTypeGroupControllerProps) {
         super(props);
@@ -36,7 +42,11 @@ export class HomeProductTypeGroupController extends React.Component<HomeProductT
     }
 
     render() {
-        const { productTypeGroups, setStore } = this.props;
+        const {
+            leaveProductTypeGroupTimeout,
+            productTypeGroups,
+            setStore
+        } = this.props;
 
         return (
             <React.Fragment>
@@ -60,13 +70,31 @@ export class HomeProductTypeGroupController extends React.Component<HomeProductT
                             return;
                         }
 
-                        setStore({
-                            [nameof<CommonStoreProps>(o => o.hoveredProductTypeGroup)]: productTypeGroup,
-                            [nameof<HomeProductTypeListStoreProps>(o => o.showHomeProductTypeList)]: true
+                        if (leaveProductTypeGroupTimeout) {
+                            clearTimeout(leaveProductTypeGroupTimeout);
+                            setStore<HomeProductTypeGroupControllerProps>({
+                                leaveProductTypeGroupTimeout: null
+                            });
+                        }
+
+                        setStore<HomeProductTypeGroupControllerProps>({
+                            hoveredProductTypeGroup: productTypeGroup,
+                            showHomeProductTypeList: true
                         });
                     }}
                     onProductTypeGroupLeave={() => {
-                        setStore<HomeProductTypeListStoreProps>({
+                        const leaveTimeout = setTimeout(
+                            () => {
+                                setStore<HomeProductTypeGroupControllerProps>({
+                                    hoveredProductTypeGroup: null,
+                                });
+                            },
+                            100
+                            // tslint:disable-next-line:no-any
+                        ) as any;
+
+                        setStore<HomeProductTypeGroupControllerProps>({
+                            leaveProductTypeGroupTimeout: leaveTimeout,
                             showHomeProductTypeList: false
                         });
                     }}

@@ -15,17 +15,37 @@ export {
 
 interface HomeProductTypeContainerProps extends
     Pick<CommonStoreProps, 'setStore'>,
+    Pick<CommonStoreProps, 'hoveredProductTypeGroup'>,
+    Pick<CommonStoreProps, 'leaveProductTypeGroupTimeout'>,
     HomeProductTypeListStoreProps {
     readonly productTypes: ProductType[];
 }
 
-@withStoreValues<HomeProductTypeContainerProps>()
+@withStoreValues<HomeProductTypeContainerProps>(
+    'leaveProductTypeGroupTimeout',
+    'showHomeProductTypeList'
+)
 export class ProductTypeController extends React.Component<HomeProductTypeContainerProps> {
 
     constructor(props: HomeProductTypeContainerProps) {
         super(props);
     }
 
+    componentDidUpdate() {
+        const {
+            showHomeProductTypeList,
+            leaveProductTypeGroupTimeout,
+            setStore
+        } = this.props;
+
+        if (showHomeProductTypeList && leaveProductTypeGroupTimeout) {
+            clearTimeout(leaveProductTypeGroupTimeout);
+            setStore<HomeProductTypeContainerProps>({
+                leaveProductTypeGroupTimeout: null
+            });
+        }
+    }
+    
     render() {
         const { productTypes, setStore } = this.props;
 
@@ -44,8 +64,9 @@ export class ProductTypeController extends React.Component<HomeProductTypeContai
                 }
                 }
                 onMouseLeaveList={() => {
-                    setStore<HomeProductTypeListStoreProps>({
-                        showHomeProductTypeList: false
+                    setStore<HomeProductTypeContainerProps>({
+                        showHomeProductTypeList: false,
+                        hoveredProductTypeGroup: null
                     });
                 }}
             />
