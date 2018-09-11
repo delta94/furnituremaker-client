@@ -176,17 +176,16 @@ export interface WithTempOrderDetails {
     readonly orderDetails?: OrderDetail[];
 }
 
-export const withTempOrderDetails = <T extends WithTempOrderDetails>() =>
-    // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<T>): any =>
-        restfulDataContainer<OrderDetail, T, WithTempOrderDetails>({
-            resourceType: orderDetailResourceType,
-            store: restfulStore,
-            mapToProps: (data) => {
-                const orderDetails = data.filter(o => {
-                    return !o.order;
-                });
+// tslint:disable-next-line:no-any
+export const withTempOrderDetails = <T extends WithTempOrderDetails>(): any =>
+    restfulDataContainer<OrderDetail, T, WithTempOrderDetails>({
+        resourceType: orderDetailResourceType,
+        store: restfulStore,
+        mapToProps: (data) => {
+            const orderDetails = data.filter(o => {
+                return !o.order;
+            });
 
-                return { orderDetails };
-            }
-        })(Component);
+            return { orderDetails };
+        }
+    });

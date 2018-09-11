@@ -54,12 +54,10 @@ export interface WithMaterialTypesProps {
     readonly materialTypes?: MaterialType[];
 }
 
-export const withMaterialTypes = <T extends WithMaterialTypesProps>() =>
-    // tslint:disable-next-line:no-any 
-    (Component: React.ComponentType<T>): any => {
-        return restfulDataContainer<MaterialType, T, WithMaterialTypesProps>({
-            resourceType: materialTypeResourceType,
-            store: restfulStore,
-            mapToProps: (data) => ({ materialTypes: data })
-        })(Component);
-    };
+// tslint:disable-next-line:no-any
+export const withMaterialTypes = <T extends WithMaterialTypesProps>(): any =>
+    restfulDataContainer<MaterialType, T, WithMaterialTypesProps>({
+        resourceType: materialTypeResourceType,
+        store: restfulStore,
+        mapToProps: (data) => ({ materialTypes: data })
+    });

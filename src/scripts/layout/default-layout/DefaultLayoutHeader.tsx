@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { Auth } from '@/app';
 import { AntdAffix, AntdIcon, AntdPopover, Container } from '@/components';
 import { colorPrimary } from '@/configs';
-import { restfulStore, withCurrentUser, WithCurrentUserProps } from '@/restful';
 
 import { HeaderCart, HeaderNotification } from './deafult-layout-header';
 
@@ -57,10 +56,7 @@ const HeaderPopoverButton = styled.div`
     margin: 0 0 8px 0;
 `;
 
-type DefaultLayoutHeaderProps = Partial<WithCurrentUserProps>;
-
-@withCurrentUser()
-export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProps> {
+export class DefaultLayoutHeader extends React.PureComponent {
     render() {
         return (
             <AntdAffix>

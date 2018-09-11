@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { submit } from 'redux-form';
 
-import { withStoreValues } from '@/app';
+import { Auth, withStoreValues } from '@/app';
 import { fetchErrorHandler } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
@@ -12,10 +12,7 @@ import {
     orderResources,
     orderUtils,
     promotionUtils,
-    restfulFetcher,
-    restfulStore,
-    withCurrentUser,
-    WithCurrentUserProps
+    restfulFetcher
 } from '@/restful';
 
 import {
@@ -25,7 +22,6 @@ import {
 } from './create-order-control';
 
 export interface CreateOrderControlProps extends
-    WithCurrentUserProps,
     Pick<CommonStoreProps, 'selectedPromotion'>,
     Pick<CommonStoreProps, 'setStore'>,
     Pick<CommonStoreProps, 'dispatch'> {
@@ -33,12 +29,11 @@ export interface CreateOrderControlProps extends
     readonly onOrderCreate: (order: Order) => void;
 }
 
-@withCurrentUser()
 @withStoreValues<CreateOrderControlProps>('selectedPromotion')
 export class CreateOrderControl extends React.Component<CreateOrderControlProps> {
     readonly onCreateOrder = async (formValues: CreateOrderFormValues) => {
         try {
-            const { orderDetails, selectedPromotion, user } = this.props;
+            const { orderDetails, selectedPromotion } = this.props;
             const { order } = formValues;
 
             const productsTotalPayment = orderDetailUtils.getTotalOfPayment(orderDetails);
@@ -68,8 +63,8 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                 promotionDiscount: promotionDiscount,
                 depositRequired: orderUtils.getDeposit(orderTotalOfPayment),
                 code: orderUtils.genCode(),
-                agencyOrderer: user.agency,
-                createdBy: user
+                agencyOrderer: Auth.instance.currentUser.agency,
+                createdBy: Auth.instance.currentUser
             };
 
             const createdOrder = await restfulFetcher.fetchResource(
@@ -95,8 +90,9 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
     }
 
     render() {
-        const { user, onOrderCreate, setStore } = this.props;
+        const { onOrderCreate, setStore } = this.props;
         const shippingDate = orderUtils.getShippingDate();
+        const user = Auth.instance.currentUser;
         return (
             <CreateOrderForm
                 onSubmit={this.onCreateOrder}

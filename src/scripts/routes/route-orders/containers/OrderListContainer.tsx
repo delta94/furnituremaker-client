@@ -1,20 +1,13 @@
 import * as React from 'react';
 import { ResourceParameter, RestfulRender } from 'react-restful';
 
+import { Auth } from '@/app';
 import { policies } from '@/app/policies';
-import {
-    Order,
-    orderResources,
-    restfulFetcher,
-    restfulStore,
-    withCurrentUser,
-    WithCurrentUserProps
-} from '@/restful';
+import { Order, orderResources, restfulFetcher, restfulStore } from '@/restful';
 
 import { OrderListControl } from './order-list-container';
 
-@withCurrentUser()
-export class OrderListContainer extends React.PureComponent<WithCurrentUserProps> {
+export class OrderListContainer extends React.PureComponent {
     readonly getFetchParams = () => {
         const searchParams = new URLSearchParams(location.search);
         const searchEntries = searchParams.entries();
@@ -29,8 +22,7 @@ export class OrderListContainer extends React.PureComponent<WithCurrentUserProps
     }
 
     render() {
-        const { user } = this.props;
-
+        const user = Auth.instance.currentUser;
         const fetchParams = policies.canViewAllOrder() ?
             this.getFetchParams() : [
                 ...this.getFetchParams(),

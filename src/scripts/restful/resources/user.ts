@@ -1,4 +1,4 @@
-import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
+import { Resource, ResourceType } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
@@ -45,20 +45,3 @@ export const userResources = {
         }
     })
 };
-
-export interface WithCurrentUserProps {
-    readonly user?: User;
-}
-
-export const withCurrentUser = <T>() =>
-    // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<T>): any =>
-        restfulDataContainer<User, T, WithCurrentUserProps>({
-            resourceType: userResourceType,
-            store: restfulStore,
-            mapToProps: (data) => {
-                return {
-                    user: data[0]
-                };
-            }
-        })(Component);

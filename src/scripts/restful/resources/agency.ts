@@ -66,13 +66,13 @@ export interface WithAllAgenciesProps {
     readonly agencies?: Agency[];
 }
 
-export const withAllAgencies = () =>
-    <T extends WithAllAgenciesProps>(Component: React.ComponentType<T>) =>
-        restfulDataContainer<Agency, T, WithAllAgenciesProps>({
-            resourceType: agencyResourceType,
-            store: restfulStore,
-            getMappingDataFromProps: (props) => props.agencies,
-            mapToProps: (agencies) => {
-                return { agencies };
-            }
-        })(Component);
+// tslint:disable-next-line:no-any
+export const withAllAgencies = <T extends WithAllAgenciesProps>(): any =>
+    restfulDataContainer<Agency, T, WithAllAgenciesProps>({
+        resourceType: agencyResourceType,
+        store: restfulStore,
+        getMappingDataFromProps: (props) => props.agencies,
+        mapToProps: (agencies) => {
+            return { agencies };
+        }
+    });

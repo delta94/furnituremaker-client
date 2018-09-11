@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
     RecordType,
     Resource,
@@ -102,23 +101,22 @@ export interface WithDiscountByQuantities {
     readonly discountByQuantities?: DiscountByQuantity[];
 }
 
-export const withDiscountByQuantities = <T extends WithDiscountByQuantitiesOwnProps>() =>
-    // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<T>): any =>
-        restfulDataContainer<DiscountByQuantity, T, WithDiscountByQuantities>({
-            store: restfulStore,
-            resourceType: discountByQuantitiesResourceType,
-            mapToProps: (data, ownProps) => {
-                const { productType } = ownProps;
-                if (!productType) {
-                    return {
-                        discountByQuantities: data
-                    };
-                }
-
-                const discountByQuantities = data.filter(o => o.productType.id === productType.id);
+// tslint:disable-next-line:no-any
+export const withDiscountByQuantities = <T extends WithDiscountByQuantitiesOwnProps>(): any =>
+    restfulDataContainer<DiscountByQuantity, T, WithDiscountByQuantities>({
+        store: restfulStore,
+        resourceType: discountByQuantitiesResourceType,
+        mapToProps: (data, ownProps) => {
+            const { productType } = ownProps;
+            if (!productType) {
                 return {
-                    discountByQuantities: discountByQuantities
+                    discountByQuantities: data
                 };
             }
-        })(Component);
+
+            const discountByQuantities = data.filter(o => o.productType.id === productType.id);
+            return {
+                discountByQuantities: discountByQuantities
+            };
+        }
+    });

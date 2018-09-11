@@ -6,6 +6,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -63,7 +64,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             inject: 'body'
-        })
+        }),
+        new HardSourceWebpackPlugin()
     ],
     module: {
         rules: [{

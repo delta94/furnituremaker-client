@@ -277,23 +277,22 @@ export interface WithOrdersProps {
     readonly orders?: Order[];
 }
 
-export const withOrders = <T extends WithOrdersProps>() =>
-    // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<T>): any =>
-        restfulDataContainer<Order, T, WithOrdersProps>({
-            store: restfulStore,
-            resourceType: orderResourceType,
-            dataPropsKey: nameof<WithOrdersProps>(o => o.orders),
-            mapToProps: (data) => {
-                // tslint:disable-next-line:no-array-mutation
-                const sorted = data.sort((a, b) => {
-                    const dateA = new Date(a.createdAt);
-                    const dateB = new Date(b.createdAt);
-                    return dateA.getTime() - dateB.getTime();
-                }).reverse();
+// tslint:disable-next-line:no-any
+export const withOrders = <T extends WithOrdersProps>(): any =>
+    restfulDataContainer<Order, T, WithOrdersProps>({
+        store: restfulStore,
+        resourceType: orderResourceType,
+        dataPropsKey: nameof<WithOrdersProps>(o => o.orders),
+        mapToProps: (data) => {
+            // tslint:disable-next-line:no-array-mutation
+            const sorted = data.sort((a, b) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateA.getTime() - dateB.getTime();
+            }).reverse();
 
-                return {
-                    orders: sorted
-                };
-            }
-        })(Component);
+            return {
+                orders: sorted
+            };
+        }
+    });

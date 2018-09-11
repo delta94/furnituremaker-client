@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { withStoreValues } from '@/app';
+import { Auth, withStoreValues } from '@/app';
 import { AntdCol, AntdRow } from '@/components';
 import { colorPrimary, CommonStoreProps } from '@/configs';
 import {
@@ -10,9 +10,7 @@ import {
     orderDetailUtils,
     orderUtils,
     withAllAgencies,
-    WithAllAgenciesProps,
-    withCurrentUser,
-    WithCurrentUserProps
+    WithAllAgenciesProps
 } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
@@ -24,13 +22,11 @@ const TotalPrice = styled.div`
 
 interface CardTotalOfPaymentProps extends
     WithAllAgenciesProps,
-    WithCurrentUserProps,
     Pick<CommonStoreProps, 'selectedPromotion'>,
     Pick<CommonStoreProps, 'orderFormSelectedCity'> {
     readonly orderDetails: OrderDetail[];
 }
 
-@withCurrentUser()
 @withAllAgencies()
 @withStoreValues<CardTotalOfPaymentProps>(
     'selectedPromotion',
@@ -42,13 +38,13 @@ export class CardTotalOfPayment extends React.PureComponent<CardTotalOfPaymentPr
             orderDetails,
             selectedPromotion,
             orderFormSelectedCity,
-            user,
             agencies
         } = this.props;
 
+        const user = Auth.instance.currentUser;
         const productTotalPayment = orderDetailUtils.getTotalOfPayment(orderDetails);
 
-        const currentUserAgency = agencies.find(o => o.id === user.agency.id);
+        const currentUserAgency = agencies.find(o => o.id === (user.agency && user.agency.id));
 
         const discountByAgencyLevel = agencyUtils
             .getOrderDiscountByLevel(currentUserAgency, productTotalPayment);

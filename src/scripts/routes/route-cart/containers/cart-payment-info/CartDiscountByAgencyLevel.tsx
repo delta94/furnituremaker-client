@@ -1,27 +1,25 @@
 import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
+import { Auth } from '@/app';
 import { AntdCol, AntdRow } from '@/components';
 import {
     agencyResources,
     agencyUtils,
     restfulFetcher,
-    restfulStore,
-    withCurrentUser,
-    WithCurrentUserProps
+    restfulStore
 } from '@/restful';
 import { ShippingCost } from '@/routes/route-cart/containers/CartUI';
 import { formatCurrency } from '@/utilities';
 
-interface CardTotalOfPaymentProps extends
-    WithCurrentUserProps {
+interface CardTotalOfPaymentProps {
     readonly orderPrice: number;
 }
 
-@withCurrentUser()
 export class CartDiscountByAgencyLevel extends React.Component<CardTotalOfPaymentProps> {
     render() {
-        const { orderPrice, user } = this.props;
+        const { orderPrice } = this.props;
+        const user = Auth.instance.currentUser;
         return (
             <RestfulRender
                 fetcher={restfulFetcher}

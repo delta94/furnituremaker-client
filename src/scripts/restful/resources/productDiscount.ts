@@ -67,15 +67,14 @@ export interface WithProductDiscounts {
     readonly productDiscounts?: ProductDiscount[];
 }
 
-export const withProductDiscounts = <T>() =>
-    // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<T>): any =>
-        restfulDataContainer<ProductDiscount, T, WithProductDiscounts>({
-            store: restfulStore,
-            resourceType: productDiscountResourceType,
-            mapToProps: (data, p) => {
-                return {
-                    productDiscounts: data
-                };
-            }
-        })(Component);
+// tslint:disable-next-line:no-any
+export const withProductDiscounts = <T>(): any =>
+    restfulDataContainer<ProductDiscount, T, WithProductDiscounts>({
+        store: restfulStore,
+        resourceType: productDiscountResourceType,
+        mapToProps: (data, p) => {
+            return {
+                productDiscounts: data
+            };
+        }
+    });

@@ -137,22 +137,21 @@ export interface WithOrderTransactionOwnProps extends
     readonly order: Order;
 }
 
-export const withOrderTransactionsByOrder = <T extends WithOrderTransactionOwnProps>() =>
-    // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<T>): any =>
-        restfulDataContainer<OrderTransaction, T, WithOrderTransactionProps>({
-            store: restfulStore,
-            resourceType: orderTransactionType,
-            mapToProps: (data, ownProps) => {
-                const orderTransactions = data.filter(orderTransaction => {
-                    if (typeof orderTransaction.order === 'string') {
-                        return orderTransaction.order === ownProps.order.id;
-                    }
-                    return orderTransaction.order.id === ownProps.order.id;
-                });
+// tslint:disable-next-line:no-any
+export const withOrderTransactionsByOrder = <T extends WithOrderTransactionOwnProps>(): any =>
+    restfulDataContainer<OrderTransaction, T, WithOrderTransactionProps>({
+        store: restfulStore,
+        resourceType: orderTransactionType,
+        mapToProps: (data, ownProps) => {
+            const orderTransactions = data.filter(orderTransaction => {
+                if (typeof orderTransaction.order === 'string') {
+                    return orderTransaction.order === ownProps.order.id;
+                }
+                return orderTransaction.order.id === ownProps.order.id;
+            });
 
-                return {
-                    orderTransactions
-                };
-            }
-        })(Component);
+            return {
+                orderTransactions
+            };
+        }
+    });

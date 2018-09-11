@@ -63,12 +63,10 @@ export interface WithComponentsProps {
     readonly components?: FurnitureComponent[];
 }
 
-export const withComponents = <T extends WithComponentsProps>() =>
-    // tslint:disable-next-line:no-any 
-    (Component: React.ComponentType<T>): any => {
-        return restfulDataContainer<FurnitureComponent, T, WithComponentsProps>({
-            resourceType: furnitureComponentResourceType,
-            store: restfulStore,
-            mapToProps: (data) => ({ components: data })
-        })(Component);
-    };
+// tslint:disable-next-line:no-any
+export const withComponents = <T extends WithComponentsProps>(): any =>
+    restfulDataContainer<FurnitureComponent, T, WithComponentsProps>({
+        resourceType: furnitureComponentResourceType,
+        store: restfulStore,
+        mapToProps: (data) => ({ components: data })
+    });

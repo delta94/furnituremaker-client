@@ -54,31 +54,29 @@ export interface WithMaterialProps {
     readonly materials?: FurnitureMaterial[];
 }
 
-export const withMaterialsByType = <T extends Required<WithMaterialByTypeOwnProps>>() =>
-    // tslint:disable-next-line:no-any 
-    (Component: React.ComponentType<T>): any => {
-        return restfulDataContainer<FurnitureMaterial, T, WithMaterialProps>({
-            resourceType: furnitureMaterialResouceType,
-            store: restfulStore,
-            mapToProps: (data, ownProps) => {
-                if (!data) {
-                    return;
-                }
-
-                const { selectedMaterialType } = ownProps;
-                return {
-                    materials: data.filter(o => o.materialType.id === selectedMaterialType.id)
-                };
+// tslint:disable-next-line:no-any
+export const withMaterialsByType = <T extends Required<WithMaterialByTypeOwnProps>>(): any => {
+    return restfulDataContainer<FurnitureMaterial, T, WithMaterialProps>({
+        resourceType: furnitureMaterialResouceType,
+        store: restfulStore,
+        mapToProps: (data, ownProps) => {
+            if (!data) {
+                return;
             }
-        })(Component);
-    };
 
-export const withMaterials = <T>() =>
-    // tslint:disable-next-line:no-any 
-    (Component: React.ComponentType<T>): any => {
-        return restfulDataContainer<FurnitureMaterial, T, WithMaterialProps>({
-            resourceType: furnitureMaterialResouceType,
-            store: restfulStore,
-            mapToProps: (data) => ({ materials: data })
-        })(Component);
-    };
+            const { selectedMaterialType } = ownProps;
+            return {
+                materials: data.filter(o => o.materialType.id === selectedMaterialType.id)
+            };
+        }
+    });
+};
+
+// tslint:disable-next-line:no-any
+export const withMaterials = <T>(): any => {
+    return restfulDataContainer<FurnitureMaterial, T, WithMaterialProps>({
+        resourceType: furnitureMaterialResouceType,
+        store: restfulStore,
+        mapToProps: (data) => ({ materials: data })
+    });
+};
