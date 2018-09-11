@@ -1,6 +1,7 @@
 import { RecordType, Resource, ResourceType } from 'react-restful';
 
-import { apiEntry } from '../apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
+
 import { FurnitureComponent } from './furnitureComponent';
 
 export interface FurnitureComponentType extends RecordType {
@@ -10,6 +11,7 @@ export interface FurnitureComponentType extends RecordType {
 }
 
 export const furnitureComponentTypeResourceType = new ResourceType({
+    store: restfulStore,
     name: 'furniture-component-type',
     schema: [{
         field: 'id',
@@ -40,7 +42,7 @@ export const furnitureComponentTypeUtils = {
             if (!furnitureComponentType) {
                 return curentValues;
             }
-            
+
             const existingFurnitureComponentType =
                 curentValues.find(o => o.id === furnitureComponentType.id);
 

@@ -1,9 +1,9 @@
-import { ResourceType, Resource, RecordType } from 'react-restful';
+import { RecordType, Resource, ResourceType } from 'react-restful';
 
-import { apiEntry } from '../apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
 
-import { UploadedFile } from './uploadedFile';
 import { ProductType } from './productType';
+import { UploadedFile } from './uploadedFile';
 
 export interface ProductTypeGroup extends RecordType {
     readonly id?: string;
@@ -12,8 +12,9 @@ export interface ProductTypeGroup extends RecordType {
     readonly productTypes: ProductType[];
 }
 
-export const productTypeGroupResourceType = new ResourceType({
-    name: 'product-type-group',
+export const productTypeGroupResourceType = new ResourceType<ProductTypeGroup>({
+    store: restfulStore,
+    name: nameof<ProductTypeGroup>(),
     schema: [{
         field: 'id',
         type: 'PK'

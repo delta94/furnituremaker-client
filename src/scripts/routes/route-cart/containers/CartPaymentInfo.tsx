@@ -5,7 +5,6 @@ import { AntdAffix, AntdCol, AntdDivider, AntdRow } from '@/components';
 import {
     orderDetailUtils,
     orderUtils,
-    restfulStore,
     withTempOrderDetails,
     WithTempOrderDetails
 } from '@/restful';
@@ -31,7 +30,7 @@ interface CartPaymentInfoProps extends
     // implement...
 }
 
-@withTempOrderDetails(restfulStore)
+@withTempOrderDetails()
 export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
     render() {
         const { orderDetails } = this.props;

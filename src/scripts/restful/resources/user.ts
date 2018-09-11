@@ -1,6 +1,6 @@
 import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
 
-import { apiEntry } from '@/restful/apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
 
 import { Agency } from './agency';
 import { Role } from './role';
@@ -13,8 +13,9 @@ export interface User {
     readonly agency?: Agency;
 }
 
-export const userResourceType = new ResourceType({
-    name: 'user',
+export const userResourceType = new ResourceType<User>({
+    store: restfulStore,
+    name: nameof<User>(),
     schema: [{
         field: 'id',
         type: 'PK'
@@ -49,14 +50,15 @@ export interface WithCurrentUserProps {
     readonly user?: User;
 }
 
-// tslint:disable-next-line:no-any
-export const withCurrentUser = (store) => (Component): any =>
-    restfulDataContainer<User, WithCurrentUserProps>({
-        resourceType: userResourceType,
-        store: store,
-        mapToProps: (data) => {
-            return {
-                user: data[0]
-            };
-        }
-    })(Component);
+export const withCurrentUser = <T>() =>
+    // tslint:disable-next-line:no-any
+    (Component: React.ComponentType<T>): any =>
+        restfulDataContainer<User, T, WithCurrentUserProps>({
+            resourceType: userResourceType,
+            store: restfulStore,
+            mapToProps: (data) => {
+                return {
+                    user: data[0]
+                };
+            }
+        })(Component);

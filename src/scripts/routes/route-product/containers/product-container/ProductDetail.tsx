@@ -8,8 +8,8 @@ import { CommonStoreProps } from '@/configs';
 import {
     FurnitureComponent,
     furnitureComponentResources,
-    FurnutureMaterial,
-    furnutureMaterialResources,
+    FurnitureMaterial,
+    furnitureMaterialResources,
     Product,
     ProductExtended,
     productUtils,
@@ -59,7 +59,7 @@ export class ProductDetail extends React.PureComponent<ProductDetailProps> {
         const materialParamsFetchList = materialCodes.map((code): ResourceParameter => {
             return {
                 type: 'query',
-                parameter: nameof<FurnutureMaterial>(o => o.code),
+                parameter: nameof<FurnitureMaterial>(o => o.code),
                 value: code
             };
         });
@@ -71,9 +71,9 @@ export class ProductDetail extends React.PureComponent<ProductDetailProps> {
                     [param]
                 )
             )),
-            Promise.all<FurnutureMaterial[]>(materialParamsFetchList.map((param) =>
+            Promise.all<FurnitureMaterial[]>(materialParamsFetchList.map((param) =>
                 restfulFetcher.fetchResource(
-                    furnutureMaterialResources.find,
+                    furnitureMaterialResources.find,
                     [param]
                 )
             ))

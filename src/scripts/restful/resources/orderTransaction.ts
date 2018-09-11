@@ -2,8 +2,8 @@ import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
 
 import { policies } from '@/app';
 import { sendNotificationToFirebase } from '@/firebase';
-import { apiEntry } from '@/restful/apiEntry';
-import { genCodeWithCurrentDate, randomString } from '@/utilities/string';
+import { apiEntry, restfulStore } from '@/restful/environment';
+import { genCodeWithCurrentDate } from '@/utilities';
 
 import { Order } from './order';
 
@@ -19,6 +19,7 @@ export interface OrderTransaction {
 }
 
 export const orderTransactionType = new ResourceType<OrderTransaction>({
+    store: restfulStore,
     name: nameof<OrderTransaction>(),
     schema: [{
         field: 'id',
@@ -131,13 +132,18 @@ export interface WithOrderTransactionProps {
     readonly orderTransactions?: OrderTransaction[];
 }
 
-export const withOrderTransactionsByOrder = (store) =>
+export interface WithOrderTransactionOwnProps extends
+    WithOrderTransactionProps {
+    readonly order: Order;
+}
+
+export const withOrderTransactionsByOrder = <T extends WithOrderTransactionOwnProps>() =>
     // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<WithOrderTransactionProps>): any =>
-        restfulDataContainer<OrderTransaction, WithOrderTransactionProps>({
-            store,
+    (Component: React.ComponentType<T>): any =>
+        restfulDataContainer<OrderTransaction, T, WithOrderTransactionProps>({
+            store: restfulStore,
             resourceType: orderTransactionType,
-            mapToProps: (data, ownProps: { readonly order: Order }) => {
+            mapToProps: (data, ownProps) => {
                 const orderTransactions = data.filter(orderTransaction => {
                     if (typeof orderTransaction.order === 'string') {
                         return orderTransaction.order === ownProps.order.id;

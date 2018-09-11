@@ -6,8 +6,8 @@ import { CommonStoreProps } from '@/configs';
 import {
     FurnitureComponent,
     furnitureComponentResources,
-    FurnutureMaterial,
-    furnutureMaterialResources,
+    FurnitureMaterial,
+    furnitureMaterialResources,
     ProductExtended,
     ProductModule,
     productUtils,

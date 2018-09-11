@@ -37,7 +37,7 @@ export interface OrderDetailHeaderProps extends
     readonly onUpdateOrderClick: (order: Order) => void;
 }
 
-@withOrderTransactionsByOrder(restfulStore)
+@withOrderTransactionsByOrder()
 export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
     render() {
         const {

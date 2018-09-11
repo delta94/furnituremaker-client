@@ -9,13 +9,11 @@ import {
     OrderDetail,
     orderDetailUtils,
     orderUtils,
-    restfulStore,
     withAllAgencies,
     WithAllAgenciesProps,
     withCurrentUser,
     WithCurrentUserProps
 } from '@/restful';
-import { ShippingCost } from '@/routes/route-cart/containers/CartUI';
 import { formatCurrency } from '@/utilities';
 
 const TotalPrice = styled.div`
@@ -32,11 +30,11 @@ interface CardTotalOfPaymentProps extends
     readonly orderDetails: OrderDetail[];
 }
 
-@withCurrentUser(restfulStore)
-@withAllAgencies(restfulStore)
-@withStoreValues(
-    nameof<CardTotalOfPaymentProps>(o => o.selectedPromotion),
-    nameof<CardTotalOfPaymentProps>(o => o.orderFormSelectedCity),
+@withCurrentUser()
+@withAllAgencies()
+@withStoreValues<CardTotalOfPaymentProps>(
+    'selectedPromotion',
+    'orderFormSelectedCity'
 )
 export class CardTotalOfPayment extends React.PureComponent<CardTotalOfPaymentProps> {
     render() {

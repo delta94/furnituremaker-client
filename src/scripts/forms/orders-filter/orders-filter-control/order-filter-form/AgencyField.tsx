@@ -18,13 +18,13 @@ interface AgencyFieldProps {
 }
 
 export class AgencyField extends React.PureComponent<AgencyFieldProps> {
-    readonly RenderField = withAllAgencies(restfulStore)((props: WithAllAgenciesProps) => {
+    readonly RenderField = withAllAgencies()((props: WithAllAgenciesProps) => {
         const { onChange } = this.props;
         return (
             <Field
                 name={nameof<OrderFilterFormValues>(o => o.agencyOrderer)}
                 items={props.agencies.map(o => ({ value: o.id, title: o.name }))}
-                component={renderSelectField}
+                component={renderSelectField}   
                 onChange={onChange}
                 selectProps={{
                     placeholder: 'Đại lý',
@@ -43,7 +43,7 @@ export class AgencyField extends React.PureComponent<AgencyFieldProps> {
                 parameters={[]}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
-                        return (<this.RenderField data={renderProps.data} />);
+                        return (<this.RenderField agencies={renderProps.data} />);
                     }
                     return null;
                 }}

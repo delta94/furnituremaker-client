@@ -46,7 +46,7 @@ const HeaderCartBadge = styled.span`
 
 type DefaultLayoutHeaderProps = CommonStoreProps & Partial<WithTempOrderDetails>;
 
-@withTempOrderDetails(restfulStore)
+@withTempOrderDetails()
 @withStoreValues()
 export class HeaderCart extends React.Component<DefaultLayoutHeaderProps> {
     render() {

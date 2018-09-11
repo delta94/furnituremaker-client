@@ -6,14 +6,14 @@ import {
     restfulDataContainer
 } from 'react-restful';
 
-import { Product } from '@/restful/resources/product';
-import { User } from '@/restful/resources/user';
+import { apiEntry, restfulStore } from '@/restful/environment';
 import { roundTo } from '@/utilities';
 
-import { apiEntry } from '../apiEntry';
 import { Order } from './order';
+import { Product } from './product';
 import { ProductDesign } from './productDesign';
 import { ProductType } from './productType';
+import { User } from './user';
 
 export interface OrderDetail extends RecordType {
     readonly id?: string;
@@ -36,7 +36,8 @@ export interface OrderDetail extends RecordType {
     readonly product?: Product;
 }
 
-export const orderDetailResourceType = new ResourceType({
+export const orderDetailResourceType = new ResourceType<OrderDetail>({
+    store: restfulStore,
     name: nameof<OrderDetail>(),
     schema: [{
         field: 'id',
@@ -175,12 +176,12 @@ export interface WithTempOrderDetails {
     readonly orderDetails?: OrderDetail[];
 }
 
-export const withTempOrderDetails = (store) =>
+export const withTempOrderDetails = <T extends WithTempOrderDetails>() =>
     // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<WithTempOrderDetails>): any =>
-        restfulDataContainer<OrderDetail, WithTempOrderDetails>({
+    (Component: React.ComponentType<T>): any =>
+        restfulDataContainer<OrderDetail, T, WithTempOrderDetails>({
             resourceType: orderDetailResourceType,
-            store: store,
+            store: restfulStore,
             mapToProps: (data) => {
                 const orderDetails = data.filter(o => {
                     return !o.order;

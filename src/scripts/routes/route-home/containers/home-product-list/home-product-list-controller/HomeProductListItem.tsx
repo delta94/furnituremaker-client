@@ -7,7 +7,6 @@ import { colorPrimary, CommonStoreProps } from '@/configs';
 import {
     Product,
     productDiscountUtils,
-    restfulStore,
     withProductDiscounts,
     WithProductDiscounts
 } from '@/restful';
@@ -116,8 +115,8 @@ export interface HomeProductListItemProps extends
     readonly product: Product;
 }
 
+@withProductDiscounts()
 @withStoreValues<HomeProductListItemProps>('history')
-@withProductDiscounts(restfulStore)
 export class HomeProductListItem extends React.PureComponent<HomeProductListItemProps> {
     public render() {
         const { product, productDiscounts, history } = this.props;

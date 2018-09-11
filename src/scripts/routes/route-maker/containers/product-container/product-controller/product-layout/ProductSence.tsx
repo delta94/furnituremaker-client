@@ -7,7 +7,6 @@ import { AntdAffix, ThreeSence } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
     ProductExtended,
-    restfulStore,
     uploadedFileUtils,
     withComponents,
     WithComponentsProps,
@@ -26,8 +25,8 @@ interface RouteHomeProps extends
     readonly selectedObject?: THREE.Group | null;
     readonly product: ProductExtended;
 }
-@withComponents(restfulStore)
-@withMaterials(restfulStore)
+@withComponents()
+@withMaterials()
 @withStoreValues(
     nameof<RouteHomeProps>(o => o.selectedObject),
     nameof<RouteHomeProps>(o => o.selectedProduct),

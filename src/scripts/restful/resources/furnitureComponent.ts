@@ -6,12 +6,11 @@ import {
     Store
 } from 'react-restful';
 
+import { apiEntry, restfulStore } from '@/restful/environment';
 import { MaterialType } from '@/restful/resources/materialType';
 
-import { apiEntry } from '../apiEntry';
 import { FurnitureComponentType } from './furnitureComponentType';
 import { ProductDesign } from './productDesign';
-import { QuotaUnit } from './quotaUnit';
 import { UploadedFile } from './uploadedFile';
 
 export interface FurnitureComponent extends RecordType {
@@ -31,6 +30,7 @@ export interface FurnitureComponent extends RecordType {
 }
 
 export const furnitureComponentResourceType = new ResourceType<FurnitureComponent>({
+    store: restfulStore,
     name: 'furniture-component-type',
     schema: [{
         field: 'id',
@@ -63,12 +63,12 @@ export interface WithComponentsProps {
     readonly components?: FurnitureComponent[];
 }
 
-export const withComponents = (store: Store) =>
+export const withComponents = <T extends WithComponentsProps>() =>
     // tslint:disable-next-line:no-any 
-    (Component: React.ComponentType<WithComponentsProps>): any => {
-        return restfulDataContainer<FurnitureComponent, WithComponentsProps>({
+    (Component: React.ComponentType<T>): any => {
+        return restfulDataContainer<FurnitureComponent, T, WithComponentsProps>({
             resourceType: furnitureComponentResourceType,
-            store: store,
+            store: restfulStore,
             mapToProps: (data) => ({ components: data })
         })(Component);
     };

@@ -5,7 +5,6 @@ import {
     ResourceType,
     restfulDataContainer
 } from 'react-restful';
-import { change } from 'redux-form';
 
 import { policies } from '@/app';
 import { sendNotificationToFirebase } from '@/firebase';
@@ -13,16 +12,16 @@ import {
     AppNotification,
     NotifiCationRefType
 } from '@/firebase/firebaseNotificationDB';
-import { User } from '@/restful/resources/user';
-import { genCodeWithCurrentDate } from '@/utilities/string';
+import { apiEntry, restfulStore } from '@/restful/environment';
+import { genCodeWithCurrentDate } from '@/utilities';
 
-import { apiEntry } from '../apiEntry';
 import { Agency } from './agency';
 import { City } from './city';
 import { County } from './county';
 import { OrderDetail } from './orderDetail';
 import { OrderTransaction } from './orderTransaction';
 import { Promotion } from './promotion';
+import { User } from './user';
 
 export interface Order extends RecordType {
     readonly id?: string;
@@ -54,7 +53,8 @@ export interface Order extends RecordType {
     readonly createdBy: User;
 }
 
-export const orderResourceType = new ResourceType({
+export const orderResourceType = new ResourceType<Order>({
+    store: restfulStore,
     name: nameof<Order>(),
     schema: [{
         field: 'id',
@@ -214,62 +214,21 @@ export const orderUtils = {
     getStatusInfo: (order: Order): OrderStatusInfo => {
         switch (order.status) {
             case 'new':
-                return {
-                    label: 'Mới',
-                    color: 'green',
-                    icon: 'question',
-                    index: 0
-                };
+                return { label: 'Mới', color: 'green', icon: 'question', index: 0 };
             case 'confirmed':
-                return {
-                    label: 'Đã xác nhận',
-                    color: 'green',
-                    icon: 'check',
-                    index: 1
-                };
-
+                return { label: 'Đã xác nhận', color: 'green', icon: 'check', index: 1 };
             case 'produce':
-                return {
-                    label: 'Đang lắp ráp',
-                    color: 'green',
-                    icon: 'appstore-o',
-                    index: 2
-                };
+                return { label: 'Đang lắp ráp', color: 'green', icon: 'appstore-o', index: 2 };
             case 'payment':
-                return {
-                    label: 'Chờ thanh toán',
-                    color: 'green',
-                    icon: '',
-                    index: 3
-                };
+                return { label: 'Chờ thanh toán', color: 'green', icon: '', index: 3 };
             case 'shipping':
-                return {
-                    label: 'Đang vận chuyển',
-                    color: 'green',
-                    icon: 'export',
-                    index: 4
-                };
+                return { label: 'Đang vận chuyển', color: 'green', icon: 'export', index: 4 };
             case 'done':
-                return {
-                    label: 'Hoàn thành',
-                    color: 'green',
-                    icon: 'like',
-                    index: 5
-                };
+                return { label: 'Hoàn thành', color: 'green', icon: 'like', index: 5 };
             case 'cancel':
-                return {
-                    label: 'Đã hủy',
-                    color: 'red',
-                    icon: 'close',
-                    index: 6
-                };
+                return { label: 'Đã hủy', color: 'red', icon: 'close', index: 6 };
             case 'change':
-                return {
-                    label: 'Đổi trả',
-                    color: 'yellow',
-                    icon: 'rollback',
-                    index: 7
-                };
+                return { label: 'Đổi trả', color: 'yellow', icon: 'rollback', index: 7 };
             default:
                 return null;
         }
@@ -285,8 +244,6 @@ export const orderUtils = {
             { value: 'payment', title: 'Đợi thanh toán' },
             { value: 'shipping', title: 'Đang chuyển hàng' },
             { value: 'done', title: 'Hoàn thành' }
-            // { value: 'cancel', title: 'Đã hủy' },
-            // { value: 'change', title: 'Đổi trả' }
         ];
     },
     canCancel: (order: Order) => {
@@ -320,12 +277,13 @@ export interface WithOrdersProps {
     readonly orders?: Order[];
 }
 
-export const withOrders = (store) =>
+export const withOrders = <T extends WithOrdersProps>() =>
     // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<WithOrdersProps>): any =>
-        restfulDataContainer<Order, WithOrdersProps>({
-            store,
+    (Component: React.ComponentType<T>): any =>
+        restfulDataContainer<Order, T, WithOrdersProps>({
+            store: restfulStore,
             resourceType: orderResourceType,
+            dataPropsKey: nameof<WithOrdersProps>(o => o.orders),
             mapToProps: (data) => {
                 // tslint:disable-next-line:no-array-mutation
                 const sorted = data.sort((a, b) => {

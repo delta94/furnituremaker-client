@@ -33,7 +33,7 @@ export interface CreateOrderControlProps extends
     readonly onOrderCreate: (order: Order) => void;
 }
 
-@withCurrentUser(restfulStore)
+@withCurrentUser()
 @withStoreValues<CreateOrderControlProps>('selectedPromotion')
 export class CreateOrderControl extends React.Component<CreateOrderControlProps> {
     readonly onCreateOrder = async (formValues: CreateOrderFormValues) => {

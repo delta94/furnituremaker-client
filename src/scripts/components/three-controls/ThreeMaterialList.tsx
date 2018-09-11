@@ -2,31 +2,30 @@ import './ThreeMaterialList.scss';
 
 import * as classNames from 'classnames';
 import * as React from 'react';
-import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
 import { AntdList, AntdTabs, AntdTooltip, Img } from '@/components';
-import { AntdIcon } from '@/components/antd-component';
 import { Loading } from '@/components/domain-components/generic/Loading';
-import { colorPrimary, CommonStoreProps } from '@/configs';
+import { CommonStoreProps } from '@/configs';
 import {
-    FurnutureMaterial,
+    FurnitureMaterial,
     ProductExtended,
-    restfulStore,
     uploadedFileUtils,
     WithMaterialProps,
     withMaterialsByType
 } from '@/restful';
 
 export interface ThreeMaterialListProps extends
-    CommonStoreProps,
+    Pick<CommonStoreProps, 'setStore'>,
+    Required<Pick<CommonStoreProps, 'selectedProduct'>>,
+    Required<Pick<CommonStoreProps, 'selectedMaterialType'>>,
     WithMaterialProps {
-    readonly materials: FurnutureMaterial[];
+    readonly materials: FurnitureMaterial[];
     readonly selectedObject: THREE.Group;
-    readonly selectedMaterial: FurnutureMaterial;
+    readonly selectedMaterial: FurnitureMaterial;
 }
 
-@withMaterialsByType(restfulStore)
+@withMaterialsByType()
 @withStoreValues<ThreeMaterialListProps>(
     'selectedMaterial',
     'selectedProduct'
@@ -34,7 +33,7 @@ export interface ThreeMaterialListProps extends
 class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListProps> {
     readonly state: {
         readonly loading: boolean;
-        readonly nextSelectMaterial: FurnutureMaterial;
+        readonly nextSelectMaterial: FurnitureMaterial;
     };
 
     constructor(props: ThreeMaterialListProps) {
@@ -59,7 +58,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                                 pageSize: 6,
                                 simple: true
                             }}
-                            renderItem={(material: FurnutureMaterial) => {
+                            renderItem={(material: FurnitureMaterial) => {
                                 const isSelected = (selectedMaterial.id === material.id);
                                 const isNextSelected = nextSelectMaterial && (nextSelectMaterial.id === material.id);
 
@@ -92,7 +91,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
         );
     }
 
-    onMaterialSelect(material: FurnutureMaterial) {
+    onMaterialSelect(material: FurnitureMaterial) {
         const { selectedObject, selectedProduct } = this.props;
         const texture = new window.THREE.TextureLoader();
         const textureFile = uploadedFileUtils.getUrl(material.texture);

@@ -23,7 +23,7 @@ import {
     productUtils,
     uploadedFileUtils
 } from '@/restful';
-import { apiEntry } from '@/restful/apiEntry';
+import { apiEntry } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
 const ListHeader = styled.div`

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ResourceParameter, RestfulRender } from 'react-restful';
 
-import { Auth } from '@/app';
 import { policies } from '@/app/policies';
 import {
     Order,
@@ -14,7 +13,7 @@ import {
 
 import { OrderListControl } from './order-list-container';
 
-@withCurrentUser(restfulStore)
+@withCurrentUser()
 export class OrderListContainer extends React.PureComponent<WithCurrentUserProps> {
     readonly getFetchParams = () => {
         const searchParams = new URLSearchParams(location.search);

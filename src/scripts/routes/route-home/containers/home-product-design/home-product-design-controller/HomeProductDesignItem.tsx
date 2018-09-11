@@ -9,12 +9,9 @@ import { CommonStoreProps } from '@/configs';
 import {
     Product,
     ProductDesign,
-    ProductDiscount,
     productResources,
     restfulFetcher,
-    restfulStore,
-    withProductDiscounts,
-    WithProductDiscounts
+    restfulStore
 } from '@/restful';
 
 const ItemSquare = styled.div`

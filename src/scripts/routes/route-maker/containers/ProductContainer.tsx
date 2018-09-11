@@ -16,7 +16,7 @@ import { NoProductData, ProductController } from './product-container';
 
 type ProductContainerProps = CommonStoreProps & WithMaterialTypesProps;
 
-@withMaterialTypes(restfulStore)
+@withMaterialTypes()
 @withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductDesign))
 export class ProductContainer extends React.Component<ProductContainerProps> {
 

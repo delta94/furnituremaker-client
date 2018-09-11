@@ -8,18 +8,20 @@ import {
     Store
 } from 'react-restful';
 
-import { apiEntry } from '../apiEntry';
-import { FurnutureMaterial } from './furnutureMaterial';
+import { apiEntry, restfulStore } from '@/restful/environment';
+
+import { FurnitureMaterial } from './furnutureMaterial';
 
 export interface MaterialType extends RecordType {
     readonly id: string;
     readonly name: string;
-    readonly materials?: FurnutureMaterial[];
+    readonly materials?: FurnitureMaterial[];
     readonly view_normalMap: UploadFile;
     readonly view_shiny?: number;
 }
 
-export const materialTypeResourceType = new ResourceType({
+export const materialTypeResourceType = new ResourceType<MaterialType>({
+    store: restfulStore,
     name: 'materialtype',
     schema: [{
         field: 'id',
@@ -52,12 +54,12 @@ export interface WithMaterialTypesProps {
     readonly materialTypes?: MaterialType[];
 }
 
-export const withMaterialTypes = (store: Store) =>
+export const withMaterialTypes = <T extends WithMaterialTypesProps>() =>
     // tslint:disable-next-line:no-any 
-    (Component: React.ComponentType<WithMaterialTypesProps>): any => {
-        return restfulDataContainer<MaterialType, WithMaterialTypesProps>({
+    (Component: React.ComponentType<T>): any => {
+        return restfulDataContainer<MaterialType, T, WithMaterialTypesProps>({
             resourceType: materialTypeResourceType,
-            store: store,
+            store: restfulStore,
             mapToProps: (data) => ({ materialTypes: data })
         })(Component);
     };

@@ -2,14 +2,11 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { AntdDivider, AntdTag, Img } from '@/components';
+import { AntdDivider, AntdTag } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { AddProductToCartControl } from '@/forms/add-product-to-cart';
 import {
-    Product,
     ProductDiscount,
     productDiscountUtils,
-    restfulStore,
     withProductDiscounts,
     WithProductDiscounts
 } from '@/restful';
@@ -31,8 +28,8 @@ export interface InventoryProductInfoProps extends
     WithProductDiscounts {
 }
 
+@withProductDiscounts()
 @withStoreValues<InventoryProductInfoProps>('selectedProduct')
-@withProductDiscounts(restfulStore)
 export class InventoryProductInfo extends React.PureComponent<InventoryProductInfoProps> {
     readonly getDiscountLabel = (productDiscount: ProductDiscount) => {
         if (productDiscount.discountPercent) {

@@ -4,10 +4,8 @@ import { Link } from 'react-router-dom';
 import { AntdColumnProps, AntdTable, AntdTag } from '@/components';
 import {
     Order,
-    orderDetailUtils,
     orderTransactionUtils,
     orderUtils,
-    restfulStore,
     withOrders,
     WithOrdersProps
 } from '@/restful';
@@ -71,7 +69,9 @@ const columns: AntdColumnProps<Order>[] = [
         }
     }
 ];
-class OrderListContentComponent extends React.PureComponent<OrderListContentProps> {
+
+@withOrders()
+export class OrderListContent extends React.PureComponent<OrderListContentProps> {
     render() {
         const { orders } = this.props;
         return (
@@ -84,5 +84,3 @@ class OrderListContentComponent extends React.PureComponent<OrderListContentProp
         );
     }
 }
-
-export const OrderListContent = withOrders(restfulStore)(OrderListContentComponent);

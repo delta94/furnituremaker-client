@@ -22,7 +22,7 @@ export class OrderList extends React.PureComponent<OrderListProps> {
             <Container>
                 <OrderListWrapper>
                     <OrderListHeader />
-                    <OrderListContent data={orders} />
+                    <OrderListContent orders={orders} />
                 </OrderListWrapper>
             </Container>
         );

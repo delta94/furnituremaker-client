@@ -1,6 +1,7 @@
 import { RecordType, Resource, ResourceType } from 'react-restful';
 
-import { apiEntry } from '../apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
+
 import { ProductDesignGroup } from './productDesignGroup';
 import { ProductType } from './productType';
 import { UploadedFile } from './uploadedFile';
@@ -16,7 +17,8 @@ export interface ProductDesign extends RecordType {
     readonly coverPhotoShape?: 'square' | 'rectangle';
 }
 
-export const productDesign = new ResourceType({
+export const productDesign = new ResourceType<ProductDesign>({
+    store: restfulStore,
     name: nameof<ProductDesign>(),
     schema: [{
         field: 'id',

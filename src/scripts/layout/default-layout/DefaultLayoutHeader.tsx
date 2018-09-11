@@ -59,7 +59,7 @@ const HeaderPopoverButton = styled.div`
 
 type DefaultLayoutHeaderProps = Partial<WithCurrentUserProps>;
 
-@withCurrentUser(restfulStore)
+@withCurrentUser()
 export class DefaultLayoutHeader extends React.Component<DefaultLayoutHeaderProps> {
     render() {
         return (

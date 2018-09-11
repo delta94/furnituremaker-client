@@ -5,7 +5,7 @@ import {
     restfulDataContainer
 } from 'react-restful';
 
-import { apiEntry } from '@/restful/apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
 import { City } from '@/restful/resources/city';
 
 import { AgencyLevel } from './agencyLevel';
@@ -23,6 +23,7 @@ export interface Agency extends RecordType {
 }
 
 export const agencyResourceType = new ResourceType<Agency>({
+    store: restfulStore,
     name: nameof<Agency>(),
     schema: [{
         field: 'id',
@@ -65,12 +66,12 @@ export interface WithAllAgenciesProps {
     readonly agencies?: Agency[];
 }
 
-export const withAllAgencies = (store) =>
-    // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<WithAllAgenciesProps>): any =>
-        restfulDataContainer<Agency, WithAllAgenciesProps>({
+export const withAllAgencies = () =>
+    <T extends WithAllAgenciesProps>(Component: React.ComponentType<T>) =>
+        restfulDataContainer<Agency, T, WithAllAgenciesProps>({
             resourceType: agencyResourceType,
-            store: store,
+            store: restfulStore,
+            getMappingDataFromProps: (props) => props.agencies,
             mapToProps: (agencies) => {
                 return { agencies };
             }

@@ -22,7 +22,7 @@ interface OrderTransactionsProps extends
     Pick<CreateOrderTransactionProps, 'order'> {
 }
 
-@withOrderTransactionsByOrder(restfulStore)
+@withOrderTransactionsByOrder()
 export class OrderTransactions extends React.PureComponent<OrderTransactionsProps> {
 
     render() {

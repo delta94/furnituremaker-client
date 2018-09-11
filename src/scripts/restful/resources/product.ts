@@ -1,24 +1,21 @@
 import { Resource, ResourceType } from 'react-restful';
 
-import { apiEntry } from '@/restful/apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
+import { formatCurrency } from '@/utilities';
+
 import {
     discountByQuantitiesUtils,
     DiscountByQuantity
-} from '@/restful/resources/discountByQuantities';
-import { FurnitureComponent } from '@/restful/resources/furnitureComponent';
-import { FurnutureMaterial } from '@/restful/resources/furnutureMaterial';
-import {
-    ProductDiscount,
-    productDiscountUtils
-} from '@/restful/resources/productDiscount';
-import { UploadedFile } from '@/restful/resources/uploadedFile';
-import { formatCurrency } from '@/utilities';
-
+} from './discountByQuantities';
+import { FurnitureComponent } from './furnitureComponent';
 import { FurnitureComponentType } from './furnitureComponentType';
+import { FurnitureMaterial } from './furnutureMaterial';
 import { MaterialType, materialTypeUtils } from './materialType';
 import { ProductDesign } from './productDesign';
+import { ProductDiscount, productDiscountUtils } from './productDiscount';
 import { ProductModule } from './productModule';
 import { ProductType } from './productType';
+import { UploadedFile } from './uploadedFile';
 
 export interface Product {
     readonly id?: string;
@@ -37,7 +34,8 @@ export interface ProductExtended extends Product {
     readonly modules: ProductModule[];
 }
 
-export const productResourceType = new ResourceType({
+export const productResourceType = new ResourceType<Product>({
+    store: restfulStore,
     name: nameof<Product>(),
     schema: [{
         field: 'id',
@@ -79,7 +77,7 @@ export const productUtils = {
         };
         return productModules.reduce(reducer, startValue);
     },
-    createModule: (component: FurnitureComponent, material: FurnutureMaterial): ProductModule => {
+    createModule: (component: FurnitureComponent, material: FurnitureMaterial): ProductModule => {
         return {
             component: component,
             componentPrice: component.price || 0,

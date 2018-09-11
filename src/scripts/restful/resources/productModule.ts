@@ -1,11 +1,11 @@
 import { FurnitureComponent } from './furnitureComponent';
-import { FurnutureMaterial } from './furnutureMaterial';
+import { FurnitureMaterial } from './furnutureMaterial';
 
 export interface ProductModule {
     readonly id?: string;
     readonly component: FurnitureComponent;
     readonly componentPrice: number;
-    readonly material: FurnutureMaterial;
+    readonly material: FurnitureMaterial;
     readonly materialPrice: number;
 }
 

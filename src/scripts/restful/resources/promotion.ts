@@ -1,6 +1,6 @@
 import { RecordType, Resource, ResourceType } from 'react-restful';
 
-import { apiEntry } from '../apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
 
 export interface Promotion extends RecordType {
     readonly id?: string;
@@ -13,6 +13,7 @@ export interface Promotion extends RecordType {
 }
 
 export const promotionResourceType = new ResourceType<Promotion>({
+    store: restfulStore,
     name: nameof<Promotion>(),
     schema: [{
         field: 'id',
@@ -46,7 +47,7 @@ export const promotionUtils = {
         if (!promotion) {
             return 0;
         }
-        
+
         return promotion.discountPrice;
     }
 };

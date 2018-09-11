@@ -11,7 +11,7 @@ import { AnyAction, Store } from 'redux';
 import { queryNotifications } from '@/firebase/firebaseNotificationDB';
 import {
     discountByQuantitiesResources,
-    furnutureMaterialResources,
+    furnitureMaterialResources,
     OrderDetail,
     orderDetailResources,
     orderDetailUtils,
@@ -95,7 +95,7 @@ export class Root extends React.Component<RootProps> {
                         }
                     ]
                 ),
-                restfulFetcher.fetchResource(furnutureMaterialResources.find, []),
+                restfulFetcher.fetchResource(furnitureMaterialResources.find, []),
                 restfulFetcher.fetchResource(productTypeResources.find, []),
                 restfulFetcher.fetchResource(discountByQuantitiesResources.find, []),
                 restfulFetcher.fetchResource(productDiscountResources.find, [{

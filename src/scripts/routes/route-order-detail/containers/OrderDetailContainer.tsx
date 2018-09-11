@@ -24,7 +24,7 @@ export class OrderDetailContainer extends React.Component<OrderDetailContainerPr
                 resource={orderResources.findOne}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
-                        return <OrderDetailControl data={[renderProps.data]} />;
+                        return <OrderDetailControl order={renderProps.data} />;
                     }
                     return null;
                 }}

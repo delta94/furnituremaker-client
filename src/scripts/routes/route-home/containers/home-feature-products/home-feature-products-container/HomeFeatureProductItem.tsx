@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { CommonFieldProps } from 'redux-form';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
@@ -8,7 +7,6 @@ import { colorPrimary, CommonStoreProps } from '@/configs';
 import {
     Product,
     productDiscountUtils,
-    restfulStore,
     WithProductDiscounts,
     withProductDiscounts
 } from '@/restful';
@@ -116,8 +114,8 @@ export interface HomeFeatureProductItemProps extends
     readonly product: Product;
 }
 
+@withProductDiscounts()
 @withStoreValues<HomeFeatureProductItemProps>('history')
-@withProductDiscounts(restfulStore)
 export class HomeFeatureProductItem extends React.PureComponent<HomeFeatureProductItemProps> {
     public render() {
         const { product, productDiscounts, history } = this.props;

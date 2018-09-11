@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
-import { withStoreValues } from '@/app';
 import { AntdCol, AntdRow } from '@/components';
 import {
     agencyResources,
@@ -19,7 +18,7 @@ interface CardTotalOfPaymentProps extends
     readonly orderPrice: number;
 }
 
-@withCurrentUser(restfulStore)
+@withCurrentUser()
 export class CartDiscountByAgencyLevel extends React.Component<CardTotalOfPaymentProps> {
     render() {
         const { orderPrice, user } = this.props;

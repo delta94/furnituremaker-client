@@ -22,14 +22,13 @@ import {
     productResources,
     productUtils,
     restfulFetcher,
-    restfulStore,
     withDiscountByQuantities,
     WithDiscountByQuantities,
     WithDiscountByQuantitiesOwnProps,
     withProductDiscounts,
     WithProductDiscounts
 } from '@/restful';
-import { apiEntry, fileHostEntry } from '@/restful/apiEntry';
+import { fileHostEntry } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
 interface OrderDetailItemProps extends
@@ -44,8 +43,8 @@ type OrderDetailItemState =
         readonly fetching?: boolean;
     };
 
-@withProductDiscounts(restfulStore)
-@withDiscountByQuantities(restfulStore)
+@withProductDiscounts()
+@withDiscountByQuantities()
 export class OrderDetailItem extends React.Component<OrderDetailItemProps, OrderDetailItemState> {
     // tslint:disable-next-line:readonly-keyword
     changeQuantityTimeOut = null;

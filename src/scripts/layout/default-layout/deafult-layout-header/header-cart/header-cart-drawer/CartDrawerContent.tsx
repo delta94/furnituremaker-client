@@ -4,7 +4,6 @@ import { AntdCol, AntdDivider, AntdList, AntdRow } from '@/components';
 import {
     OrderDetail,
     orderDetailUtils,
-    restfulStore,
     withTempOrderDetails,
     WithTempOrderDetails
 } from '@/restful';
@@ -14,7 +13,7 @@ import { OrderDetailItem } from './cart-drawer-content';
 interface CartDrawerContentProps extends WithTempOrderDetails {
 }
 
-@withTempOrderDetails(restfulStore)
+@withTempOrderDetails()
 export class CartDrawerContent extends React.Component<CartDrawerContentProps> {
     render() {
         const { orderDetails } = this.props;

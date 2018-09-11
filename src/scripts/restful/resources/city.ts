@@ -1,6 +1,6 @@
 import { RecordType, Resource, ResourceType } from 'react-restful';
 
-import { apiEntry } from '@/restful/apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
 
 import { County } from './county';
 
@@ -15,6 +15,7 @@ export interface City extends RecordType {
 }
 
 export const cityResourceType = new ResourceType<City>({
+    store: restfulStore,
     name: nameof<City>(),
     schema: [{
         field: 'id',

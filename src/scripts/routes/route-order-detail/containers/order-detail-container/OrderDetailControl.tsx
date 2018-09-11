@@ -27,6 +27,7 @@ export interface OrderDetailControlProps extends
     Pick<OrderDetailProps, 'order'>,
     Pick<InitAppStoreProps, 'history'>,
     Pick<CommonStoreProps, 'dispatch'> {
+    readonly orders?: Order[];
 }
 
 export interface OrderDetailControlComponentState {
@@ -35,8 +36,8 @@ export interface OrderDetailControlComponentState {
 
 @withStoreValues<InitAppStoreProps>('history')
 class OrderDetailControlComponent extends React.Component<
-OrderDetailControlProps,
-OrderDetailControlComponentState> {
+    OrderDetailControlProps,
+    OrderDetailControlComponentState> {
 
     // tslint:disable-next-line:readonly-keyword
     updateFormRef: UpdateOrderFormControl;
@@ -169,9 +170,10 @@ OrderDetailControlComponentState> {
     }
 }
 
-export const OrderDetailControl = restfulDataContainer<Order, OrderDetailControlProps>({
+export const OrderDetailControl = restfulDataContainer<Order, OrderDetailControlProps, OrderDetailControlProps>({
     store: restfulStore,
     resourceType: orderResourceType,
+    dataPropsKey: nameof<OrderDetailControlProps>(o => o.orders),
     mapToProps: (data) => {
         return {
             order: data[0]

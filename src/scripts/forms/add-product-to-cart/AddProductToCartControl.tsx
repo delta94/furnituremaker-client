@@ -4,16 +4,13 @@ import { Auth, withStoreValues } from '@/app';
 import { AntdMessage, fetchErrorHandler } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
-    discountByQuantitiesUtils,
     DiscountByQuantity,
     OrderDetail,
     orderDetailResources,
     orderDetailUtils,
     ProductDiscount,
-    productDiscountUtils,
     productUtils,
     restfulFetcher,
-    restfulStore,
     WithTempOrderDetails,
     withTempOrderDetails
 } from '@/restful';
@@ -32,7 +29,7 @@ interface ProductAddCartControlProps extends
     readonly productDiscount?: ProductDiscount;
 }
 
-@withTempOrderDetails(restfulStore)
+@withTempOrderDetails()
 @withStoreValues<CommonStoreProps>('selectedProduct', 'product3Dsence')
 export class AddProductToCartControl extends React.PureComponent<ProductAddCartControlProps> {
     readonly createNewOrderDetail = async (quantity: number): Promise<OrderDetail> => {

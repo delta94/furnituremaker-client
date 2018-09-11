@@ -1,6 +1,7 @@
 import { RecordType, Resource, ResourceType } from 'react-restful';
 
-import { apiEntry } from '../apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
+
 import { DiscountByQuantity } from './discountByQuantities';
 import { ProductTypeGroup } from './productTypeGroup';
 import { UploadedFile } from './uploadedFile';
@@ -21,6 +22,7 @@ export interface ProductType extends RecordType {
 }
 
 export const productType = new ResourceType<ProductType>({
+    store: restfulStore,
     name: nameof<ProductType>(),
     schema: [{
         field: 'id',

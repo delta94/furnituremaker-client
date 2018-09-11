@@ -1,23 +1,28 @@
 import * as React from 'react';
-import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
+import {
+    RecordType,
+    Resource,
+    ResourceType,
+    restfulDataContainer
+} from 'react-restful';
 
+import { apiEntry, restfulStore } from '@/restful/environment';
 import { formatCurrency } from '@/utilities';
 
-import { apiEntry } from '../apiEntry';
 import { ProductExtended, productUtils } from './product';
-import { ProductDiscount, productDiscountUtils } from './productDiscount';
 import { ProductType } from './productType';
 
 const sortBy = require('lodash/sortBy');
 
-export interface DiscountByQuantity {
+export interface DiscountByQuantity extends RecordType {
     readonly id?: string;
     readonly discountPerProduct: number;
     readonly quantity: number;
     readonly productType: ProductType;
 }
 
-export const discountByQuantitiesResourceType = new ResourceType({
+export const discountByQuantitiesResourceType = new ResourceType<DiscountByQuantity>({
+    store: restfulStore,
     name: 'discountByQuantity',
     schema: [{
         field: 'id',
@@ -97,13 +102,13 @@ export interface WithDiscountByQuantities {
     readonly discountByQuantities?: DiscountByQuantity[];
 }
 
-export const withDiscountByQuantities = (store) =>
+export const withDiscountByQuantities = <T extends WithDiscountByQuantitiesOwnProps>() =>
     // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<WithDiscountByQuantities>): any =>
-        restfulDataContainer<DiscountByQuantity, WithDiscountByQuantities>({
-            store: store,
+    (Component: React.ComponentType<T>): any =>
+        restfulDataContainer<DiscountByQuantity, T, WithDiscountByQuantities>({
+            store: restfulStore,
             resourceType: discountByQuantitiesResourceType,
-            mapToProps: (data, ownProps: WithDiscountByQuantitiesOwnProps) => {
+            mapToProps: (data, ownProps) => {
                 const { productType } = ownProps;
                 if (!productType) {
                     return {

@@ -9,7 +9,7 @@ import { DefaultLayout } from '@/layout';
 import {
     FurnitureComponent,
     furnitureComponentResources,
-    furnutureMaterialResouceType,
+    furnitureMaterialResouceType,
     ProductExtended,
     ProductModule,
     productType,
@@ -84,7 +84,7 @@ export class RouteMaker extends React.Component<RouteMakerProps, RouteMakerState
             design: selectedComponentDesign,
             modules: components.map((o, i): ProductModule => {
                 const material = restfulStore.findOneRecord(
-                    furnutureMaterialResouceType,
+                    furnitureMaterialResouceType,
                     (materialInstance) => materialInstance.code === materialCodes[i]
                 );
                 return {

@@ -1,11 +1,6 @@
-import {
-    Resource,
-    ResourceType,
-    restfulDataContainer,
-    Store
-} from 'react-restful';
+import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
 
-import { apiEntry } from '@/restful/apiEntry';
+import { apiEntry, restfulStore } from '@/restful/environment';
 
 import { Product } from './product';
 
@@ -19,6 +14,7 @@ export interface ProductDiscount {
 }
 
 export const productDiscountResourceType = new ResourceType<ProductDiscount>({
+    store: restfulStore,
     name: nameof<ProductDiscount>(),
     schema: [{
         field: 'id',
@@ -62,7 +58,7 @@ export const productDiscountUtils = {
         } else if (productDiscount.discountPercent) {
             return product.totalPrice * (productDiscount.discountPercent * 0.01);
         }
-        
+
         return 0;
     }
 };
@@ -71,13 +67,13 @@ export interface WithProductDiscounts {
     readonly productDiscounts?: ProductDiscount[];
 }
 
-export const withProductDiscounts = (store: Store) =>
+export const withProductDiscounts = <T>() =>
     // tslint:disable-next-line:no-any
-    (Component: React.ComponentType<WithProductDiscounts>): any =>
-        restfulDataContainer<ProductDiscount, WithProductDiscounts>({
-            store: store,
+    (Component: React.ComponentType<T>): any =>
+        restfulDataContainer<ProductDiscount, T, WithProductDiscounts>({
+            store: restfulStore,
             resourceType: productDiscountResourceType,
-            mapToProps: (data) => {
+            mapToProps: (data, p) => {
                 return {
                     productDiscounts: data
                 };
