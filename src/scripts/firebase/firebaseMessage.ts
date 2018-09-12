@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 
 export const registerFirebaseMessage = async (firebase) => {
-    if (!navigator) {
+    if (!navigator || !navigator.serviceWorker) {
         return;
     }
     const { serviceWorker } = navigator;
