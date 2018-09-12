@@ -121,7 +121,6 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                                     }
                                 });
                             }
-                            child.material.flatShading = false;
                             child.castShadow = true;
                             child.receiveShadow = true;
                             child.scale.set(0.1, 0.1, 0.1);

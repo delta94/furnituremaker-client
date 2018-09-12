@@ -169,13 +169,13 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     initLights() {
         // * Environtment
         const hemiLight = new THREE.AmbientLight(0xffffff, 0xffffff, 1);
-        hemiLight.intensity = 1.3;
+        hemiLight.intensity = 1;
         this.scene.add(hemiLight);
 
         const baseShadowCamera = 150;
         // * Directional
         const dirLightLeft = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightLeft.intensity = 1.2;
+        dirLightLeft.intensity = 1.5;
         dirLightLeft.position.set(-120, 120, 45);
         dirLightLeft.castShadow = true;
         dirLightLeft.shadow.camera.left = -baseShadowCamera;
@@ -188,7 +188,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * Directional
         const dirLightright = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightright.intensity = 1;
+        dirLightright.intensity = 1.5;
         dirLightright.position.set(120, 120, 45);
         dirLightright.castShadow = true;
         dirLightright.shadow.camera.left = -baseShadowCamera;
@@ -212,6 +212,19 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         dirLightBack.shadow.bias = -0.0001;
         this.scene.add(dirLightBack);
 
+        // * Directional
+        const dirLightTop = new THREE.DirectionalLight(0xffffff, 1, 1);
+        dirLightTop.intensity = 1;
+        dirLightTop.position.set(0, 40, 100);
+        dirLightTop.castShadow = true;
+        dirLightTop.shadow.camera.left = -baseShadowCamera;
+        dirLightTop.shadow.camera.right = baseShadowCamera;
+        dirLightTop.shadow.camera.top = baseShadowCamera;
+        dirLightTop.shadow.camera.bottom = -baseShadowCamera;
+        dirLightTop.shadow.camera.far = 3500;
+        dirLightTop.shadow.bias = -0.0001;
+        this.scene.add(dirLightBack);
+
         // * Helpers
         if (!true) {
             const dirLighLefttHeper = new THREE.DirectionalLightHelper(dirLightLeft, 10);
@@ -221,6 +234,9 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
             const dirLightBackHeper = new THREE.DirectionalLightHelper(dirLightBack, 10);
             this.scene.add(dirLightBackHeper);
+
+            const dirLightTopHeper = new THREE.DirectionalLightHelper(dirLightTop, 10);
+            this.scene.add(dirLightTopHeper);
         }
     }
 
