@@ -54,7 +54,10 @@ export class RouteMaker extends AppPage<RouteMakerProps, RouteMakerState> {
             };
         }
 
-        if (nextProps.match.params.modulesCode !== prevState.selectedModulesCode) {
+        if (
+            (nextProps.match.params.modulesCode && prevState.selectedModulesCode) &&
+            nextProps.match.params.modulesCode !== prevState.selectedModulesCode
+        ) {
             return {
                 ...prevState,
                 pageReady: false,

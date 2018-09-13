@@ -26,7 +26,12 @@ export class DefaultLayout extends React.Component<DefaultLayoutProps> {
         const { breadcrumb } = this.props;
 
         return (
-            <AntdLayout style={{ minHeight: 'inherit', background: '#F7F7F7 ' }}>
+            <AntdLayout
+                style={{
+                    minHeight: 'inherit',
+                    background: '#F7F7F7'
+                }}
+            >
                 <DefaultLayoutTopbar />
                 <DefaultLayoutHeader />
                 {

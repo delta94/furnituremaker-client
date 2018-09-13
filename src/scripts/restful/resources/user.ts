@@ -11,6 +11,8 @@ export interface User {
     readonly email: string;
     readonly role: Role;
     readonly agency?: Agency;
+    readonly createdAt?: string;
+    readonly username: string;
 }
 
 export const userResourceType = new ResourceType<User>({

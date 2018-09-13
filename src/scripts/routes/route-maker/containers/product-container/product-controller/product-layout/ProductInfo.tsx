@@ -6,6 +6,7 @@ import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
 import {
     AntdCard,
     AntdCol,
+    AntdCollapse,
     AntdDivider,
     AntdIcon,
     AntdRow,
@@ -99,7 +100,7 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                                     {productUtils.getProductName(product)}
                                 </ProductName>
                                 <ProductCode>{productUtils.getProductModulesCode(product)}</ProductCode>
-                                <AntdDivider />
+                                <AntdDivider dashed={true} />
                                 <AntdRow>
                                     <AntdCol span={13}>
                                         <ProductDesign>{product.design.name}</ProductDesign>
@@ -110,28 +111,51 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                                         </ChangeDesign>
                                     </AntdCol>
                                 </AntdRow>
-                                <AntdRow>
-                                    <AntdCol span={24}>
-                                        <h4>Thông số sản phẩm</h4>
-                                    </AntdCol>
-                                    <AntdCol span={12}>
-                                        Kích thước:
-                                    </AntdCol>
-                                    <AntdCol span={12}>
-                                        <div style={{ textAlign: 'right' }}>
-                                            {product.productType.size}
-                                        </div>
-                                    </AntdCol>
-                                    <AntdCol span={12}>
-                                        Thể tích:
-                                    </AntdCol>
-                                    <AntdCol span={12}>
-                                        <div style={{ textAlign: 'right' }}>
-                                            {product.productType.volume} m<sup>3</sup>
-                                        </div>
-                                    </AntdCol>
-                                </AntdRow>
-                                <AntdDivider />
+                                <AntdCollapse
+                                    bordered={false}
+                                    defaultActiveKey={['1']}
+                                    style={{ margin: '0 -24px 20px -24px' }}
+                                >
+                                    <AntdCollapse.Panel
+                                        key="1"
+                                        header="Thông ting chung"
+                                        style={{
+                                            padding: '0 10px'
+                                        }}
+                                    >
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                Fusce at dolor magna.
+                                                Maecenas eros justo, tempus eget massa sit amet, ullamcorper molestie ex
+                                        </p>
+                                    </AntdCollapse.Panel>
+                                    <AntdCollapse.Panel
+                                        key="2"
+                                        header="Thông số sản phẩm"
+                                        style={{
+                                            padding: '0 10px'
+                                        }}
+                                    >
+                                        <AntdRow>
+                                            <AntdCol span={12}>
+                                                Kích thước:
+                                            </AntdCol>
+                                            <AntdCol span={12}>
+                                                <div style={{ textAlign: 'right' }}>
+                                                    {product.productType.size}
+                                                </div>
+                                            </AntdCol>
+                                            <AntdCol span={12}>
+                                                Thể tích:
+                                            </AntdCol>
+                                            <AntdCol span={12}>
+                                                <div style={{ textAlign: 'right' }}>
+                                                    {product.productType.volume} m<sup>3</sup>
+                                                </div>
+                                            </AntdCol>
+                                        </AntdRow>
+                                    </AntdCollapse.Panel>
+                                </AntdCollapse>
                                 <div>
                                     <h4>Thêm vào giỏ hàng</h4>
                                     <RestfulRender

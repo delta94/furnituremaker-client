@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Auth } from '@/app';
 import { AntdAffix, AntdIcon, AntdPopover, Container } from '@/components';
 import { colorPrimary } from '@/configs';
+import { getProfileRoutePath } from '@/routes';
 
 import { HeaderCart, HeaderNotification } from './deafult-layout-header';
 
@@ -79,7 +80,12 @@ export class DefaultLayoutHeader extends React.PureComponent {
                                 content={
                                     <React.Fragment>
                                         <HeaderPopoverButton>
-                                            <a key="logout" onClick={Auth.instance.logout}>
+                                            <Link to={getProfileRoutePath()}>
+                                                Thông tin tài khoản
+                                            </Link>
+                                        </HeaderPopoverButton>
+                                        <HeaderPopoverButton>
+                                            <a onClick={Auth.instance.logout}>
                                                 Đăng xuất
                                             </a>
                                         </HeaderPopoverButton>
