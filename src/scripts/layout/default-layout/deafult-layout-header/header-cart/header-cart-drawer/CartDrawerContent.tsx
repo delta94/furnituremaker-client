@@ -14,7 +14,7 @@ interface CartDrawerContentProps extends WithTempOrderDetails {
 }
 
 @withTempOrderDetails()
-export class CartDrawerContent extends React.Component<CartDrawerContentProps> {
+export class CartDrawerContent extends React.PureComponent<CartDrawerContentProps> {
     render() {
         const { orderDetails } = this.props;
         return (

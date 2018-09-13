@@ -4,8 +4,8 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 
 import { withStoreValues } from '@/app';
-import { AntdList, AntdTabs, AntdTooltip, Img } from '@/components';
-import { Loading } from '@/components/domain-components/generic/Loading';
+import { AntdList, AntdTabs, AntdTooltip } from '@/components/antd-component';
+import { Img, Loading } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
 import {
     FurnitureMaterial,
@@ -14,6 +14,8 @@ import {
     WithMaterialProps,
     withMaterialsByType
 } from '@/restful';
+
+import { ThreeSence } from './ThreeSence';
 
 export interface ThreeMaterialListProps extends
     Pick<CommonStoreProps, 'setStore'>,
@@ -121,6 +123,11 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
             meshPhongMaterial.map.image = map.image;
             meshPhongMaterial.map.needsUpdate = true;
             meshPhongMaterial.needsUpdate = true;
+            if (material.view_normalMap) {
+                ThreeSence.loadNormalMap(material, meshPhongMaterial);
+            } else {
+                meshPhongMaterial.normalMap = null;
+            }
         }
 
         const nextSelectedProduct: ProductExtended = {
@@ -139,7 +146,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
         };
 
         return nextSelectedProduct;
-    };
+    }
 }
 
 export const ThreeMaterialList = withStoreValues<ThreeMaterialListProps>(

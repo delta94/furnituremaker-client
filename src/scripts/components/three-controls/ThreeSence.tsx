@@ -6,7 +6,12 @@ import autobind from 'autobind-decorator';
 import * as React from 'react';
 
 import { WithStoreValuesDispatchs } from '@/app';
-import { ProductModule, ProductType, uploadedFileUtils } from '@/restful';
+import {
+    FurnitureMaterial,
+    ProductModule,
+    ProductType,
+    uploadedFileUtils
+} from '@/restful';
 
 import { SenceProductInfo } from './three-sence';
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
@@ -21,6 +26,20 @@ interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesDispatchs 
 }
 
 export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
+    static readonly loadNormalMap = (material: FurnitureMaterial, meshMaterial: THREE.MeshPhongMaterial) => {
+        const normalMapLoader = new THREE.TextureLoader();
+        normalMapLoader.load(
+            uploadedFileUtils.getUrl(material.view_normalMap),
+            function (texture: THREE.Texture) {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+
+                meshMaterial['normalMap'] = texture;
+                meshMaterial.needsUpdate = true;
+            }
+        );
+    }
+
     componentDidMount() {
         this.initSence();
         this.initContent();
@@ -62,7 +81,6 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
             if (!productModule.material || !productModule.component) {
                 continue;
             }
-            var normalMapLoader = new THREE.TextureLoader();
 
             if (productModule.component.mtl) {
                 const onLoadMtl = (mtl: THREE.MaterialCreator) => {
@@ -83,25 +101,17 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
 
                     for (const key in materials) {
                         if (materials.hasOwnProperty(key)) {
-                            const material = materials[key];
+                            const material = materials[key] as THREE.MeshPhongMaterial;
                             material.transparent = true;
                             material.opacity = 0;
-                            if (material['map']) {
-                                material['map'].anisotropy = 16;
-                                material['shininess'] = productModule.material.materialType.view_shiny || 0;
+                            if (material.map) {
+                                material.map.anisotropy = 16;
+                                material.shininess = productModule.material.materialType.view_shiny || 0;
                             }
 
-                            // * Normal map test!
-                            normalMapLoader.load(
-                                '/static/assets/farbic-normal-default.jpg',
-                                function (texture: THREE.Texture) {
-                                    texture.wrapS = THREE.RepeatWrapping;
-                                    texture.wrapT = THREE.RepeatWrapping;
-
-                                    material['normalMap'] = texture;
-                                    material.needsUpdate = true;
-                                }
-                            );
+                            if (productModule.material.view_normalMap) {
+                                ThreeSence.loadNormalMap(productModule.material, material);
+                            }
                         }
                     }
 
@@ -142,7 +152,10 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                 const mtlLoader = new THREE.MTLLoader();
                 const mtlFile = uploadedFileUtils.getUrl(productModule.component.mtl);
                 mtlLoader.load(mtlFile, onLoadMtl);
-            } else if (productModule.component.fbx) {
+                continue;
+            }
+
+            if (productModule.component.fbx) {
                 const callbackOnLoadFBX = (object) => {
                     for (const child of object.children) {
                         child.castShadow = true;

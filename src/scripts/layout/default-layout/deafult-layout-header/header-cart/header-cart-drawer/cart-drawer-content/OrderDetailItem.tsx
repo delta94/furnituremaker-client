@@ -83,7 +83,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
             product = fetchProductsWithCode[0];
         }
 
-        const notEnoughInventory = product.inventory ?
+        const notEnoughInventory = (product && product.inventory) ?
             product.inventory < nextQuantity :
             false;
         const quantity = notEnoughInventory ? product.inventory : nextQuantity;

@@ -160,7 +160,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.controls.minPolarAngle = Math.PI / 2.4;
 
         this.controls.enablePan = false;
-        this.controls.enableZoom = false;
+        this.controls.enableZoom = true;
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.07;
         this.controls.rotateSpeed = 0.07;
@@ -223,7 +223,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         dirLightTop.shadow.camera.bottom = -baseShadowCamera;
         dirLightTop.shadow.camera.far = 3500;
         dirLightTop.shadow.bias = -0.0001;
-        this.scene.add(dirLightBack);
+        // this.scene.add(dirLightBack);
 
         // * Helpers
         if (!true) {

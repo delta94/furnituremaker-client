@@ -1,3 +1,5 @@
+import { fileHostEntry } from '@/restful/environment';
+
 export interface UploadedFile {
     readonly id?: string;
     readonly name?: string;
@@ -15,13 +17,17 @@ export type ImgSize = 'img256x256' | 'img512x512' | 'img1024x1024';
 
 export const uploadedFileUtils = {
     addHostToPath: (url: string) => {
-        return `${FILE_HOST}${url}`;
+        if (url.startsWith('/uploads')) {
+            return fileHostEntry(url);
+        }
+
+        return url;
     },
     getUrl: (uploadedFile: UploadedFile, size?: ImgSize) => {
         if (size) {
             const fileUrl = uploadedFile[size];
             if (fileUrl) {
-                return fileUrl;
+                return  uploadedFileUtils.addHostToPath(fileUrl);
             }
         }
 

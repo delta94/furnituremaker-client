@@ -6,11 +6,12 @@ import { CommonStoreProps } from '@/configs';
 
 import { CartDrawerContent, CartDrawerFooter } from './header-cart-drawer';
 
-export interface HeaderCartDrawerProps extends Pick<CommonStoreProps, 'drawerVisible'> {
+export interface HeaderCartDrawerProps extends
+    Pick<CommonStoreProps, 'drawerVisible'> {
     readonly onDrawerClose: () => void;
 }
 
-@withStoreValues(nameof<HeaderCartDrawerProps>(o => o.drawerVisible))
+@withStoreValues<HeaderCartDrawerProps>('drawerVisible')
 export class HeaderCartDrawer extends React.PureComponent<HeaderCartDrawerProps> {
     render() {
         const {
