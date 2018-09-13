@@ -14,8 +14,8 @@ export class TransportFeeByCityControl extends React.PureComponent<TTransportFee
         return (
             <AntdTable
                 dataSource={cities}
-                bordered={true}
                 pagination={false}
+                size="small"
             >
                 <AntdTable.Column
                     title="Tỉnh thành giao nhận"

@@ -16,8 +16,7 @@ import {
     RouteMakerLoadable,
     RouteOrderDetailLoadable,
     RouteOrdersLoadable,
-    RouteProductLoadable,
-    RouteTransportPolicyLoadable
+    RouteProductLoadable
 } from '@/routes';
 
 export function startup() {
@@ -28,7 +27,6 @@ export function startup() {
         RouteMakerLoadable,
         RouteOrderDetailLoadable,
         RouteOrdersLoadable,
-        RouteTransportPolicyLoadable,
         RouteProductLoadable
     ];
 

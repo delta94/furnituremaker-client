@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
+import { Loading } from '@/components';
 import { cityResources, restfulFetcher, restfulStore } from '@/restful';
 
 import { TransportFeeByCityControl } from './transport-fee-by-city-container';
@@ -15,7 +16,6 @@ export class TransportFeeByCity extends React.PureComponent<TransportFeeByCityPr
             <RestfulRender
                 fetcher={restfulFetcher}
                 store={restfulStore}
-                parameters={[]}
                 resource={cityResources.find}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
@@ -26,7 +26,9 @@ export class TransportFeeByCity extends React.PureComponent<TransportFeeByCityPr
                         );
                     }
 
-                    return null;
+                    return (
+                        <Loading />
+                    );
                 }}
             />
         );
