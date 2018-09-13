@@ -1,66 +1,133 @@
 import * as React from 'react';
-import { RestfulRender } from 'react-restful';
+import { RestfulComponentRenderProps, RestfulRender } from 'react-restful';
 import { Field } from 'redux-form';
 
+import { AntdCascaderOptionType, renderCascader, required } from '@/components';
 import {
-    AntdSelectOptionProps,
-    renderSelectField,
-    required
-} from '@/components';
-import { City, cityResources, restfulFetcher, restfulStore } from '@/restful';
+    City,
+    cityResources,
+    County,
+    countyResources,
+    restfulFetcher,
+    restfulStore
+} from '@/restful';
 
 export interface OrderFormCityFieldProps {
-    readonly initValue: string;
+    readonly initCity: City;
+    readonly initCounty: County;
+
     readonly fieldName: string;
-    readonly onCityChange: (city: City) => void;
+    readonly onCityChange: (city: City, county: County) => void;
 }
 
-export class OrderFormCityField extends React.PureComponent<OrderFormCityFieldProps> {
+export interface OrderFormCityFieldState {
+    readonly cities: City[];
+    readonly counties: County[];
+    readonly options: AntdCascaderOptionType[];
+}
+
+export class OrderFormCityField extends React.PureComponent<OrderFormCityFieldProps, OrderFormCityFieldState> {
     static readonly cityValidates = [required('Nhập tỉnh thành')];
 
+    constructor(props: OrderFormCityFieldProps) {
+        super(props);
+        const { initCity, initCounty, onCityChange } = this.props;
+        this.state = {
+            cities: [initCity],
+            counties: [initCounty],
+            options: [{
+                value: initCity.id,
+                label: initCity.name,
+                children: [{
+                    value: initCounty.id,
+                    label: initCounty.name
+                }]
+            }]
+        };
+
+        onCityChange(initCity, initCounty);
+    }
+
+    readonly loadData = (selectedOptions: AntdCascaderOptionType[]) => {
+        const targetOption = selectedOptions[selectedOptions.length - 1];
+        targetOption.loading = true;
+
+        restfulFetcher.fetchResource(
+            countyResources.find,
+            [{
+                parameter: 'city',
+                type: 'query',
+                value: targetOption.value
+            }]
+        ).then((counties) => {
+            targetOption.loading = false;
+            targetOption.children = counties.map(o => ({
+                value: o.id,
+                label: o.name
+            }));
+
+            this.setState({
+                options: [...this.state.options],
+            });
+        });
+    }
+
+    readonly onFetchCompleted = (cities: City[]) => {
+        if (!cities) {
+            return;
+        }
+        const { initCity } = this.props;
+        const { options } = this.state;
+
+        this.setState({
+            cities: cities,
+            options: cities.map(o =>
+                o.id === initCity.id ?
+                    options[0] :
+                    ({
+                        value: o.id,
+                        label: o.name,
+                        isLeaf: false
+                    })
+            )
+        });
+    }
+
+    readonly restFulRender = (renderProps: RestfulComponentRenderProps<City[]>) => {
+        const { fieldName, onCityChange } = this.props;
+        const { cities, counties, options } = this.state;
+        return (
+            <Field
+                name={fieldName}
+                component={renderCascader}
+                onChange={(event, value: string[]) => {
+                    const targetCity = value[0];
+                    const selectedCity = cities.find(o => o.id === targetCity);
+                    const targetCounty = value[1];
+                    const selectedCounty = counties.find(o => o.id === targetCounty);
+
+                    onCityChange(selectedCity, selectedCounty);
+                }}
+                validate={OrderFormCityField.cityValidates}
+                required={true}
+                label="Tỉnh thành"
+                cascaderProps={{
+                    placeholder: 'Chọn tỉnh thành',
+                    loadData: this.loadData,
+                    options: options
+                }}
+            />
+        );
+    }
+
     render() {
-        const { initValue, fieldName, onCityChange } = this.props;
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
                 store={restfulStore}
                 resource={cityResources.find}
-                parameters={[]}
-                onFetchCompleted={(data) => {
-                    if (!data) {
-                        return;
-                    }
-
-                    const initSelectedCity = data.find(o => o.id === initValue);
-                    if (initSelectedCity) {
-                        onCityChange(initSelectedCity);
-                    }
-                }}
-                render={(renderProps) => {
-                    if (renderProps.data && !renderProps.fetching) {
-                        const cities = renderProps.data;
-                        const citiesMap: AntdSelectOptionProps[] = cities.map(o => ({ value: o.id, title: o.name }));
-
-                        return (
-                            <Field
-                                name={fieldName}
-                                component={renderSelectField}
-                                onChange={(event, value: string) => {
-                                    const selectedCity = cities.find(o => o.id === value);
-                                    onCityChange(selectedCity);
-                                }}
-                                validate={OrderFormCityField.cityValidates}
-                                required={true}
-                                label="Tỉnh thành"
-                                items={citiesMap}
-                                selectProps={{
-                                    placeholder: 'Chọn tỉnh thành'
-                                }}
-                            />
-                        );
-                    }
-                    return null;
-                }}
+                onFetchCompleted={this.onFetchCompleted}
+                render={this.restFulRender}
             />
         );
     }

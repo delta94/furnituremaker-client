@@ -13,7 +13,7 @@ import {
     required
 } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { City, Order } from '@/restful';
+import { City, County, Order } from '@/restful';
 
 import {
     OrderFormCityField,
@@ -35,8 +35,7 @@ export interface CreateOrderFormProps extends
 
 export interface CreateOrderFormValues {
     readonly order: Partial<Order>;
-    readonly cityId?: string;
-    readonly countyId?: String;
+    readonly city_county?: string[];
 }
 
 class CreateOrderFormComponent extends React.Component<
@@ -47,11 +46,13 @@ class CreateOrderFormComponent extends React.Component<
     static readonly emailValidates = [required('Nhập cung cấp email')];
     static readonly addressValidates = [required('Nhập địa chỉ giao hàng')];
 
-    readonly onCityChange = (city: City) => {
+    readonly onCityChange = (city: City, county: County) => {
         const { change, onCityChange } = this.props;
 
         change(nameof.full<CreateOrderFormValues>(o => o.order.shippingToCity), city);
-        onCityChange(city);
+        change(nameof.full<CreateOrderFormValues>(o => o.order.shippingToCounty), county);
+        
+        onCityChange(city, county);
     }
 
     componentDidUpdate(prevProps: InjectedFormProps<CreateOrderFormValues, CreateOrderFormProps>) {
@@ -111,8 +112,9 @@ class CreateOrderFormComponent extends React.Component<
                         <AntdCol span={12}>
                             <FormWrapper>
                                 <OrderFormCityField
-                                    fieldName={nameof<CreateOrderFormValues>(o => o.cityId)}
-                                    initValue={initialValues.cityId}
+                                    initCity={initialValues.order.shippingToCity}
+                                    initCounty={initialValues.order.shippingToCounty}
+                                    fieldName={nameof<CreateOrderFormValues>(o => o.city_county)}
                                     onCityChange={this.onCityChange}
                                 />
                             </FormWrapper>

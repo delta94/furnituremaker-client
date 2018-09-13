@@ -38,6 +38,7 @@ export interface Order extends RecordType {
     readonly promotion?: Promotion;
     readonly note?: string;
     readonly shippingToCity: City;
+    readonly shippingToCounty: County;
     readonly county: County;
     readonly shippingFee: number;
     readonly totalOfPayment: number;

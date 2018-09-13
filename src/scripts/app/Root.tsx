@@ -10,6 +10,10 @@ import { AnyAction, Store } from 'redux';
 
 import { queryNotifications } from '@/firebase/firebaseNotificationDB';
 import {
+    Agency,
+    agencyResources,
+    County,
+    countyResources,
     discountByQuantitiesResources,
     furnitureMaterialResources,
     OrderDetail,
@@ -53,11 +57,11 @@ export class Root extends React.Component<RootProps> {
         });
         this.authHelper
             .isLoggedIn()
-            .catch((toLoginPage: () => void) => {
+            .catch((toLoginPage: Function) => {
                 throw toLoginPage();
             })
             .then(this.appInit)
-            .then((user: User) => {
+            .then((user) => {
                 this.authHelper.currentUser = user;
                 notificationSubscriber(store, this.authHelper.currentUser);
                 changeAppStateToReady(store);
@@ -81,7 +85,7 @@ export class Root extends React.Component<RootProps> {
     }
 
     @autobind
-    async appInit(user: User) {
+    async appInit(user: User): Promise<User> {
         try {
             await Promise.all([
                 restfulFetcher.fetchResource(
@@ -110,7 +114,21 @@ export class Root extends React.Component<RootProps> {
                 notifications: new Map()
             });
 
-            return user;
+            const userAgencies = await restfulFetcher.fetchResource(
+                agencyResources.find,
+                [{
+                    parameter: nameof<Agency>(o => o.user),
+                    type: 'query',
+                    value: user.id
+                }]
+            );
+
+            const userAgency = userAgencies[0];
+
+            return {
+                ...user,
+                agency: userAgency
+            };
         } catch (error) {
             throw new Error(error);
         }

@@ -110,10 +110,15 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                         shippingAddress: user.agency && user.agency.address,
                         shippingDate: shippingDate.toISOString(),
                         depositRequired: 0,
-                        status: 'new'
+                        status: 'new',
+                        shippingToCity: user.agency.city,
+                        shippingToCounty: user.agency.county
                     },
                     // tslint:disable-next-line:no-any
-                    cityId: user.agency && user.agency.city as any
+                    city_county: [
+                        user.agency.city.id,
+                        user.agency.county.id
+                    ]
                 }}
                 onSubmitSuccess={onOrderCreate}
             />

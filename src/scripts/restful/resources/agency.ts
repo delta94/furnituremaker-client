@@ -9,6 +9,7 @@ import { apiEntry, restfulStore } from '@/restful/environment';
 
 import { AgencyLevel } from './agencyLevel';
 import { City } from './city';
+import { County } from './county';
 import { User } from './user';
 
 export interface Agency extends RecordType {
@@ -20,6 +21,7 @@ export interface Agency extends RecordType {
     readonly level: AgencyLevel;
     readonly user: User;
     readonly city: City;
+    readonly county: County;
 }
 
 export const agencyResourceType = new ResourceType<Agency>({

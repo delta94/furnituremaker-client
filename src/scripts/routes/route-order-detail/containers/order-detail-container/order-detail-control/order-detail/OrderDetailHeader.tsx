@@ -98,7 +98,7 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                                 {order.email}
                             </AntdDescriptionList.Description>
                             <AntdDescriptionList.Description term="Tỉnh thành">
-                                {order.shippingToCity.name}
+                                {order.shippingToCity.name}/{order.shippingToCounty.name}
                             </AntdDescriptionList.Description>
                             <AntdDescriptionList.Description term="Địa chỉ nhận hàng">
                                 {order.shippingAddress}
