@@ -1,19 +1,27 @@
 import * as React from 'react';
 
 import { withStoreValues } from '@/app';
-import { ProductDesign, productDesignGroupUtils, restfulStore, productTypeGroupResourceType } from '@/restful';
 import { CommonStoreProps } from '@/configs';
+import {
+    ProductDesign,
+    productDesignGroupUtils,
+    productTypeGroupResourceType,
+    restfulStore
+} from '@/restful';
+
 import { DesignModal, DesignModalProps } from './product-design-controllelr';
 
 export {
     DesignModalProps
 };
 
-interface ProductDesignControllerProps extends CommonStoreProps {
+interface ProductDesignControllerProps extends
+    Pick<CommonStoreProps, 'setStore'>,
+    Pick<DesignModalProps, 'showDesignsModal'> {
     readonly productDesigns: ProductDesign[];
 }
 
-@withStoreValues(nameof<DesignModalProps>(o => o.showDesignsModal))
+@withStoreValues<ProductDesignControllerProps>('showDesignsModal')
 export class ProductDesignController extends React.Component<ProductDesignControllerProps> {
     render() {
         const { productDesigns, setStore } = this.props;
@@ -36,6 +44,7 @@ export class ProductDesignController extends React.Component<ProductDesignContro
                         [nameof<CommonStoreProps>(o => o.selectedProductTypeGroup)]: productTypeGroup,
                         [nameof<CommonStoreProps>(o => o.selectedProductType)]: productDesign.productType,
                         [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: productDesign,
+                        [nameof<CommonStoreProps>(o => o.selectedProduct)]: null,
                         [nameof<DesignModalProps>(o => o.showDesignsModal)]: false
                     });
                 }}

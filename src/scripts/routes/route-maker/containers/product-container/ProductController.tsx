@@ -1,11 +1,10 @@
 import * as React from 'react';
 
 import { withStoreValues } from '@/app';
-import { CommonStoreProps, CommonStoreValues } from '@/configs';
+import { CommonStoreProps } from '@/configs';
 import {
     FurnitureComponent,
     furnitureComponentTypeUtils,
-    restfulStore,
     withMaterialTypes,
     WithMaterialTypesProps
 } from '@/restful';
@@ -13,13 +12,16 @@ import {
 import { DesignModalProps } from '../product-design-container';
 import { ProductLayout } from './product-controller';
 
-interface ProductContainerProps extends CommonStoreProps, WithMaterialTypesProps {
+interface ProductContainerProps extends
+    Pick<CommonStoreProps, 'setStore'>,
+    Pick<CommonStoreProps, 'selectedProductDesign'>,
+    WithMaterialTypesProps {
     readonly furnitureComponents: FurnitureComponent[];
 }
 
 @withMaterialTypes()
-@withStoreValues<CommonStoreValues>('selectedProductDesign')
-export class ProductController extends React.Component<ProductContainerProps> {
+@withStoreValues<ProductContainerProps>('selectedProductDesign')
+export class ProductController extends React.PureComponent<ProductContainerProps> {
     render() {
         const {
             materialTypes,

@@ -1,20 +1,14 @@
 import * as React from 'react';
-import { ResourceParameter } from 'react-restful';
-import { RouteComponentProps, RouteProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 
 import { AppPage, PageProps, readyState, withStoreValues } from '@/app';
-import { AntdBreadcrumb, AntdIcon, Container, Page } from '@/components';
+import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
 import {
-    FurnitureComponent,
-    furnitureComponentResources,
-    furnitureMaterialResouceType,
     ProductExtended,
-    ProductModule,
     productType,
     productUtils,
-    restfulFetcher,
     restfulStore
 } from '@/restful';
 

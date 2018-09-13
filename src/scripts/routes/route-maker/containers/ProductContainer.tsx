@@ -14,10 +14,12 @@ import {
 
 import { NoProductData, ProductController } from './product-container';
 
-type ProductContainerProps = CommonStoreProps & WithMaterialTypesProps;
+type ProductContainerProps =
+    Pick<CommonStoreProps, 'selectedProductDesign'> &
+    WithMaterialTypesProps;
 
 @withMaterialTypes()
-@withStoreValues(nameof<CommonStoreValues>(o => o.selectedProductDesign))
+@withStoreValues<ProductContainerProps>('selectedProductDesign')
 export class ProductContainer extends React.PureComponent<ProductContainerProps> {
 
     constructor(props: ProductContainerProps) {

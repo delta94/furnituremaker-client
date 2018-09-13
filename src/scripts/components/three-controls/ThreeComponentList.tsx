@@ -44,9 +44,10 @@ export interface ThreeComponentListProps extends CommonStoreProps {
     readonly sence: THREE.Scene;
 }
 
-@withStoreValues(
-    nameof<CommonStoreProps>(o => o.selectedProduct),
-    nameof<CommonStoreProps>(o => o.product3Dsence),
+@withStoreValues<CommonStoreProps>(
+    'selectedProduct',
+    'product3Dsence',
+    'selectedComponent'
 )
 class ThreeComponentListComponent extends React.PureComponent<ThreeComponentListProps> {
 
@@ -159,16 +160,31 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
         );
     }
 
-    onComponentSelect(component: FurnitureComponent) {
-        const { selectedObject, setStore, selectedProduct, product3Dsence } = this.props;
+    onComponentSelect(targetComponent: FurnitureComponent) {
+        const {
+            selectedObject,
+            selectedComponent,
+            setStore,
+            selectedProduct,
+            product3Dsence
+        } = this.props;
 
-        if (component.id === selectedObject.name) {
+        if (targetComponent.id === selectedObject.name) {
             return;
+        }
+
+        if (
+            JSON.stringify(selectedComponent.materialTypes) !==
+            JSON.stringify(targetComponent.materialTypes)
+        ) {
+            setStore<CommonStoreProps>({
+                selectedMaterialType: targetComponent.materialTypes[0]
+            });
         }
 
         this.setState({
             loading: true,
-            nextSelectComponent: component
+            nextSelectComponent: targetComponent
         });
 
         const objLoader = new THREE.OBJLoader2();
@@ -182,13 +198,13 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                 mesh.material = child.material;
             }
 
-            event.detail.loaderRootNode.name = component.id;
+            event.detail.loaderRootNode.name = targetComponent.id;
             product3Dsence.scene.remove(selectedObject);
             product3Dsence.scene.add(event.detail.loaderRootNode);
             const nextModules = selectedProduct.modules.map(productModule => {
 
                 const nextComponent = (selectedObject.name === productModule.component.id) ?
-                    component : productModule.component;
+                    targetComponent : productModule.component;
 
                 return {
                     ...productModule,
@@ -206,14 +222,14 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
             setStore<ThreeComponentListProps>({
                 selectedObject: event.detail.loaderRootNode,
                 selectedProduct: nextSelectedProduct,
-                selectedComponent: component
+                selectedComponent: targetComponent
             });
             this.setState({
                 loading: false,
                 nextSelectComponent: null
             });
         };
-        const objFile = uploadedFileUtils.getUrl(component.obj);
+        const objFile = uploadedFileUtils.getUrl(targetComponent.obj);
         objLoader.load(objFile, callbackOnLoad);
     }
 }

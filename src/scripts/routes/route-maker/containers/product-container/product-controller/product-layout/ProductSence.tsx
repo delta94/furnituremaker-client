@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { AntdAffix, ThreeSence } from '@/components';
+import { AntdAffix, ThreeMaterialListProps, ThreeSence } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
     ProductExtended,
@@ -18,20 +18,21 @@ const ProductSenceWrapper = styled.div`
     padding: 60px 0 0 0;
 `;
 
-interface RouteHomeProps extends
+interface ProductSenceProps extends
     CommonStoreProps,
     WithComponentsProps,
-    WithMaterialProps {
+    WithMaterialProps,
+    Partial<Pick<ThreeMaterialListProps, 'selectedMaterial'>> {
     readonly selectedObject?: THREE.Group | null;
     readonly product: ProductExtended;
 }
 @withComponents()
 @withMaterials()
 @withStoreValues(
-    nameof<RouteHomeProps>(o => o.selectedObject),
-    nameof<RouteHomeProps>(o => o.selectedProduct),
+    nameof<ProductSenceProps>(o => o.selectedObject),
+    nameof<ProductSenceProps>(o => o.selectedProduct),
 )
-export class ProductSence extends React.PureComponent<RouteHomeProps> {
+export class ProductSence extends React.PureComponent<ProductSenceProps> {
     render() {
         const { setStore, selectedProduct, selectedObject, product } = this.props;
         return (
@@ -84,13 +85,15 @@ export class ProductSence extends React.PureComponent<RouteHomeProps> {
             }
             return uploadedFileUtils.getUrl(material.texture) === objectMaterial.map.image.src;
         });
+        const selectedComponent = components.find(o => o.id === object.name);
 
-        return this.props.setStore({
+        return this.props.setStore<ProductSenceProps>({
             materials: [],
             selectedObject: object,
             selectedMaterial: selectedMaterial,
             components: sameTypeComponents,
-            selectedMaterialType: componentData.materialTypes[0]
+            selectedMaterialType: componentData.materialTypes[0],
+            selectedComponent: selectedComponent
         });
     }
 }

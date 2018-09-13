@@ -25,6 +25,7 @@ export interface ThreeMaterialListProps extends
     readonly selectedMaterial: FurnitureMaterial;
 }
 
+@withStoreValues<ThreeMaterialListProps>('selectedMaterialType')
 @withMaterialsByType()
 @withStoreValues<ThreeMaterialListProps>(
     'selectedMaterial',
@@ -102,27 +103,7 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
         });
 
         texture.load(textureFile, (map) => {
-            for (const mesh of selectedObject.children as THREE.Mesh[]) {
-                const meshPhongMaterial = mesh.material as THREE.MeshPhongMaterial;
-                meshPhongMaterial.map.image = map.image;
-                meshPhongMaterial.map.needsUpdate = true;
-                meshPhongMaterial.needsUpdate = true;
-            }
-
-            const nextSelectedProduct: ProductExtended = {
-                ...selectedProduct,
-                modules: selectedProduct.modules.map(productModule => {
-
-                    const nextMaterial = (selectedObject.name === productModule.component.id) ?
-                        material : productModule.material;
-
-                    return {
-                        ...productModule,
-                        material: nextMaterial,
-                        materialPrice: nextMaterial.price
-                    };
-                })
-            };
+            const nextSelectedProduct = this.loadMaterial(map, material, selectedObject, selectedProduct);
             this.props.setStore<ThreeMaterialListProps>({
                 selectedMaterial: material,
                 selectedProduct: nextSelectedProduct
@@ -132,6 +113,33 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
             });
         });
     }
+
+    // tslint:disable-next-line:typedef
+    loadMaterial(map, material, selectedObject, selectedProduct) {
+        for (const mesh of selectedObject.children as THREE.Mesh[]) {
+            const meshPhongMaterial = mesh.material as THREE.MeshPhongMaterial;
+            meshPhongMaterial.map.image = map.image;
+            meshPhongMaterial.map.needsUpdate = true;
+            meshPhongMaterial.needsUpdate = true;
+        }
+
+        const nextSelectedProduct: ProductExtended = {
+            ...selectedProduct,
+            modules: selectedProduct.modules.map(productModule => {
+
+                const nextMaterial = (selectedObject.name === productModule.component.id) ?
+                    material : productModule.material;
+
+                return {
+                    ...productModule,
+                    material: nextMaterial,
+                    materialPrice: nextMaterial.price
+                };
+            })
+        };
+
+        return nextSelectedProduct;
+    };
 }
 
 export const ThreeMaterialList = withStoreValues<ThreeMaterialListProps>(
