@@ -1,7 +1,7 @@
 import { History } from 'history';
 import { Store } from 'redux';
 
-import { clearToken, saveToken } from '@/configs';
+import { clearToken, getToken, saveToken } from '@/configs';
 import {
     restfulFetcher,
     User,
@@ -9,8 +9,6 @@ import {
     userResources
 } from '@/restful';
 import { getUrlSearchParam } from '@/utilities';
-
-import { changeAppStateToReady } from './readyState';
 
 interface AuthProps {
     readonly loginPath: string;
@@ -45,6 +43,11 @@ export class Auth {
 
     async isLoggedIn() {
         try {
+            const hasToken = getToken();
+            if (!hasToken) {
+                throw 'no token found';
+            }
+
             const user: User = await restfulFetcher.fetchResource(userResources.me, []);
             return user;
         } catch (error) {
