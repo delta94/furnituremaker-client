@@ -1,9 +1,11 @@
 // tslint:disable:no-string-literal
 // tslint:disable:no-console
+// tslint:disable:no-array-mutation
 import './ThreeSence.scss';
 
 import autobind from 'autobind-decorator';
 import * as React from 'react';
+import { Material } from 'three';
 
 import { WithStoreValuesDispatchs } from '@/app';
 import {
@@ -26,6 +28,10 @@ interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesDispatchs 
 }
 
 export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
+
+    // tslint:disable-next-line:readonly-keyword
+    private loaded3DComponents: Array<THREE.Group> = [];
+
     static readonly loadNormalMap = (material: FurnitureMaterial, meshMaterial: THREE.MeshPhongMaterial) => {
         const normalMapLoader = new THREE.TextureLoader();
         normalMapLoader.load(
@@ -48,6 +54,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
 
     componentDidUpdate() {
         this.selectObject(this.props.selectedObject);
+        this.calcComponentsPosition();
     }
 
     componentWillUnmount() {
@@ -97,13 +104,12 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                     mtl.setCrossOrigin(true);
                     mtl.preload();
 
-                    const materials: { readonly [key: string]: THREE.Material } = mtl.materials;
+                    const materials = mtl.materials as THREE.MeshPhongMaterial[];
 
                     for (const key in materials) {
                         if (materials.hasOwnProperty(key)) {
-                            const material = materials[key] as THREE.MeshPhongMaterial;
+                            const material = materials[key];
                             material.transparent = true;
-                            material.opacity = 0;
                             if (material.map) {
                                 material.map.anisotropy = 16;
                                 material.shininess = productModule.material.materialType.view_shiny || 0;
@@ -116,30 +122,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                     }
 
                     const objLoader = new THREE.OBJLoader2();
-                    const callbackOnLoadObj = (event) => {
-                        for (const child of event.detail.loaderRootNode.children) {
-                            // if child has multi material, we need set child's material to first material in the list
-                            if (Array.isArray(child.material)) {
-                                child.material = child.material.find((o: THREE.Material) => {
-                                    for (const materialKey in materials) {
-                                        if (materials.hasOwnProperty(materialKey)) {
-                                            const material = materials[materialKey];
-                                            if (material.name = o.name) {
-                                                return true;
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                            child.castShadow = true;
-                            child.receiveShadow = true;
-                            child.scale.set(0.1, 0.1, 0.1);
-                            this.fadeIn(child);
-                        }
-
-                        event.detail.loaderRootNode.name = productModule.component.id;
-                        this.scene.add(event.detail.loaderRootNode);
-                    };
+                    const callbackOnLoadObj = this.callbackOnLoadObj(productModule, materials);
 
                     objLoader.setLogging(false, false);
                     objLoader.setMaterials(materials);
@@ -161,7 +144,6 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                         child.castShadow = true;
                         child.receiveShadow = true;
                         child.name = productModule.component.id;
-                        this.fadeIn(child);
                     }
                     this.scene.add(object);
                 };
@@ -173,19 +155,59 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
         }
     }
 
-    fadeIn(mesh: THREE.Mesh) {
-        for (let key = 50; key <= 500; key += 50) {
-            setTimeout(
-                () => {
-                    mesh.material['opacity'] = mesh.material['opacity'] + 0.1;
-                },
-                key
-            );
+    readonly callbackOnLoadObj = (productModule: ProductModule, materials: Material[]) => (event) => {
+        const root = event.detail.loaderRootNode;
+        for (const child of root.children) {
+            // if child has multi material, we need set child's material to first material in the list
+            if (Array.isArray(child.material)) {
+                child.material = child.material.find((o: THREE.Material) => {
+                    for (const materialKey in materials) {
+                        if (materials.hasOwnProperty(materialKey)) {
+                            const material = materials[materialKey];
+                            if (material.name = o.name) {
+                                return true;
+                            }
+                        }
+                    }
+                });
+            }
+            child.castShadow = true;
+            child.receiveShadow = true;
+            child.scale.set(0.1, 0.1, 0.1);
+        }
+
+        root.name = productModule.component.id;
+
+        this.scene.add(root);
+        this.loaded3DComponents.push(root);
+
+        if (this.loaded3DComponents.length === this.props.productModules.length) {
+            this.modulesLoadCompleted();
         }
     }
 
-    @autobind
-    takeScreenshot() {
+    readonly modulesLoadCompleted = () => {
+        this.calcComponentsPosition();
+    }
+
+    readonly calcComponentsPosition = () => {
+        const leg = this.props.productModules.find(o => o.component.componentType.position === 'leg');
+        if (!leg) {
+            return;
+        }
+
+        const top = this.props.productModules.find(o => o.component.componentType.position === 'top');
+        if (!top) {
+            return;
+        }
+
+        const top3DComponent = this.loaded3DComponents.find(o => o.name === top.component.id);
+        for (const child of top3DComponent.children) {
+            child.position.setY(leg.component.height * 0.1);
+        }
+    }
+
+    readonly takeScreenshot = () => {
         return new Promise<string>((resolve) => {
             this.resetCamera();
             setTimeout(

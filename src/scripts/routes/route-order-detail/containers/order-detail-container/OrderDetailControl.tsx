@@ -35,8 +35,8 @@ export interface OrderDetailControlComponentState {
 
 @withStoreValues<InitAppStoreProps>('history')
 class OrderDetailControlComponent extends React.Component<
-    OrderDetailControlProps,
-    OrderDetailControlComponentState> {
+OrderDetailControlProps,
+OrderDetailControlComponentState> {
 
     // tslint:disable-next-line:readonly-keyword
     updateFormRef: UpdateOrderFormControl;
@@ -172,7 +172,7 @@ class OrderDetailControlComponent extends React.Component<
 export const OrderDetailControl = restfulDataContainer<Order, OrderDetailControlProps, OrderDetailControlProps>({
     store: restfulStore,
     resourceType: orderResourceType,
-    getMappingDataFromProps: (ownProps) => {    
+    registerToTracking: (ownProps) => {
         return [ownProps.order];
     },
     mapToProps: (data) => {

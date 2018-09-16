@@ -15,10 +15,6 @@ export const countyResourceType = new ResourceType<County>({
     schema: [{
         field: 'id',
         type: 'PK'
-    }, {
-        field: nameof<City>(o => o.counties),
-        resourceType: nameof<City>(),
-        type: 'FK'
     }]
 });
 

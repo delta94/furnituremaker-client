@@ -30,7 +30,7 @@ interface CartPaymentInfoProps extends
     // implement...
 }
 
-@withTempOrderDetails()
+@withTempOrderDetails
 export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
     render() {
         const { orderDetails } = this.props;

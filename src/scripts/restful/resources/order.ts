@@ -283,7 +283,7 @@ export interface WithOrdersProps {
 
 // tslint:disable-next-line:no-any
 export const withOrders = <T extends WithOrdersProps>(): any =>
-    restfulDataContainer<Order, T, WithOrdersProps>({
+    restfulDataContainer<Order, WithOrdersProps, T>({
         store: restfulStore,
         resourceType: orderResourceType,
         dataPropsKey: nameof<WithOrdersProps>(o => o.orders),

@@ -19,7 +19,7 @@ interface CartDrawerFooterProps extends
     Pick<InitAppStoreProps, 'history'> {
 }
 
-@withTempOrderDetails()
+@withTempOrderDetails
 @withStoreValues<InitAppStoreProps>('history')
 export class CartShippingInfo extends React.Component<CartDrawerFooterProps> {
     render() {

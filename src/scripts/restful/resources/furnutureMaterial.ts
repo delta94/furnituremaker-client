@@ -49,15 +49,15 @@ export const furnitureMaterialResources = {
     })
 };
 
-type WithMaterialByTypeOwnProps = Pick<CommonStoreProps, 'selectedMaterialType'>;
-
 export interface WithMaterialProps {
     readonly materials?: FurnitureMaterial[];
 }
 
+type WithMaterialByTypeOwnProps = Pick<CommonStoreProps, 'selectedMaterialType'> & WithMaterialProps;
+
 // tslint:disable-next-line:no-any
 export const withMaterialsByType = <T extends Required<WithMaterialByTypeOwnProps>>(): any => {
-    return restfulDataContainer<FurnitureMaterial, T, WithMaterialProps>({
+    return restfulDataContainer<FurnitureMaterial, WithMaterialProps, T>({
         resourceType: furnitureMaterialResouceType,
         store: restfulStore,
         mapToProps: (data, ownProps) => {
@@ -74,8 +74,8 @@ export const withMaterialsByType = <T extends Required<WithMaterialByTypeOwnProp
 };
 
 // tslint:disable-next-line:no-any
-export const withMaterials = <T>(): any => {
-    return restfulDataContainer<FurnitureMaterial, T, WithMaterialProps>({
+export const withMaterials = <T extends WithMaterialProps>(): any => {
+    return restfulDataContainer<FurnitureMaterial, WithMaterialProps, T>({
         resourceType: furnitureMaterialResouceType,
         store: restfulStore,
         mapToProps: (data) => ({ materials: data })

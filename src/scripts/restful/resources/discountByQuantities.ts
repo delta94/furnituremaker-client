@@ -93,17 +93,18 @@ export const discountByQuantitiesUtils = {
     }
 };
 
-export interface WithDiscountByQuantitiesOwnProps {
-    readonly productType: ProductType;
-}
-
 export interface WithDiscountByQuantities {
     readonly discountByQuantities?: DiscountByQuantity[];
 }
 
+export interface WithDiscountByQuantitiesOwnProps
+    extends WithDiscountByQuantities {
+    readonly productType: ProductType;
+}
+
 // tslint:disable-next-line:no-any
 export const withDiscountByQuantities = <T extends WithDiscountByQuantitiesOwnProps>(): any =>
-    restfulDataContainer<DiscountByQuantity, T, WithDiscountByQuantities>({
+    restfulDataContainer<DiscountByQuantity, WithDiscountByQuantities, T>({
         store: restfulStore,
         resourceType: discountByQuantitiesResourceType,
         mapToProps: (data, ownProps) => {

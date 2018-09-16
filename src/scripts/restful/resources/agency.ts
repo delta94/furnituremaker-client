@@ -70,10 +70,10 @@ export interface WithAllAgenciesProps {
 
 // tslint:disable-next-line:no-any
 export const withAllAgencies = <T extends WithAllAgenciesProps>(): any =>
-    restfulDataContainer<Agency, T, WithAllAgenciesProps>({
+    restfulDataContainer<Agency, WithAllAgenciesProps, T>({
         resourceType: agencyResourceType,
         store: restfulStore,
-        getMappingDataFromProps: (props) => props.agencies,
+        registerToTracking: (props) => props.agencies,
         mapToProps: (agencies) => {
             return { agencies };
         }

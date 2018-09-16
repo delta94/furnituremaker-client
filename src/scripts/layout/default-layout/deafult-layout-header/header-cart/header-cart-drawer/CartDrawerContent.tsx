@@ -13,7 +13,7 @@ import { OrderDetailItem } from './cart-drawer-content';
 interface CartDrawerContentProps extends WithTempOrderDetails {
 }
 
-@withTempOrderDetails()
+@withTempOrderDetails
 export class CartDrawerContent extends React.PureComponent<CartDrawerContentProps> {
     render() {
         const { orderDetails } = this.props;

@@ -181,8 +181,8 @@ export interface WithTempOrderDetails {
 }
 
 // tslint:disable-next-line:no-any
-export const withTempOrderDetails = <T extends WithTempOrderDetails>(): any =>
-    restfulDataContainer<OrderDetail, T, WithTempOrderDetails>({
+export const withTempOrderDetails = <T extends WithTempOrderDetails>(Component): any =>
+    restfulDataContainer<OrderDetail, WithTempOrderDetails, T>({
         resourceType: orderDetailResourceType,
         store: restfulStore,
         mapToProps: (data) => {
@@ -192,4 +192,4 @@ export const withTempOrderDetails = <T extends WithTempOrderDetails>(): any =>
 
             return { orderDetails };
         }
-    });
+    })(Component);

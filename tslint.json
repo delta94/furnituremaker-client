@@ -121,14 +121,20 @@
             "check-type",
             "check-typecast"
         ],
-        "max-classes-per-file": [true, 1],
+        "max-classes-per-file": [
+            true,
+            1
+        ],
         "no-default-export": true,
         // tslint-immutable
         "readonly-keyword": true,
         "no-array-mutation": true,
         "no-method-signature": true
     },
-    "exclude":[
-        "**/dist/**"
-    ]
+    "linterOptions": {
+        "exclude": [
+            "node_modules/**",
+            "**/dist/**"
+        ]
+    }
 }

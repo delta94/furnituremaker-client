@@ -55,8 +55,8 @@ export interface WithMaterialTypesProps {
 }
 
 // tslint:disable-next-line:no-any
-export const withMaterialTypes = <T extends WithMaterialTypesProps>(): any =>
-    restfulDataContainer<MaterialType, T, WithMaterialTypesProps>({
+export const withMaterialTypes = <P extends WithMaterialTypesProps>(): any =>
+    restfulDataContainer<MaterialType, WithMaterialTypesProps, P>({
         resourceType: materialTypeResourceType,
         store: restfulStore,
         mapToProps: (data) => ({ materialTypes: data })

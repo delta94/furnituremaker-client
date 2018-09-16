@@ -139,7 +139,7 @@ export interface WithOrderTransactionOwnProps extends
 
 // tslint:disable-next-line:no-any
 export const withOrderTransactionsByOrder = <T extends WithOrderTransactionOwnProps>(): any =>
-    restfulDataContainer<OrderTransaction, T, WithOrderTransactionProps>({
+    restfulDataContainer<OrderTransaction, WithOrderTransactionProps, T>({
         store: restfulStore,
         resourceType: orderTransactionType,
         mapToProps: (data, ownProps) => {

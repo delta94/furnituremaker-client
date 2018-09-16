@@ -27,6 +27,7 @@ export interface FurnitureComponent extends RecordType {
     readonly fbx?: UploadedFile;
     readonly displayName: string;
     readonly code: string;
+    readonly height?: number;
 }
 
 export const furnitureComponentResourceType = new ResourceType<FurnitureComponent>({
@@ -65,7 +66,7 @@ export interface WithComponentsProps {
 
 // tslint:disable-next-line:no-any
 export const withComponents = <T extends WithComponentsProps>(): any =>
-    restfulDataContainer<FurnitureComponent, T, WithComponentsProps>({
+    restfulDataContainer<FurnitureComponent, WithComponentsProps, T>({
         resourceType: furnitureComponentResourceType,
         store: restfulStore,
         mapToProps: (data) => ({ components: data })

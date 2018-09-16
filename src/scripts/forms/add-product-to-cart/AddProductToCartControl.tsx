@@ -29,7 +29,7 @@ interface ProductAddCartControlProps extends
     readonly productDiscount?: ProductDiscount;
 }
 
-@withTempOrderDetails()
+@withTempOrderDetails
 @withStoreValues<CommonStoreProps>('selectedProduct', 'product3Dsence')
 export class AddProductToCartControl extends React.PureComponent<ProductAddCartControlProps> {
     readonly createNewOrderDetail = async (quantity: number): Promise<OrderDetail> => {

@@ -68,8 +68,8 @@ export interface WithProductDiscounts {
 }
 
 // tslint:disable-next-line:no-any
-export const withProductDiscounts = <T>(): any =>
-    restfulDataContainer<ProductDiscount, T, WithProductDiscounts>({
+export const withProductDiscounts = <T extends WithProductDiscounts>(): any =>
+    restfulDataContainer<ProductDiscount, WithProductDiscounts, T>({
         store: restfulStore,
         resourceType: productDiscountResourceType,
         mapToProps: (data, p) => {
