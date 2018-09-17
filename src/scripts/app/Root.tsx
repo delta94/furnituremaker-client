@@ -12,8 +12,6 @@ import { queryNotifications } from '@/firebase/firebaseNotificationDB';
 import {
     Agency,
     agencyResources,
-    County,
-    countyResources,
     discountByQuantitiesResources,
     furnitureMaterialResources,
     OrderDetail,
@@ -32,8 +30,7 @@ import { policies } from './policies';
 import { changeAppStateToReady } from './readyState';
 
 export interface RootProps {
-    // tslint:disable-next-line:no-any
-    readonly store: Store<any, AnyAction>;
+    readonly store: Store<string, AnyAction>;
     readonly children: JSX.Element[];
     readonly loginPath: string;
 }
@@ -73,19 +70,16 @@ export class Root extends React.Component<RootProps> {
 
         return (
             <Provider store={store}>
-                <React.Fragment>
-                    <Router history={this.history}>
-                        <Switch>
-                            {this.props.children}
-                        </Switch>
-                    </Router>
-                </React.Fragment>
+                <Router history={this.history}>
+                    <Switch>
+                        {this.props.children}
+                    </Switch>
+                </Router>
             </Provider>
         );
     }
 
-    @autobind
-    async appInit(user: User): Promise<User> {
+    readonly appInit = async (user: User): Promise<User> => {
         try {
             await Promise.all([
                 restfulFetcher.fetchResource(
