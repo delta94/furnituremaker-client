@@ -17,7 +17,7 @@ import { formatDate } from '@/utilities';
 const orderBy = require('lodash/orderBy');
 
 const HeaderNotificationButtonWrapper = styled.div`
-    height: 60px;
+    height: 70px;
     width: 60px;
     color: #FFFFFF;
     transition: all .2s;

@@ -1,6 +1,5 @@
 import './Root.scss';
 
-import autobind from 'autobind-decorator';
 import { createBrowserHistory, History } from 'history';
 import * as React from 'react';
 import { Provider } from 'react-redux';

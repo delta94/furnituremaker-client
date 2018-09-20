@@ -14,7 +14,7 @@ import {
 import { HeaderCartDrawer, HeaderCartDrawerProps } from './header-cart';
 
 const HeaderCartButtonWrapper = styled.div`
-    height: 60px;
+    height: 70px;
     width: 60px;
     color: #FFFFFF;
     transition: all .2s;

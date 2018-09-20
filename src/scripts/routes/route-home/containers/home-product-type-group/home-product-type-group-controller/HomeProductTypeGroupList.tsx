@@ -22,10 +22,15 @@ interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
 type ItemType = React.ComponentType<ItemProps>;
 const Item: ItemType = styled.div`
     text-align: center;
-    border-radius: 5px 5px 0 0;
     transition: all .3s;
     cursor: ${(props) => props.canClick && 'pointer'};
     background-color: ${(props: ItemProps) => props.isSelected && '#F6F5F6'};
+    height: 150px;
+    width: 150px!important;
+    display: flex!important;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 `;
 
 const ThumbnailWrapper = styled.div`

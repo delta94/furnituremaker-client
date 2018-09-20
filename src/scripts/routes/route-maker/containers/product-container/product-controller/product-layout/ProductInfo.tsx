@@ -14,7 +14,7 @@ import {
     ThreeComponentListProps,
     ThreeMaterialList
 } from '@/components';
-import { colorGray, colorPrimary, CommonStoreProps } from '@/configs';
+import { colorPrimary, CommonStoreProps } from '@/configs';
 import { AddProductToCartControl } from '@/forms/add-product-to-cart';
 import {
     discountByQuantitiesResources,

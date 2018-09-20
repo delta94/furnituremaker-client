@@ -36,7 +36,9 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
     render() {
         const { setStore, selectedProduct, selectedObject, product } = this.props;
         return (
-            <AntdAffix offsetTop={10}>
+            <AntdAffix
+                offsetTop={10}
+            >
                 <ProductSenceWrapper>
                     <ThreeSence
                         onObjectSelect={this.onObjectSelect}

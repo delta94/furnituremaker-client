@@ -143,22 +143,13 @@ export class RouteMaker extends AppPage<RouteMakerProps, RouteMakerState> {
 
         return (
             <Page>
-                <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
+                <DefaultLayout>
                     <ProductTypeGroupContainer />
                     <ProductTypeContainer />
                     <ProductDesignContainer />
                     <ProductContainer />
                 </DefaultLayout>
             </Page >
-        );
-    }
-
-    renderBreadcrumb() {
-        return (
-            <AntdBreadcrumb>
-                <AntdBreadcrumb.Item><AntdIcon type="home" /></AntdBreadcrumb.Item>
-                <AntdBreadcrumb.Item>Tự thiết kế</AntdBreadcrumb.Item>
-            </AntdBreadcrumb>
         );
     }
 }

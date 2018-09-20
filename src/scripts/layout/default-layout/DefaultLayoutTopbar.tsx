@@ -13,7 +13,7 @@ const DefaultLayoutTopbarContent = styled.div`
    display: flex;
    >div:first-child {
        flex-grow: 1;
-       line-height: 30px;
+       line-height: 50px;
        color: white;
    }
 `;
@@ -24,7 +24,7 @@ const Menu = styled.ul`
     text-align: right;
     .link {
         color: white;
-        line-height: 30px;
+        line-height: 50px;
     }
 `;
 

@@ -10,7 +10,6 @@ import { ProductType } from '@/restful';
 const Wrapper = styled.div`
     position: relative;
     width: 100%;
-    height: 1px;
     z-index: 1;
 `;
 

@@ -11,7 +11,7 @@ import { HeaderCart, HeaderNotification } from './deafult-layout-header';
 
 const HeaderWrapper = styled.div`
     background-color: #3D3D3D;
-    height: 60px;
+    height: 70px;
 `;
 
 const HeaderContent = styled.div`
@@ -19,12 +19,13 @@ const HeaderContent = styled.div`
 `;
 
 const HeaderLogo = styled.img`
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
 `;
 
 const HeaderDescription = styled.div`
-    height: 60px;
+    height: 70px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -33,13 +34,13 @@ const HeaderDescription = styled.div`
 `;
 
 const HeaderSearch = styled.div`
-    height: 60px;
+    height: 70px;
     flex-grow: 1;
 `;
 
 const HeaderButton = styled.div`
     text-align: center;
-    height: 60px;
+    height: 70px;
     min-width: 60px;
     display: flex;
     justify-content: center;
@@ -65,7 +66,7 @@ export class DefaultLayoutHeader extends React.PureComponent {
                     <Container>
                         <HeaderContent>
                             <Link to="/">
-                                <HeaderLogo src="/static/assets/logo.svg" />
+                                <HeaderLogo src="/static/assets/logo.png" />
                             </Link>
                             <HeaderDescription>
                                 <span>Dễ dàng tùy biến sản phẩm</span>
