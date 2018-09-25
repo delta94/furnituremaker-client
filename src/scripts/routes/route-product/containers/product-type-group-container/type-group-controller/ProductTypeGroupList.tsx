@@ -25,6 +25,14 @@ const Item: ItemType = styled.div`
     transition: all .3s;
     cursor: ${(props) => props.canClick && 'pointer'};
     background-color: ${(props: ItemProps) => props.isSelected && '#F6F5F6'};
+    height: 150px;
+    width: 150px!important;
+    display: flex!important;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid #E9E9E9;
+    border: ${(props: ItemProps) => props.isSelected && '3px solid #EFB416'};
 `;
 
 const ThumbnailWrapper = styled.div`
