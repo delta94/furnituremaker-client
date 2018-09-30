@@ -43,7 +43,12 @@ export class DefaultLayout extends React.Component<DefaultLayoutProps> {
                         </Container>
                     )
                 }
-                <AntdLayout.Content style={{ display: 'flex', flexDirection: 'column' }}>
+                <AntdLayout.Content
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}
+                >
                     {this.props.children}
                 </AntdLayout.Content>
                 <DefaultLayoutFooter />

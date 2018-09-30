@@ -62,7 +62,7 @@ export class DefaultLayoutHeader extends React.PureComponent {
     render() {
         return (
             <AntdAffix>
-                <HeaderWrapper>
+                <HeaderWrapper id="header">
                     <Container>
                         <HeaderContent>
                             <Link to="/">
@@ -73,7 +73,6 @@ export class DefaultLayoutHeader extends React.PureComponent {
                                 <span>Thảnh thơi gom hàng với giá cực tốt</span>
                             </HeaderDescription>
                             <HeaderSearch />
-
                             <AntdPopover
                                 title="Tài Khoản"
                                 content={

@@ -19,6 +19,7 @@ export * from './Message';
 export * from './Modal';
 export * from './Notification';
 export * from './Popover';
+export * from './Progress';
 export * from './Select';
 export * from './Spin';
 export * from './Steps';

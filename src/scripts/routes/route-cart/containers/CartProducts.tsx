@@ -11,7 +11,7 @@ export class CartProducts extends React.Component<CartProductsProps> {
 
         return (
             <AntdCard title="Giỏ hàng của bạn">
-                <CartDrawerContent />
+                <CartDrawerContent mode="default" />
             </AntdCard>
         );
     }

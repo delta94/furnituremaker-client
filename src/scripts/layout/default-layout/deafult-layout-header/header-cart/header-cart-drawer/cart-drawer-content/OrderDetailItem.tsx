@@ -2,6 +2,7 @@ import './OrderDetailItem.scss';
 
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 import {
     AntdButton,
@@ -13,7 +14,6 @@ import {
 import { AntdModal } from '@/components/antd-component/Modal';
 import { colorPrimary } from '@/configs';
 import {
-    discountByQuantitiesUtils,
     OrderDetail,
     orderDetailResources,
     orderDetailUtils,
@@ -31,10 +31,17 @@ import {
 import { fileHostEntry } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
+const PriceLabel = styled.span`
+    color: #7EA233;
+    font-weight: bold;
+    font-size: 18px;
+`;
+
 interface OrderDetailItemProps extends
     WithProductDiscounts,
     WithDiscountByQuantitiesOwnProps,
     WithDiscountByQuantities {
+    readonly mode: 'default' | 'simple';
     readonly orderDetail: OrderDetail;
 }
 
@@ -113,7 +120,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
     }
 
     render() {
-        const { orderDetail } = this.props;
+        const { orderDetail, mode } = this.props;
         const { fetching } = this.state;
 
         return (
@@ -196,16 +203,39 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                         </div>
                     )}
                 />
-                <div>Số lượng mua: {orderDetail.quantity}</div>
-                <div>Đơn giá: {formatCurrency(orderDetail.productPrice)}</div>
-                <div>Giảm giá mỗi sản phẩm: {formatCurrency(orderDetail.totalDiscountPerProduct)}</div>
-                <br />
-                <div>Tổng giảm giá: {formatCurrency(orderDetail.discount)}</div>
-                <div>
-                    Thành tiền: <b style={{ color: colorPrimary }}>
-                        {formatCurrency(orderDetail.totalPrice)}
-                    </b>
-                </div>
+                {
+                    mode === 'simple' ?
+                        (
+                            <div>
+                                <div>Giá cũ: {formatCurrency(orderDetail.productPrice)}</div>
+                                <div>
+                                    Giá mới:{' '}
+                                    <PriceLabel>
+                                        {
+                                            formatCurrency(
+                                                orderDetail.productPrice - orderDetail.totalDiscountPerProduct
+                                            )
+                                        } đ
+                                    </PriceLabel>
+                                </div>
+                            </div>
+                        ) :
+                        (
+                            <>
+                                <div>Số lượng mua: {orderDetail.quantity}</div>
+                                <div>Đơn giá: {formatCurrency(orderDetail.productPrice)}</div>
+                                <div>Giảm giá mỗi sản phẩm: {formatCurrency(orderDetail.totalDiscountPerProduct)}</div>
+                                <br />
+                                <div>Tổng giảm giá: {formatCurrency(orderDetail.discount)}</div>
+                                <div>
+                                    Thành tiền: <b style={{ color: colorPrimary }}>
+                                        {formatCurrency(orderDetail.totalPrice)}
+                                    </b>
+                                </div>
+                            </>
+                        )
+                }
+
             </AntdList.Item >
         );
     }
