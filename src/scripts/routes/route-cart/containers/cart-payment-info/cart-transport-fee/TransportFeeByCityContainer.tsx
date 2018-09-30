@@ -15,7 +15,6 @@ export class TransportFeeByCity extends React.PureComponent<TransportFeeByCityPr
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={cityResources.find}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {

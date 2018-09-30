@@ -19,7 +19,7 @@ export class ProductContainer extends React.Component<ProductContainerProps> {
         const { productCode } = this.props;
         return (
             <RestfulRender
-                store={restfulStore}
+                
                 fetcher={restfulFetcher}
                 parameters={[{
                     type: 'query',

@@ -160,7 +160,6 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
                                     <h4>Thêm vào giỏ hàng</h4>
                                     <RestfulRender
                                         fetcher={restfulFetcher}
-                                        store={restfulStore}
                                         parameters={[{
                                             type: 'query',
                                             parameter: nameof<DiscountByQuantity>(o => o.productType),

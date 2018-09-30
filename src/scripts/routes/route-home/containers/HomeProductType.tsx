@@ -23,7 +23,6 @@ export class HomeProductType extends React.PureComponent<CommonStoreProps> {
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={productTypeResources.find}
                 parameters={[{
                     type: 'query',

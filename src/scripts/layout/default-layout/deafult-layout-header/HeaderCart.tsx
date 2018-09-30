@@ -63,7 +63,7 @@ export class HeaderCart extends React.Component<DefaultLayoutHeaderProps> {
                     }}
                 >
                     <HeaderCartBadgeWapper>
-                        <AntdBadge count={quantity} showZero={true}>
+                        <AntdBadge count={quantity} showZero={true} style={{ backgroundColor: '#9DCB3D' }}>
                             <HeaderCartBadge>
                                 <AntdIcon type="shopping-cart" />
                             </HeaderCartBadge>

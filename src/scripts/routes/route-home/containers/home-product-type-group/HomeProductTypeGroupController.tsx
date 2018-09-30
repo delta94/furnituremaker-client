@@ -89,7 +89,7 @@ export class HomeProductTypeGroupController extends React.Component<HomeProductT
                                     hoveredProductTypeGroup: null,
                                 });
                             },
-                            100
+                            200
                             // tslint:disable-next-line:no-any
                         ) as any;
 

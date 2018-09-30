@@ -14,15 +14,19 @@ import { getProductLink } from '@/routes/route-product';
 import { formatCurrency } from '@/utilities';
 
 const ItemWrapper = styled.div`
-    background: #F9F9F9;
-    border: 1px solid #DADADA;
     box-sizing: border-box;
-    border-radius: 5px;
+    height: 100%;
+    padding-bottom: 4px;
+`;
+
+const ItemWrapper2 = styled.div`
+    background: #E9E9E9;
+    box-sizing: border-box;
     overflow: hidden;
     padding: 15px 0;
     transition: all .3s;
     position: relative;
-    margin: 0 0 20px 0;
+    height: 300px;
     &:hover {
         border-color: ${colorPrimary};
         > .item-info {
@@ -41,6 +45,7 @@ const ItemDiscount = styled.div`
     position: absolute;
     padding: 5px 20px 5px 5px;
     color: #fff;
+    top: 20px;
 `;
 
 const ItemContent = styled.div`
@@ -48,6 +53,7 @@ const ItemContent = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height: 100%;
 `;
 
 const ItemThumbWapper = styled.div`
@@ -60,7 +66,9 @@ const ItemThumbWapper = styled.div`
 `;
 
 const ItemThumbTitle = styled.label`
-    color: #9B9B9B;
+    line-height: normal;
+    font-size: 12px;
+    text-align: center;
 `;
 
 const ItemInfo = styled.div`
@@ -115,7 +123,6 @@ export interface HomeProductListItemProps extends
     readonly product: Product;
 }
 
-@withProductDiscounts()
 @withStoreValues<HomeProductListItemProps>('history')
 export class HomeProductListItem extends React.PureComponent<HomeProductListItemProps> {
     public render() {
@@ -128,49 +135,51 @@ export class HomeProductListItem extends React.PureComponent<HomeProductListItem
 
         return (
             <ItemWrapper>
-                {
-                    productDiscount && (
-                        <ItemDiscount>
-                            Giảm ngay {
-                                productDiscount.discountMoney ?
-                                    formatCurrency(productDiscount.discountMoney) :
-                                    `${productDiscount.discountPercent} %`
-                            }
-                        </ItemDiscount>
-                    )
-                }
-                <ItemContent>
-                    <ItemThumbWapper>
-                        <Img file={product.thumbnail} />
-                    </ItemThumbWapper>
-                    <ItemThumbTitle>
-                        {product.name}
-                    </ItemThumbTitle>
-                </ItemContent>
-                <ItemInfo className="item-info">
-                    <ItemInfoName>
-                        {product.name}
+                <ItemWrapper2>
+                    {
+                        productDiscount && (
+                            <ItemDiscount>
+                                Giảm ngay {
+                                    productDiscount.discountMoney ?
+                                        formatCurrency(productDiscount.discountMoney) :
+                                        `${productDiscount.discountPercent} %`
+                                }
+                            </ItemDiscount>
+                        )
+                    }
+                    <ItemContent>
+                        <ItemThumbWapper>
+                            <Img file={product.thumbnail} />
+                        </ItemThumbWapper>
+                        <ItemThumbTitle>
+                            {product.name}
+                        </ItemThumbTitle>
+                    </ItemContent>
+                    <ItemInfo className="item-info">
+                        <ItemInfoName>
+                            {product.name}
+                            <br />
+                            <small>{product.produceCode}</small>
+                        </ItemInfoName>
+                        <ItemInfoPrice >
+                            {formatCurrency(product.totalPrice)} đ
                         <br />
-                        <small>{product.produceCode}</small>
-                    </ItemInfoName>
-                    <ItemInfoPrice >
-                        {formatCurrency(product.totalPrice)} đ
-                        <br />
-                        <small>còn {product.inventory} sản phẩm</small>
-                    </ItemInfoPrice>
-                    <ItemInfoActions>
-                        <AntdButton
-                            href={productLink
-                            }
-                            onClick={(e) => {
-                                e.preventDefault();
-                                history.push(productLink);
-                            }}
-                        >
-                            Mua hàng
-                        </AntdButton>
-                    </ItemInfoActions>
-                </ItemInfo>
+                            <small>còn {product.inventory} sản phẩm</small>
+                        </ItemInfoPrice>
+                        <ItemInfoActions>
+                            <AntdButton
+                                href={productLink
+                                }
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    history.push(productLink);
+                                }}
+                            >
+                                Mua hàng
+                            </AntdButton>
+                        </ItemInfoActions>
+                    </ItemInfo>
+                </ItemWrapper2>
             </ItemWrapper>
         );
     }

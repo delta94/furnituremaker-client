@@ -38,7 +38,6 @@ export class AgencyField extends React.PureComponent<AgencyFieldProps> {
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={agencyResources.find}
                 parameters={[]}
                 render={(renderProps) => {

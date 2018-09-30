@@ -15,7 +15,6 @@ export class ProductTypeGroupContainer extends React.Component<CommonStoreProps>
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={productTypeGroupResources.find}
                 parameters={[]}
                 render={(renderProps) => {

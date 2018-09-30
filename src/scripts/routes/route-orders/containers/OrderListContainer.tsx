@@ -36,7 +36,6 @@ export class OrderListContainer extends React.PureComponent {
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 parameters={fetchParams}
                 resource={orderResources.find}
                 render={(renderProps) => {

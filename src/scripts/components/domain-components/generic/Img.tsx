@@ -30,6 +30,6 @@ export class Img extends React.Component<ImgProps> {
         const imgSrc = this.getSrc();
 
         const passedProps = { ...this.props, file: undefined };
-        return <img style={{ maxWidth: '100%' }} {...passedProps} src={imgSrc} />;
+        return <img {...passedProps} src={imgSrc} />;
     }
 }

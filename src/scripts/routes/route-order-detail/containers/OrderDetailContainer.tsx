@@ -14,7 +14,6 @@ export class OrderDetailContainer extends React.Component<OrderDetailContainerPr
         const { orderId } = this.props;
         return (
             <RestfulRender
-                store={restfulStore}
                 fetcher={restfulFetcher}
                 parameters={[{
                     type: 'path',

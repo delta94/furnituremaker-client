@@ -34,7 +34,6 @@ export class ProductContainer extends React.PureComponent<ProductContainerProps>
 
         return (
             <RestfulRender
-                store={restfulStore}
                 fetcher={restfulFetcher}
                 parameters={[{
                     type: 'query',

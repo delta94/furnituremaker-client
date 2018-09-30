@@ -23,7 +23,6 @@ export class CartDiscountByAgencyLevel extends React.Component<CardTotalOfPaymen
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={agencyResources.findOne}
                 parameters={[{
                     type: 'path',

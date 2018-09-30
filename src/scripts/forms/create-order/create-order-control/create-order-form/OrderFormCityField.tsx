@@ -124,7 +124,6 @@ export class OrderFormCityField extends React.PureComponent<OrderFormCityFieldPr
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={cityResources.find}
                 onFetchCompleted={this.onFetchCompleted}
                 render={this.restFulRender}

@@ -10,15 +10,10 @@ import {
     Product,
     ProductDesign,
     productResources,
-    restfulFetcher,
-    restfulStore
+    restfulFetcher
 } from '@/restful';
 
 const ItemSquare = styled.div`
-    position: relative;
-`;
-
-const ItemRectangle = styled.div`
     position: relative;
 `;
 
@@ -27,12 +22,14 @@ interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
 }
 
 const ThumbnailWrapper: React.ComponentType<ItemProps> = styled.div`
-    border-radius: 10px;
     overflow: hidden;
-    margin: 0 10px;
+    margin: 0 0px;
     opacity: ${(props: ItemProps) => props.isSelected ? 1 : 0.5};
     cursor: pointer;
     transition: all .3s;
+    height: 220px;
+    overflow: hidden;
+    background: #4B4B4B;
     &:hover {
         opacity: 1;
     }
@@ -40,12 +37,17 @@ const ThumbnailWrapper: React.ComponentType<ItemProps> = styled.div`
 
 const Label = styled.span`
     color: #fff;
-    font-size: 14px;
+    font-size: 18px;
     position: absolute;
     top: 15px;
     right: 25px;
-    line-height: normal;
+    line-height: 1;
     text-transform: uppercase;
+    text-align: right;
+    small {
+        font-size: 14px;
+        text-transform: lowercase;
+    }
 `;
 
 interface HomeProductDesignItemProps extends
@@ -61,7 +63,7 @@ interface HomeProductDesignItemProps extends
 export class HomeProductDesignItem extends React.PureComponent<HomeProductDesignItemProps> {
     render() {
         const { productDesign, selectedProductDesign, setStore } = this.props;
-        const ItemWrapper = productDesign.coverPhotoShape === 'rectangle' ? ItemRectangle : ItemSquare;
+        const ItemWrapper = ItemSquare;
         const isSelected = selectedProductDesign && (
             selectedProductDesign.id === productDesign.id
         );
@@ -69,7 +71,6 @@ export class HomeProductDesignItem extends React.PureComponent<HomeProductDesign
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={productResources.count}
                 parameters={[{
                     type: 'query',
@@ -92,7 +93,7 @@ export class HomeProductDesignItem extends React.PureComponent<HomeProductDesign
                             <Link to={`?design=${productDesign.id}`}>
                                 <ThumbnailWrapper isSelected={isSelected}>
                                     <Img
-                                        className="mw-100 w-100"
+                                        className="h-100"
                                         file={productDesign.coverPhoto}
                                     />
                                 </ThumbnailWrapper>

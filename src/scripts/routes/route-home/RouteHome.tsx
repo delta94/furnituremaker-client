@@ -30,14 +30,8 @@ export class RouteHome extends AppPage<RouteHomeProps> {
                     <HomeProductTypeGroup />
                     <HomeProductType />
                     <HomeProductDesign />
-                    <div
-                        style={{
-                            background: '#fff',
-                            padding: '30px 0 30px 0'
-                        }}
-                    >
+                    <div>
                         <HomeProductFilter />
-                        <HomeFeatureProducts />
                         <HomeProductList />
                     </div>
                 </DefaultLayout>

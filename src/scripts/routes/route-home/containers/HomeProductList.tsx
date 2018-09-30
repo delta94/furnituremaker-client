@@ -8,12 +8,7 @@ import {
 
 import { withStoreValues } from '@/app';
 import { CommonStoreProps } from '@/configs';
-import {
-    Product,
-    productResources,
-    restfulFetcher,
-    restfulStore
-} from '@/restful';
+import { Product, productResources, restfulFetcher } from '@/restful';
 
 import {
     HomeProductListController,
@@ -23,13 +18,8 @@ import {
 const getDefaultSearchParams = (): ResourceParameter[] => [
     {
         type: 'query',
-        parameter: `${nameof<Product>(o => o.isFeatureProduct)}_ne`,
-        value: true
-    },
-    {
-        type: 'query',
         parameter: '_limit',
-        value: 4
+        value: 6
     },
     {
         type: 'query',
@@ -55,6 +45,7 @@ interface HomeProductListProps extends
 }
 
 interface HomeProductListState {
+    readonly prevFetchedProducts?: Product[];
     readonly fetchedProducts: Product[];
     readonly fetchParams: ResourceParameter[];
 }
@@ -89,7 +80,7 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
 
                 return {
                     ...prevState,
-                    fetchParams: [...defaultSearchParams]
+                    fetchParams: [...defaultSearchParams],
                 };
             }
             return null;
@@ -128,17 +119,21 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
             fetchParams: [
                 ...fetchParams
             ],
-            fetchedProducts: []
+            fetchedProducts: [],
+            prevFetchedProducts: [...this.state.fetchedProducts]
         });
     }
 
     readonly renderComponent = (renderProps: RestfulComponentRenderProps<Product[]>) => {
-        const { fetchedProducts, fetchParams } = this.state;
+        const { fetchedProducts, prevFetchedProducts, fetchParams } = this.state;
 
         return (
             <React.Fragment>
                 <HomeProductListController
-                    products={fetchedProducts}
+                    products={fetchedProducts.length ?
+                        fetchedProducts :
+                        (prevFetchedProducts || [])
+                    }
                 />
                 <HomeProductListViewMoreBtn
                     fetchParams={fetchParams}
@@ -171,7 +166,6 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={productResources.find}
                 parameters={fetchParams}
                 onFetchCompleted={(data) => {

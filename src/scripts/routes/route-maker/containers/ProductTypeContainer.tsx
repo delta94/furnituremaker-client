@@ -23,7 +23,6 @@ export class ProductTypeContainer extends React.Component<CommonStoreProps> {
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={productTypeResources.find}
                 parameters={[{
                     type: 'query',

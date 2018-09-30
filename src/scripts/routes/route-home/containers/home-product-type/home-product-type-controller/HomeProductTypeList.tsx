@@ -3,7 +3,7 @@ import Slider, { Settings } from 'react-slick';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { Img } from '@/components';
+import { Container, Img } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { ProductType } from '@/restful';
 
@@ -11,6 +11,11 @@ const Wrapper = styled.div`
     position: relative;
     width: 100%;
     z-index: 1;
+    .slick-track {
+        > .slick-slide {
+            padding-right: 4px;
+        }
+    }
 `;
 
 interface ContentProps extends React.DOMAttributes<HTMLDivElement> {
@@ -20,9 +25,8 @@ interface ContentProps extends React.DOMAttributes<HTMLDivElement> {
 const Content: React.ComponentType<ContentProps> = styled.div`
     position: absolute;
     width: 100%;
-    height: 220px;
-    border-bottom: 2px solid #D59B01;
-    background-color: #F6F5F6;
+    height: 230px;
+    background: #fff;
     transition: visibility 0s, opacity 0.3s;
     visibility : ${(props: ContentProps) => props.showList ? 'visible' : 'hidden'};
     opacity : ${(props) => props.showList ? 1 : 0};
@@ -33,12 +37,12 @@ interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
 }
 const Item: React.ComponentType<ItemProps> = styled.div`
     text-align: center;
-    padding: 10px;
-    border-radius: 10px 10px 0 0;
     transition: all .3s;
-    opacity: ${(props: ItemProps) => props.isSelected ? 1 : 0.5};
+    background: #FFC12E;
+    opacity: ${(props: ItemProps) => props.isSelected ? 1 : 1};
     cursor: pointer;
-    max-width: 300px;
+    height: 220px;
+
 `;
 
 const ThumbnailWrapper = styled.div`
@@ -48,8 +52,9 @@ const ThumbnailWrapper = styled.div`
 `;
 
 const Label = styled.span`
-    color: #3E3E3E;
-    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
 `;
 
 export interface HomeProductTypeListStoreProps {
@@ -77,7 +82,7 @@ export class HomeProductTypeList extends React.Component<HomeProductTypeListProp
         dots: true,
         infinite: false,
         speed: 500,
-        slidesToShow: 5,
+        slidesToShow: 4,
         slidesToScroll: 1
     };
 
@@ -92,32 +97,35 @@ export class HomeProductTypeList extends React.Component<HomeProductTypeListProp
         } = this.props;
 
         return (
-            <Wrapper>
-                <Content
-                    showList={showHomeProductTypeList}
-                    onMouseEnter={onMouseHoverOnList}
-                    onMouseLeave={onMouseLeaveList}
-                >
-                    <Slider {...HomeProductTypeList.slickSettings}>
-                        {
-                            productTypes.map((productType: ProductType) => {
-                                return (
-                                    <Item
-                                        key={productType.id}
-                                        isSelected={selectedProductType && selectedProductType.id === productType.id}
-                                        onClick={() => onTypeClick(productType)}
-                                    >
-                                        <ThumbnailWrapper>
-                                            <Img className="mw-100" file={productType.thumbnail} />
-                                        </ThumbnailWrapper>
-                                        <Label>{productType.name}</Label>
-                                    </Item>
-                                );
-                            })
-                        }
-                    </Slider>
-                </Content>
-            </Wrapper>
+            <Container>
+                <Wrapper>
+                    <Content
+                        showList={showHomeProductTypeList}
+                        onMouseEnter={onMouseHoverOnList}
+                        onMouseLeave={onMouseLeaveList}
+                    >
+                        <Slider {...HomeProductTypeList.slickSettings}>
+                            {
+                                productTypes.map((productType: ProductType) => {
+                                    return (
+                                        <Item
+                                            key={productType.id}
+                                            isSelected={selectedProductType &&
+                                                selectedProductType.id === productType.id}
+                                            onClick={() => onTypeClick(productType)}
+                                        >
+                                            <ThumbnailWrapper>
+                                                <Img className="mw-100 w-100" file={productType.thumbnail} />
+                                            </ThumbnailWrapper>
+                                            <Label>{productType.name}</Label>
+                                        </Item>
+                                    );
+                                })
+                            }
+                        </Slider>
+                    </Content>
+                </Wrapper>
+            </Container>
         );
     }
 }

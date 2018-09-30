@@ -141,7 +141,6 @@ export class HomeFeatureProducts extends React.PureComponent<HomeFeatureProducts
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={productResources.find}
                 parameters={fetchParams}
                 render={this.renderComponent}

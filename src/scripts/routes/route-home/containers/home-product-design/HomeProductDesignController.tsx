@@ -12,11 +12,13 @@ import { HomeProductDesignItem } from './home-product-design-controller';
 
 const Wrapper = styled.div`
     position: relative;
-    padding: 25px 0px 0 0px;
     margin: 0 0 20px 0;
-    .slick-list {
-        margin: 0 -10px 0 -10px;
+    .slick-track {
+        margin-left: 0;
         overflow: unset;
+    }
+    .slick-slide {
+        padding-right: 4px;
     }
 `;
 
@@ -32,11 +34,10 @@ interface ProductDesignControllerProps
 )
 export class HomeProductDesignController extends React.PureComponent<ProductDesignControllerProps> {
     static readonly slickSettings: Settings = {
-        variableWidth: true,
         infinite: false,
         speed: 500,
-        centerMode: false,
-        slidesToScroll: 10
+        slidesToScroll: 4,
+        slidesToShow: 4,
     };
 
     constructor(props: ProductDesignControllerProps) {
@@ -58,22 +59,24 @@ export class HomeProductDesignController extends React.PureComponent<ProductDesi
     render() {
         const { productDesigns } = this.props;
         return (
-            <Wrapper>
-                <Container>
-                    <Slider {...HomeProductDesignController.slickSettings}>
-                        {
-                            productDesigns.map(o => {
-                                return (
-                                    <HomeProductDesignItem
-                                        key={o.id}
-                                        productDesign={o}
-                                    />
-                                );
-                            })
-                        }
-                    </Slider>
-                </Container>
-            </Wrapper>
+            <Container>
+                <Wrapper>
+                    <Container>
+                        <Slider {...HomeProductDesignController.slickSettings}>
+                            {
+                                productDesigns.map(o => {
+                                    return (
+                                        <HomeProductDesignItem
+                                            key={o.id}
+                                            productDesign={o}
+                                        />
+                                    );
+                                })
+                            }
+                        </Slider>
+                    </Container>
+                </Wrapper>
+            </Container>
         );
     }
 }

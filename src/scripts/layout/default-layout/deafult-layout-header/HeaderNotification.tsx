@@ -194,7 +194,6 @@ export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderP
                         <AntdBadge
                             count={this.countUnreadNotifications()}
                             showZero={true}
-                            style={{ backgroundColor: '#52c41a' }}
                         >
                             <HeaderNotificationBadge>
                                 <AntdIcon type="notification" />

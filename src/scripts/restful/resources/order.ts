@@ -107,7 +107,7 @@ export const orderResources = {
         resourceType: orderResourceType,
         url: apiEntry('/order'),
         method: 'POST',
-        afterFetch: (params, order) => {
+        mapDataToStore: (order, resourceType, store, requestInfo) => {
             const isAdmin = policies.isAdminGroup();
             if (!isAdmin) {
                 sendNotificationToFirebase('root', {
@@ -119,8 +119,7 @@ export const orderResources = {
                     fromUserName: order.createdBy.name
                 });
             }
-        },
-        mapDataToStore: (order, resourceType, store) => {
+
             store.mapRecord(resourceType, order);
             const orderDetailType = store.getRegisteredResourceType(nameof<OrderDetail>());
             for (const orderDetail of order.orderDetails) {
@@ -136,7 +135,8 @@ export const orderResources = {
         resourceType: orderResourceType,
         url: apiEntry('/order/:id'),
         method: 'PUT',
-        afterFetch: (params, order, meta) => {
+        mapDataToStore: (order, resourceType, store, requestInfo) => {
+            const { meta } = requestInfo;
             sendNotificationToFirebase(meta.sendNotificationTo, {
                 orderId: order.id,
                 fromAgency: order.agencyOrderer.id,
@@ -145,8 +145,7 @@ export const orderResources = {
                 fromUserName: order.createdBy.name,
                 type: meta.notificationType
             });
-        },
-        mapDataToStore: (order, resourceType, store) => {
+
             store.mapRecord(resourceType, order);
         }
     }),
@@ -286,17 +285,15 @@ export const withOrders = <T extends WithOrdersProps>(): any =>
     restfulDataContainer<Order, WithOrdersProps, T>({
         store: restfulStore,
         resourceType: orderResourceType,
-        dataPropsKey: nameof<WithOrdersProps>(o => o.orders),
+        registerToTracking: (ownProps) => ownProps.orders,
+        sort: (a, b) => {
+            const dateA = new Date(a.createdAt);
+            const dateB = new Date(b.createdAt);
+            return dateB.getTime() - dateA.getTime();
+        },
         mapToProps: (data) => {
-            // tslint:disable-next-line:no-array-mutation
-            const sorted = data.sort((a, b) => {
-                const dateA = new Date(a.createdAt);
-                const dateB = new Date(b.createdAt);
-                return dateA.getTime() - dateB.getTime();
-            }).reverse();
-
             return {
-                orders: sorted
+                orders: data
             };
         }
     });

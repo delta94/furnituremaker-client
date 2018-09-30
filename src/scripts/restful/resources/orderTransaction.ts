@@ -46,22 +46,23 @@ export const orderTransactionResources = {
         resourceType: orderTransactionType,
         url: apiEntry('/orderTransaction'),
         method: 'POST',
-        afterFetch: (params, fetchResult) => {
+
+        mapDataToStore: (orderTransaction, resourceType, store) => {
             const isAdmin = policies.isAdminGroup();
             if (isAdmin) {
                 const now = new Date();
+                const { order } = orderTransaction;
                 sendNotificationToFirebase(
-                    fetchResult.order.createdBy,
+                    order.createdBy,
                     {
                         type: 'new-order-transaction',
-                        orderId: fetchResult.order.id,
-                        orderRransactionId: fetchResult.id,
+                        orderId: order.id,
+                        orderRransactionId: orderTransaction.id,
                         time: now.toISOString()
                     }
                 );
             }
-        },
-        mapDataToStore: (orderTransaction, resourceType, store) => {
+
             store.mapRecord(resourceType, orderTransaction);
         }
     }),

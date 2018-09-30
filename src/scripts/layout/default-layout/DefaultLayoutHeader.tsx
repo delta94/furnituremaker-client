@@ -73,10 +73,8 @@ export class DefaultLayoutHeader extends React.PureComponent {
                                 <span>Thảnh thơi gom hàng với giá cực tốt</span>
                             </HeaderDescription>
                             <HeaderSearch />
-                            <HeaderNotification />
-                            <HeaderCart />
+
                             <AntdPopover
-                                placement="bottomRight"
                                 title="Tài Khoản"
                                 content={
                                     <React.Fragment>
@@ -99,6 +97,8 @@ export class DefaultLayoutHeader extends React.PureComponent {
                                     </span>
                                 </HeaderButton>
                             </AntdPopover>
+                            <HeaderNotification />
+                            <HeaderCart />
                         </HeaderContent>
                     </Container>
                 </HeaderWrapper >

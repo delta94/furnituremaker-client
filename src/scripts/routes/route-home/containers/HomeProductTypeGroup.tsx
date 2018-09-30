@@ -15,7 +15,6 @@ export class HomeProductTypeGroup extends React.PureComponent<CommonStoreProps> 
         return (
             <RestfulRender
                 fetcher={restfulFetcher}
-                store={restfulStore}
                 resource={productTypeGroupResources.find}
                 parameters={[]}
                 render={(renderProps) => {

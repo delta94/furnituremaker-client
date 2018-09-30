@@ -29,7 +29,7 @@ export class DefaultLayout extends React.Component<DefaultLayoutProps> {
             <AntdLayout
                 style={{
                     minHeight: 'inherit',
-                    background: '#F7F7F7'
+                    background: '#fff'
                 }}
             >
                 <DefaultLayoutTopbar />
