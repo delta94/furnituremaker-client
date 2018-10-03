@@ -1,23 +1,14 @@
 import * as React from 'react';
-import { ResourceParameter } from 'react-restful';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
 import { AntdCol, AntdRow } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import {
-    FurnitureComponent,
-    furnitureComponentResources,
-    FurnitureMaterial,
-    furnitureMaterialResources,
-    Product,
-    ProductExtended,
-    productUtils,
-    restfulFetcher
-} from '@/restful';
+import { Product, productUtils } from '@/restful';
 
 import {
     InventoryProductInfo,
+    InventoryProductPhotos,
     InventoryProductPreview,
     ProductTypeInfo
 } from './product-detail';
@@ -80,6 +71,7 @@ export class ProductDetail extends React.PureComponent<ProductDetailProps> {
                     Xem thông số kỹ thuật
                 </ProductDetailSectionLablel>
                 <ProductTypeInfo />
+                <InventoryProductPhotos />
             </ProductDetailWrapper>
         );
     }

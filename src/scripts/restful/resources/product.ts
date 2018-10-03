@@ -34,6 +34,7 @@ export interface Product {
     readonly name?: string;
     readonly inventory?: number;
     readonly modulesCode?: string;
+    readonly photos?: UploadedFile[];
 }
 
 export interface ProductExtended extends Product {

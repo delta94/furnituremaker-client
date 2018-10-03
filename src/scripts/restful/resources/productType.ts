@@ -15,6 +15,21 @@ export interface ProductType extends RecordType {
     readonly size: string;
     readonly volume: number;
 
+    readonly sizeHeight: number;
+    readonly sizeWeight: number;
+    readonly sizeDepth: number;
+    readonly sizeHeightHand: number;
+    readonly sizeHeightFoot: number;
+    readonly hwd: string;
+    readonly crs: string;
+
+    readonly weight: number;
+    readonly chairCoverType: string;
+    readonly mattressMaterial: string;
+    readonly foamType: string;
+    readonly caringInstruction: string;
+    readonly wrappedMaterial: string;
+
     readonly view_senceWidth: number;
     readonly view_senceHeight: number;
     readonly view_rotateX: number;
