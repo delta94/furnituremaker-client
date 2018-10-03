@@ -23,6 +23,12 @@ const ProductName = styled.h1`
     color: #3D3D3D;
 `;
 
+const ProductCode = styled.span`
+    color:#536AB1;
+    text-transform: uppercase;
+    font-size: 120%;
+`;
+
 export interface InventoryProductInfoProps extends
     Pick<CommonStoreProps, 'selectedProduct'>,
     WithProductDiscounts {
@@ -36,7 +42,7 @@ export class InventoryProductInfo extends React.PureComponent<InventoryProductIn
             return (
                 <AntdTag color="green">
                     giảm giá 30%
-            </AntdTag>
+                </AntdTag>
             );
         }
 
@@ -64,7 +70,7 @@ export class InventoryProductInfo extends React.PureComponent<InventoryProductIn
                     }
                 </ProductName>
                 <p>
-                    Mã sản phẩm: {selectedProduct.produceCode}
+                    Mã sản phẩm: <ProductCode>{selectedProduct.produceCode}</ProductCode>
                 </p>
                 <AntdDivider />
                 <InventoryProductTransport

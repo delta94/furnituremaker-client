@@ -40,6 +40,7 @@ export class InventoryProductTransport extends React.PureComponent<InventoryProd
                     <div style={{ fontSize: 20 }}>
                         Nhận hàng trong <b>2 ngày</b>
                     </div>
+                    Miễn phí ship nội thành với đơn hàng trên 20 triệu *
                 </ProductTransportContent>
             </ProductTransportWrapper>
         );

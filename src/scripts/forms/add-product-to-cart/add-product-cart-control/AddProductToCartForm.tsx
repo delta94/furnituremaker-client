@@ -5,38 +5,42 @@ import styled from 'styled-components';
 import {
     AntdButton,
     AntdCol,
-    AntdDivider,
     AntdRow,
     AntdSelectOptionProps,
     FormError,
     renderInputNumber,
     renderSelectField
 } from '@/components';
-import { colorPrimary } from '@/configs';
 import {
     discountByQuantitiesUtils,
     DiscountByQuantity,
     OrderDetail,
     ProductDiscount,
     productDiscountUtils,
-    ProductExtended,
-    productUtils
+    ProductExtended
 } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
 const orderBy = require('lodash/orderBy');
 
 const FormBody = styled.div`
-    margin: 0 0 15px 0;
+    margin: 0 0 50px 0;
 `;
 
 const FormActions = styled.div`
     text-align: right;
 `;
 
-const TotalValue = styled.div`
-    font-size: 18px;
-    color: ${colorPrimary};
+const PriceAfterDiscount = styled.div`
+    line-height: normal;
+    font-size: 20px;
+    letter-spacing: -0.00510711px;
+
+    color: #8ABB25;
+`;
+
+const TotalDiscount = styled.div`
+    color: #8ABB25;
     text-align: right;
 `;
 
@@ -144,7 +148,6 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
             product,
             productDiscount,
             handleSubmit,
-            submitting,
             error,
             change
         } = this.props;
@@ -155,6 +158,51 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
             <Form onSubmit={handleSubmit}>
                 <FormError error={error} />
                 <FormBody>
+                    <Field
+                        name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
+                        component={(fieldProps) => {
+                            const { input } = fieldProps;
+                            const quantity = (typeof input.value === 'string') ? +input.value : input.value;
+
+                            if (!quantity) {
+                                return null;
+                            }
+
+                            const productDiscountValue =
+                                productDiscountUtils.getDiscountMoney(productDiscount, product);
+
+                            const discountByQuantityValue = discountByQuantitiesUtils
+                                .getDiscountValue(discountByQuantities, quantity);
+
+                            const discountValue = productDiscountValue + discountByQuantityValue;
+
+                            const productPriceAfterDiscount =
+                                (product.totalPrice - discountValue);
+
+                            return (
+                                <AntdRow>
+                                    <AntdCol span={12}>
+                                        Đơn giá ban đầu:
+                                    </AntdCol>
+                                    <AntdCol span={12}>
+                                        <div style={{ textAlign: 'right' }}>
+                                            {formatCurrency(product.totalPrice)}
+                                        </div>
+                                    </AntdCol>
+                                    <AntdCol span={12}>
+                                        Đơn giá hiện tại:
+                                    </AntdCol>
+                                    <AntdCol span={12}>
+                                        <TotalDiscount>
+                                            <PriceAfterDiscount>
+                                                Chỉ còn {formatCurrency(productPriceAfterDiscount)}
+                                            </PriceAfterDiscount>
+                                        </TotalDiscount>
+                                    </AntdCol>
+                                </AntdRow>
+                            );
+                        }}
+                    />
                     <AntdRow gutter={10}>
                         {(discountByQuantities && discountByQuantities.length) &&
                             <AntdCol span={17}>
@@ -222,25 +270,6 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                                         return (
                                             <AntdRow>
                                                 <AntdCol span={12}>
-                                                    Đơn giá ban đầu:
-                                                </AntdCol>
-                                                <AntdCol span={12}>
-                                                    <div style={{ textAlign: 'right' }}>
-                                                        {formatCurrency(product.totalPrice)}
-                                                    </div>
-                                                </AntdCol>
-                                                <AntdCol span={12}>
-                                                    Đơn giá hiện tại:
-                                                </AntdCol>
-                                                <AntdCol span={12}>
-                                                    <TotalValue>
-                                                        {formatCurrency(productPriceAfterDiscount)}
-                                                    </TotalValue>
-                                                </AntdCol>
-                                                <AntdCol span={12} offset={12}>
-                                                    <AntdDivider dashed={true} />
-                                                </AntdCol>
-                                                <AntdCol span={12}>
                                                     Tổng giá ban đầu:
                                                 </AntdCol>
                                                 <AntdCol span={12}>
@@ -253,16 +282,18 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                                                 </AntdCol>
                                                 <AntdCol span={12}>
                                                     <div style={{ textAlign: 'right' }}>
-                                                        {totalDiscount ? `-${formatCurrency(totalDiscount)}` : 0}
+                                                        <TotalDiscount>
+                                                            {totalDiscount ? `-${formatCurrency(totalDiscount)}` : 0}
+                                                        </TotalDiscount>
                                                     </div>
                                                 </AntdCol>
                                                 <AntdCol span={12}>
                                                     Tổng thanh toán:
                                                 </AntdCol>
                                                 <AntdCol span={12}>
-                                                    <TotalValue>
+                                                    <div style={{ textAlign: 'right' }}>
                                                         {formatCurrency(totalPrice)}
-                                                    </TotalValue>
+                                                    </div>
                                                 </AntdCol>
                                             </AntdRow>
                                         );
@@ -273,23 +304,34 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                     </AntdRow>
                 </FormBody>
                 <FormActions>
-                    <Field
-                        name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
-                        component={(fieldProps) => {
-                            return (
-                                <AntdButton
-                                    icon="shopping-cart"
-                                    loading={submitting}
-                                    type="primary"
-                                    htmlType="submit"
-                                >
-                                    {`Thêm ${fieldProps.input.value} sản phẩm vào giỏ`}
-                                </AntdButton>
-                            );
-                        }}
-                    />
+                    <AntdRow>
+                        <AntdCol span={12}>
+                            <Field
+                                name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
+                                component={this.renderSubmitButton}
+                            />
+                        </AntdCol>
+                        <AntdCol span={12}>
+                            {null}
+                        </AntdCol>
+                    </AntdRow>
                 </FormActions>
             </Form>
+        );
+    }
+
+    readonly renderSubmitButton = () => {
+        const { submitting } = this.props;
+
+        return (
+            <AntdButton
+                className="button-primary w-100"
+                loading={submitting}
+                type="primary"
+                htmlType="submit"
+            >
+                {`Thêm vào giỏ`}
+            </AntdButton>
         );
     }
 }

@@ -29,15 +29,17 @@ export class ProductTypeContainer extends React.Component<CommonStoreProps> {
                     parameter: nameof<ProductType>(o => o.productTypeGroup),
                     value: hoveredProductTypeGroup.id
                 }]}
-                render={(renderProps) => {
-                    if (renderProps.data && !renderProps.fetching) {
-                        return (
-                            <ProductTypeController productTypes={renderProps.data} />
-                        );
-                    }
-                    return null;
-                }}
+                render={this.renderProductTypeController}
             />
         );
+    }
+
+    readonly renderProductTypeController = (renderProps) => {
+        if (renderProps.data && !renderProps.fetching) {
+            return (
+                <ProductTypeController productTypes={renderProps.data} />
+            );
+        }
+        return null;
     }
 }

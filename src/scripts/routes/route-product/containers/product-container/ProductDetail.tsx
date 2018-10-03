@@ -18,11 +18,26 @@ import {
 
 import {
     InventoryProductInfo,
-    InventoryProductPreview
+    InventoryProductPreview,
+    ProductTypeInfo
 } from './product-detail';
 
 const ProductDetailWrapper = styled.div`
     display: bold;
+`;
+
+const ProductDetailSectionLablel = styled.p`
+    background: #D6D6D6;
+    height: 49px;
+    line-height: 49px;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: center;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    color: #141414;
+    margin-top: 50px;
 `;
 
 export interface ProductDetailProps extends
@@ -53,14 +68,18 @@ export class ProductDetail extends React.PureComponent<ProductDetailProps> {
 
         return (
             <ProductDetailWrapper>
-                <AntdRow>
-                    <AntdCol span={14}>
+                <AntdRow type="flex">
+                    <AntdCol span={16}>
                         <InventoryProductPreview />
                     </AntdCol>
-                    <AntdCol span={10}>
+                    <AntdCol span={8}>
                         <InventoryProductInfo />
                     </AntdCol>
                 </AntdRow>
+                <ProductDetailSectionLablel>
+                    Xem thông số kỹ thuật
+                </ProductDetailSectionLablel>
+                <ProductTypeInfo />
             </ProductDetailWrapper>
         );
     }

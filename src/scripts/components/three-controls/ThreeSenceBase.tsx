@@ -96,7 +96,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * SSAA Render
         const renderPass = new THREE.SSAARenderPass(this.scene, this.camera);
-        renderPass.clearColor = '#f9f9f9';
+        renderPass.clearColor = '#fff';
         renderPass.clearAlpha = 1;
 
         renderPass.sampleLevel = 2;

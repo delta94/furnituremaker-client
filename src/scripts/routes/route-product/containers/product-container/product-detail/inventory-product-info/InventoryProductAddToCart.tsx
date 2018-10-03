@@ -20,35 +20,37 @@ export interface InventoryProductAddToCartProps extends
 @withStoreValues<InventoryProductAddToCartProps>('selectedProductType')
 export class InventoryProductAddToCart extends React.PureComponent<InventoryProductAddToCartProps> {
     public render() {
-        const { selectedProductType, productDiscount } = this.props;
+        const { selectedProductType } = this.props;
         if (!selectedProductType) {
             return null;
         }
 
         return (
-            <div>
-                <h4>Thêm vào giỏ hàng</h4>
-                <RestfulRender
-                    fetcher={restfulFetcher}
-                    parameters={[{
-                        type: 'query',
-                        parameter: nameof<DiscountByQuantity>(o => o.productType),
-                        value: selectedProductType.id
-                    }]}
-                    resource={discountByQuantitiesResources.find}
-                    render={(renderProps) => {
-                        if (renderProps.data && !renderProps.fetching) {
-                            return (
-                                <AddProductToCartControl
-                                    discountByQuantities={renderProps.data}
-                                    productDiscount={productDiscount}
-                                />
-                            );
-                        }
-                        return null;
-                    }}
-                />
-            </div>
+            <RestfulRender
+                fetcher={restfulFetcher}
+                parameters={[{
+                    type: 'query',
+                    parameter: nameof<DiscountByQuantity>(o => o.productType),
+                    value: selectedProductType.id
+                }]}
+                resource={discountByQuantitiesResources.find}
+                render={this.renderForm}
+            />
+        );
+    }
+
+    readonly renderForm = (renderProps) => {
+        const { productDiscount } = this.props;
+
+        if (!renderProps.data) {
+            return null;
+        }
+
+        return (
+            <AddProductToCartControl
+                discountByQuantities={renderProps.data}
+                productDiscount={productDiscount}
+            />
         );
     }
 }

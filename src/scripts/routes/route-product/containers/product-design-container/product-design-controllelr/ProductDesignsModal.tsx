@@ -18,7 +18,7 @@ export interface DesignModalProps extends CommonStoreProps {
 }
 
 @withStoreValues(nameof<DesignModalProps>(o => o.showDesignsModal))
-export class DesignModal extends React.Component<DesignModalProps> {
+export class DesignModal extends React.PureComponent<DesignModalProps> {
     render() {
         const { productDesignGroups,
             productDesigns,

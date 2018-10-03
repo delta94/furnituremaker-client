@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
-import {
-    Product,
-    productResources,
-    restfulFetcher,
-    restfulStore
-} from '@/restful';
+import { Product, productResources, restfulFetcher } from '@/restful';
 
 import { ProductDetail } from './product-container';
 
@@ -19,7 +14,6 @@ export class ProductContainer extends React.Component<ProductContainerProps> {
         const { productCode } = this.props;
         return (
             <RestfulRender
-                
                 fetcher={restfulFetcher}
                 parameters={[{
                     type: 'query',
@@ -27,16 +21,19 @@ export class ProductContainer extends React.Component<ProductContainerProps> {
                     value: productCode
                 }]}
                 resource={productResources.find}
-                render={(renderProps) => {
-                    if (renderProps.data && !renderProps.fetching) {
-                        return (
-                            <ProductDetail
-                                product={renderProps.data[0]}
-                            />
-                        );
-                    }
-                    return null;
-                }}
+                render={this.renderProductDetail}
+            />
+        );
+    }
+
+    readonly renderProductDetail = (renderProps) => {
+        if (!renderProps.data) {
+            return null;
+        }
+
+        return (
+            <ProductDetail
+                product={renderProps.data[0]}
             />
         );
     }

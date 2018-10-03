@@ -2,12 +2,7 @@ import * as React from 'react';
 
 import { withStoreValues } from '@/app';
 import { CommonStoreProps } from '@/configs';
-import {
-    ProductDesign,
-    productDesignGroupUtils,
-    productTypeGroupResourceType,
-    restfulStore
-} from '@/restful';
+import { ProductDesign, productDesignGroupUtils } from '@/restful';
 
 import { DesignModal, DesignModalProps } from './product-design-controllelr';
 

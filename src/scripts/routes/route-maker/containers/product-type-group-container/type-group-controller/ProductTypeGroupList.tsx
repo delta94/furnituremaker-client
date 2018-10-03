@@ -24,7 +24,7 @@ const Item: ItemType = styled.div`
     text-align: center;
     transition: all .3s;
     cursor: ${(props) => props.canClick && 'pointer'};
-    background-color: ${(props: ItemProps) => props.isSelected && '#F6F5F6'};
+    background-color: ${(props: ItemProps) => props.isSelected && '#fff'};
     height: 150px;
     width: 150px!important;
     display: flex!important;
