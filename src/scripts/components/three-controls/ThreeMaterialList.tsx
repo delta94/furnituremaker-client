@@ -59,7 +59,8 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
                             grid={{ gutter: 16, column: 3 }}
                             pagination={{
                                 pageSize: 6,
-                                simple: true
+                                simple: true,
+                                style: { textAlign: 'center' }
                             }}
                             renderItem={(material: FurnitureMaterial) => {
                                 const isSelected = (selectedMaterial.id === material.id);

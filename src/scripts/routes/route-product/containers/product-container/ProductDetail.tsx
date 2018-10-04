@@ -17,7 +17,7 @@ const ProductDetailWrapper = styled.div`
     display: bold;
 `;
 
-const ProductDetailSectionLablel = styled.p`
+export const ProductDetailSectionLablel = styled.p`
     background: #D6D6D6;
     height: 49px;
     line-height: 49px;

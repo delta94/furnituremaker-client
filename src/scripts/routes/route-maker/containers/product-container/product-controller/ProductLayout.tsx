@@ -19,7 +19,7 @@ import {
 import { ProductInfo, ProductInfoProps, ProductSence } from './product-layout';
 
 const ProductLayoutContent = styled.div`
-    padding: 30px 0;
+    padding: 0;
 `;
 
 interface ProductLayoutProps extends
@@ -61,12 +61,12 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
             <Container id="senceContainer">
                 <ProductLayoutContent>
                     <AntdRow type="flex">
-                        <AntdCol span={16}>
+                        <AntdCol span={15}>
                             <ProductSence
                                 product={selectedProduct}
                             />
                         </AntdCol>
-                        <AntdCol span={8}>
+                        <AntdCol span={9}>
                             <ProductInfo
                                 product={selectedProduct}
                                 showDesignModal={showDesignModal}

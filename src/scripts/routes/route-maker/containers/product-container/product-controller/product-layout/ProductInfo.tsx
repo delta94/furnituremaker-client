@@ -6,9 +6,7 @@ import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
 import {
     AntdCard,
     AntdCol,
-    AntdCollapse,
     AntdDivider,
-    AntdIcon,
     AntdRow,
     ThreeComponentList,
     ThreeComponentListProps,
@@ -21,9 +19,10 @@ import {
     DiscountByQuantity,
     ProductExtended,
     productUtils,
-    restfulFetcher,
-    restfulStore
+    restfulFetcher
 } from '@/restful';
+
+import { ProductTransport, Topbar } from './product-info';
 
 const ProductName = styled.h1`
     margin-bottom: 0px;
@@ -37,10 +36,6 @@ const ProductCode = styled.small`
     line-height: 1;
 `;
 
-const ProductDesign = styled.p`
-    font-size: 14px;
-`;
-
 const ChangeDesign = styled.div`
     text-align: right;
     cursor: pointer;
@@ -50,13 +45,6 @@ const ChangeDesign = styled.div`
 const ProductInfoWrapper = styled.div`
     margin: 0 0 0 0;
     min-height: 500px;
-`;
-
-const ProductBackBtn = styled.div`
-    font-size: 20px;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
 `;
 
 export interface ProductInfoProps extends
@@ -76,112 +64,66 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
         const {
             product,
             selectedProductType,
-            showDesignModal,
-            setStore
-        } = this.props;
+            showDesignModal } = this.props;
 
         return (
-            <AntdCard>
-                {
-                    this.props.selectedObject ? (
-                        <ProductInfoWrapper>
-                            <ProductBackBtn
-                                onClick={() => setStore({ selectedObject: null })}
-                            >
-                                <AntdIcon type="arrow-left" />
-                            </ProductBackBtn>
-                            <ThreeMaterialList />
-                            <AntdDivider dashed={true} />
-                            <ThreeComponentList />
-                        </ProductInfoWrapper>
-                    ) : (
+            <React.Fragment>
+                <Topbar />
+                <AntdCard>
+                    {
+                        this.props.selectedObject ? (
                             <ProductInfoWrapper>
-                                <ProductName>
-                                    {productUtils.getProductName(product)}
-                                </ProductName>
-                                <ProductCode>{productUtils.getProductModulesCode(product)}</ProductCode>
+                                <ThreeMaterialList />
                                 <AntdDivider dashed={true} />
-                                <AntdRow>
-                                    <AntdCol span={13}>
-                                        <ProductDesign>{product.design.name}</ProductDesign>
-                                    </AntdCol>
-                                    <AntdCol span={11}>
-                                        <ChangeDesign onClick={showDesignModal}>
-                                            Thay đổi thiết kế khác?
-                                        </ChangeDesign>
-                                    </AntdCol>
-                                </AntdRow>
-                                <AntdCollapse
-                                    bordered={false}
-                                    defaultActiveKey={['1']}
-                                    style={{ margin: '0 -24px 20px -24px' }}
-                                >
-                                    <AntdCollapse.Panel
-                                        key="1"
-                                        header="Thông ting chung"
-                                        style={{
-                                            padding: '0 10px'
-                                        }}
-                                    >
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                Fusce at dolor magna.
-                                                Maecenas eros justo, tempus eget massa sit amet, ullamcorper molestie ex
-                                        </p>
-                                    </AntdCollapse.Panel>
-                                    <AntdCollapse.Panel
-                                        key="2"
-                                        header="Thông số sản phẩm"
-                                        style={{
-                                            padding: '0 10px'
-                                        }}
-                                    >
-                                        <AntdRow>
-                                            <AntdCol span={12}>
-                                                Kích thước:
-                                            </AntdCol>
-                                            <AntdCol span={12}>
-                                                <div style={{ textAlign: 'right' }}>
-                                                    {product.productType.size}
-                                                </div>
-                                            </AntdCol>
-                                            <AntdCol span={12}>
-                                                Thể tích:
-                                            </AntdCol>
-                                            <AntdCol span={12}>
-                                                <div style={{ textAlign: 'right' }}>
-                                                    {product.productType.volume} m<sup>3</sup>
-                                                </div>
-                                            </AntdCol>
-                                        </AntdRow>
-                                    </AntdCollapse.Panel>
-                                </AntdCollapse>
-                                <div>
-                                    <h4>Thêm vào giỏ hàng</h4>
-                                    <RestfulRender
-                                        fetcher={restfulFetcher}
-                                        parameters={[{
-                                            type: 'query',
-                                            parameter: nameof<DiscountByQuantity>(o => o.productType),
-                                            value: selectedProductType.id
-                                        }]}
-                                        resource={discountByQuantitiesResources.find}
-                                        render={(renderProps) => {
-                                            if (renderProps.data && !renderProps.fetching) {
-                                                return (
-                                                    <AddProductToCartControl
-                                                        discountByQuantities={renderProps.data}
-                                                    />
-                                                );
-                                            }
-                                            return null;
-                                        }}
-                                    />
-                                </div>
+                                <ThreeComponentList />
                             </ProductInfoWrapper>
-                        )
-                }
-            </AntdCard>
+                        ) : (
+                                <ProductInfoWrapper>
+
+                                    <AntdRow>
+                                        <AntdCol span={13}>
+                                            <ProductName>
+                                                {productUtils.getProductName(product)}
+                                            </ProductName>
+                                            <ProductCode>{productUtils.getProductModulesCode(product)}</ProductCode>
+                                        </AntdCol>
+                                        <AntdCol span={11}>
+                                            <ChangeDesign onClick={showDesignModal}>
+                                                Thay đổi thiết kế khác?
+                                            </ChangeDesign>
+                                        </AntdCol>
+                                    </AntdRow>
+                                    <AntdDivider />
+                                    <ProductTransport />
+                                    <AntdDivider />
+                                    <div>
+                                        <h4>Thêm vào giỏ hàng</h4>
+                                        <RestfulRender
+                                            fetcher={restfulFetcher}
+                                            parameters={[{
+                                                type: 'query',
+                                                parameter: nameof<DiscountByQuantity>(o => o.productType),
+                                                value: selectedProductType.id
+                                            }]}
+                                            resource={discountByQuantitiesResources.find}
+                                            render={(renderProps) => {
+                                                if (renderProps.data && !renderProps.fetching) {
+                                                    return (
+                                                        <AddProductToCartControl
+                                                            discountByQuantities={renderProps.data}
+                                                        />
+                                                    );
+                                                }
+                                                return null;
+                                            }}
+                                        />
+                                    </div>
+                                </ProductInfoWrapper>
+                            )
+                    }
+                </AntdCard>
+                <div id="xxx" />
+            </React.Fragment>
         );
     }
 }

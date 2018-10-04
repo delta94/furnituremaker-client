@@ -123,7 +123,8 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                     grid={{ gutter: 16, column: 3 }}
                     pagination={{
                         pageSize: 6,
-                        simple: true
+                        simple: true,
+                        style: { textAlign: 'center' }
                     }}
                     renderItem={(component: FurnitureComponent) => {
                         const isSelected = (selectedObject.name === component.id);

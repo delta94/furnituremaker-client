@@ -1,51 +1,18 @@
 import * as React from 'react';
 import Slider, { Settings } from 'react-slick';
-import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { Img } from '@/components';
+import {
+    Container,
+    Img,
+    ProductTypeGroupItem,
+    ProductTypeGroupItemContent,
+    ProductTypeGroupLabel,
+    ProductTypeGroupThumbnailWrapper,
+    ProductTypeGroupWrapper
+} from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { ProductTypeGroup } from '@/restful';
-
-const Wrapper = styled.div`
-    background-color: #fff;
-    margin: 0 auto;
-    padding-top: 30px;
-    width: 100%;
-`;
-
-interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
-    readonly isSelected: boolean;
-    readonly canClick: boolean;
-}
-
-type ItemType = React.ComponentType<ItemProps>;
-const Item: ItemType = styled.div`
-    text-align: center;
-    transition: all .3s;
-    cursor: ${(props) => props.canClick && 'pointer'};
-    background-color: ${(props: ItemProps) => props.isSelected && '#fff'};
-    height: 150px;
-    width: 150px!important;
-    display: flex!important;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 1px solid #E9E9E9;
-    border: ${(props: ItemProps) => props.isSelected && '3px solid #EFB416'};
-`;
-
-const ThumbnailWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-const Label = styled.span`
-    font-size: 14px;
-    display: block;
-    margin: 0 0 5px 0;
-`;
 
 interface ProductTypeGroupListProps extends
     Pick<CommonStoreProps, 'selectedProductTypeGroup'>,
@@ -69,7 +36,7 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
         dots: true,
         infinite: false,
         speed: 500,
-        slidesToShow: 10,
+        slidesToShow: 8,
         slidesToScroll: 1
     };
 
@@ -83,46 +50,65 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
         } = this.props;
 
         return (
-            <Wrapper>
-                <Slider {...ProductTypeGroupList.slickSettings}>
-                    {
-                        this.props.productTypeGroups.map(productTypeGroup => {
-                            const isSelected = hoveredProductTypeGroup ?
-                                hoveredProductTypeGroup.id === productTypeGroup.id :
-                                (
-                                    selectedProductTypeGroup &&
-                                    selectedProductTypeGroup.id === productTypeGroup.id
+            <Container>
+                <ProductTypeGroupWrapper>
+                    <Slider {...ProductTypeGroupList.slickSettings}>
+                        <ProductTypeGroupItem
+                            isSelected={false}
+                            canClick={false}
+                            onMouseOver={() => null}
+                            onMouseLeave={() => null}
+                        >
+                            <ProductTypeGroupItemContent canClick={false} isSelected={false}>
+                                <ProductTypeGroupThumbnailWrapper>
+                                    <Img file="/static/assets/make-to-order.png" />
+                                </ProductTypeGroupThumbnailWrapper>
+                                <ProductTypeGroupLabel>Make To Order</ProductTypeGroupLabel>
+                            </ProductTypeGroupItemContent>
+                        </ProductTypeGroupItem>
+                        {
+                            this.props.productTypeGroups.map(productTypeGroup => {
+                                const isSelected = hoveredProductTypeGroup ?
+                                    hoveredProductTypeGroup.id === productTypeGroup.id :
+                                    (
+                                        selectedProductTypeGroup &&
+                                        selectedProductTypeGroup.id === productTypeGroup.id
+                                    );
+
+                                const canClick = (
+                                    productTypeGroup &&
+                                    productTypeGroup.productTypes
+                                ) && productTypeGroup.productTypes.length === 1;
+
+                                return (
+                                    <ProductTypeGroupItem
+                                        key={productTypeGroup.id}
+                                        isSelected={isSelected}
+                                        canClick={canClick}
+                                        onClick={() => onProductTypeGroupClick(productTypeGroup)}
+                                        onMouseOver={() => {
+                                            onProductTypeGroupHover(productTypeGroup);
+                                        }}
+                                        onMouseLeave={() => {
+                                            onProductTypeGroupLeave();
+                                        }}
+                                    >
+                                        <ProductTypeGroupItemContent
+                                            canClick={canClick}
+                                            isSelected={isSelected}
+                                        >
+                                            <ProductTypeGroupThumbnailWrapper>
+                                                <Img file={productTypeGroup.thumbnail} />
+                                            </ProductTypeGroupThumbnailWrapper>
+                                            <ProductTypeGroupLabel>{productTypeGroup.name}</ProductTypeGroupLabel>
+                                        </ProductTypeGroupItemContent>
+                                    </ProductTypeGroupItem>
                                 );
-
-                            const canClick = (
-                                productTypeGroup &&
-                                productTypeGroup.productTypes
-                            ) && productTypeGroup.productTypes.length === 1;
-
-                            return (
-                                <Item
-                                    key={productTypeGroup.id}
-                                    isSelected={isSelected}
-                                    canClick={canClick}
-                                    onClick={() => onProductTypeGroupClick(productTypeGroup)}
-                                    onMouseOver={() => {
-                                        onProductTypeGroupHover(productTypeGroup);
-
-                                    }}
-                                    onMouseLeave={() => {
-                                        onProductTypeGroupLeave();
-                                    }}
-                                >
-                                    <ThumbnailWrapper>
-                                        <Img file={productTypeGroup.thumbnail} />
-                                    </ThumbnailWrapper>
-                                    <Label>{productTypeGroup.name}</Label>
-                                </Item>
-                            );
-                        })
-                    }
-                </Slider>
-            </Wrapper>
+                            })
+                        }
+                    </Slider>
+                </ProductTypeGroupWrapper>
+            </Container>
         );
     }
 }
