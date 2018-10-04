@@ -35,6 +35,10 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
     render() {
         const { orderDetails } = this.props;
 
+        if (!orderDetails.length) {
+            return null;
+        }
+
         const totalPrice = orderDetailUtils.getTotalPrice(orderDetails);
         const totalProductsDiscount = orderDetailUtils.getTotalDiscount(orderDetails);
 

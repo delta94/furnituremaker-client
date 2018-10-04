@@ -1,61 +1,18 @@
 import * as React from 'react';
 import Slider, { Settings } from 'react-slick';
-import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { Container, Img } from '@/components';
+import {
+    Container,
+    Img,
+    ProductTypeContent,
+    ProductTypeItem,
+    ProductTypeLabel,
+    ProductTypeThumbnailWrapper,
+    ProductTypeWrapper
+} from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { ProductType } from '@/restful';
-
-const Wrapper = styled.div`
-    position: relative;
-    width: 100%;
-    z-index: 1;
-    .slick-track {
-        > .slick-slide {
-            padding-right: 4px;
-        }
-    }
-`;
-
-interface ContentProps extends React.DOMAttributes<HTMLDivElement> {
-    readonly showList: boolean;
-}
-
-const Content: React.ComponentType<ContentProps> = styled.div`
-    position: absolute;
-    width: 100%;
-    height: 230px;
-    background: #fff;
-    transition: visibility 0s, opacity 0.3s;
-    visibility : ${(props: ContentProps) => props.showList ? 'visible' : 'hidden'};
-    opacity : ${(props) => props.showList ? 1 : 0};
-`;
-
-interface ItemProps extends React.DOMAttributes<HTMLDivElement> {
-    readonly isSelected: boolean;
-}
-const Item: React.ComponentType<ItemProps> = styled.div`
-    text-align: center;
-    transition: all .3s;
-    background: #FFC12E;
-    opacity: ${(props: ItemProps) => props.isSelected ? 1 : 1};
-    cursor: pointer;
-    height: 220px;
-
-`;
-
-const ThumbnailWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-const Label = styled.span`
-    color: #fff;
-    font-weight: bold;
-    font-size: 18px;
-`;
 
 export interface HomeProductTypeListStoreProps {
     readonly showHomeProductTypeList?: boolean;
@@ -98,8 +55,8 @@ export class HomeProductTypeList extends React.Component<HomeProductTypeListProp
 
         return (
             <Container>
-                <Wrapper>
-                    <Content
+                <ProductTypeWrapper>
+                    <ProductTypeContent
                         showList={showHomeProductTypeList}
                         onMouseEnter={onMouseHoverOnList}
                         onMouseLeave={onMouseLeaveList}
@@ -108,23 +65,23 @@ export class HomeProductTypeList extends React.Component<HomeProductTypeListProp
                             {
                                 productTypes.map((productType: ProductType) => {
                                     return (
-                                        <Item
+                                        <ProductTypeItem
                                             key={productType.id}
                                             isSelected={selectedProductType &&
                                                 selectedProductType.id === productType.id}
                                             onClick={() => onTypeClick(productType)}
                                         >
-                                            <ThumbnailWrapper>
+                                            <ProductTypeThumbnailWrapper>
                                                 <Img className="mw-100 w-100" file={productType.thumbnail} />
-                                            </ThumbnailWrapper>
-                                            <Label>{productType.name}</Label>
-                                        </Item>
+                                            </ProductTypeThumbnailWrapper>
+                                            <ProductTypeLabel>{productType.name}</ProductTypeLabel>
+                                        </ProductTypeItem>
                                     );
                                 })
                             }
                         </Slider>
-                    </Content>
-                </Wrapper>
+                    </ProductTypeContent>
+                </ProductTypeWrapper>
             </Container>
         );
     }
