@@ -14,6 +14,7 @@ const SenceProductInfoWrapper = styled.div`
     padding: 15px;
     text-align: center;
     background: #FCFCFC;
+    margin-bottom: 15px;
 `;
 
 const Price = styled.span`

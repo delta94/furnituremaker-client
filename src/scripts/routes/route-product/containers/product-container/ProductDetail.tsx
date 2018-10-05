@@ -17,7 +17,7 @@ const ProductDetailWrapper = styled.div`
     display: bold;
 `;
 
-export const ProductDetailSectionLablel = styled.p`
+export const ProductDetailSectionLablel: React.ComponentType<React.CSSProperties> = styled.p`
     background: #D6D6D6;
     height: 49px;
     line-height: 49px;
@@ -28,7 +28,7 @@ export const ProductDetailSectionLablel = styled.p`
     text-transform: uppercase;
 
     color: #141414;
-    margin-top: 50px;
+    margin-top: ${((props: React.CSSProperties) => props.marginTop)}px;
 `;
 
 export interface ProductDetailProps extends

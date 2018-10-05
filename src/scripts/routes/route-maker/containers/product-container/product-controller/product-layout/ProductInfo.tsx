@@ -24,6 +24,12 @@ import {
 
 import { ProductTransport, Topbar } from './product-info';
 
+const ProductInfoCardHoler = styled.div`
+    .ant-card {
+        transition: none;
+    }
+`;
+
 const ProductName = styled.h1`
     margin-bottom: 0px;
     font-size: 18px;
@@ -68,61 +74,69 @@ export class ProductInfo extends React.PureComponent<ProductInfoProps> {
 
         return (
             <React.Fragment>
-                <Topbar />
-                <AntdCard>
-                    {
-                        this.props.selectedObject ? (
-                            <ProductInfoWrapper>
-                                <ThreeMaterialList />
-                                <AntdDivider dashed={true} />
-                                <ThreeComponentList />
-                            </ProductInfoWrapper>
-                        ) : (
-                                <ProductInfoWrapper>
+                <ProductInfoCardHoler id="productInfoCardHoler">
+                    <div>
+                        <Topbar />
 
-                                    <AntdRow>
-                                        <AntdCol span={13}>
-                                            <ProductName>
-                                                {productUtils.getProductName(product)}
-                                            </ProductName>
-                                            <ProductCode>{productUtils.getProductModulesCode(product)}</ProductCode>
-                                        </AntdCol>
-                                        <AntdCol span={11}>
-                                            <ChangeDesign onClick={showDesignModal}>
-                                                Thay đổi thiết kế khác?
+                        <AntdCard>
+
+                            {
+                                this.props.selectedObject ? (
+                                    <ProductInfoWrapper>
+                                        <ThreeMaterialList />
+                                        <AntdDivider dashed={true} />
+                                        <ThreeComponentList />
+                                    </ProductInfoWrapper>
+                                ) : (
+                                        <ProductInfoWrapper>
+
+                                            <AntdRow>
+                                                <AntdCol span={13}>
+                                                    <ProductName>
+                                                        {productUtils.getProductName(product)}
+                                                    </ProductName>
+                                                    <ProductCode>
+                                                        {productUtils.getProductModulesCode(product)}
+                                                    </ProductCode>
+                                                </AntdCol>
+                                                <AntdCol span={11}>
+                                                    <ChangeDesign onClick={showDesignModal}>
+                                                        Thay đổi thiết kế khác?
                                             </ChangeDesign>
-                                        </AntdCol>
-                                    </AntdRow>
-                                    <AntdDivider />
-                                    <ProductTransport />
-                                    <AntdDivider />
-                                    <div>
-                                        <h4>Thêm vào giỏ hàng</h4>
-                                        <RestfulRender
-                                            fetcher={restfulFetcher}
-                                            parameters={[{
-                                                type: 'query',
-                                                parameter: nameof<DiscountByQuantity>(o => o.productType),
-                                                value: selectedProductType.id
-                                            }]}
-                                            resource={discountByQuantitiesResources.find}
-                                            render={(renderProps) => {
-                                                if (renderProps.data && !renderProps.fetching) {
-                                                    return (
-                                                        <AddProductToCartControl
-                                                            discountByQuantities={renderProps.data}
-                                                        />
-                                                    );
-                                                }
-                                                return null;
-                                            }}
-                                        />
-                                    </div>
-                                </ProductInfoWrapper>
-                            )
-                    }
-                </AntdCard>
-                <div id="xxx" />
+                                                </AntdCol>
+                                            </AntdRow>
+                                            <AntdDivider />
+                                            <ProductTransport />
+                                            <AntdDivider />
+                                            <div>
+                                                <h4>Thêm vào giỏ hàng</h4>
+                                                <RestfulRender
+                                                    fetcher={restfulFetcher}
+                                                    parameters={[{
+                                                        type: 'query',
+                                                        parameter: nameof<DiscountByQuantity>(o => o.productType),
+                                                        value: selectedProductType.id
+                                                    }]}
+                                                    resource={discountByQuantitiesResources.find}
+                                                    render={(renderProps) => {
+                                                        if (renderProps.data && !renderProps.fetching) {
+                                                            return (
+                                                                <AddProductToCartControl
+                                                                    discountByQuantities={renderProps.data}
+                                                                />
+                                                            );
+                                                        }
+                                                        return null;
+                                                    }}
+                                                />
+                                            </div>
+                                        </ProductInfoWrapper>
+                                    )
+                            }
+                        </AntdCard>
+                    </div>
+                </ProductInfoCardHoler>
+                <div id="productInfoStaticEnd" />
             </React.Fragment>
         );
     }

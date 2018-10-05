@@ -21,12 +21,15 @@ import {
 } from '@/routes/route-product/containers/product-container/product-detail';
 
 const ProductSenceWrapper = styled.div`
-    padding: 60px 0 0 0;
+    padding: 0 0 0 0;
     transition: all 0.2s;
 `;
 
 const ProductTypeInfoWrapper = styled.div`
     margin-right: 4px;
+    border-left: 1px solid #e8e8e8;
+    border-right: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
 `;
 
 interface ProductSenceProps extends
@@ -70,18 +73,48 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
         };
 
     componentDidMount() {
-        const marker = document.getElementById('xxx');
-        const static1 = document.getElementById('h');
-        var static1Bounding = static1.getBoundingClientRect();
+        const productInfoStaticEnd = document.getElementById('productInfoStaticEnd');
+        const productSenceStaticStart = document.getElementById('productSenceStaticStart');
+        const productSenceStaticEnd = document.getElementById('productSenceStaticEnd');
+
+        const productInfoCardHoler = document.getElementById('productInfoCardHoler');
+        const productInfoCard = productInfoCardHoler.children[0] as HTMLElement;
+
+        var static1Bounding = productSenceStaticStart.getBoundingClientRect();
 
         window.addEventListener('scroll', (e) => {
-            const isElementInView = visibleInViewPort(marker);
+            const isInfoMarkerHidden = !visibleInViewPort(productInfoStaticEnd);
+
+            const productSenceStaticEndVisible = visibleInViewPort(productSenceStaticEnd);
+
             const documentScrollTop = getDocumentScrollTop();
 
             const uu = this.state.affix ? documentScrollTop - static1Bounding.top : this.state.staticTop;
 
+            if (isInfoMarkerHidden) {
+                productInfoCard.style.position = 'static';
+            } else {
+                const productSenceStaticEndBounding = productSenceStaticEnd.getBoundingClientRect();
+                const productInfoCardBounding = productInfoCard.getBoundingClientRect();
+
+                productInfoCardHoler.style.height = `${productInfoCardBounding.height}px`;
+                productInfoCard.style.position = 'fixed';
+
+                if (productSenceStaticEndVisible) {
+                    const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+                    // tslint:disable-next-line:no-string-literal
+                    const currentViewPortY = productSenceStaticEndBounding['y'];
+
+                    const bottom = viewportHeight - currentViewPortY;
+                    productInfoCard.style.bottom = `${bottom}px`;
+                } else {
+                    productInfoCard.style.bottom = '0';
+                }
+                productInfoCard.style.width = `${productInfoCardBounding.width}px`;
+            }
+
             this.setState({
-                affix: !isElementInView,
+                affix: isInfoMarkerHidden,
                 staticTop: uu > 0 ? uu : 0
             });
         });
@@ -92,15 +125,15 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
 
         return (
             <React.Fragment>
-                <div id="h" />
+                <div id="productSenceStaticStart" />
                 <AntdAffix
-                    offsetTop={10}
+                    offsetTop={70}
                     target={() =>
                         this.state.affix ?
                             window : document.body}
 
                 >
-                    <div style={{ marginTop: this.state.affix ? 0 : this.state.staticTop }}>
+                    <div id="productSenceWrapper" style={{ marginTop: this.state.affix ? 0 : this.state.staticTop }}>
                         <ProductSenceWrapper>
                             <ThreeSence
                                 onObjectSelect={this.onObjectSelect}
@@ -115,13 +148,14 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
                             />
                         </ProductSenceWrapper>
                         <ProductTypeInfoWrapper>
-                            <ProductDetailSectionLablel>
+                            <ProductDetailSectionLablel marginTop={0}>
                                 Xem thông số kỹ thuật
-                    </ProductDetailSectionLablel>
+                            </ProductDetailSectionLablel>
                             <ProductTypeInfo />
                         </ProductTypeInfoWrapper>
                     </div>
                 </AntdAffix>
+                <div id="productSenceStaticEnd" />
             </React.Fragment>
         );
     }
