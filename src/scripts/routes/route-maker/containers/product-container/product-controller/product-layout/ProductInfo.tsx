@@ -25,7 +25,7 @@ import {
 import { ProductTransport, Topbar } from './product-info';
 
 const ProductInfoCardHoler = styled.div`
-    .ant-card {
+    > div {
         transition: none;
     }
 `;

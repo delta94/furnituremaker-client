@@ -2,13 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import {
-    AntdCol,
-    AntdRow,
-    Container,
-    ThreeComponentListProps,
-    ThreeMaterialListProps
-} from '@/components';
+import { AntdCol, AntdRow, Container } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
     FurnitureComponentType,
@@ -61,7 +55,7 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
             <Container id="senceContainer">
                 <ProductLayoutContent>
                     <AntdRow type="flex">
-                        <AntdCol span={15}>
+                        <AntdCol span={15} className="product-info-col">
                             <ProductSence
                                 product={selectedProduct}
                             />

@@ -84,18 +84,18 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
 
         window.addEventListener('scroll', (e) => {
             const isInfoMarkerHidden = !visibleInViewPort(productInfoStaticEnd);
-
             const productSenceStaticEndVisible = visibleInViewPort(productSenceStaticEnd);
 
             const documentScrollTop = getDocumentScrollTop();
 
-            const uu = this.state.affix ? documentScrollTop - static1Bounding.top : this.state.staticTop;
+            const staticTop = this.state.affix ? (documentScrollTop - static1Bounding.top) + 60 : this.state.staticTop;
 
             if (isInfoMarkerHidden) {
                 productInfoCard.style.position = 'static';
             } else {
                 const productSenceStaticEndBounding = productSenceStaticEnd.getBoundingClientRect();
                 const productInfoCardBounding = productInfoCard.getBoundingClientRect();
+                const productInfoCardHolerBounding = productInfoCardHoler.getBoundingClientRect();
 
                 productInfoCardHoler.style.height = `${productInfoCardBounding.height}px`;
                 productInfoCard.style.position = 'fixed';
@@ -115,7 +115,7 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
 
             this.setState({
                 affix: isInfoMarkerHidden,
-                staticTop: uu > 0 ? uu : 0
+                staticTop: staticTop > 0 ? staticTop : 0
             });
         });
     }
@@ -125,15 +125,20 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
 
         return (
             <React.Fragment>
-                <div id="productSenceStaticStart" />
+                <span id="productSenceStaticStart" />
                 <AntdAffix
                     offsetTop={70}
                     target={() =>
                         this.state.affix ?
                             window : document.body}
-
                 >
-                    <div id="productSenceWrapper" style={{ marginTop: this.state.affix ? 0 : this.state.staticTop }}>
+                    <div
+                        id="productSenceWrapper"
+                        style={{
+                            position: 'relative',
+                            paddingTop: this.state.affix ? 0 : this.state.staticTop
+                        }}
+                    >
                         <ProductSenceWrapper>
                             <ThreeSence
                                 onObjectSelect={this.onObjectSelect}
@@ -155,7 +160,7 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
                         </ProductTypeInfoWrapper>
                     </div>
                 </AntdAffix>
-                <div id="productSenceStaticEnd" />
+                <span id="productSenceStaticEnd" />
             </React.Fragment>
         );
     }
