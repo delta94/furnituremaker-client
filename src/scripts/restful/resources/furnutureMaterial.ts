@@ -1,9 +1,4 @@
-import {
-    RecordType,
-    Resource,
-    ResourceType,
-    restfulDataContainer
-} from 'react-restful';
+import { Record, Resource, ResourceType, withRestfulData } from 'react-restful';
 
 import { CommonStoreProps } from '@/configs';
 import { apiEntry, restfulStore } from '@/restful/environment';
@@ -11,7 +6,7 @@ import { apiEntry, restfulStore } from '@/restful/environment';
 import { MaterialType } from './materialType';
 import { UploadedFile } from './uploadedFile';
 
-export interface FurnitureMaterial extends RecordType {
+export interface FurnitureMaterial extends Record {
     readonly id: string;
     readonly name: string;
     readonly texture: UploadedFile;
@@ -57,7 +52,7 @@ type WithMaterialByTypeOwnProps = Pick<CommonStoreProps, 'selectedMaterialType'>
 
 // tslint:disable-next-line:no-any
 export const withMaterialsByType = <T extends Required<WithMaterialByTypeOwnProps>>(): any => {
-    return restfulDataContainer<FurnitureMaterial, WithMaterialProps, T>({
+    return withRestfulData<FurnitureMaterial, WithMaterialProps, T>({
         resourceType: furnitureMaterialResouceType,
         store: restfulStore,
         mapToProps: (data, ownProps) => {
@@ -75,7 +70,7 @@ export const withMaterialsByType = <T extends Required<WithMaterialByTypeOwnProp
 
 // tslint:disable-next-line:no-any
 export const withMaterials = <T extends WithMaterialProps>(): any => {
-    return restfulDataContainer<FurnitureMaterial, WithMaterialProps, T>({
+    return withRestfulData<FurnitureMaterial, WithMaterialProps, T>({
         resourceType: furnitureMaterialResouceType,
         store: restfulStore,
         mapToProps: (data) => ({ materials: data })

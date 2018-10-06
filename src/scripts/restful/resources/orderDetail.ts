@@ -1,9 +1,9 @@
 import {
-    RecordType,
+    Record,
+    RequestParameter,
     Resource,
-    ResourceParameter,
     ResourceType,
-    restfulDataContainer
+    withRestfulData
 } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
@@ -15,7 +15,7 @@ import { ProductDesign } from './productDesign';
 import { ProductType } from './productType';
 import { User } from './user';
 
-export interface OrderDetail extends RecordType {
+export interface OrderDetail extends Record {
     readonly id?: string;
     readonly quantity: number;
     readonly productModulesCode: string;
@@ -60,10 +60,10 @@ export const orderDetailResources = {
         url: apiEntry('/orderDetail'),
         method: 'GET',
         mapDataToStore: (items, resourceType, store) => {
-            const orderRecordType = store.getRegisteredResourceType(nameof<Order>());
+            const orderRecord = store.getRegisteredResourceType(nameof<Order>());
             for (const item of items) {
                 if (item.order) {
-                    store.mapRecord(orderRecordType, item.order);
+                    store.mapRecord(orderRecord, item.order);
                 }
                 store.mapRecord(resourceType, item);
             }
@@ -100,8 +100,8 @@ export const orderDetailUtils = {
         type: 'query',
         parameter: 'status',
         value: 'temp'
-    } as ResourceParameter),
-    createUpdateParams: (orderDetail: OrderDetail): ResourceParameter[] => {
+    } as RequestParameter),
+    createUpdateParams: (orderDetail: OrderDetail): RequestParameter[] => {
         return [{
             type: 'path',
             parameter: 'id',
@@ -192,7 +192,7 @@ export interface WithTempOrderDetails {
 
 // tslint:disable-next-line:no-any
 export const withTempOrderDetails = <T extends WithTempOrderDetails>(Component): any =>
-    restfulDataContainer<OrderDetail, WithTempOrderDetails, T>({
+    withRestfulData<OrderDetail, WithTempOrderDetails, T>({
         resourceType: orderDetailResourceType,
         store: restfulStore,
         mapToProps: (data) => {

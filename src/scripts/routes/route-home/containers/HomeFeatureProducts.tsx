@@ -1,7 +1,7 @@
 import { Location, UnregisterCallback } from 'history';
 import * as React from 'react';
 import {
-    ResourceParameter,
+    RequestParameter,
     RestfulComponentRenderProps,
     RestfulRender,
     RestfulRenderProps
@@ -18,7 +18,7 @@ import {
 
 import { HomeFeatureProductsController } from './home-feature-products';
 
-const getDefaultSearchParams = (): ResourceParameter[] => [
+const getDefaultSearchParams = (): RequestParameter[] => [
     {
         type: 'query',
         parameter: `${nameof<Product>(o => o.isFeatureProduct)}`,
@@ -39,7 +39,7 @@ interface HomeFeatureProductsProps extends
 
 interface HomeFeatureProductsState {
     readonly fetchedProducts: Product[];
-    readonly fetchParams: ResourceParameter[];
+    readonly fetchParams: RequestParameter[];
 }
 
 @withStoreValues<HomeFeatureProductsProps>(

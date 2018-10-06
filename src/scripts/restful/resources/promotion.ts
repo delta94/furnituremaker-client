@@ -1,8 +1,8 @@
-import { RecordType, Resource, ResourceType } from 'react-restful';
+import { Record, Resource, ResourceType } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
-export interface Promotion extends RecordType {
+export interface Promotion extends Record {
     readonly id?: string;
     readonly code: string;
     readonly quantity: number;

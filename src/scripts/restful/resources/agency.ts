@@ -1,9 +1,4 @@
-import {
-    RecordType,
-    Resource,
-    ResourceType,
-    restfulDataContainer
-} from 'react-restful';
+import { Record, Resource, ResourceType, withRestfulData } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
@@ -12,7 +7,7 @@ import { City } from './city';
 import { County } from './county';
 import { User } from './user';
 
-export interface Agency extends RecordType {
+export interface Agency extends Record {
     readonly id?: string;
     readonly name: string;
     readonly address: string;
@@ -70,7 +65,7 @@ export interface WithAllAgenciesProps {
 
 // tslint:disable-next-line:no-any
 export const withAllAgencies = <T extends WithAllAgenciesProps>(): any =>
-    restfulDataContainer<Agency, WithAllAgenciesProps, T>({
+    withRestfulData<Agency, WithAllAgenciesProps, T>({
         resourceType: agencyResourceType,
         store: restfulStore,
         mapToProps: (agencies) => {

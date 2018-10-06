@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-import { setStoreValuesAction } from '@/app/store';
 import { CommonStoreProps } from '@/configs';
 
-type AppPageProps = Pick<CommonStoreProps, 'setStore'>;
+export type AppPageProps = Pick<CommonStoreProps, 'setStore'>;
 
 export class AppPage<P extends AppPageProps = AppPageProps, S= {}> extends React.PureComponent<P, S> {
     readonly resetAppState = () => {

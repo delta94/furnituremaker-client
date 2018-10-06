@@ -1,10 +1,10 @@
-import { RecordType, Resource, ResourceType } from 'react-restful';
+import { Record, Resource, ResourceType } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
 import { FurnitureComponent } from './furnitureComponent';
 
-export interface FurnitureComponentType extends RecordType {
+export interface FurnitureComponentType extends Record {
     readonly id: string;
     readonly name: string;
     readonly components: FurnitureComponent[];

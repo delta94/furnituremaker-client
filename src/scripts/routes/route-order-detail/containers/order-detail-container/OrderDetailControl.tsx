@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { restfulDataContainer } from 'react-restful';
+import { withRestfulData } from 'react-restful';
 
 import { withStoreValues } from '@/app';
 import { AntdModal, Container } from '@/components';
@@ -169,7 +169,7 @@ OrderDetailControlComponentState> {
     }
 }
 
-export const OrderDetailControl = restfulDataContainer<Order, OrderDetailControlProps, OrderDetailControlProps>({
+export const OrderDetailControl = withRestfulData<Order, OrderDetailControlProps, OrderDetailControlProps>({
     store: restfulStore,
     resourceType: orderResourceType,
     registerToTracking: (ownProps) => {

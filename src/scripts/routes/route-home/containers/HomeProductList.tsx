@@ -1,7 +1,7 @@
 import { Location, UnregisterCallback } from 'history';
 import * as React from 'react';
 import {
-    ResourceParameter,
+    RequestParameter,
     RestfulComponentRenderProps,
     RestfulRender
 } from 'react-restful';
@@ -15,7 +15,7 @@ import {
     HomeProductListViewMoreBtn
 } from './home-product-list';
 
-const getDefaultSearchParams = (): ResourceParameter[] => [
+const getDefaultSearchParams = (): RequestParameter[] => [
     {
         type: 'query',
         parameter: '_limit',
@@ -47,7 +47,7 @@ interface HomeProductListProps extends
 interface HomeProductListState {
     readonly prevFetchedProducts?: Product[];
     readonly fetchedProducts: Product[];
-    readonly fetchParams: ResourceParameter[];
+    readonly fetchParams: RequestParameter[];
 }
 
 @withStoreValues<HomeProductListProps>(

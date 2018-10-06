@@ -1,9 +1,9 @@
 import {
-    RecordType,
+    Record,
     Resource,
     ResourceType,
-    restfulDataContainer,
-    Store
+    Store,
+    withRestfulData
 } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
@@ -13,7 +13,7 @@ import { MaterialType } from './materialType';
 import { ProductDesign } from './productDesign';
 import { UploadedFile } from './uploadedFile';
 
-export interface FurnitureComponent extends RecordType {
+export interface FurnitureComponent extends Record {
     readonly id?: string;
     readonly name: string;
     readonly obj?: UploadedFile;
@@ -66,7 +66,7 @@ export interface WithComponentsProps {
 
 // tslint:disable-next-line:no-any
 export const withComponents = <T extends WithComponentsProps>(): any =>
-    restfulDataContainer<FurnitureComponent, WithComponentsProps, T>({
+    withRestfulData<FurnitureComponent, WithComponentsProps, T>({
         resourceType: furnitureComponentResourceType,
         store: restfulStore,
         mapToProps: (data) => ({ components: data })

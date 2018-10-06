@@ -1,4 +1,4 @@
-import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
+import { Resource, ResourceType, withRestfulData } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
@@ -69,7 +69,7 @@ export interface WithProductDiscounts {
 
 // tslint:disable-next-line:no-any
 export const withProductDiscounts = <T extends WithProductDiscounts>(): any =>
-    restfulDataContainer<ProductDiscount, WithProductDiscounts, T>({
+    withRestfulData<ProductDiscount, WithProductDiscounts, T>({
         store: restfulStore,
         resourceType: productDiscountResourceType,
         mapToProps: (data, p) => {

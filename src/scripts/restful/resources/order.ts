@@ -1,10 +1,5 @@
 import * as moment from 'moment';
-import {
-    RecordType,
-    Resource,
-    ResourceType,
-    restfulDataContainer
-} from 'react-restful';
+import { Record, Resource, ResourceType, withRestfulData } from 'react-restful';
 
 import { policies } from '@/app';
 import { sendNotificationToFirebase } from '@/firebase';
@@ -23,7 +18,7 @@ import { OrderTransaction } from './orderTransaction';
 import { Promotion } from './promotion';
 import { User } from './user';
 
-export interface Order extends RecordType {
+export interface Order extends Record {
     readonly id?: string;
     readonly orderDetails: OrderDetail[];
     readonly phone: string;
@@ -52,6 +47,13 @@ export interface Order extends RecordType {
     readonly agencyOrderer: Agency;
     readonly orderTransactions: Array<OrderTransaction>;
     readonly createdBy: User;
+
+    readonly contactTo?: string;
+    readonly contactToPhone?: string;
+
+    readonly billingOrganization?: string;
+    readonly billingTaxcode?: string;
+    readonly billingAddress?: string;
 }
 
 export const orderResourceType = new ResourceType<Order>({
@@ -282,7 +284,7 @@ export interface WithOrdersProps {
 
 // tslint:disable-next-line:no-any
 export const withOrders = <T extends WithOrdersProps>(): any =>
-    restfulDataContainer<Order, WithOrdersProps, T>({
+    withRestfulData<Order, WithOrdersProps, T>({
         store: restfulStore,
         resourceType: orderResourceType,
         registerToTracking: (ownProps) => ownProps.orders,

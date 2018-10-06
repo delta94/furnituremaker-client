@@ -1,4 +1,4 @@
-import { RecordType, Resource, ResourceType } from 'react-restful';
+import { Record, Resource, ResourceType } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
@@ -6,7 +6,7 @@ import { ProductDesignGroup } from './productDesignGroup';
 import { ProductType } from './productType';
 import { UploadedFile } from './uploadedFile';
 
-export interface ProductDesign extends RecordType {
+export interface ProductDesign extends Record {
     readonly id: string;
     readonly name: string;
     readonly thumbnail: UploadedFile;

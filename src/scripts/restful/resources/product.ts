@@ -1,4 +1,4 @@
-import { Resource, ResourceParameter, ResourceType } from 'react-restful';
+import { RequestParameter, Resource, ResourceType } from 'react-restful';
 
 import { apiEntry, restfulFetcher, restfulStore } from '@/restful/environment';
 import { formatCurrency } from '@/utilities';
@@ -189,7 +189,7 @@ export const productUtils = {
         const componentCodes = productUtils.getComponentCodes(modulesCode);
         const materialCodes = productUtils.getMaterialCodes(modulesCode);
 
-        const componentParamsFetchList = componentCodes.map((code): ResourceParameter => {
+        const componentParamsFetchList = componentCodes.map((code): RequestParameter => {
             return {
                 type: 'query',
                 parameter: nameof<FurnitureComponent>(o => o.code),
@@ -197,7 +197,7 @@ export const productUtils = {
             };
         });
 
-        const materialParamsFetchList = materialCodes.map((code): ResourceParameter => {
+        const materialParamsFetchList = materialCodes.map((code): RequestParameter => {
             return {
                 type: 'query',
                 parameter: nameof<FurnitureMaterial>(o => o.code),

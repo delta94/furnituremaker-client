@@ -1,4 +1,4 @@
-import { Resource, ResourceType, restfulDataContainer } from 'react-restful';
+import { Resource, ResourceType, withRestfulData } from 'react-restful';
 
 import { policies } from '@/app';
 import { sendNotificationToFirebase } from '@/firebase';
@@ -140,7 +140,7 @@ export interface WithOrderTransactionOwnProps extends
 
 // tslint:disable-next-line:no-any
 export const withOrderTransactionsByOrder = <T extends WithOrderTransactionOwnProps>(): any =>
-    restfulDataContainer<OrderTransaction, WithOrderTransactionProps, T>({
+    withRestfulData<OrderTransaction, WithOrderTransactionProps, T>({
         store: restfulStore,
         resourceType: orderTransactionType,
         mapToProps: (data, ownProps) => {

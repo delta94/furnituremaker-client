@@ -1,19 +1,22 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { AppPage, PageProps, withStoreValues } from '@/app';
+import { AppPage, AppPageProps, PageProps, withStoreValues } from '@/app';
 import { Page } from '@/components';
-import { clearToken } from '@/configs';
+import { clearToken, CommonStoreProps } from '@/configs';
 
+import { RouteParams } from '../route-product/RouteProduct';
 import { AppLogin } from './containers';
 
-type RouteLoginProps = RouteComponentProps<{}> & PageProps;
+type RouteLoginProps = Pick<CommonStoreProps, 'setStore'> &
+    RouteComponentProps<RouteParams> &
+    PageProps;
 
 @withStoreValues()
-export class RouteLogin extends AppPage<RouteLoginProps> {
+export class RouteLogin extends AppPage<RouteLoginProps & AppPageProps> {
     constructor(props: RouteLoginProps) {
         super(props);
-        
+
         clearToken();
     }
 

@@ -1,10 +1,10 @@
-import { RecordType, Resource, ResourceType } from 'react-restful';
+import { Record, Resource, ResourceType } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
 import { County } from './county';
 
-export interface City extends RecordType {
+export interface City extends Record {
     readonly id?: string;
     readonly name: string;
     readonly transportFee: number;

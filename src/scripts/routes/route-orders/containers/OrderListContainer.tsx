@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ResourceParameter, RestfulRender } from 'react-restful';
+import { RequestParameter, RestfulRender } from 'react-restful';
 
 import { Auth } from '@/app';
 import { policies } from '@/app/policies';
@@ -12,7 +12,7 @@ export class OrderListContainer extends React.PureComponent {
         const searchParams = new URLSearchParams(location.search);
         const searchEntries = searchParams.entries();
         const searchs = Array.from(searchEntries);
-        return searchs.map((searchEntry): ResourceParameter => {
+        return searchs.map((searchEntry): RequestParameter => {
             return {
                 type: 'query',
                 parameter: searchEntry[0],
@@ -30,7 +30,7 @@ export class OrderListContainer extends React.PureComponent {
                     parameter: nameof<Order>(o => o.agencyOrderer),
                     type: 'query',
                     value: user.agency && user.agency.id
-                } as ResourceParameter
+                } as RequestParameter
             ];
 
         return (

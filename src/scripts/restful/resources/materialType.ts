@@ -1,18 +1,18 @@
 import { UploadFile } from 'antd/lib/upload/interface';
 import * as React from 'react';
 import {
-    RecordType,
+    Record,
     Resource,
     ResourceType,
-    restfulDataContainer,
-    Store
+    Store,
+    withRestfulData
 } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
 import { FurnitureMaterial } from './furnutureMaterial';
 
-export interface MaterialType extends RecordType {
+export interface MaterialType extends Record {
     readonly id: string;
     readonly name: string;
     readonly materials?: FurnitureMaterial[];
@@ -56,7 +56,7 @@ export interface WithMaterialTypesProps {
 
 // tslint:disable-next-line:no-any
 export const withMaterialTypes = <P extends WithMaterialTypesProps>(): any =>
-    restfulDataContainer<MaterialType, WithMaterialTypesProps, P>({
+    withRestfulData<MaterialType, WithMaterialTypesProps, P>({
         resourceType: materialTypeResourceType,
         store: restfulStore,
         mapToProps: (data) => ({ materialTypes: data })

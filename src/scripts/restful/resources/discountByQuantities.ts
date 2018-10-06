@@ -1,9 +1,4 @@
-import {
-    RecordType,
-    Resource,
-    ResourceType,
-    restfulDataContainer
-} from 'react-restful';
+import { Record, Resource, ResourceType, withRestfulData } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 import { formatCurrency } from '@/utilities';
@@ -13,7 +8,7 @@ import { ProductType } from './productType';
 
 const sortBy = require('lodash/sortBy');
 
-export interface DiscountByQuantity extends RecordType {
+export interface DiscountByQuantity extends Record {
     readonly id?: string;
     readonly discountPerProduct: number;
     readonly quantity: number;
@@ -104,7 +99,7 @@ export interface WithDiscountByQuantitiesOwnProps
 
 // tslint:disable-next-line:no-any
 export const withDiscountByQuantities = <T extends WithDiscountByQuantitiesOwnProps>(): any =>
-    restfulDataContainer<DiscountByQuantity, WithDiscountByQuantities, T>({
+    withRestfulData<DiscountByQuantity, WithDiscountByQuantities, T>({
         store: restfulStore,
         resourceType: discountByQuantitiesResourceType,
         mapToProps: (data, ownProps) => {

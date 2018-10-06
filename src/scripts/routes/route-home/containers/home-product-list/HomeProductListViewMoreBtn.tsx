@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ResourceParameter } from 'react-restful';
+import { RequestParameter } from 'react-restful';
 import styled from 'styled-components';
 
 import { AntdButton, Container } from '@/components';
@@ -14,7 +14,7 @@ const HomeProductListViewMoreBtnWrapper = styled.div`
 `;
 
 export interface HomeProductListViewMoreBtnProps {
-    readonly fetchParams: ResourceParameter[];
+    readonly fetchParams: RequestParameter[];
     readonly loadedProducts: number;
     readonly fetching: boolean;
     readonly onButtonClick: () => void;
