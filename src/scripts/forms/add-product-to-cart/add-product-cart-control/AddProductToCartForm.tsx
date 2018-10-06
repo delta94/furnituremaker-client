@@ -268,34 +268,41 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                                         const totalPrice = quantity * productPriceAfterDiscount;
 
                                         return (
-                                            <AntdRow>
-                                                <AntdCol span={12}>
-                                                    Tổng giá ban đầu:
+                                            <React.Fragment>
+                                                <AntdRow key={1}>
+                                                    <AntdCol span={12}>
+                                                        Tổng giá ban đầu:
                                                 </AntdCol>
-                                                <AntdCol span={12}>
-                                                    <div style={{ textAlign: 'right' }}>
-                                                        {formatCurrency(totalPriceBeforeDiscont)}
-                                                    </div>
+                                                    <AntdCol span={12}>
+                                                        <div style={{ textAlign: 'right' }}>
+                                                            {formatCurrency(totalPriceBeforeDiscont)}
+                                                        </div>
+                                                    </AntdCol>
+                                                    <AntdCol span={12}>
+                                                        Tổng giảm giá:
                                                 </AntdCol>
-                                                <AntdCol span={12}>
-                                                    Tổng giảm giá:
-                                                </AntdCol>
-                                                <AntdCol span={12}>
-                                                    <div style={{ textAlign: 'right' }}>
-                                                        <TotalDiscount>
-                                                            {totalDiscount ? `-${formatCurrency(totalDiscount)}` : 0}
-                                                        </TotalDiscount>
-                                                    </div>
-                                                </AntdCol>
-                                                <AntdCol span={12}>
-                                                    Tổng thanh toán:
-                                                </AntdCol>
-                                                <AntdCol span={12}>
-                                                    <div style={{ textAlign: 'right' }}>
-                                                        {formatCurrency(totalPrice)}
-                                                    </div>
-                                                </AntdCol>
-                                            </AntdRow>
+                                                    <AntdCol span={12}>
+                                                        <div style={{ textAlign: 'right' }}>
+                                                            <TotalDiscount>
+                                                                {totalDiscount ?
+                                                                    `-${formatCurrency(totalDiscount)}` :
+                                                                    0
+                                                                }
+                                                            </TotalDiscount>
+                                                        </div>
+                                                    </AntdCol>
+                                                </AntdRow>
+                                                <AntdRow>
+                                                    <AntdCol span={12}>
+                                                        Tổng thanh toán:
+                                                    </AntdCol>
+                                                    <AntdCol span={12}>
+                                                        <div style={{ textAlign: 'right' }}>
+                                                            {formatCurrency(totalPrice)}
+                                                        </div>
+                                                    </AntdCol>
+                                                </AntdRow>
+                                            </React.Fragment>
                                         );
                                     }}
                                 />

@@ -19,11 +19,12 @@ export class CartSubmitOrder extends React.Component<CommonStoreProps> {
         return (
             <CartSubmitOrderWrapper>
                 <AntdButton
+                    className="button-primary"
                     type="primary"
                     onClick={submitOrderForm}
                     loading={orderFormStatus === 'submitting'}
                 >
-                    Đặt hàng
+                    Tiến hành đặt hàng
                 </AntdButton>
             </CartSubmitOrderWrapper>
         );

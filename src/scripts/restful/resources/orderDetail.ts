@@ -173,6 +173,16 @@ export const orderDetailUtils = {
             return totalVolumeValue += roundTo(orderDetailVolume, 2);
         },
         0
+    ),
+    getTotalWeight: (orderDetails: OrderDetail[]) => orderDetails.reduce(
+        (totalVolumeValue, orderDetail) => {
+            if (!orderDetail.productType || typeof orderDetail.productType === 'string') {
+                return totalVolumeValue;
+            }
+            const orderDetailVolume = (orderDetail.productType.weight || 0) * (orderDetail.quantity || 0);
+            return totalVolumeValue += roundTo(orderDetailVolume, 2);
+        },
+        0
     )
 };
 

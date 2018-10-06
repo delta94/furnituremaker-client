@@ -46,7 +46,8 @@ export class DefaultLayout extends React.Component<DefaultLayoutProps> {
                 <AntdLayout.Content
                     style={{
                         display: 'flex',
-                        flexDirection: 'column'
+                        flexDirection: 'column',
+                        marginBottom: 30
                     }}
                 >
                     {this.props.children}

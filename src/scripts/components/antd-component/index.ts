@@ -1,3 +1,6 @@
+import 'antd/dist/antd.less';
+import './AndtStyle.scss';
+
 export * from './Affix';
 export * from './Alert';
 export * from './AntdForm';
@@ -30,4 +33,3 @@ export * from './Tooltip';
 export * from './Upload';
 export * from './cascader';
 export * from './layout';
-import 'antd/dist/antd.less';

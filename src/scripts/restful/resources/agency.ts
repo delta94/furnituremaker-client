@@ -73,7 +73,6 @@ export const withAllAgencies = <T extends WithAllAgenciesProps>(): any =>
     restfulDataContainer<Agency, WithAllAgenciesProps, T>({
         resourceType: agencyResourceType,
         store: restfulStore,
-        registerToTracking: (props) => props.agencies,
         mapToProps: (agencies) => {
             return { agencies };
         }

@@ -37,13 +37,13 @@ export class RouteCart extends AppPage<RouteHomeProps> {
             <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <Container>
-                        <AntdRow type="flex" gutter={30}>
-                            <AntdCol span={12}>
-                                <CartProducts />
-                            </AntdCol>
+                        <AntdRow type="flex">
                             <AntdCol span={12}>
                                 <CartShippingInfo />
                                 <CartPaymentInfo />
+                            </AntdCol>
+                            <AntdCol span={12}>
+                                <CartProducts />
                             </AntdCol>
                         </AntdRow>
                     </Container>

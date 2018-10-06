@@ -16,8 +16,9 @@ import { formatCurrency } from '@/utilities';
 
 const TotalPrice = styled.div`
     text-align: right;
-    font-size: 20px;
-    color: ${colorPrimary};
+    font-size: 18px;
+    color: #fff;
+    font-weight: bold;
 `;
 
 interface CardTotalOfPaymentProps extends
@@ -60,27 +61,30 @@ export class CardTotalOfPayment extends React.PureComponent<CardTotalOfPaymentPr
         const deposit = orderUtils.getDeposit(totalOfPayment);
 
         return (
-            <AntdRow>
-                <AntdCol span={12}>
-                    <div>
-                        Tổng thanh toán:
-                        <p>
-                            <i>
-                                Chú ý: bạn cần thanh toán trước 30%
-                                (<b>{formatCurrency(deposit)}</b>)
-                                để xác nhận đơn hàng này.
-                            </i>
-                        </p>
-                    </div>
-                </AntdCol>
-                <AntdCol span={12}>
-                    <TotalPrice>
-                        {
-                            formatCurrency(totalOfPayment)
-                        }
-                    </TotalPrice>
-                </AntdCol>
-            </AntdRow>
+            <div style={{ margin: '15px 0' }}>
+                <AntdRow style={{ background: '#EFB416', padding: 15, marginBottom: 5 }}>
+                    <AntdCol span={12}>
+                        <div style={{ fontSize: 18, color: '#000' }}>
+                            Tổng thanh toán:
+                        </div>
+                    </AntdCol>
+                    <AntdCol span={12}>
+                        <TotalPrice>
+                            {
+                                formatCurrency(totalOfPayment)
+                            }
+                        </TotalPrice>
+                    </AntdCol>
+                </AntdRow>
+                <p>
+                    <i>
+                        Chú ý: bạn cần thanh toán trước 30%
+                        (<b>{formatCurrency(deposit)}</b>)
+                        để xác nhận đơn hàng này.
+                    </i>
+                </p>
+            </div>
+
         );
     }
 }

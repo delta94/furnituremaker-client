@@ -206,7 +206,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                 {
                     mode === 'simple' ?
                         (
-                            <div>
+                            <div style={{color: 'black'}}>
                                 <div>Giá cũ: {formatCurrency(orderDetail.productPrice)}</div>
                                 <div>
                                     Giá mới:{' '}
@@ -228,9 +228,7 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
                                 <br />
                                 <div>Tổng giảm giá: {formatCurrency(orderDetail.discount)}</div>
                                 <div>
-                                    Thành tiền: <b style={{ color: colorPrimary }}>
-                                        {formatCurrency(orderDetail.totalPrice)}
-                                    </b>
+                                    Thành tiền: {formatCurrency(orderDetail.totalPrice)}
                                 </div>
                             </>
                         )

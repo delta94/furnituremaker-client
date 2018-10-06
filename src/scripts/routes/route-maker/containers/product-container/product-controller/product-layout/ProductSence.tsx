@@ -95,7 +95,6 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
             } else {
                 const productSenceStaticEndBounding = productSenceStaticEnd.getBoundingClientRect();
                 const productInfoCardBounding = productInfoCard.getBoundingClientRect();
-                const productInfoCardHolerBounding = productInfoCardHoler.getBoundingClientRect();
 
                 productInfoCardHoler.style.height = `${productInfoCardBounding.height}px`;
                 productInfoCard.style.position = 'fixed';

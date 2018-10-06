@@ -1,7 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdAffix, AntdCol, AntdDivider, AntdRow } from '@/components';
+import {
+    AntdAffix,
+    AntdCard,
+    AntdCol,
+    AntdDivider,
+    AntdRow
+} from '@/components';
 import {
     orderDetailUtils,
     orderUtils,
@@ -25,6 +31,17 @@ const ShippingDate = styled.div`
     text-align: right;
 `;
 
+const CartPaymentInfoWrapper = styled.div`
+    .ant-card-head {
+        background: #D6D6D6;
+        text-align: center;
+    }
+    .ant-card-body {
+        padding-left: 0!important;
+        padding-right: 0!important;
+    }
+`;
+
 interface CartPaymentInfoProps extends
     WithTempOrderDetails {
     // implement...
@@ -45,10 +62,9 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
         const shippingDate = orderUtils.getShippingDate();
 
         return (
-            <AntdAffix offset={70}>
-                <div>
+            <CartPaymentInfoWrapper>
+                <AntdCard bordered={false} title="THÔNG TIN THANH TOÁN">
                     <AntdRow>
-                        <SectionTitle>Thông tin thanh toán</SectionTitle>
                         <AntdCol span={12}>
                             <span>Tổng tiền:</span>
                         </AntdCol>
@@ -81,7 +97,6 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
 
                     <CartTransportFee orderDetails={orderDetails} />
                     <AntdDivider dashed={true} />
-                    <CardTotalOfPayment orderDetails={orderDetails} />
                     <AntdRow>
                         <AntdCol span={12}>
                             <span>Dự kiến giao hàng:</span>
@@ -92,10 +107,11 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
                             </ShippingDate>
                         </AntdCol>
                     </AntdRow>
-                    <AntdDivider dashed={true} />
-                </div>
-                <CartSubmitOrder />
-            </AntdAffix>
+                </AntdCard>
+                <CardTotalOfPayment orderDetails={orderDetails} />
+                
+                <CartSubmitOrder/>
+            </CartPaymentInfoWrapper >
         );
     }
 }

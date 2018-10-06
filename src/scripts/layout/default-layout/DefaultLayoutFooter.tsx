@@ -1,25 +1,32 @@
-import 'ant-design-pro/lib/GlobalFooter/style/css';
-
-import GlobalFooterType from 'ant-design-pro/lib/GlobalFooter';
 import * as React from 'react';
+import styled from 'styled-components';
 
-import { AntdIcon } from '@/components';
+import { Container, Img } from '@/components';
 
-const GlobalFooter: typeof GlobalFooterType = require('ant-design-pro/lib/GlobalFooter');
+const FooterWrapper = styled.div`
+    background: #EFEFEF;
+    padding: 30px 0;
+`;
 
-const links = [{
-    key: 'furnituremaker',
-    title: <span>furnituremaker.vn</span>,
-    href: 'https://furnituremaker.vn',
-    blankTarget: true
-}];
+const FooterWrapperRow = styled.div`
+    background: #EFEFEF;
+`;
 
-const copyright = <div>Copyright <AntdIcon type="copyright" /> 2018 FURNITURE MAKER</div>;
-
-export function DefaultLayoutFooter(props: {}) {
+export function DefaultLayoutFooter() {
     return (
-        <div style={{ overflow: 'hidden' }}>
-            <GlobalFooter links={links} copyright={copyright} />
-        </div>
+        <FooterWrapper>
+            <Container>
+                <FooterWrapperRow>
+                    <div style={{ marginBottom: 5 }}>
+                        <Img height="40" file="/static/assets/footer-logo.png" />
+                    </div>
+                    <p style={{ color: '#979797' }}>
+                        © furnituremaker • HoChiMinh, VietNam • Tel: 1-888-345-6789
+                        <br />
+                        Copyright © 2018 Tri Minh Co,ltd.
+                    </p>
+                </FooterWrapperRow>
+            </Container>
+        </FooterWrapper>
     );
 }

@@ -10,7 +10,7 @@ export const SectionTitle = styled.h3`
 
 export const ShippingCost = styled.div`
     text-align: right;
-    font-size: 18px;
+    font-size: 16px;
     color: #000000;
 `;
 

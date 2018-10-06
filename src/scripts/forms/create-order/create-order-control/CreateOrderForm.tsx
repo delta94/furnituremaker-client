@@ -133,18 +133,6 @@ class CreateOrderFormComponent extends React.Component<
                                 />
                             </FormWrapper>
                         </AntdCol>
-                        <AntdCol span={24}>
-                            <FormWrapper>
-                                <Field
-                                    name={nameof.full<CreateOrderFormValues>(o => o.order.note)}
-                                    component={renderTextArea}
-                                    label="Ghi chú"
-                                    inputProps={{
-                                        placeholder: 'Nhập ghi chú hoặc thông tin xuất hóa đơn'
-                                    }}
-                                />
-                            </FormWrapper>
-                        </AntdCol>
                     </AntdRow>
                 </FormBody>
             </Form>

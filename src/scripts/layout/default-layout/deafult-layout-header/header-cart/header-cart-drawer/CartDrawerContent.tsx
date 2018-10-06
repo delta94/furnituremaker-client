@@ -65,12 +65,16 @@ export class CartDrawerContent extends React.PureComponent<CartDrawerContentProp
                     </AntdRow>
                     <AntdRow>
                         <AntdCol span={12}>
-                            Tổng cộng:
-                    </AntdCol>
+                            <strong>
+                                Tổng cộng:
+                            </strong>
+                        </AntdCol>
                         <AntdCol span={12}>
                             <div style={{ textAlign: 'right' }}>
-                                {formatCurrency(total)} đ
-                        </div>
+                                <strong>
+                                    {formatCurrency(total)} đ
+                                </strong>
+                            </div>
                         </AntdCol>
                     </AntdRow>
                 </div>
