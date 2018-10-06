@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Auth } from '@/app/Auth';
-import { AntdAlert, AntdCheckbox } from '@/components';
+import { AntdAlert, AntdCheckbox, Img } from '@/components';
 
 const Login = require('ant-design-pro/lib/Login');
 const { UserName, Password, Submit } = Login;
@@ -16,6 +16,17 @@ const LoginWrapper = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    .ant-checkbox-inner {
+        background-color: #000;
+        border-color: #000;
+    }
+
+    .ant-btn {
+        background: #FFFFFF;
+        border-radius: 5px;
+        color: #000;
+        border-width: 0;
+    }
 `;
 
 const LoginHeader = styled.div`
@@ -53,7 +64,7 @@ const LoginBranchSlogan = styled.span`
 
 const LoginContent = styled.div`
     width: 100%;
-    max-width: 400px;
+    max-width: 340px;
 `;
 
 const LoginExtends = styled.div`
@@ -124,8 +135,13 @@ export class AppLogin extends React.Component {
                             </AntdCheckbox>
                             <Link style={{ float: 'right' }} to="/forgot-password">Quên mật khẩu</Link>
                         </LoginExtends>
-                        <Submit>Đăng nhập</Submit>
+                        <div style={{ textAlign: 'right' }}>
+                            <Submit>Đăng nhập</Submit>
+                        </div>
                     </Login>
+                    <div style={{ padding: 30 }}>
+                        <Img className="w-100 wm-100" file="/static/assets/login-banner.png" />
+                    </div>
                 </LoginContent>
             </LoginWrapper>
         );

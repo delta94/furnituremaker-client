@@ -9,6 +9,9 @@ const CartProductsWrapper = styled.div`
         background: #EFB416;
         text-align: center;
     }
+    .ant-card-head-title {
+        justify-content: center;
+    }
 `;
 
 interface CartProductsProps {

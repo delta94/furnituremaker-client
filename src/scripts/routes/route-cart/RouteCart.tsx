@@ -14,7 +14,13 @@ import {
 import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
 
-import { CartPaymentInfo, CartProducts, CartShippingInfo } from './containers';
+import {
+    CartPaymentInfo,
+    CartProducts,
+    CartShippingInfo,
+    CartSubmitOrder,
+    ContactAndbBilling
+} from './containers';
 
 type RouteHomeProps =
     Pick<CommonStoreProps, 'setStore'> &
@@ -41,6 +47,8 @@ export class RouteCart extends AppPage<RouteHomeProps> {
                             <AntdCol span={12}>
                                 <CartShippingInfo />
                                 <CartPaymentInfo />
+                                <ContactAndbBilling />
+                                <CartSubmitOrder />
                             </AntdCol>
                             <AntdCol span={12}>
                                 <CartProducts />

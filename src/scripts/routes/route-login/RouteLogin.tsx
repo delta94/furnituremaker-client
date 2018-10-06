@@ -22,7 +22,7 @@ export class RouteLogin extends AppPage<RouteLoginProps & AppPageProps> {
 
     render() {
         return (
-            <Page>
+            <Page backgound="#FFC12E">
                 <AppLogin />
             </Page>
         );

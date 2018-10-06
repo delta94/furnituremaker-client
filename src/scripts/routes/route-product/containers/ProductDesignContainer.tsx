@@ -39,6 +39,10 @@ export class ProductDesignContainer extends React.Component<CommonStoreProps> {
             return null;
         }
 
-        return (<ProductDesignController productDesigns={renderProps.data} />);
+        return (
+            <ProductDesignController
+                productDesigns={renderProps.data}
+            />
+        );
     }
 }

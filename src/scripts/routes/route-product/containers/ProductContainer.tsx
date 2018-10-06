@@ -6,7 +6,7 @@ import { Product, productResources, restfulFetcher } from '@/restful';
 import { ProductDetail } from './product-container';
 
 interface ProductContainerProps {
-    readonly productCode: number;
+    readonly productCode: string;
 }
 
 export class ProductContainer extends React.Component<ProductContainerProps> {

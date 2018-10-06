@@ -22,7 +22,6 @@ import { formatCurrency, formatDate, toVNDay } from '@/utilities';
 import {
     CardTotalOfPayment,
     CartDiscountByAgencyLevel,
-    CartSubmitOrder,
     CartUsePromoCode
 } from './cart-payment-info';
 import { SectionTitle, ShippingCost } from './CartUI';
@@ -39,6 +38,9 @@ const CartPaymentInfoWrapper = styled.div`
     .ant-card-body {
         padding-left: 0!important;
         padding-right: 0!important;
+    }
+    .ant-card-head-title {
+        justify-content: center;
     }
 `;
 
@@ -109,8 +111,6 @@ export class CartPaymentInfo extends React.Component<CartPaymentInfoProps> {
                     </AntdRow>
                 </AntdCard>
                 <CardTotalOfPayment orderDetails={orderDetails} />
-                
-                <CartSubmitOrder/>
             </CartPaymentInfoWrapper >
         );
     }

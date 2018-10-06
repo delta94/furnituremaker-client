@@ -36,7 +36,7 @@ export class RouteProduct extends AppPage<RouteProductProps> {
                     <ProductDesignContainer />
                     <Container style={{ padding: '30px 0 0 0 ' }}>
                         <ProductContainer
-                            productCode={+match.params.productCode}
+                            productCode={match.params.productCode}
                         />
                     </Container>
                 </DefaultLayout>

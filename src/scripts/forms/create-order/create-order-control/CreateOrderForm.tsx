@@ -5,20 +5,21 @@ import styled from 'styled-components';
 import {
     AntdCol,
     AntdRow,
-    AntdSelectOptionProps,
     FormError,
     renderInput,
-    renderSelectField,
-    renderTextArea,
     required
 } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { City, County, Order } from '@/restful';
 
 import {
+    OrderContactInfo,
     OrderFormCityField,
     OrderFormCityFieldProps
 } from './create-order-form';
+import {
+    OrderBillingInfomation
+} from './create-order-form/OrderBillingInfomation';
 
 const FormBody = styled.div`
     display: block;
@@ -31,6 +32,7 @@ const FormWrapper = styled.div`
 export interface CreateOrderFormProps extends
     Pick<OrderFormCityFieldProps, 'onCityChange'> {
     readonly onFormStatusChange: (status: CommonStoreProps['orderFormStatus']) => void;
+    readonly part: 'shiping-info' | 'contact-and-billing';
 }
 
 export interface CreateOrderFormValues {
@@ -51,7 +53,7 @@ class CreateOrderFormComponent extends React.Component<
 
         change(nameof.full<CreateOrderFormValues>(o => o.order.shippingToCity), city);
         change(nameof.full<CreateOrderFormValues>(o => o.order.shippingToCounty), county);
-        
+
         onCityChange(city, county);
     }
 
@@ -75,65 +77,75 @@ class CreateOrderFormComponent extends React.Component<
     }
 
     render() {
-        const { handleSubmit, initialValues, error } = this.props;
+        const { handleSubmit, initialValues, error, part } = this.props;
         return (
             <Form onSubmit={handleSubmit}>
                 <FormError error={error} />
                 <FormBody>
-                    <AntdRow gutter={15}>
-                        <AntdCol span={12}>
-                            <FormWrapper>
-                                <Field
-                                    name={nameof.full<CreateOrderFormValues>(o => o.order.phone)}
-                                    component={renderInput}
-                                    validate={CreateOrderFormComponent.phoneValidates}
-                                    required={true}
-                                    label="Điện thoại"
-                                    inputProps={{
-                                        placeholder: 'Điện thoại'
-                                    }}
-                                />
-                            </FormWrapper>
-                        </AntdCol>
-                        <AntdCol span={12}>
-                            <FormWrapper>
-                                <Field
-                                    name={nameof.full<CreateOrderFormValues>(o => o.order.email)}
-                                    component={renderInput}
-                                    validate={CreateOrderFormComponent.emailValidates}
-                                    required={true}
-                                    label="Email"
-                                    inputProps={{
-                                        placeholder: 'Email'
-                                    }}
-                                />
-                            </FormWrapper>
-                        </AntdCol>
-                        <AntdCol span={12}>
-                            <FormWrapper>
-                                <OrderFormCityField
-                                    initCity={initialValues.order.shippingToCity}
-                                    initCounty={initialValues.order.shippingToCounty}
-                                    fieldName={nameof<CreateOrderFormValues>(o => o.city_county)}
-                                    onCityChange={this.onCityChange}
-                                />
-                            </FormWrapper>
-                        </AntdCol>
-                        <AntdCol span={12}>
-                            <FormWrapper>
-                                <Field
-                                    name={nameof.full<CreateOrderFormValues>(o => o.order.shippingAddress)}
-                                    component={renderInput}
-                                    validate={CreateOrderFormComponent.addressValidates}
-                                    required={true}
-                                    label="Địa chỉ giao hàng"
-                                    inputProps={{
-                                        placeholder: 'Nhập địa chỉ giao hàng'
-                                    }}
-                                />
-                            </FormWrapper>
-                        </AntdCol>
-                    </AntdRow>
+                    {
+                        part === 'shiping-info' ? (
+                            <AntdRow gutter={15}>
+                                <AntdCol span={12}>
+                                    <FormWrapper>
+                                        <Field
+                                            name={nameof.full<CreateOrderFormValues>(o => o.order.phone)}
+                                            component={renderInput}
+                                            validate={CreateOrderFormComponent.phoneValidates}
+                                            required={true}
+                                            label="Điện thoại"
+                                            inputProps={{
+                                                placeholder: 'Điện thoại'
+                                            }}
+                                        />
+                                    </FormWrapper>
+                                </AntdCol>
+                                <AntdCol span={12}>
+                                    <FormWrapper>
+                                        <Field
+                                            name={nameof.full<CreateOrderFormValues>(o => o.order.email)}
+                                            component={renderInput}
+                                            validate={CreateOrderFormComponent.emailValidates}
+                                            required={true}
+                                            label="Email"
+                                            inputProps={{
+                                                placeholder: 'Email'
+                                            }}
+                                        />
+                                    </FormWrapper>
+                                </AntdCol>
+                                <AntdCol span={12}>
+                                    <FormWrapper>
+                                        <OrderFormCityField
+                                            initCity={initialValues.order.shippingToCity}
+                                            initCounty={initialValues.order.shippingToCounty}
+                                            fieldName={nameof<CreateOrderFormValues>(o => o.city_county)}
+                                            onCityChange={this.onCityChange}
+                                        />
+                                    </FormWrapper>
+                                </AntdCol>
+                                <AntdCol span={12}>
+                                    <FormWrapper>
+                                        <Field
+                                            name={nameof.full<CreateOrderFormValues>(o => o.order.shippingAddress)}
+                                            component={renderInput}
+                                            validate={CreateOrderFormComponent.addressValidates}
+                                            required={true}
+                                            label="Địa chỉ giao hàng"
+                                            inputProps={{
+                                                placeholder: 'Nhập địa chỉ giao hàng'
+                                            }}
+                                        />
+                                    </FormWrapper>
+                                </AntdCol>
+                            </AntdRow>
+                        ) : (
+                                <React.Fragment>
+                                    <OrderContactInfo />
+                                    <OrderBillingInfomation />
+                                </React.Fragment>
+                            )
+                    }
+
                 </FormBody>
             </Form>
         );

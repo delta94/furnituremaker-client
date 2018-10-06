@@ -57,7 +57,7 @@ export class InventoryProductInfo extends React.PureComponent<InventoryProductIn
         const productDiscount =
             productDiscountUtils.getDiscountByProduct(productDiscounts, selectedProduct);
         return (
-            <div>
+            <div style={{ marginBottom: 30 }}>
                 <ProductName>
                     {selectedProduct.name}
                     {

@@ -7,12 +7,15 @@ import { CommonStoreProps } from '@/configs';
 
 import { PageLoading } from './PageLoading';
 
-type PageProps =
-    React.DOMAttributes<{}> &
-    Pick<CommonStoreProps, 'setStore'>;
+interface PageProps extends
+    React.DOMAttributes<{}>,
+    Pick<CommonStoreProps, 'setStore'> {
+    readonly backgound?: string;
+}
 
 const PageContent = styled.div`
     min-height: inherit;
+    background-color: ${(props: Pick<PageProps, 'backgound'>) => props.backgound};
 `;
 
 @withStoreValues()
@@ -25,7 +28,10 @@ export class Page extends React.Component<PageProps> {
         return (
             <React.Fragment>
                 <PageLoading />
-                <PageContent id="page" {...this.props} />
+                <PageContent
+                    id="page"
+                    {...this.props}
+                />
             </React.Fragment>
         );
     }

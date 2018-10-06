@@ -12,7 +12,7 @@ import {
     WithTempOrderDetails
 } from '@/restful';
 
-const CartShippingInfoWrapper = styled.div`
+const ContactAndbBillingWrapper = styled.div`
     .ant-card-head {
         background: #D6D6D6;
         text-align: center;
@@ -33,19 +33,16 @@ interface CartDrawerFooterProps extends
 
 @withTempOrderDetails
 @withStoreValues<InitAppStoreProps>('history')
-export class CartShippingInfo extends React.Component<CartDrawerFooterProps> {
+export class ContactAndbBilling extends React.Component<CartDrawerFooterProps> {
     render() {
         const { orderDetails } = this.props;
-
         return (
-            <CartShippingInfoWrapper>
-                <AntdCard bordered={false} title="THÔNG TIN GIAO HÀNG">
-                    <CreateOrderControl
-                        part="shiping-info"
-                        orderDetails={orderDetails}
-                    />
-                </AntdCard>
-            </CartShippingInfoWrapper>
+            <ContactAndbBillingWrapper>
+                <CreateOrderControl
+                    part="contact-and-billing"
+                    orderDetails={orderDetails}
+                />
+            </ContactAndbBillingWrapper>
         );
     }
 }

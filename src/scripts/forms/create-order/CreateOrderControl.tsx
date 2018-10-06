@@ -2,7 +2,7 @@ import * as React from 'react';
 import { submit } from 'redux-form';
 
 import { Auth, withStoreValues } from '@/app';
-import { fetchErrorHandler } from '@/components';
+import { AntdModal, fetchErrorHandler } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
     City,
@@ -18,18 +18,20 @@ import {
 import {
     CreateOrderForm,
     createOrderForm,
+    CreateOrderFormProps,
     CreateOrderFormValues
 } from './create-order-control';
 
 export interface CreateOrderControlProps extends
     Pick<CommonStoreProps, 'selectedPromotion'>,
+    Pick<CommonStoreProps, 'history'>,
     Pick<CommonStoreProps, 'setStore'>,
     Pick<CommonStoreProps, 'dispatch'> {
     readonly orderDetails: OrderDetail[];
-    readonly onOrderCreate: (order: Order) => void;
+    readonly part: CreateOrderFormProps['part'];
 }
 
-@withStoreValues<CreateOrderControlProps>('selectedPromotion')
+@withStoreValues<CreateOrderControlProps>('history', 'selectedPromotion')
 export class CreateOrderControl extends React.Component<CreateOrderControlProps> {
     readonly onCreateOrder = async (formValues: CreateOrderFormValues) => {
         try {
@@ -91,11 +93,12 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
     }
 
     render() {
-        const { onOrderCreate, setStore } = this.props;
+        const { setStore, part, history } = this.props;
         const shippingDate = orderUtils.getShippingDate();
         const user = Auth.instance.currentUser;
         return (
             <CreateOrderForm
+                part={part}
                 onSubmit={this.onCreateOrder}
                 onFormStatusChange={(status) => {
                     setStore<CommonStoreProps>({ orderFormStatus: status });
@@ -120,7 +123,18 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                         user.agency.county.id
                     ]
                 }}
-                onSubmitSuccess={onOrderCreate}
+                onSubmitSuccess={(order: Order) => {
+                    const toOrderDetailPageUrl = orderUtils.getDetailPageUrl(order);
+                    AntdModal.success({
+                        title: 'Đặt hàng thành công',
+                        content: 'Nhân viên của Furniture Maker sẽ liên hệ với bạn trong thời gian sớm nhất!',
+                        okText: 'Xem đơn hàng',
+                        okType: 'default',
+                        cancelText: 'Tiếp tục mua sắm',
+                        onOk: () => history.push(toOrderDetailPageUrl),
+                        onCancel: () => history.push('/')
+                    });
+                }}
             />
         );
     }

@@ -3,6 +3,7 @@ import { RequestParameter, RestfulRender } from 'react-restful';
 
 import { Auth } from '@/app';
 import { policies } from '@/app/policies';
+import { Loading } from '@/components';
 import { Order, orderResources, restfulFetcher, restfulStore } from '@/restful';
 
 import { OrderListControl } from './order-list-container';
@@ -39,11 +40,15 @@ export class OrderListContainer extends React.PureComponent {
                 parameters={fetchParams}
                 resource={orderResources.find}
                 render={(renderProps) => {
-                    if (renderProps.data && !renderProps.fetching) {
-                        return <OrderListControl orders={renderProps.data} />;
+                    if (renderProps.fetching) {
+                        return <Loading />;
                     }
 
-                    return null;
+                    if (!renderProps.data) {
+                        return null;
+                    }
+
+                    return <OrderListControl orders={renderProps.data} />;
                 }}
             />
         );

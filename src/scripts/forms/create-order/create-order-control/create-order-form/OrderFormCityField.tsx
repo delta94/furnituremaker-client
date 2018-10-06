@@ -8,8 +8,7 @@ import {
     cityResources,
     County,
     countyResources,
-    restfulFetcher,
-    restfulStore
+    restfulFetcher
 } from '@/restful';
 
 export interface OrderFormCityFieldProps {
