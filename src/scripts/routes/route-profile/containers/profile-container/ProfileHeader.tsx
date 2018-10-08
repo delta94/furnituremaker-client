@@ -27,7 +27,6 @@ export class ProfileHeader extends React.Component<ProfileHeaderProps> {
         return (
             <PageHeaderWrapper>
                 <PageHeader
-                    logo={<img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />}
                     title={<OrderId>{user.email}</OrderId>}
                     content={(
                         <AntdDescriptionList title={`Chủ tài khoản: ${user.name}`} size="small" col={2}>

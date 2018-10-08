@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { AppPage, PageProps, readyState, withStoreValues } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { DefaultLayout } from '@/layout';
+import { DefaultLayout, ProfileLayout } from '@/layout';
 
 import { ProfileContainer } from './containers';
 
@@ -21,7 +21,9 @@ export class RouteProfile extends AppPage<RouteProfileProps> {
         return (
             <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
-                    <ProfileContainer />
+                    <ProfileLayout>
+                        <ProfileContainer />
+                    </ProfileLayout>
                 </DefaultLayout>
             </Page>
         );
