@@ -19,5 +19,6 @@ export * from './productTypeGroup';
 export * from './promotion';
 export * from './quotaUnit';
 export * from './role';
+export * from './slide';
 export * from './uploadedFile';
 export * from './user';

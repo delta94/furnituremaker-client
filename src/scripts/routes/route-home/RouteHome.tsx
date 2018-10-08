@@ -7,7 +7,6 @@ import { CommonStoreProps } from '@/configs';
 import { DefaultLayout } from '@/layout';
 
 import {
-    HomeFeatureProducts,
     HomeProductDesign,
     HomeProductFilter,
     HomeProductList,

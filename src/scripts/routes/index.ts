@@ -6,3 +6,4 @@ export * from './route-maker';
 export * from './route-cart';
 export * from './route-product';
 export * from './route-profile';
+export * from './route-landing';

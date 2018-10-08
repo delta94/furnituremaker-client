@@ -8,7 +8,7 @@ export const RouteHomeLoadable = Loadable({
 
 RouteHomeLoadable.defaultProps = {
     routeProps: {
-        path: '/',
+        path: '/product',
         exact: true
      }
 };

@@ -21,8 +21,7 @@ export class RouteProfile extends AppPage<RouteProfileProps> {
         return (
             <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
-                    <ProfileContainer
-                    />
+                    <ProfileContainer />
                 </DefaultLayout>
             </Page>
         );

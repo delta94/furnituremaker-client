@@ -26,7 +26,7 @@ const Menu = styled.ul`
         color: white;
         line-height: 50px;
         &:not(:last-child) {
-            margin-right: 50px;
+            margin-right: 30px;
         }
     }
 `;
@@ -41,11 +41,14 @@ export class DefaultLayoutTopbar extends React.Component {
                             Xin chào, {Auth.instance.currentUser.name}!
                         </div>
                         <Menu>
+                            <Link to="/product" className="link">
+                                Mua hàng
+                            </Link>
                             <Link to="/maker" className="link">
-                                <AntdIcon type="bulb" theme="outlined" /> Tự thiết kế
+                                Tự thiết kế
                             </Link>
                             <Link to="/orders" className="link">
-                                <AntdIcon type="copy" /> Đơn hàng
+                                Đơn hàng
                             </Link>
                         </Menu>
                     </DefaultLayoutTopbarContent>
