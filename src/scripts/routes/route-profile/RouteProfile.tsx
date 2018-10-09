@@ -5,9 +5,13 @@ import { Link } from 'react-router-dom';
 import { AppPage, PageProps, readyState, withStoreValues } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { DefaultLayout, ProfileLayout } from '@/layout';
-
-import { ProfileContainer } from './containers';
+import { UserInfoFormControl } from '@/forms/user-info-form';
+import {
+    DefaultLayout,
+    ProfileLayout,
+    ProfileLayoutContentBody,
+    ProfileLayoutContentHeader
+} from '@/layout';
 
 type RouteProfileProps =
     Pick<CommonStoreProps, 'setStore'> &
@@ -22,7 +26,14 @@ export class RouteProfile extends AppPage<RouteProfileProps> {
             <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
                     <ProfileLayout>
-                        <ProfileContainer />
+                        <div>
+                            <ProfileLayoutContentHeader>
+                                THÔNG TIN TÀI KHOẢN
+                            </ProfileLayoutContentHeader>
+                            <ProfileLayoutContentBody>
+                                <UserInfoFormControl />
+                            </ProfileLayoutContentBody>
+                        </div>
                     </ProfileLayout>
                 </DefaultLayout>
             </Page>

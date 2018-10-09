@@ -4,6 +4,20 @@ import styled from 'styled-components';
 
 import { AntdCol, AntdIcon, AntdRow, Container } from '@/components';
 
+export const ProfileLayoutContentHeader = styled.div`
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    background: #D6D6D6;
+    font-weight: bold;
+`;
+
+export const ProfileLayoutContentBody = styled.div`
+    margin-top: 5px;
+    background: #F7F7F7;
+    padding: 15px;
+`;
+
 const ProfileLayoutWrapper = styled.div`
     display: block;
     .profile-menu-link {
@@ -30,7 +44,9 @@ const ProfileLayoutItem = styled.li`
 
 const ProfileHeader = styled.div`
     background: #FFC12E;
-    padding: 15px;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 15px;
     color: #000;
 `;
 
@@ -39,7 +55,7 @@ export function ProfileLayout(props: { readonly children: any; }) {
     return (
         <ProfileLayoutWrapper>
             <Container>
-                <AntdRow gutter={15}>
+                <AntdRow gutter={5}>
                     <AntdCol span={6}>
                         <ProfileHeader>
                             TÀI KHOẢN CỦA:

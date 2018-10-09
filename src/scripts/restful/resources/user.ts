@@ -13,6 +13,10 @@ export interface User {
     readonly agency?: Agency;
     readonly createdAt?: string;
     readonly username: string;
+    readonly phone: string;
+    readonly dayOfBirth: number;
+    readonly monthOfBirth: number;
+    readonly yearOfBirth: number;
 }
 
 export const userResourceType = new ResourceType<User>({
