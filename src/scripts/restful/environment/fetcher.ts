@@ -13,6 +13,13 @@ interface ErrorResponse {
 
 export const restfulFetcher = new Fetcher({
     store: restfulStore,
+    requestBodyParser: (key, value) => {
+        if (value.id) {
+            return value.id;
+        }
+
+        return value;
+    },
     beforeFetch: (url: string, requestInit: RequestInit) => {
         const token = getToken();
         if (token && requestInit.headers instanceof Headers) {

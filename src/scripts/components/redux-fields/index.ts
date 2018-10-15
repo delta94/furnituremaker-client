@@ -4,6 +4,7 @@ export * from './renderCascader';
 export * from './renderDateField';
 export * from './renderInput';
 export * from './renderInputNumber';
+export * from './renderRadioField';
 export * from './renderSelect';
 export * from './renderTextArea';
 export * from './renderUploadField';

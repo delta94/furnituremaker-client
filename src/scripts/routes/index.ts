@@ -7,3 +7,4 @@ export * from './route-cart';
 export * from './route-product';
 export * from './route-profile';
 export * from './route-landing';
+export * from './route-address-book';

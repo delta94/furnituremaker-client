@@ -54,20 +54,12 @@ export const productResources = {
     find: new Resource<Product[]>({
         resourceType: productResourceType,
         method: 'GET',
-        url: apiEntry('/product'),
-        mapDataToStore: (products, resourceType, store) => {
-            for (const product of products) {
-                store.mapRecord(resourceType, product);
-            }
-        }
+        url: apiEntry('/product')
     }),
     findOne: new Resource<Product>({
         resourceType: productResourceType,
         method: 'GET',
-        url: apiEntry('/product/:id'),
-        mapDataToStore: (product, resourceType, store) => {
-            store.mapRecord(resourceType, product);
-        }
+        url: apiEntry('/product/:id')
     }),
     count: new Resource<number>({
         resourceType: productResourceType,

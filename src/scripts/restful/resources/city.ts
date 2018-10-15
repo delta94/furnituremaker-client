@@ -9,6 +9,7 @@ export interface City extends Record {
     readonly name: string;
     readonly transportFee: number;
     readonly additionalShippingDays: number;
+    readonly counties: County[];
 }
 
 export const cityResourceType = new ResourceType<City>({

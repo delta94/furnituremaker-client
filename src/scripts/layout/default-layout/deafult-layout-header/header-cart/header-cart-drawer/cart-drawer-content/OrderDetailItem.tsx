@@ -12,7 +12,6 @@ import {
     AntdSpin
 } from '@/components';
 import { AntdModal } from '@/components/antd-component/Modal';
-import { colorPrimary } from '@/configs';
 import {
     OrderDetail,
     orderDetailResources,

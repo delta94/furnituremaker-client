@@ -17,6 +17,8 @@ export interface User {
     readonly dayOfBirth: number;
     readonly monthOfBirth: number;
     readonly yearOfBirth: number;
+    readonly gender: 'male' | 'famale';
+    readonly fullName?: string;
 }
 
 export const userResourceType = new ResourceType<User>({
@@ -48,6 +50,22 @@ export const userResources = {
         method: 'GET',
         mapDataToStore: (data, resourceType, store) => {
             store.dataMapping(resourceType, data);
+        }
+    }),
+    update: new Resource<User>({
+        resourceType: userResourceType,
+        url: apiEntry('/user/:id'),
+        method: 'PUT',
+        requestBodyParser: (key, val) => {
+            if (key === 'email') {
+                return undefined;
+            }
+            
+            if (key === 'agency' || key === 'role') {
+                return val.id;
+            }
+
+            return val;
         }
     })
 };

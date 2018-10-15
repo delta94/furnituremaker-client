@@ -75,7 +75,7 @@ export function ProfileLayout(props: { readonly children: any; }) {
                             </ProfileLayoutItem>
                             <ProfileLayoutItem>
                                 <AntdIcon type="environment" theme="outlined" />
-                                <Link className="profile-menu-link" to="/profile">Sổ địa chỉ của tôi</Link>
+                                <Link className="profile-menu-link" to="/addresses">Sổ địa chỉ của tôi</Link>
                             </ProfileLayoutItem>
                             <ProfileLayoutItem>
                                 <AntdIcon type="credit-card" theme="outlined" />

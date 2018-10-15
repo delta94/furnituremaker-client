@@ -23,7 +23,7 @@ export const ProductDetailSectionLablel: React.ComponentType<React.CSSProperties
     line-height: 49px;
     text-transform: uppercase;
     font-size: 14px;
-    text-align: center;
+    text-align: center; 
     letter-spacing: 3px;
     text-transform: uppercase;
 

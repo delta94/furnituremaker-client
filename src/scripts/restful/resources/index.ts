@@ -1,3 +1,4 @@
+export * from './address';
 export * from './agency';
 export * from './city';
 export * from './county';

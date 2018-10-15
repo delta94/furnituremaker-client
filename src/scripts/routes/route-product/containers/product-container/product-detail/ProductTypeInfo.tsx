@@ -24,7 +24,6 @@ const Property = styled.span`
     font-size: 14px;
     letter-spacing: -0.00357498px;
     color: #3D3D3D;
-    line-height: 30px;
 `;
 
 const Value = styled.span`
@@ -32,7 +31,6 @@ const Value = styled.span`
     font-size: 14px;
     letter-spacing: -0.00357498px;
     color: #3D3D3D;
-    line-height: 30px;
 `;
 
 export interface ProductTypeInfoProps extends
