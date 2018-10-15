@@ -109,7 +109,7 @@ export const orderResources = {
         resourceType: orderResourceType,
         url: apiEntry('/order'),
         method: 'POST',
-        mapDataToStore: (order, resourceType, store, requestInfo) => {
+        mapDataToStore: (order, resourceType, store) => {
             const isAdmin = policies.isAdminGroup();
             if (!isAdmin) {
                 sendNotificationToFirebase('root', {
@@ -137,8 +137,10 @@ export const orderResources = {
         resourceType: orderResourceType,
         url: apiEntry('/order/:id'),
         method: 'PUT',
-        mapDataToStore: (order, resourceType, store, requestInfo) => {
-            const { meta } = requestInfo;
+        requestSuccess: async (requestInfo) => {
+            const { meta, response } = requestInfo;
+            const order = await response.json();
+
             sendNotificationToFirebase(meta.sendNotificationTo, {
                 orderId: order.id,
                 fromAgency: order.agencyOrderer.id,
@@ -147,7 +149,8 @@ export const orderResources = {
                 fromUserName: order.createdBy.name,
                 type: meta.notificationType
             });
-
+        },
+        mapDataToStore: (order, resourceType, store) => {
             store.mapRecord(resourceType, order);
         }
     }),

@@ -19,6 +19,12 @@ import { orderUtils } from '@/restful';
 
 import { AgencyField } from './order-filter-form';
 
+const FormWrapper = styled.div`
+    background: #F7F7F7;
+    padding: 15px;
+    margin-top: 5px;
+`;
+
 const FormFields = styled.div`
     display: flex;
 `;
@@ -27,6 +33,9 @@ const FormField = styled.div`
     min-width: 150px;
     &:not(:last-child) {
         margin: 0 10px 0 0;
+    }
+    .ant-form-item {
+        margin-bottom: 0px;
     }
 `;
 
@@ -54,54 +63,56 @@ class OrderFilterFormComponent extends React.PureComponent<
     render() {
         const { handleSubmit, change } = this.props;
         return (
-            <Form onSubmit={handleSubmit}>
-                <FormFields>
-                    <FormField>
-                        <Field
-                            name={nameof<OrderFilterFormValues>(o => o.code)}
-                            component={renderInput}
-                            inputProps={{
-                                placeholder: 'Nhập mã order'
-                            }}
-                        />
-                    </FormField>
-                    <AccessControl allowRoles="root">
+            <FormWrapper>
+                <Form onSubmit={handleSubmit}>
+                    <FormFields>
                         <FormField>
-                            <AgencyField onChange={this.agencyChange} />
+                            <Field
+                                name={nameof<OrderFilterFormValues>(o => o.code)}
+                                component={renderInput}
+                                inputProps={{
+                                    placeholder: 'Nhập mã order'
+                                }}
+                            />
                         </FormField>
-                    </AccessControl>
-                    <FormField>
-                        <Field
-                            name={nameof<OrderFilterFormValues>(o => o.status)}
-                            items={orderUtils.getStatusSelectItems()}
-                            component={renderSelectField}
-                            onChange={(e, value) => {
-                                if (!value) {
-                                    change(nameof<OrderFilterFormValues>(o => o.status), null);
-                                    e.preventDefault();
-                                }
-                            }}
-                            selectProps={{
-                                placeholder: 'Tình trạng',
-                                dropdownMatchSelectWidth: false,
-                                allowClear: true
-                            }}
-                        />
-                    </FormField>
-                    <FormField>
-                        <AntdForm.Item>
-                            <AntdButton
-                                icon="search"
-                                type="primary"
-                                htmlType="submit"
-                                ghost={true}
-                            >
-                                Tìm
-                            </AntdButton>
-                        </AntdForm.Item>
-                    </FormField>
-                </FormFields>
-            </Form>
+                        <AccessControl allowRoles="root">
+                            <FormField>
+                                <AgencyField onChange={this.agencyChange} />
+                            </FormField>
+                        </AccessControl>
+                        <FormField>
+                            <Field
+                                name={nameof<OrderFilterFormValues>(o => o.status)}
+                                items={orderUtils.getStatusSelectItems()}
+                                component={renderSelectField}
+                                onChange={(e, value) => {
+                                    if (!value) {
+                                        change(nameof<OrderFilterFormValues>(o => o.status), null);
+                                        e.preventDefault();
+                                    }
+                                }}
+                                selectProps={{
+                                    placeholder: 'Tình trạng',
+                                    dropdownMatchSelectWidth: false,
+                                    allowClear: true
+                                }}
+                            />
+                        </FormField>
+                        <FormField>
+                            <AntdForm.Item>
+                                <AntdButton
+                                    icon="search"
+                                    type="primary"
+                                    htmlType="submit"
+                                    ghost={true}
+                                >
+                                    Tìm
+                                </AntdButton>
+                            </AntdForm.Item>
+                        </FormField>
+                    </FormFields>
+                </Form>
+            </FormWrapper>
         );
     }
 }

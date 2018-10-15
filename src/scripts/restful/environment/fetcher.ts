@@ -14,7 +14,7 @@ interface ErrorResponse {
 export const restfulFetcher = new Fetcher({
     store: restfulStore,
     requestBodyParser: (key, value) => {
-        if (value.id) {
+        if (value && value.id) {
             return value.id;
         }
 
@@ -27,7 +27,8 @@ export const restfulFetcher = new Fetcher({
         }
         return requestInit;
     },
-    afterFetch: async (response) => {
+    afterFetch: async (requestInfo) => {
+        const { response } = requestInfo;
         if (response.ok) {
             return;
         }

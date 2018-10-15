@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { AppRouteComponentProps, PageProps, readyState } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
-import { DefaultLayout } from '@/layout';
+import { DefaultLayout, ProfileLayout } from '@/layout';
 
 import { OrderDetailContainer } from './containers';
 
@@ -17,7 +17,9 @@ export class RouteOrderDetail extends React.Component<RouteOrderDetailProps> {
         return (
             <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
-                    <OrderDetailContainer orderId={match.params.id} />
+                    <ProfileLayout>
+                        <OrderDetailContainer orderId={match.params.id} />
+                    </ProfileLayout>
                 </DefaultLayout>
             </Page>
         );

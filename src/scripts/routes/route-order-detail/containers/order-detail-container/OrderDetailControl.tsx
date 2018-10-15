@@ -7,6 +7,7 @@ import { CommonStoreProps, InitAppStoreProps } from '@/configs';
 import {
     UpdateOrderFormControl
 } from '@/forms/update-order/UpdateOrderFormControl';
+import { ProfileLayoutContentHeader } from '@/layout';
 import {
     Order,
     orderResources,
@@ -108,6 +109,9 @@ OrderDetailControlComponentState> {
         const adminCanUpdate = orderUtils.adminCanUpdate(order);
         return (
             <React.Fragment>
+                <ProfileLayoutContentHeader>
+                    CHI TIẾT ĐƠN HÀNG <span style={{color: '#9DCB3D'}}>{order.code}</span>
+                </ProfileLayoutContentHeader>
                 <Container>
                     <OrderDetail
                         order={order}

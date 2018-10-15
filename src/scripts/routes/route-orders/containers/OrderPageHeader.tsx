@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { Container } from '@/components';
 import { OrdersFilterControl } from '@/forms/orders-filter';
+import { ProfileLayoutContentHeader } from '@/layout';
 
 const OrderListHeaderWrapper = styled.div`
     display: block;
@@ -13,7 +14,9 @@ export class OrderPageHeader extends React.Component {
         return (
             <Container>
                 <OrderListHeaderWrapper>
-                    <h1>Đơn hàng của bạn</h1>
+                    <ProfileLayoutContentHeader>
+                        ĐƠN HÀNG CỦA BẠN
+                    </ProfileLayoutContentHeader>
                     <OrdersFilterControl />
                 </OrderListHeaderWrapper>
             </Container>

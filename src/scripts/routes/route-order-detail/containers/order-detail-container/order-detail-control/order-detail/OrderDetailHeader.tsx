@@ -6,8 +6,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { AccessControl, AllowAccess, DenyAccess } from '@/app';
-import { AntdButton, AntdCol, AntdIcon, AntdRow, AntdTag } from '@/components';
-import { colorPrimary } from '@/configs';
+import { AntdButton, AntdCol, AntdRow } from '@/components';
 import {
     Order,
     orderDetailUtils,
@@ -22,10 +21,12 @@ const AntdDescriptionList = require('ant-design-pro/lib/DescriptionList');
 
 const PageHeaderWrapper = styled.div`
     margin: 0 0 30px 0;
-`;
-
-const OrderId = styled.span`
-    color: ${colorPrimary};
+    .antd-pro-page-header-pageHeader {
+        border: 1px solid #e8e8e8;
+    }
+    .antd-pro-description-list-detail {
+        text-align: right;
+    }
 `;
 
 export interface OrderDetailHeaderProps extends
@@ -51,13 +52,55 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
 
         return (
             <PageHeaderWrapper>
+                <div style={{ margin: '15px 0' }}>
+                    <AccessControl allowRoles="root">
+                        <AllowAccess>
+                            {
+                                onUpdateOrderClick && (
+                                    <AntdButton
+                                        icon="edit"
+                                        onClick={() => onUpdateOrderClick(order)}
+                                    >
+                                        Cập nhật đơn hàng
+                                    </AntdButton>
+                                )
+                            }
+                        </AllowAccess>
+                        <DenyAccess>
+                            <AntdButton.Group>
+                                {
+                                    orderUtils.canChange(order) && (
+                                        <AntdButton
+                                            type="danger"
+                                            ghost={true}
+                                            icon="rollback"
+                                            onClick={() => onOrderChange(order)}
+                                        >
+                                            Đổi trả
+                                        </AntdButton>
+                                    )
+                                }
+                                {
+                                    orderUtils.canCancel(order) && (
+                                        <AntdButton
+                                            type="danger"
+                                            ghost={true}
+                                            icon="delete"
+                                            onClick={() => onOrderCancel(order)}
+                                        >
+                                            Hủy đơn hàng
+                                        </AntdButton>
+                                    )
+                                }
+                            </AntdButton.Group>
+                        </DenyAccess>
+                    </AccessControl>
+                </div>
                 <PageHeader
-                    logo={<img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />}
-                    title={<React.Fragment>Order: <OrderId>{order.code}</OrderId></React.Fragment>}
                     content={(
-                        <AntdDescriptionList title={order.note || 'Chi tiết:'} size="small" col={2}>
+                        <AntdDescriptionList size="small" col={2}>
                             <AntdDescriptionList.Description term="Ngày đặt">
-                                {formatDate(order.createdAt, 'DD-MM-YYYY HH:mm')}
+                                {formatDate(order.createdAt, 'DD-MM-YYYY')}
                             </AntdDescriptionList.Description>
                             <AntdDescriptionList.Description term="Số lượng">
                                 {orderDetailUtils.getQuantity(order.orderDetails)} sản phẩm
@@ -103,74 +146,49 @@ export class OrderDetailHeader extends React.Component<OrderDetailHeaderProps> {
                                 {order.shippingAddress}
                             </AntdDescriptionList.Description>
                             <AntdDescriptionList.Description term="Tình trạng">
-                                <AntdTag color={statusInfo.color}>
-                                    <AntdIcon type={statusInfo.icon} /> {statusInfo.label}
-                                </AntdTag>
+                                {statusInfo.label}
                             </AntdDescriptionList.Description>
                         </AntdDescriptionList>
                     )}
-                    action={(
-                        <AccessControl allowRoles="root">
-                            <AllowAccess>
-                                {
-                                    onUpdateOrderClick && (
-                                        <AntdButton
-                                            icon="edit"
-                                            onClick={() => onUpdateOrderClick(order)}
-                                        >
-                                            Cập nhật đơn hàng
-                                        </AntdButton>
-                                    )
-                                }
-                            </AllowAccess>
-                            <DenyAccess>
-                                <AntdButton.Group>
-                                    {
-                                        orderUtils.canChange(order) && (
-                                            <AntdButton
-                                                type="danger"
-                                                ghost={true}
-                                                icon="rollback"
-                                                onClick={() => onOrderChange(order)}
-                                            >
-                                                Đổi trả
-                                            </AntdButton>
-                                        )
-                                    }
-                                    {
-                                        orderUtils.canCancel(order) && (
-                                            <AntdButton
-                                                type="danger"
-                                                ghost={true}
-                                                icon="delete"
-                                                onClick={() => onOrderCancel(order)}
-                                            >
-                                                Hủy đơn hàng
-                                            </AntdButton>
-                                        )
-                                    }
-                                </AntdButton.Group>
-                            </DenyAccess>
-                        </AccessControl>
-
-                    )}
-                    extraContent={(
-                        <AntdRow>
-                            <AntdCol sm={24} md={12}>
-                                <div style={{ color: 'rgba(0, 0, 0, 0.43)' }}>Cần thanh toán</div>
-                                <div style={{ color: 'rgba(0, 0, 0, 0.85)', fontSize: 20 }}>
-                                    {formatCurrency(order.totalOfPayment)}
-                                </div>
-                            </AntdCol>
-                            <AntdCol sm={24} md={12}>
-                                <div style={{ color: 'rgba(0, 0, 0, 0.43)' }}>Đã thanh toán</div>
-                                <div style={{ color: 'rgba(0, 0, 0, 0.85)', fontSize: 20 }}>
-                                    {formatCurrency(theAmountPaid)}
-                                </div>
-                            </AntdCol>
-                        </AntdRow>
-                    )}
                 />
+                <div style={{ textAlign: 'center', maxWidth: 400, margin: '20px auto' }}>
+                    <AntdRow gutter={10}>
+                        <AntdCol sm={24} md={12}>
+                            <div style={{ color: '#000' }}>Cần thanh toán</div>
+                            <div
+                                style={{
+                                    fontSize: 20,
+                                    background: '#D6D6D6',
+                                    borderRadius: 4,
+                                    height: 40,
+                                    lineHeight: '40px',
+                                    color: 'white',
+                                    padding: '0 15px'
+                                }}
+                            >
+                                {formatCurrency(order.totalOfPayment)}
+                            </div>
+                        </AntdCol>
+                        <AntdCol sm={24} md={12}>
+                            <div style={{ color: '#000' }}>
+                                Đã thanh toán
+                            </div>
+                            <div
+                                style={{
+                                    fontSize: 20,
+                                    background: '#FFC12E',
+                                    borderRadius: 4,
+                                    height: 40,
+                                    lineHeight: '40px',
+                                    color: 'white',
+                                    padding: '0 15px'
+                                }}
+                            >
+                                {formatCurrency(theAmountPaid)}
+                            </div>
+                        </AntdCol>
+                    </AntdRow>
+                </div>
             </PageHeaderWrapper>
         );
     }

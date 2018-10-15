@@ -1,12 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { AntdCard, AntdIcon } from '@/components';
+import { AntdCard } from '@/components';
 import { AntdSteps } from '@/components/antd-component/Steps';
 import { Order, orderUtils } from '@/restful';
 
 const OrderDetailStatusWrapper = styled.div`
     margin: 0 0 30px 0;
+    
+    .ant-steps-item-title {
+        font-size: 11px;
+    }
 `;
 
 interface OrderDetailStatusProps {

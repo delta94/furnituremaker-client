@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { AppPage, PageProps, readyState } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { DefaultLayout } from '@/layout';
+import { DefaultLayout, ProfileLayout } from '@/layout';
 
 import { OrderListContainer, OrderPageHeader } from './containers';
 
@@ -17,8 +17,10 @@ export class RouteOrders extends AppPage<RouteOrdersProps> {
         return (
             <Page>
                 <DefaultLayout breadcrumb={this.renderBreadcrumb()}>
-                    <OrderPageHeader />
-                    <OrderListContainer />
+                    <ProfileLayout>
+                        <OrderPageHeader />
+                        <OrderListContainer />
+                    </ProfileLayout>
                 </DefaultLayout>
             </Page>
         );

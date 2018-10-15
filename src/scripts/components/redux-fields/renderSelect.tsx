@@ -40,7 +40,7 @@ export function renderSelectField(props: RenderSelectField) {
                     items.map(o => {
                         return (
                             <AntdSelect.Option
-                                key={o.value}
+                                key={o.value as string}
                                 value={o.value}
                             >
                                 {o.title}

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { AntdCol, AntdIcon, AntdRow, Container } from '@/components';
+import { AntdAffix, AntdCol, AntdIcon, AntdRow, Container } from '@/components';
 
 export const ProfileLayoutContentHeader = styled.div`
     height: 60px;
@@ -38,7 +38,10 @@ const ProfileLayoutItem = styled.li`
     display: block;
     margin-bottom: 15px;
     a {
-        color: ${(props: ProfileLayoutItemProps) => props.active ? '#FFC12E' : 'black'};
+        color: black;
+        &.active {
+            color: #FFC12E;
+        }
     }
 `;
 
@@ -57,40 +60,49 @@ export function ProfileLayout(props: { readonly children: any; }) {
             <Container>
                 <AntdRow gutter={5}>
                     <AntdCol span={6}>
-                        <ProfileHeader>
-                            TÀI KHOẢN CỦA:
-                        </ProfileHeader>
-                        <ProfileLayoutMenu>
-                            <ProfileLayoutItem active={true}>
-                                <AntdIcon type="user" theme="outlined" />
-                                <Link className="profile-menu-link" to="/profile">Thông tin tài khoản</Link>
-                            </ProfileLayoutItem>
-                            <ProfileLayoutItem>
-                                <AntdIcon type="alert" theme="outlined" />
-                                <Link className="profile-menu-link" to="/profile">Thông báo của tôi</Link>
-                            </ProfileLayoutItem>
-                            <ProfileLayoutItem>
-                                <AntdIcon type="profile" theme="outlined" />
-                                <Link className="profile-menu-link" to="/profile">Quản lý đơn hàng</Link>
-                            </ProfileLayoutItem>
-                            <ProfileLayoutItem>
-                                <AntdIcon type="environment" theme="outlined" />
-                                <Link className="profile-menu-link" to="/addresses">Sổ địa chỉ của tôi</Link>
-                            </ProfileLayoutItem>
-                            <ProfileLayoutItem>
-                                <AntdIcon type="credit-card" theme="outlined" />
-                                <Link className="profile-menu-link" to="/profile">Thông tin thanh toán</Link>
-                            </ProfileLayoutItem>
-                            <ProfileLayoutItem>
-                                <AntdIcon type="heart" theme="outlined" />
-                                <Link className="profile-menu-link" to="/profile">Sản phẩm yêu thích</Link>
-                            </ProfileLayoutItem>
-                        </ProfileLayoutMenu>
+                        <AntdAffix offsetTop={75}>
+                            <ProfileHeader>
+                                TÀI KHOẢN CỦA:
+                            </ProfileHeader>
+                            <ProfileLayoutMenu>
+                                <ProfileLayoutItem>
+                                    <AntdIcon type="user" theme="outlined" />
+                                    <NavLink activeClassName="active" className="profile-menu-link" to="/profile">
+                                        Thông tin tài khoản
+                                </NavLink>
+                                </ProfileLayoutItem>
+                                <ProfileLayoutItem>
+                                    <AntdIcon type="alert" theme="outlined" />
+                                    <NavLink activeClassName="active" className="profile-menu-link" to="/notifications">
+                                        Thông báo của tôi
+                                </NavLink>
+                                </ProfileLayoutItem>
+                                <ProfileLayoutItem>
+                                    <AntdIcon type="profile" theme="outlined" />
+                                    <NavLink activeClassName="active" className="profile-menu-link" to="/orders">
+                                        Quản lý đơn hàng
+                                </NavLink>
+                                </ProfileLayoutItem>
+                                <ProfileLayoutItem>
+                                    <AntdIcon type="environment" theme="outlined" />
+                                    <NavLink activeClassName="active" className="profile-menu-link" to="/addresses">
+                                        Sổ địa chỉ của tôi
+                                </NavLink>
+                                </ProfileLayoutItem>
+                                <ProfileLayoutItem>
+                                    <AntdIcon type="heart" theme="outlined" />
+                                    <NavLink activeClassName="active" className="profile-menu-link" to="/favorite">
+                                        Sản phẩm yêu thích
+                                </NavLink>
+                                </ProfileLayoutItem>
+                            </ProfileLayoutMenu>
+                        </AntdAffix>
                     </AntdCol>
                     <AntdCol span={18}>
                         {props.children}
                     </AntdCol>
                 </AntdRow>
+
             </Container>
         </ProfileLayoutWrapper>
     );

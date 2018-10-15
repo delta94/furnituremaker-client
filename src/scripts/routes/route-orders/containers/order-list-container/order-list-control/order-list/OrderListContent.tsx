@@ -45,27 +45,19 @@ const columns: AntdColumnProps<Order>[] = [
             return agencyOrderer.name;
         }
     }, {
-        title: 'Cần thanh toán',
+        title: 'Tổng tiền',
         dataIndex: nameof<Order>(o => o.totalOfPayment),
         key: 'totalOfPayment',
         render: (totalOfPayment: Order['totalOfPayment']) => {
             return formatCurrency(totalOfPayment);
         }
     }, {
-        title: 'Đã thanh toán',
-        dataIndex: nameof<Order>(o => o.orderTransactions),
-        key: nameof<Order>(o => o.orderTransactions),
-        render: (orderTransactions: Order['orderTransactions']) => {
-            const money = orderTransactionUtils.sumMoney(orderTransactions);
-            return formatCurrency(money);
-        }
-    }, {
-        title: 'Tình trạng',
+        title: <div style={{ textAlign: 'right' }}>Tình trạng</div>,
         dataIndex: nameof<Order>(o => o.status),
         key: 'status',
         render: (status: Order['status'], order: Order) => {
             const statusInfo = orderUtils.getStatusInfo(order);
-            return <AntdTag color={statusInfo.color}>{statusInfo.label}</AntdTag>;
+            return <div style={{ textAlign: 'right' }}>{statusInfo.label}</div>;
         }
     }
 ];
@@ -79,7 +71,6 @@ export class OrderListContent extends React.PureComponent<OrderListContentProps>
                 rowKey="id"
                 dataSource={orders}
                 columns={columns}
-                bordered={true}
             />
         );
     }

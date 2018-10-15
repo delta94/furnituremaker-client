@@ -9,6 +9,9 @@ import { OrderListContent, OrderListHeader } from './order-list';
 const OrderListWrapper = styled.div`
     padding: 0 0 0 0;
     display: block;
+    table {
+        background: #F7F7F7;
+    }
 `;
 
 export interface OrderListProps {

@@ -42,6 +42,8 @@ export interface CommonStoreValues extends InitAppStoreProps {
     readonly orderFormSelectedCity?: City;
     readonly orderFormStatus?: 'default' | 'submitting' | 'submitSucceeded' | 'submitFailed';
     readonly submitOrderForm?: () => void;
+
+    readonly cartAddressBookVisibleToggle?: () => void;
 }
 
 export type CommonStoreProps = ExtendWithStoreValuesProps<CommonStoreValues>;

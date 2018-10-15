@@ -93,7 +93,7 @@ module.exports = {
                         paths: [path.resolve(__dirname, "node_modules")],
                         javascriptEnabled: true,
                         modifyVars: {
-                            '@blue-6': '#D39C01'
+                            '@blue-6': '#EFB416'
                         }
                     }
                 }]
