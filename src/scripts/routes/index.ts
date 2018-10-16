@@ -8,3 +8,4 @@ export * from './route-product';
 export * from './route-profile';
 export * from './route-landing';
 export * from './route-address-book';
+export * from './route-notification';

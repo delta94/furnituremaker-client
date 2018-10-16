@@ -16,6 +16,7 @@ import {
     RouteLandingLoadable,
     RouteLoginLoadable,
     RouteMakerLoadable,
+    RouteNotificationLoadable,
     RouteOrderDetailLoadable,
     RouteOrdersLoadable,
     RouteProductLoadable,
@@ -33,7 +34,8 @@ export function startup() {
         RouteProductLoadable,
         RouteProfileLoadable,
         RouteLandingLoadable,
-        RouteAddressBookLoadable
+        RouteAddressBookLoadable,
+        RouteNotificationLoadable
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);

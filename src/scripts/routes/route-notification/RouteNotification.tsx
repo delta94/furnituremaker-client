@@ -5,24 +5,22 @@ import { Link } from 'react-router-dom';
 import { AppPage, PageProps, readyState, withStoreValues } from '@/app';
 import { AntdBreadcrumb, AntdIcon, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { AddressBookFormControl } from '@/forms/address-book';
 import {
     DefaultLayout,
     ProfileLayout,
-    ProfileLayoutContentBody,
     ProfileLayoutContentHeader
 } from '@/layout';
 
-import { AddressBookContainer } from './containers';
+import { UserNotificationList } from './presentations';
 
-type RouteAddressBookProps =
+type RouteNotificationProps =
     Pick<CommonStoreProps, 'setStore'> &
     RouteComponentProps<{}> &
     PageProps;
 
 @readyState()
-@withStoreValues<RouteAddressBookProps>()
-export class RouteAddressBook extends AppPage<RouteAddressBookProps> {
+@withStoreValues<RouteNotificationProps>()
+export class RouteNotification extends AppPage<RouteNotificationProps> {
     render() {
         return (
             <Page>
@@ -30,11 +28,9 @@ export class RouteAddressBook extends AppPage<RouteAddressBookProps> {
                     <ProfileLayout>
                         <div>
                             <ProfileLayoutContentHeader>
-                                SỔ ĐỊA CHỈ CỦA TÔI
+                                THÔNG BÁO CỦA TÔI
                             </ProfileLayoutContentHeader>
-                            <ProfileLayoutContentBody>
-                                <AddressBookContainer />
-                            </ProfileLayoutContentBody>
+                            <UserNotificationList />
                         </div>
                     </ProfileLayout>
                 </DefaultLayout>
@@ -48,7 +44,7 @@ export class RouteAddressBook extends AppPage<RouteAddressBookProps> {
                 <AntdBreadcrumb.Item>
                     <Link to="/"><AntdIcon type="home" /></Link>
                 </AntdBreadcrumb.Item>
-                <AntdBreadcrumb.Item>Sổ địa chỉ của tôi</AntdBreadcrumb.Item>
+                <AntdBreadcrumb.Item>Thông báo của tôi</AntdBreadcrumb.Item>
             </AntdBreadcrumb>
         );
     }

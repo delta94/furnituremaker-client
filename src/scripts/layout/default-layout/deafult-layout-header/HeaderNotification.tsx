@@ -9,12 +9,14 @@ import { Auth, policies, withStoreValues } from '@/app';
 import { AntdBadge, AntdIcon, AntdList, AntdPopover } from '@/components';
 import { colorPrimary, CommonStoreProps } from '@/configs';
 import {
+    getNotificationTyleLabel,
+    notificationMapToArray
+} from '@/domain/helpers';
+import {
     AppNotification,
     markNotificationViewed
 } from '@/firebase/firebaseNotificationDB';
 import { formatDate } from '@/utilities';
-
-const orderBy = require('lodash/orderBy');
 
 const HeaderNotificationButtonWrapper = styled.div`
     height: 70px;
@@ -58,32 +60,12 @@ type DefaultLayoutHeaderProps =
 
 @withStoreValues<DefaultLayoutHeaderProps>('notifications')
 export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderProps> {
-    readonly notificationMapToArray = (notifications: DefaultLayoutHeaderProps['notifications']) => {
-        const array = Array.from(notifications.values());
-        return orderBy(array, 'time', 'desc');
-    }
-
-    readonly getNotificationTyleLabel = (notification) => {
-        switch (notification.type) {
-            case 'new-order':
-                return 'tạo một';
-            case 'update-order':
-                return 'cập nhật';
-            case 'cancel-order':
-                return 'hủy';
-            case 'change-order':
-                return 'yêu cầu đổi trả';
-            default:
-                return '';
-        }
-    }
-
     readonly renderListMeta = (notification: AppNotification) => {
         switch (notification.type) {
             case 'new-order':
             case 'cancel-order':
             case 'change-order':
-                const label = this.getNotificationTyleLabel(notification);
+                const label = getNotificationTyleLabel(notification);
                 return (
                     <AntdList.Item.Meta
                         title={(
@@ -154,7 +136,7 @@ export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderP
             <div className="header-notification">
                 <AntdList
                     itemLayout="horizontal"
-                    dataSource={this.notificationMapToArray(notifications)}
+                    dataSource={notificationMapToArray(notifications)}
                     renderItem={(notification: AppNotification) => (
                         <ListItemWrapper
                             key={notification.id}
@@ -176,7 +158,7 @@ export class HeaderNotification extends React.PureComponent<DefaultLayoutHeaderP
 
     readonly countUnreadNotifications = () => {
         const { notifications } = this.props;
-        const notificationArray = this.notificationMapToArray(notifications);
+        const notificationArray = notificationMapToArray(notifications);
         const unreadNotifications = notificationArray.filter(o => !o.viewedAt);
         return unreadNotifications ? unreadNotifications.length : 0;
     }

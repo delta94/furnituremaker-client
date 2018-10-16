@@ -52,10 +52,12 @@ const snapshotValToObject = (value, key) => ({
     id: key
 });
 
-export const queryNotifications = async (ref: NotifiCationRefType): Promise<AppNotification[]> => {
+export const queryNotifications = async (ref: NotifiCationRefType, option?): Promise<AppNotification[]> => {
     const notificationChildRef = notificationRef.child(`${ref}/notifications`);
     const snapshot = await notificationChildRef
-        .limitToLast(10)
+        .orderByKey()
+        .limitToLast(6)
+        .startAt(option.startAt || 0)
         .once('value');
     const values = snapshot.val();
 
@@ -74,7 +76,7 @@ export const registerSubcribeNotification = (
 ) => {
     notificationRef
         .child(`${ref}/notifications`)
-        .limitToLast(10)
+        .limitToLast(6)
         .on('value', (snapshot) => {
             const notificationSnapshotVal = snapshot.val();
             const notifications = map(notificationSnapshotVal, snapshotValToObject);
