@@ -1,12 +1,15 @@
+import Radio from 'antd/lib/radio';
 import * as React from 'react';
 import { Field, Form, InjectedFormProps, reduxForm } from 'redux-form';
 import styled from 'styled-components';
 
 import {
     AntdCol,
+    AntdRadio,
     AntdRow,
     FormError,
     renderInput,
+    renderRadioGroup,
     required
 } from '@/components';
 import { CommonStoreProps } from '@/configs';
@@ -136,6 +139,19 @@ class CreateOrderFormComponent extends React.Component<
                                             }}
                                         />
                                     </FormWrapper>
+                                </AntdCol>
+                                <AntdCol span={12}>
+                                    <Field
+                                        name={nameof.full<CreateOrderFormValues>(o => o.order.addressType)}
+                                        component={renderRadioGroup}
+                                        label="Loại địa chỉ"
+                                        inputProps={{
+                                            children: [
+                                                <Radio key="apartment" value="apartment">Chung cư</Radio>,
+                                                <Radio key="home" value="home">Nhà riêng</Radio>
+                                            ]
+                                        }}
+                                    />
                                 </AntdCol>
                             </AntdRow>
                         ) : (

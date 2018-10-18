@@ -54,6 +54,8 @@ export interface Order extends Record {
     readonly billingOrganization?: string;
     readonly billingTaxcode?: string;
     readonly billingAddress?: string;
+
+    readonly addressType: 'apartment' | 'home';
 }
 
 export const orderResourceType = new ResourceType<Order>({

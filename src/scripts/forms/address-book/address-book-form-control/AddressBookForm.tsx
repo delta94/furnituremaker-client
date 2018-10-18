@@ -1,3 +1,4 @@
+import Radio from 'antd/lib/radio';
 import * as React from 'react';
 import { Field, Form, InjectedFormProps, reduxForm, submit } from 'redux-form';
 
@@ -7,6 +8,7 @@ import {
     AntdSelectOptionProps,
     FormError,
     renderInput,
+    renderRadioGroup,
     renderSelectField
 } from '@/components';
 import { Address, City, County } from '@/restful';
@@ -108,6 +110,17 @@ class AddressBookFormComponent extends React.Component<
                     required={true}
                     inputProps={{
                         placeholder: 'Nhập địa chỉ'
+                    }}
+                />
+                <Field
+                    name={nameof.full<AddressBookFormValues>(o => o.type)}
+                    component={renderRadioGroup}
+                    label="Loại địa chỉ"
+                    inputProps={{
+                        children: [
+                            <Radio key="apartment" value="apartment">Chung cư</Radio>,
+                            <Radio key="home" value="home">Nhà riêng</Radio>
+                        ]
                     }}
                 />
             </Form>

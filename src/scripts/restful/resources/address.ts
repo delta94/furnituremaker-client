@@ -13,6 +13,7 @@ export interface Address extends Record {
     readonly phone?: number;
     readonly name?: string;
     readonly user?: User;
+    readonly type?: 'apartment' | 'home';
 }
 
 export const addressBookResourceType = new ResourceType<Address>({

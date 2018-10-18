@@ -70,6 +70,13 @@ export class CartAddressBookItem extends React.PureComponent<CartAddressBookItem
         );
         dispatch(changeAddressAction);
 
+        const changeAddressTypeAction = change(
+            createOrderForm,
+            nameof.full<CreateOrderFormValues>(o => o.order.addressType),
+            address.type
+        );
+        dispatch(changeAddressTypeAction);
+
         cartAddressBookVisibleToggle();
     }
 }

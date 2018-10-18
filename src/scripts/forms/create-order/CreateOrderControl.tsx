@@ -115,7 +115,8 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                         depositRequired: 0,
                         status: 'new',
                         shippingToCity: user.agency.city,
-                        shippingToCounty: user.agency.county
+                        shippingToCounty: user.agency.county,
+                        addressType: 'apartment'
                     },
                     // tslint:disable-next-line:no-any
                     city_county: [
