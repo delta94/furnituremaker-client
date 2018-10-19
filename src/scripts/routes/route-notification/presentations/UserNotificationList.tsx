@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Auth, policies, withStoreValues } from '@/app';
-import { AntdButton } from '@/components';
+import { AntdButton, AntdIcon, AntdTooltip } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { getNotificationTyleLabel, notificationMapToArray } from '@/domain';
 import {
     AppNotification,
     isEndOfNotificationList,
+    markNotificationNotViewed,
+    markNotificationViewed,
     queryNotifications
 } from '@/firebase/firebaseNotificationDB';
-import { ProfileLayoutContentBody } from '@/layout';
 import { formatDate } from '@/utilities';
 
 const UserNotificationListWrapper = styled.div`
@@ -20,7 +21,11 @@ const UserNotificationListWrapper = styled.div`
 
 const UserNotificationItemWrapper = styled.div`
     display: flex;
-    padding: 15px 0;
+    background: ${(props: { readonly viewed: boolean }) => props.viewed ? '#fff' : '#F7F7F7'};
+    padding: 15px;
+    &:hover {
+        background: #f3f3f3;
+    }
     &:not(:last-child) {
         border-bottom: 1px solid lightgray;
     }
@@ -41,13 +46,14 @@ export interface UserNotificationListProps extends
 
 interface UserNotificationListState {
     readonly isLast: boolean;
+    readonly loading: boolean;
 }
 
 @withStoreValues<UserNotificationListProps>('notifications')
 export class UserNotificationList extends React.PureComponent<
 UserNotificationListProps,
 UserNotificationListState> {
-    readonly state = { isLast: false };
+    readonly state = { isLast: false, loading: false };
 
     public render() {
         const notifications = notificationMapToArray(this.props.notifications);
@@ -55,22 +61,53 @@ UserNotificationListState> {
 
         return (
             <UserNotificationListWrapper>
-                <ProfileLayoutContentBody>
+                <div>
                     {notifications.map(o => (
-                        <UserNotificationItemWrapper key={o.id}>
+                        <UserNotificationItemWrapper
+                            key={o.id}
+                            viewed={o.viewedAt !== undefined}
+                            onClick={() => {
+                                const ref = this.getRef();
+                                markNotificationViewed(ref, o.id);
+                            }}
+                        >
                             <div>
                                 {formatDate(o.time, 'DD/MM/YYYY')} <br />
                                 <small>{formatDate(o.time, 'HH:mm')}</small>
                             </div>
-                            <UserNotificationItemContent>{this.renderListMeta(o)}</UserNotificationItemContent>
+                            <UserNotificationItemContent>
+                                {this.renderListMeta(o)}
+                            </UserNotificationItemContent>
+                            <div>
+                                {
+                                    o.viewedAt &&
+                                    (
+                                        <AntdTooltip title="Đánh dấu chưa đọc">
+                                            <a
+                                                style={{ fontSize: 18 }}
+                                                onClick={() => { 
+                                                    const ref = this.getRef();
+                                                    markNotificationNotViewed(ref, o.id);
+                                                }}
+                                            >
+                                                <AntdIcon type="bell" theme="twoTone" twoToneColor="#FFC12E" />
+                                            </a>
+                                        </AntdTooltip>
+                                    )
+                                }
+
+                            </div>
                         </UserNotificationItemWrapper>
                     ))}
-                </ProfileLayoutContentBody>
+                </div>
                 <div style={{ marginTop: 15 }}>
                     {
                         this.state.isLast ? null :
                             (
-                                <AntdButton onClick={() => this.onReadMore(lastExistItem)}>
+                                <AntdButton
+                                    loading={this.state.loading}
+                                    onClick={() => this.onReadMore(lastExistItem)}
+                                >
                                     Xem thêm
                                 </AntdButton>
                             )
@@ -80,15 +117,26 @@ UserNotificationListState> {
         );
     }
 
-    readonly onReadMore = async (lastItem: AppNotification) => {
-        const { notifications, setStore } = this.props;
+    readonly getRef = () => {
         const user = Auth.instance.currentUser;
 
         const isAdmin = policies.isAdminGroup(user);
         const ref = isAdmin ? 'root' : user.id;
+        return ref;
+    }
+
+    readonly onReadMore = async (lastItem: AppNotification) => {
+        this.setState({ loading: true });
+
+        const { notifications, setStore } = this.props;
+
+        const ref = this.getRef();
 
         const nextNotifications = await queryNotifications(ref, { oldestKey: lastItem.id });
         const nextNotificationMap = new Map(notifications);
+
+        const isLast = await isEndOfNotificationList(ref, nextNotifications[0].id);
+        this.setState({ isLast, loading: false });
 
         for (const notif of nextNotifications) {
             nextNotificationMap.set(notif.id, notif);
@@ -97,9 +145,6 @@ UserNotificationListState> {
         setStore<CommonStoreProps>({
             notifications: nextNotificationMap
         });
-
-        const isLast = await isEndOfNotificationList(ref, nextNotifications[0].id);
-        this.setState({ isLast });
     }
 
     readonly renderListMeta = (notification: AppNotification) => {

@@ -91,9 +91,13 @@ export function ProfileLayout(props: { readonly children: any; }) {
                                 </ProfileLayoutItem>
                                 <ProfileLayoutItem>
                                     <AntdIcon type="heart" theme="outlined" />
-                                    <NavLink activeClassName="active" className="profile-menu-link" to="/favorite">
+                                    <NavLink
+                                        activeClassName="active"
+                                        className="profile-menu-link"
+                                        to="/favorite-product"
+                                    >
                                         Sản phẩm yêu thích
-                                </NavLink>
+                                    </NavLink>
                                 </ProfileLayoutItem>
                             </ProfileLayoutMenu>
                         </AntdAffix>

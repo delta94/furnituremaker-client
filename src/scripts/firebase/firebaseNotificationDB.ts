@@ -52,6 +52,15 @@ export const markNotificationViewed = (ref: NotifiCationRefType, notificationId:
         .set(now);
 };
 
+export const markNotificationNotViewed = (ref: NotifiCationRefType, notificationId: string) => {
+    notificationRef
+        .child(ref)
+        .child('notifications')
+        .child(notificationId)
+        .child(nameof<AppNotification>(o => o.viewedAt))
+        .set(null);
+};
+
 const snapshotValToObject = (value, key) => ({
     ...value,
     id: key

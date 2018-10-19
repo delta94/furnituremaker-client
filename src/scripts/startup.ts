@@ -12,6 +12,7 @@ import { loginPath } from '@/configs';
 import {
     RouteAddressBookLoadable,
     RouteCartLoadable,
+    RouteFavoriteProductLoadable,
     RouteHomeLoadable,
     RouteLandingLoadable,
     RouteLoginLoadable,
@@ -35,7 +36,8 @@ export function startup() {
         RouteProfileLoadable,
         RouteLandingLoadable,
         RouteAddressBookLoadable,
-        RouteNotificationLoadable
+        RouteNotificationLoadable,
+        RouteFavoriteProductLoadable
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);
