@@ -1,3 +1,5 @@
+import { object } from 'prop-types';
+
 import { User } from '@/restful/resources/user';
 
 // tslint:disable:no-console
@@ -18,12 +20,15 @@ export interface AppNotification {
     readonly viewedAt?: string;
 }
 
+let firebase;
 let notificationRef;
+let dataCallback;
 
 const notificationsRefUrl = 'https://furnituremaker-eaafa.firebaseio.com';
 const getNowIsoString = () => (new Date()).toISOString();
 
-export const registerNotificationDatabasse = (firebase) => {
+export const registerNotificationDatabasse = (_firebase) => {
+    firebase = _firebase;
     const firebaseDB = firebase.database();
     notificationRef = firebaseDB.refFromURL(notificationsRefUrl);
 };
@@ -52,14 +57,32 @@ const snapshotValToObject = (value, key) => ({
     id: key
 });
 
+export const isEndOfNotificationList = async (ref, id) => {
+    const notificationChildRef = notificationRef.child(`${ref}/notifications`);
+
+    const firstChildQuery = await notificationChildRef
+        .orderByKey()
+        .limitToFirst(1)
+        .once('value');
+
+    const first = firstChildQuery.val();
+    if (!first) {
+        return true;
+    }
+
+    return Object.keys(first)[0] === id;
+};
+
 export const queryNotifications = async (ref: NotifiCationRefType, option?): Promise<AppNotification[]> => {
     const notificationChildRef = notificationRef.child(`${ref}/notifications`);
+
     const snapshot = await notificationChildRef
         .orderByKey()
-        .limitToLast(6)
-        .startAt(option.startAt || 0)
+        .endAt(option.oldestKey)
+        .limitToLast(8)
         .once('value');
-    const values = snapshot.val();
+
+    const values = await snapshot.val();
 
     if (!values) {
         return [];
@@ -74,9 +97,13 @@ export const registerSubcribeNotification = (
     ref: NotifiCationRefType,
     callback: (notification: AppNotification[]) => void
 ) => {
+
+    dataCallback = callback;
+
     notificationRef
         .child(`${ref}/notifications`)
-        .limitToLast(6)
+        .orderByKey()
+        .limitToLast(8)
         .on('value', (snapshot) => {
             const notificationSnapshotVal = snapshot.val();
             const notifications = map(notificationSnapshotVal, snapshotValToObject);

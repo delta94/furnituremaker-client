@@ -68,7 +68,7 @@ export class OrderBillingInfomation extends React.PureComponent<OrderBillingInfo
                                             }}
                                         />
                                         <Field
-                                            name={nameof.full<CreateOrderFormValues>(o => o.order.billingAddresss)}
+                                            name={nameof.full<CreateOrderFormValues>(o => o.order.billingAddress)}
                                             component={renderTextArea}
                                             label="Địa chỉ"
                                             inputProps={{

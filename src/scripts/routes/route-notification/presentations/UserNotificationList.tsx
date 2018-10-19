@@ -8,6 +8,7 @@ import { CommonStoreProps } from '@/configs';
 import { getNotificationTyleLabel, notificationMapToArray } from '@/domain';
 import {
     AppNotification,
+    isEndOfNotificationList,
     queryNotifications
 } from '@/firebase/firebaseNotificationDB';
 import { ProfileLayoutContentBody } from '@/layout';
@@ -38,10 +39,20 @@ export interface UserNotificationListProps extends
     Pick<CommonStoreProps, 'notifications'> {
 }
 
+interface UserNotificationListState {
+    readonly isLast: boolean;
+}
+
 @withStoreValues<UserNotificationListProps>('notifications')
-export class UserNotificationList extends React.PureComponent<UserNotificationListProps> {
+export class UserNotificationList extends React.PureComponent<
+UserNotificationListProps,
+UserNotificationListState> {
+    readonly state = { isLast: false };
+
     public render() {
         const notifications = notificationMapToArray(this.props.notifications);
+        const lastExistItem = notifications[notifications.length - 1];
+
         return (
             <UserNotificationListWrapper>
                 <ProfileLayoutContentBody>
@@ -56,9 +67,14 @@ export class UserNotificationList extends React.PureComponent<UserNotificationLi
                     ))}
                 </ProfileLayoutContentBody>
                 <div style={{ marginTop: 15 }}>
-                    <AntdButton onClick={() => this.onReadMore(notifications[notifications.length - 1])}>
-                        Xem thêm
-                    </AntdButton>
+                    {
+                        this.state.isLast ? null :
+                            (
+                                <AntdButton onClick={() => this.onReadMore(lastExistItem)}>
+                                    Xem thêm
+                                </AntdButton>
+                            )
+                    }
                 </div>
             </UserNotificationListWrapper>
         );
@@ -71,7 +87,7 @@ export class UserNotificationList extends React.PureComponent<UserNotificationLi
         const isAdmin = policies.isAdminGroup(user);
         const ref = isAdmin ? 'root' : user.id;
 
-        const nextNotifications = await queryNotifications(ref, { startAt: lastItem.id });
+        const nextNotifications = await queryNotifications(ref, { oldestKey: lastItem.id });
         const nextNotificationMap = new Map(notifications);
 
         for (const notif of nextNotifications) {
@@ -81,6 +97,9 @@ export class UserNotificationList extends React.PureComponent<UserNotificationLi
         setStore<CommonStoreProps>({
             notifications: nextNotificationMap
         });
+
+        const isLast = await isEndOfNotificationList(ref, nextNotifications[0].id);
+        this.setState({ isLast });
     }
 
     readonly renderListMeta = (notification: AppNotification) => {
