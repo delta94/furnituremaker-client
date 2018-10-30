@@ -46,7 +46,7 @@ export const userResources = {
     }),
     me: new Resource<User>({
         resourceType: userResourceType,
-        url: apiEntry('/user/me'),
+        url: apiEntry('/users/me'),
         method: 'GET',
         mapDataToStore: (data, resourceType, store) => {
             store.dataMapping(resourceType, data);
@@ -54,7 +54,7 @@ export const userResources = {
     }),
     update: new Resource<User>({
         resourceType: userResourceType,
-        url: apiEntry('/user/:id'),
+        url: apiEntry('/users/:id'),
         method: 'PUT',
         requestBodyParser: (key, val) => {
             if (key === 'email') {
