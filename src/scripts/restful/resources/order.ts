@@ -113,14 +113,14 @@ export const orderResources = {
         method: 'POST',
         mapDataToStore: (order, resourceType, store) => {
             const isAdmin = policies.isAdminGroup();
-            if (isAdmin) {
+            if (!isAdmin) {
                 sendNotificationToFirebase('root', {
                     type: 'new-order',
                     orderId: order.id,
                     fromAgency: order.agencyOrderer.id,
                     fromAgencyName: order.agencyOrderer.name,
                     fromUser: order.createdBy.id,
-                    fromUserName: order.createdBy.name
+                    fromUserName: order.createdBy.fullName
                 });
             }
 
