@@ -70,7 +70,7 @@ export class AddressBookFormControl extends React.PureComponent<AddressBookFormC
                         initialValues={isUpdate ?
                             address :
                             {
-                                user: Auth.instance.currentUser,
+                                createdBy: Auth.instance.currentUser,
                                 type: 'apartment'
                             }
                         }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Auth } from '@/app';
 import { AntdAffix, AntdCol, AntdIcon, AntdRow, Container } from '@/components';
 
 export const ProfileLayoutContentHeader = styled.div`
@@ -53,8 +54,13 @@ const ProfileHeader = styled.div`
     color: #000;
 `;
 
-// tslint:disable-next-line:no-any
-export function ProfileLayout(props: { readonly children: any; }) {
+interface ProfileLayoutProps {
+    // tslint:disable-next-line:no-any
+    readonly children: any;
+}
+
+export function ProfileLayout(props: ProfileLayoutProps) {
+    const userDisplayName = Auth.instance.currentUser.fullName || Auth.instance.currentUser.name;
     return (
         <ProfileLayoutWrapper>
             <Container>
@@ -62,7 +68,7 @@ export function ProfileLayout(props: { readonly children: any; }) {
                     <AntdCol span={6}>
                         <AntdAffix offsetTop={75}>
                             <ProfileHeader>
-                                TÀI KHOẢN CỦA:
+                                tài khoản của: <strong>{userDisplayName}</strong>
                             </ProfileHeader>
                             <ProfileLayoutMenu>
                                 <ProfileLayoutItem>
