@@ -97,11 +97,13 @@ export const productUtils = {
                 furnitureComponentType.components.find(o => o.componentGroup &&
                     o.componentGroup.id === defaultGroup.id) :
                 furnitureComponentType.components[0];
-            
+
             const defaultComponentMaterialType = defaultComponent.materialTypes[0];
 
-            if (!defaultGroup) {
+            if (defaultGroup === undefined) {
                 defaultGroup = defaultComponent.componentGroup;
+            } else {
+                defaultGroup = null;
             }
 
             const defaultMaterialType = defaultComponentMaterialType &&

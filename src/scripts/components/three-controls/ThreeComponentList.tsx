@@ -307,7 +307,7 @@ export class ThreeComponentList extends React.PureComponent<ThreeComponentListPr
             event.detail.loaderRootNode.name = newComponent.id;
 
             for (var i = oldObj.children.length - 1; i >= 0; i--) {
-                oldObj.remove(oldObj.children[i]);
+                product3Dsence.scene.remove(oldObj);
             }
 
             product3Dsence.scene.add(event.detail.loaderRootNode);
