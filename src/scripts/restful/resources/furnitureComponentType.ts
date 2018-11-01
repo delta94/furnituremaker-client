@@ -9,6 +9,7 @@ export interface FurnitureComponentType extends Record {
     readonly name: string;
     readonly components: FurnitureComponent[];
     readonly position?: 'default' | 'leg' | 'top';
+    readonly isBase?: boolean;
 }
 
 export const furnitureComponentTypeResourceType = new ResourceType({

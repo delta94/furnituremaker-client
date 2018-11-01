@@ -8,6 +8,7 @@ import {
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
+import { ComponentGroup } from './componentGroup';
 import { FurnitureComponentType } from './furnitureComponentType';
 import { MaterialType } from './materialType';
 import { ProductDesign } from './productDesign';
@@ -28,6 +29,7 @@ export interface FurnitureComponent extends Record {
     readonly displayName: string;
     readonly code: string;
     readonly height?: number;
+    readonly componentGroup?: ComponentGroup;
 }
 
 export const furnitureComponentResourceType = new ResourceType<FurnitureComponent>({

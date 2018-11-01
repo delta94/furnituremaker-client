@@ -90,9 +90,19 @@ export const productUtils = {
         furnitureComponentTypes: FurnitureComponentType[],
         materialTypes: MaterialType[]
     ): ProductExtended => {
+        let defaultGroup;
+
         const modules: ProductModule[] = furnitureComponentTypes.map(furnitureComponentType => {
-            const defaultComponent = furnitureComponentType.components[0];
+            const defaultComponent = defaultGroup ?
+                furnitureComponentType.components.find(o => o.componentGroup &&
+                    o.componentGroup.id === defaultGroup.id) :
+                furnitureComponentType.components[0];
+            
             const defaultComponentMaterialType = defaultComponent.materialTypes[0];
+
+            if (!defaultGroup) {
+                defaultGroup = defaultComponent.componentGroup;
+            }
 
             const defaultMaterialType = defaultComponentMaterialType &&
                 materialTypes.find(o => o.id === defaultComponentMaterialType.id);
@@ -220,6 +230,9 @@ export const productUtils = {
         );
 
         return modules;
+    },
+    getComponentGroup: (product: ProductExtended) => {
+        return product.modules[0].component.componentGroup;
     }
 };
 

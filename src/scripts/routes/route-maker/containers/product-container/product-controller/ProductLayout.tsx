@@ -39,8 +39,11 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
                 props.materialTypes
             );
 
-            props.setStore({
-                [nameof<ProductLayoutProps>(o => o.selectedProduct)]: defaultProduct
+            const selectedComponentGroup = productUtils.getComponentGroup(defaultProduct);
+
+            props.setStore<ProductLayoutProps>({
+                selectedProduct: defaultProduct,
+                selectedComponentGroup: selectedComponentGroup
             });
         }
     }

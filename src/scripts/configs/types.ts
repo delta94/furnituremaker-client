@@ -6,6 +6,7 @@ import { ThreeSence } from '@/components';
 import { AppNotification } from '@/firebase/firebaseNotificationDB';
 import {
     City,
+    ComponentGroup,
     FurnitureComponent,
     MaterialType,
     ProductDesign,
@@ -27,6 +28,8 @@ export interface CommonStoreValues extends InitAppStoreProps {
     readonly hoveredProductTypeGroup?: ProductTypeGroup;
     readonly leaveProductTypeGroupTimeout?: number ;
 
+    readonly allComponents?: FurnitureComponent[];
+
     readonly selectedProductTypeGroup?: ProductTypeGroup;
     readonly selectedProductType?: ProductType;
     readonly selectedProductDesignGroup?: ProductDesignGroup;
@@ -35,6 +38,7 @@ export interface CommonStoreValues extends InitAppStoreProps {
     readonly selectedProduct?: ProductExtended;
     readonly selectedPromotion?: Promotion;
     readonly selectedComponent?: FurnitureComponent;
+    readonly selectedComponentGroup?: ComponentGroup;
 
     readonly drawerVisible?: boolean;
     readonly product3Dsence?: ThreeSence;

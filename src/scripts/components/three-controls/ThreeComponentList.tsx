@@ -18,6 +18,7 @@ import { Loading } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
 import { CreateComponentFormControl } from '@/forms/create-component';
 import {
+    ComponentGroup,
     FurnitureComponent,
     ProductExtended,
     productUtils,
@@ -38,18 +39,22 @@ const ComponentOptions = styled.a`
 const { THREE } = window;
 
 export interface ThreeComponentListProps extends CommonStoreProps {
-    readonly components: FurnitureComponent[];
-    readonly selectedObject: THREE.Group;
-    readonly selectedMaterial: string;
-    readonly sence: THREE.Scene;
+    readonly components?: FurnitureComponent[];
+    readonly selectedObject?: THREE.Group;
+    readonly selectedMaterial?: string;
+    readonly sence?: THREE.Scene;
 }
 
-@withStoreValues<CommonStoreProps>(
+@withStoreValues<ThreeComponentListProps>(
     'selectedProduct',
     'product3Dsence',
-    'selectedComponent'
+    'selectedComponent',
+    'selectedComponentGroup',
+    'selectedObject',
+    'components',
+    'allComponents'
 )
-class ThreeComponentListComponent extends React.PureComponent<ThreeComponentListProps> {
+export class ThreeComponentList extends React.PureComponent<ThreeComponentListProps> {
 
     readonly componentUpdatePage = apiEntry('/admin/plugins/content-manager/components');
 
@@ -103,7 +108,18 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
     }
 
     render() {
-        const { selectedObject, components } = this.props;
+        const { selectedObject, components, selectedComponentGroup } = this.props;
+        const selectedComponent = components.find(o => o.id === selectedObject.name);
+
+        let filteredComponentByGroup: FurnitureComponent[];
+        if (selectedComponent.componentType.isBase) {
+            filteredComponentByGroup = components;
+        } else {
+            filteredComponentByGroup = selectedComponentGroup ?
+                components.filter(o => o.componentGroup && o.componentGroup.id === selectedComponentGroup.id) :
+                components;
+        }
+
         const child = selectedObject.children[0] as THREE.Mesh;
         (child.material as THREE.MeshPhongMaterial).map.needsUpdate = true;
 
@@ -119,7 +135,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                     }
                 </ListHeader>
                 <AntdList
-                    dataSource={components}
+                    dataSource={filteredComponentByGroup}
                     grid={{ gutter: 16, column: 3 }}
                     pagination={{
                         pageSize: 6,
@@ -127,7 +143,7 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
                         style: { textAlign: 'center' }
                     }}
                     renderItem={(component: FurnitureComponent) => {
-                        const isSelected = (selectedObject.name === component.id);
+                        const isSelected = (selectedComponent.id === component.id);
                         const isNextSelected = nextSelectComponent && (nextSelectComponent.id === component.id);
 
                         return (
@@ -163,12 +179,15 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
 
     onComponentSelect(targetComponent: FurnitureComponent) {
         const {
+            allComponents,
             selectedObject,
             selectedComponent,
             setStore,
             selectedProduct,
             product3Dsence
         } = this.props;
+
+        const targetComponentGroup = targetComponent.componentGroup;
 
         if (targetComponent.id === selectedObject.name) {
             return;
@@ -202,10 +221,43 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
             event.detail.loaderRootNode.name = targetComponent.id;
             product3Dsence.scene.remove(selectedObject);
             product3Dsence.scene.add(event.detail.loaderRootNode);
+
             const nextModules = selectedProduct.modules.map(productModule => {
 
-                const nextComponent = (selectedObject.name === productModule.component.id) ?
+                let nextComponent = (selectedObject.name === productModule.component.id) ?
                     targetComponent : productModule.component;
+
+                if (
+                    (nextComponent.componentGroup && targetComponentGroup) &&
+                    (nextComponent.componentGroup.id !== targetComponentGroup.id)
+                ) {
+                    const oldComponent = nextComponent.id;
+
+                    nextComponent = allComponents.find(o => {
+                        const canBecomeNext = o.componentType.id === nextComponent.componentType.id;
+                        if (!canBecomeNext) {
+                            return false;
+                        }
+
+                        if (!o.componentGroup && !targetComponentGroup) {
+                            return true;
+                        }
+
+                        if (
+                            (o.componentGroup && targetComponentGroup) &&
+                            (o.componentGroup.id === targetComponentGroup.id)) {
+                            return true;
+                        }
+
+                        return false;
+                    });
+
+                    product3Dsence.scene.traverse(o => {
+                        if (o.name === oldComponent) {
+                            this.loadNewComponentObj(o as THREE.Group, nextComponent);
+                        }
+                    });
+                }
 
                 return {
                     ...productModule,
@@ -223,19 +275,42 @@ class ThreeComponentListComponent extends React.PureComponent<ThreeComponentList
             setStore<ThreeComponentListProps>({
                 selectedObject: event.detail.loaderRootNode,
                 selectedProduct: nextSelectedProduct,
-                selectedComponent: targetComponent
+                selectedComponent: targetComponent,
+                selectedComponentGroup: targetComponentGroup
             });
+
             this.setState({
                 loading: false,
                 nextSelectComponent: null
             });
         };
+
         const objFile = uploadedFileUtils.getUrl(targetComponent.obj);
         objLoader.load(objFile, callbackOnLoad);
     }
-}
 
-export const ThreeComponentList = withStoreValues(
-    'selectedObject',
-    'components'
-)(ThreeComponentListComponent);
+    readonly loadNewComponentObj = (oldObj: THREE.Group, newComponent: FurnitureComponent) => {
+        const { product3Dsence } = this.props;
+
+        const objLoader = new THREE.OBJLoader2();
+
+        const objFile = uploadedFileUtils.getUrl(newComponent.obj);
+        objLoader.load(objFile, (event) => {
+            const child = oldObj.children[0] as THREE.Mesh;
+
+            for (const mesh of event.detail.loaderRootNode.children) {
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                mesh.scale.set(0.1, 0.1, 0.1);
+                mesh.material = child.material;
+            }
+            event.detail.loaderRootNode.name = newComponent.id;
+
+            for (var i = oldObj.children.length - 1; i >= 0; i--) {
+                oldObj.remove(oldObj.children[i]);
+            }
+
+            product3Dsence.scene.add(event.detail.loaderRootNode);
+        });
+    }
+} 

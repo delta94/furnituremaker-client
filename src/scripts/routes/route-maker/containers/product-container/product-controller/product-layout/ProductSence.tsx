@@ -202,6 +202,7 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
             selectedObject: object,
             selectedMaterial: selectedMaterial,
             components: sameTypeComponents,
+            allComponents: components,
             selectedMaterialType: componentData.materialTypes[0],
             selectedComponent: selectedComponent
         });

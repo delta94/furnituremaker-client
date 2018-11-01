@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
 import { AntdButton } from '@/components/antd-component';
-import { colorPrimary, CommonStoreValues } from '@/configs';
+import { CommonStoreValues } from '@/configs';
 import { formatCurrency } from '@/utilities';
 
 import { ThreeComponentListProps } from '../ThreeComponentList';

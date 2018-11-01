@@ -1,6 +1,7 @@
 export * from './address';
 export * from './agency';
 export * from './city';
+export * from './componentGroup';
 export * from './county';
 export * from './discountByQuantities';
 export * from './furnitureComponent';
