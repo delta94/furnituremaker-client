@@ -71,7 +71,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                     id="threeViewWindow"
                     ref={(element) => this.container = element}
                     style={{
-                        width: productType.view_senceWidth,
+                        width: '100%',
                         height: productType.view_senceHeight
                     }}
                 />
