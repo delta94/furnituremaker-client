@@ -4,6 +4,8 @@
 // tslint:disable:readonly-keyword
 import * as React from 'react';
 
+import { ProductType } from '@/restful';
+
 const { THREE } = window;
 const Validator = THREE.LoaderSupport.Validator;
 
@@ -12,6 +14,7 @@ interface ReportProgressEvent {
 }
 
 export interface ThreeSenceBaseProps {
+    readonly productType: ProductType;
     onObjectSelect: (object: THREE.Group) => void;
 }
 
@@ -151,14 +154,18 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     initControls() {
+        const { productType } = this.props;
+        this.camera.position.x = productType.view_rotateX || 0;
+
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.target = this.cameraTarget;
 
+        const polarAngle = ((productType.view_rotateY || 140) * 0.01);
+
         this.controls.minDistance = 0;
         this.controls.maxDistance = 500;
-        this.controls.maxPolarAngle = Math.PI / 2.4;
-        this.controls.minPolarAngle = Math.PI / 2.4;
-
+        this.controls.maxPolarAngle =  polarAngle;
+        this.controls.minPolarAngle = polarAngle;
         this.controls.enablePan = false;
         this.controls.enableZoom = false;
         this.controls.enableDamping = true;
@@ -270,7 +277,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         const canvas = this.renderer.domElement;
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
-        this.cameraDefaults.posCamera = new THREE.Vector3(0, 70, (width / height) * 110);
+        this.cameraDefaults.posCamera = new THREE.Vector3(0, 70, 180);
 
         this.camera.position.copy(this.cameraDefaults.posCamera);
         this.cameraTarget.copy(this.cameraDefaults.posCameraTarget);

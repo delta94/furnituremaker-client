@@ -21,7 +21,6 @@ import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 const { THREE } = window;
 
 interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesDispatchs {
-    readonly productType: ProductType;
     readonly productModules: ProductModule[];
     readonly selectedObject: THREE.Group;
     readonly setSence: (threeSence: ThreeSence) => void;
