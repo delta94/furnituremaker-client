@@ -44,17 +44,18 @@ export const restfulFetcher = new Fetcher({
             responseContentType &&
             responseContentType.startsWith('application/json')
         ) {
-            const result = await response.json() as ErrorResponse;
+            const response2 = response.clone();
+
+            const result = await response2.json() as ErrorResponse;
             if (result.message === 'Invalid token.') {
                 clearToken();
                 window.location.reload();
             }
-        }
 
-        if (process.env.NODE_ENV !== 'production') {
-            const error = await response.text();
-            // tslint:disable-next-line:no-console
-            console.error(error);
+            if (process.env.NODE_ENV !== 'production') {
+                // tslint:disable-next-line:no-console
+                console.error(result);
+            }
         }
     }
 });

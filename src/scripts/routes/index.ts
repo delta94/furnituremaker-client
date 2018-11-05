@@ -10,3 +10,4 @@ export * from './route-landing';
 export * from './route-address-book';
 export * from './route-notification';
 export * from './route-favorite-poduct';
+export * from './route-register';

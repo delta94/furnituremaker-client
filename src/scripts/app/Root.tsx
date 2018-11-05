@@ -54,6 +54,9 @@ export class Root extends React.Component<RootProps> {
         this.authHelper
             .isLoggedIn()
             .catch((toLoginPage: Function) => {
+                if (location.pathname.startsWith('/register')) {
+                    throw '!';
+                }
                 throw toLoginPage();
             })
             .then(this.appInit)

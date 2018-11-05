@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Auth } from '@/app/Auth';
 import { AntdAlert, AntdCheckbox, Img } from '@/components';
+import { LoginHeader } from '@/components';
 
 const Login = require('ant-design-pro/lib/Login');
 const { UserName, Password, Submit } = Login;
@@ -27,39 +28,6 @@ const LoginWrapper = styled.div`
         color: #000;
         border-width: 0;
     }
-`;
-
-const LoginHeader = styled.div`
-    margin-bottom: 40px;
-`;
-
-const LoginLogo = styled.img`
-    width: 55px;
-    height: 55px;
-    display: inline-block;
-    vertical-align: top;
-    margin-right: 16px;
-`;
-
-const LoginSiteDescription = styled.div`
-    display: inline-block;
-`;
-
-const LoginBranchName = styled.a`
-    line-height: 30px;
-    font-size: 33px;
-    color: rgba(0,0,0,.85);
-    font-weight: 600;
-    position: relative;
-    display: block;
-`;
-
-const LoginBranchSlogan = styled.span`
-    height: 30px;
-    line-height: 30px;
-    font-size: 14px;
-    color: rgba(0,0,0,.45);
-    margin-top: 12px;
 `;
 
 const LoginContent = styled.div`
@@ -104,13 +72,7 @@ export class AppLogin extends React.Component {
     render() {
         return (
             <LoginWrapper>
-                <LoginHeader>
-                    <LoginLogo src="/static/assets/logo.svg" />
-                    <LoginSiteDescription>
-                        <LoginBranchName>Furniture Maker</LoginBranchName>
-                        <LoginBranchSlogan>Chọn mua sofa theo phong cách riêng của bạn</LoginBranchSlogan>
-                    </LoginSiteDescription>
-                </LoginHeader>
+                <LoginHeader />
                 <LoginContent>
                     <Login onSubmit={this.onSubmit}>
                         {

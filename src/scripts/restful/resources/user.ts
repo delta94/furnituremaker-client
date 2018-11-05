@@ -67,5 +67,9 @@ export const userResources = {
 
             return val;
         }
+    }),
+    register: new Resource<User>({
+        url: apiEntry('/auth/local/register'),
+        method: 'POST'
     })
 };
