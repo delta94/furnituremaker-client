@@ -33,7 +33,7 @@ export class CartDrawerContent extends React.PureComponent<CartDrawerContentProp
                     itemLayout="vertical"
                     dataSource={orderDetails}
                     renderItem={(item: OrderDetail) => {
-                        if (typeof item.producttype === 'string') {
+                        if (typeof item.product_type === 'string') {
                             return null;
                         }
 
@@ -41,7 +41,7 @@ export class CartDrawerContent extends React.PureComponent<CartDrawerContentProp
                             <OrderDetailItem
                                 mode={mode}
                                 key={item.productModulesCode}
-                                productType={item.producttype}
+                                productType={item.product_type}
                                 orderDetail={item}
                             />
                         );

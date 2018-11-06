@@ -19,7 +19,7 @@ export interface OrderDetail extends Record {
     readonly id?: string;
     readonly quantity: number;
     readonly productModulesCode: string;
-    readonly producttype: ProductType | string;
+    readonly product_type: ProductType | string;
     readonly design: ProductDesign | string;
     readonly subTotalPrice: number;
     readonly totalPrice: number;
@@ -31,7 +31,7 @@ export interface OrderDetail extends Record {
     readonly status: 'temp' | 'order';
     readonly discount: number;
     readonly previewImg?: string;
-    readonly createdBy?: User;
+    readonly created_by?: User;
     readonly productCode?: string;
     readonly product?: Product;
     readonly updatedAt?: string;
@@ -49,7 +49,7 @@ export const orderDetailResourceType = new ResourceType<OrderDetail>({
         type: 'FK'
     }, {
         resourceType: nameof<ProductType>(),
-        field: nameof<OrderDetail>(o => o.producttype),
+        field: nameof<OrderDetail>(o => o.product_type),
         type: 'FK'
     }]
 });
@@ -176,10 +176,10 @@ export const orderDetailUtils = {
     ),
     getTotalWeight: (orderDetails: OrderDetail[]) => orderDetails.reduce(
         (totalVolumeValue, orderDetail) => {
-            if (!orderDetail.producttype || typeof orderDetail.producttype === 'string') {
+            if (!orderDetail.product_type || typeof orderDetail.product_type === 'string') {
                 return totalVolumeValue;
             }
-            const orderDetailVolume = (orderDetail.producttype.weight || 0) * (orderDetail.quantity || 0);
+            const orderDetailVolume = (orderDetail.product_type.weight || 0) * (orderDetail.quantity || 0);
             return totalVolumeValue += roundTo(orderDetailVolume, 2);
         },
         0

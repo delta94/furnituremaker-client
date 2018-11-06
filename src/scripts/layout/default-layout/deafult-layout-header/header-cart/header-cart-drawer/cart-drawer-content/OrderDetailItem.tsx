@@ -192,8 +192,8 @@ export class OrderDetailItem extends React.Component<OrderDetailItemProps, Order
             >
                 <AntdList.Item.Meta
                     title={
-                        (orderDetail.producttype && typeof orderDetail.producttype !== 'string')
-                        && orderDetail.producttype.name}
+                        (orderDetail.product_type && typeof orderDetail.product_type !== 'string')
+                        && orderDetail.product_type.name}
                     description={(
                         <div>
                             <Link to={`/maker/${orderDetail.productModulesCode}`}>

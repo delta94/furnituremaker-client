@@ -100,7 +100,7 @@ export class Root extends React.Component<RootProps> {
                         orderDetailUtils.getTempOrderParameter(),
                         {
                             type: 'query',
-                            parameter: nameof<OrderDetail>(o => o.createdBy),
+                            parameter: nameof<OrderDetail>(o => o.created_by),
                             value: user.id
                         }
                     ]

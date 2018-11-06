@@ -20,8 +20,8 @@ const columns: AntdColumnProps<OrderDetail>[] = [{
     }
 }, {
     title: 'Loại sản phẩm',
-    dataIndex: nameof<OrderDetail>(o => o.producttype),
-    key: nameof<OrderDetail>(o => o.producttype),
+    dataIndex: nameof<OrderDetail>(o => o.product_type),
+    key: nameof<OrderDetail>(o => o.product_type),
         render: (productType: ProductType, orderDetail) => {
         return (
             <div>

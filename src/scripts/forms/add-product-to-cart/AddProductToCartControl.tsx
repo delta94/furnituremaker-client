@@ -58,7 +58,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
 
         return {
             design: selectedProduct.design.id,
-            producttype: selectedProduct.productType,
+            product_type: selectedProduct.productType,
             productModulesCode: productUtils.getProductModulesCode(selectedProduct),
             quantity: quantity,
             subTotalPrice: subTotalPrice,
@@ -70,7 +70,7 @@ export class AddProductToCartControl extends React.PureComponent<ProductAddCartC
             discount: discountPerProduct * quantity,
             status: 'temp',
             previewImg: previewImg,
-            createdBy: Auth.instance.currentUser,
+            created_by: Auth.instance.currentUser,
             productCode: selectedProduct.produceCode
         };
     }
