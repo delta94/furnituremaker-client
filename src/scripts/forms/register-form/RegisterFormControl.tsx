@@ -2,9 +2,9 @@ import * as React from 'react';
 import { SubmissionError } from 'redux-form';
 import styled from 'styled-components';
 
-import { withStoreValues } from '@/app';
-import { AntdModal, AntdMotification, fetchErrorHandler } from '@/components';
-import { CommonStoreProps } from '@/configs';
+import { Auth } from '@/app';
+import { AntdModal, fetchErrorHandler } from '@/components';
+import { saveToken } from '@/configs';
 import { restfulFetcher, userResources } from '@/restful';
 
 import { RegisterForm, RegisterFormValue } from './register-form-control';
@@ -64,7 +64,7 @@ export class RegisterFormControl extends React.PureComponent<RegisterFormControl
         }
 
         try {
-            const newUser = await restfulFetcher.fetchResource(
+            const { jwt } = await restfulFetcher.fetchResource(
                 userResources.register,
                 [{
                     type: 'body',
@@ -75,9 +75,11 @@ export class RegisterFormControl extends React.PureComponent<RegisterFormControl
             AntdModal.success({
                 title: 'Tạo tài khoản',
                 content: 'Để hoàn tất quá trình đăng ký, xin vui lòng cung cấp thông tin kinh doanh của bạn.',
-                onOk: () => location.href = '/account-verify'
+                onOk: () => {
+                    saveToken(jwt, true);
+                    location.href = '/account-verify';
+                }
             });
-
         } catch (error) {
             throw await fetchErrorHandler(error);
         }

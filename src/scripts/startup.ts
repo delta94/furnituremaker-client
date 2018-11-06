@@ -10,6 +10,7 @@ import {
 } from '@/app';
 import { loginPath } from '@/configs';
 import {
+    RouteAccountVeriryLoadable,
     RouteAddressBookLoadable,
     RouteCartLoadable,
     RouteFavoriteProductLoadable,
@@ -28,6 +29,7 @@ import {
 export function startup() {
     const appRoutes = [
         RouteRegisterLoadable,
+        RouteAccountVeriryLoadable,
         RouteCartLoadable,
         RouteHomeLoadable,
         RouteLoginLoadable,

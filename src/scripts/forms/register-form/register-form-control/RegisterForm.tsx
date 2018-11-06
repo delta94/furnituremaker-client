@@ -6,6 +6,7 @@ import {
     AntdIcon,
     AntdSteps,
     FormError,
+    RegisterSteps,
     renderInput
 } from '@/components';
 import { User } from '@/restful';
@@ -26,12 +27,7 @@ class RegisterFormComponent extends React.PureComponent<
         const { handleSubmit, error, submitting } = this.props;
         return (
             <Form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: 15 }}>
-                    <AntdSteps direction="vertical" size="small" current={0}>
-                        <AntdSteps.Step title="Đăng ký" description="Tạo tài khoản đăng nhập" />
-                        <AntdSteps.Step title="Xác thực" description="Cung cấp thông tin kinh doanh" />
-                    </AntdSteps>
-                </div>
+                <RegisterSteps current={0} />
                 <FormError error={error} />
                 <Field
                     name={nameof<RegisterFormValue>(o => o.email)}

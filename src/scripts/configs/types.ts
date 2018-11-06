@@ -1,5 +1,4 @@
 import { History } from 'history';
-import { RouteComponentProps } from 'react-router';
 
 import { ExtendWithStoreValuesProps } from '@/app';
 import { ThreeSence } from '@/components';

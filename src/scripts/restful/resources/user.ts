@@ -19,6 +19,7 @@ export interface User {
     readonly yearOfBirth: number;
     readonly gender: 'male' | 'famale';
     readonly fullName?: string;
+    readonly confirmed?: boolean;
 }
 
 export const userResourceType = new ResourceType<User>({

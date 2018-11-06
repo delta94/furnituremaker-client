@@ -54,10 +54,20 @@ export class Root extends React.Component<RootProps> {
         this.authHelper
             .isLoggedIn()
             .catch((toLoginPage: Function) => {
-                if (location.pathname.startsWith('/register')) {
+                if (
+                    location.pathname.startsWith('/register') ||
+                    location.pathname.startsWith('/account-verity')
+                ) {
                     throw '!';
                 }
+
                 throw toLoginPage();
+            })
+            .then((user) => {
+                if (!user.confirmed) {
+                    throw this.history.replace('/account-verify');
+                }
+                return user;
             })
             .then(this.appInit)
             .then((user) => {
