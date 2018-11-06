@@ -66,16 +66,17 @@ UserNotificationListState> {
                         <UserNotificationItemWrapper
                             key={o.id}
                             viewed={o.viewedAt !== undefined}
-                            onClick={() => {
-                                const ref = this.getRef();
-                                markNotificationViewed(ref, o.id);
-                            }}
                         >
                             <div>
                                 {formatDate(o.time, 'DD/MM/YYYY')} <br />
                                 <small>{formatDate(o.time, 'HH:mm')}</small>
                             </div>
-                            <UserNotificationItemContent>
+                            <UserNotificationItemContent
+                                onClick={() => {
+                                    const ref = this.getRef();
+                                    markNotificationViewed(ref, o.id);
+                                }}
+                            >
                                 {this.renderListMeta(o)}
                             </UserNotificationItemContent>
                             <div>
@@ -85,7 +86,7 @@ UserNotificationListState> {
                                         <AntdTooltip title="Đánh dấu chưa đọc">
                                             <a
                                                 style={{ fontSize: 18 }}
-                                                onClick={() => { 
+                                                onClick={() => {
                                                     const ref = this.getRef();
                                                     markNotificationNotViewed(ref, o.id);
                                                 }}
