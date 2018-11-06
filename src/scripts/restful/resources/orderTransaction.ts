@@ -53,7 +53,7 @@ export const orderTransactionResources = {
                 const now = new Date();
                 const { order } = orderTransaction;
                 sendNotificationToFirebase(
-                    order.createdBy,
+                    order.created_by,
                     {
                         type: 'new-order-transaction',
                         orderId: order.id,

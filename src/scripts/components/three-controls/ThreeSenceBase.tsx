@@ -102,7 +102,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         renderPass.clearColor = '#fff';
         renderPass.clearAlpha = 1;
 
-        renderPass.sampleLevel = 2;
+        renderPass.sampleLevel = 1;
         this.composer.addPass(renderPass);
 
         // * Outline
@@ -112,12 +112,6 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             this.camera);
         this.outlinePass.pulsePeriod = 1;
         this.composer.addPass(this.outlinePass);
-
-        // * SSAO
-        // const ssaoPass = new THREE.SSAOPass(this.scene, this.camera);
-        // ssaoPass.aoClamp = 2;
-        // ssaoPass.lumInfluence = 1;
-        // this.composer.addPass(ssaoPass);
 
         // * FXAA
         const effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
@@ -274,10 +268,13 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     resetCamera() {
-        const canvas = this.renderer.domElement;
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        this.cameraDefaults.posCamera = new THREE.Vector3(0, 70, 180);
+        const { productType } = this.props;
+        const cameraX = productType.view_rotateX || 0;
+
+        // const canvas = this.renderer.domElement;
+        // const width = canvas.clientWidth;
+        // const height = canvas.clientHeight;
+        this.cameraDefaults.posCamera = new THREE.Vector3(cameraX, 70, 180);
 
         this.camera.position.copy(this.cameraDefaults.posCamera);
         this.cameraTarget.copy(this.cameraDefaults.posCameraTarget);

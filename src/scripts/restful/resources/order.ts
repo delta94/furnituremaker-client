@@ -46,7 +46,7 @@ export interface Order extends Record {
     readonly code: string;
     readonly agencyOrderer: Agency;
     readonly orderTransactions: Array<OrderTransaction>;
-    readonly createdBy: User;
+    readonly created_by: User;
 
     readonly contactTo?: string;
     readonly contactToPhone?: string;
@@ -119,8 +119,8 @@ export const orderResources = {
                     orderId: order.id,
                     fromAgency: order.agencyOrderer.id,
                     fromAgencyName: order.agencyOrderer.name,
-                    fromUser: order.createdBy.id,
-                    fromUserName: order.createdBy.fullName
+                    fromUser: order.created_by.id,
+                    fromUserName: order.created_by.fullName
                 });
             }
 
@@ -268,13 +268,13 @@ export const orderUtils = {
     },
     genCode: () => genCodeWithCurrentDate(),
     getCreatedById: (order: Order) => {
-        if (!order || !order.createdBy) {
+        if (!order || !order.created_by) {
             throw new Error('Who is owner?');
         }
 
-        return (typeof order.createdBy === 'string') ?
-            order.createdBy :
-            order.createdBy.id;
+        return (typeof order.created_by === 'string') ?
+            order.created_by :
+            order.created_by.id;
     },
     adminCanUpdate: (order: Order) => {
         return order.status !== 'cancel'

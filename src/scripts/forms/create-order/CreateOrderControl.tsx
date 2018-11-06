@@ -12,7 +12,9 @@ import {
     orderResources,
     orderUtils,
     promotionUtils,
-    restfulFetcher
+    restfulFetcher,
+    withAllAgencies,
+    WithAllAgenciesProps
 } from '@/restful';
 
 import {
@@ -23,6 +25,7 @@ import {
 } from './create-order-control';
 
 export interface CreateOrderControlProps extends
+    WithAllAgenciesProps,
     Pick<CommonStoreProps, 'selectedPromotion'>,
     Pick<CommonStoreProps, 'history'>,
     Pick<CommonStoreProps, 'setStore'>,
@@ -31,6 +34,7 @@ export interface CreateOrderControlProps extends
     readonly part: CreateOrderFormProps['part'];
 }
 
+@withAllAgencies()
 @withStoreValues<CreateOrderControlProps>('history', 'selectedPromotion')
 export class CreateOrderControl extends React.Component<CreateOrderControlProps> {
     readonly onCreateOrder = async (formValues: CreateOrderFormValues) => {
@@ -67,7 +71,7 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                 depositRequired: orderUtils.getDeposit(orderTotalOfPayment),
                 code: orderUtils.genCode(),
                 agencyOrderer: Auth.instance.currentUser.agency,
-                createdBy: Auth.instance.currentUser
+                created_by: Auth.instance.currentUser
             };
 
             const createdOrder = await restfulFetcher.fetchResource(
@@ -93,9 +97,12 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
     }
 
     render() {
-        const { setStore, part, history } = this.props;
+        const { setStore, part, history, agencies } = this.props;
         const shippingDate = orderUtils.getShippingDate();
         const user = Auth.instance.currentUser;
+
+        const agency = agencies && agencies.find(o => o.user.id === user.id);
+
         return (
             <CreateOrderForm
                 part={part}
@@ -108,20 +115,20 @@ export class CreateOrderControl extends React.Component<CreateOrderControlProps>
                 }}
                 initialValues={{
                     order: {
-                        email: user.agency && user.agency.email,
-                        phone: user.agency && user.agency.phone,
-                        shippingAddress: user.agency && user.agency.address,
+                        email: agency && agency.email,
+                        phone: agency && agency.phone,
+                        shippingAddress: agency && agency.address,
                         shippingDate: shippingDate.toISOString(),
                         depositRequired: 0,
                         status: 'new',
-                        shippingToCity: user.agency.city,
-                        shippingToCounty: user.agency.county,
+                        shippingToCity: agency && agency.city,
+                        shippingToCounty: agency && agency.county,
                         addressType: 'apartment'
                     },
                     // tslint:disable-next-line:no-any
                     city_county: [
-                        user.agency.city.id,
-                        user.agency.county.id
+                        agency && agency.city.id,
+                        agency && agency.county.id
                     ]
                 }}
                 onSubmitSuccess={(order: Order) => {
