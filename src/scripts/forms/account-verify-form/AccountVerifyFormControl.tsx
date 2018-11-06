@@ -3,6 +3,7 @@ import { SubmissionError } from 'redux-form';
 
 import { Auth } from '@/app';
 import { AntdModal, fetchErrorHandler } from '@/components';
+import { accountRequestResources, restfulFetcher } from '@/restful';
 
 import {
     AccountVerifyForm,
@@ -18,7 +19,7 @@ export class AccountVerifyFormControl extends React.PureComponent<RegisterFormCo
             <AccountVerifyForm
                 onSubmit={this.onRegisterSubmit}
                 initialValues={{
-                    createdBy: Auth.instance.currentUser.id
+                    createdBy: Auth.instance.currentUser
                 }}
             />
         );
@@ -40,12 +41,15 @@ export class AccountVerifyFormControl extends React.PureComponent<RegisterFormCo
         }
 
         try {
-            AntdModal.success({
-                title: 'Tạo tài khoản',
-                content: 'Để hoàn tất quá trình đăng ký, xin vui lòng cung cấp thông tin kinh doanh của bạn.',
-                onOk: () => location.href = '/account-verify'
-            });
+            const newAccountRequest = await restfulFetcher.fetchResource(
+                accountRequestResources.create,
+                [{
+                    type: 'body',
+                    value: values
+                }]
+            );
 
+            location.href = '/register-success';
         } catch (error) {
             throw await fetchErrorHandler(error);
         }

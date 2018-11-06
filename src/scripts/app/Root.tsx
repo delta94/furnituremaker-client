@@ -56,7 +56,8 @@ export class Root extends React.Component<RootProps> {
             .catch((toLoginPage: Function) => {
                 if (
                     location.pathname.startsWith('/register') ||
-                    location.pathname.startsWith('/account-verity')
+                    location.pathname.startsWith('/account-verity') || 
+                    location.pathname.startsWith('/forgot-password')
                 ) {
                     throw '!';
                 }
@@ -64,14 +65,17 @@ export class Root extends React.Component<RootProps> {
                 throw toLoginPage();
             })
             .then((user) => {
+                this.authHelper.currentUser = user;
                 if (!user.confirmed) {
+                    if (user.accountRequest) {
+                        throw this.history.replace('/register-success');
+                    }
                     throw this.history.replace('/account-verify');
                 }
                 return user;
             })
             .then(this.appInit)
             .then((user) => {
-                this.authHelper.currentUser = user;
                 notificationSubscriber(store, this.authHelper.currentUser);
                 changeAppStateToReady(store);
             });

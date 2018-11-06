@@ -14,6 +14,7 @@ import {
     RouteAddressBookLoadable,
     RouteCartLoadable,
     RouteFavoriteProductLoadable,
+    RouteForgotPasswordLoadable,
     RouteHomeLoadable,
     RouteLandingLoadable,
     RouteLoginLoadable,
@@ -23,12 +24,14 @@ import {
     RouteOrdersLoadable,
     RouteProductLoadable,
     RouteProfileLoadable,
-    RouteRegisterLoadable
+    RouteRegisterLoadable,
+    RouteRegisterSuccessLoadable
 } from '@/routes';
 
 export function startup() {
     const appRoutes = [
         RouteRegisterLoadable,
+        RouteForgotPasswordLoadable,
         RouteAccountVeriryLoadable,
         RouteCartLoadable,
         RouteHomeLoadable,
@@ -42,6 +45,7 @@ export function startup() {
         RouteAddressBookLoadable,
         RouteNotificationLoadable,
         RouteFavoriteProductLoadable,
+        RouteRegisterSuccessLoadable
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);

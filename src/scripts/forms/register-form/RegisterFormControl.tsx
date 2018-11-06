@@ -48,9 +48,12 @@ export class RegisterFormControl extends React.PureComponent<RegisterFormControl
 
     readonly onRegisterSubmit = async (values: RegisterFormValue) => {
         let error: string;
-
-        if (!values.email) {
+        if (!values.fullName) {
+            error = 'Vui lòng cho biết tiên của bạn';
+        } else if (!values.email) {
             error = 'Vui lòng nhập Email';
+        } else if (!values.email) {
+            error = 'Vui lòng nhập số điện thoại';
         } else if (!values.username) {
             error = 'Vui lòng nhập tên đăng nhập';
         } else if (!values.password) {
@@ -74,7 +77,8 @@ export class RegisterFormControl extends React.PureComponent<RegisterFormControl
 
             AntdModal.success({
                 title: 'Tạo tài khoản',
-                content: 'Để hoàn tất quá trình đăng ký, xin vui lòng cung cấp thông tin kinh doanh của bạn.',
+                // tslint:disable-next-line:max-line-length
+                content: 'Để hoàn tất quá trình đăng ký, xin vui lòng cung cấp thông tin kinh doanh của bạn ở bước kế tiếp.',
                 onOk: () => {
                     saveToken(jwt, true);
                     location.href = '/account-verify';

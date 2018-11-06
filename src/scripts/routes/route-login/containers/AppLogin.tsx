@@ -95,11 +95,19 @@ export class AppLogin extends React.Component {
                             >
                                 Tự động đăng nhập
                             </AntdCheckbox>
-                            <Link style={{ float: 'right' }} to="/forgot-password">Quên mật khẩu</Link>
+                            <Link style={{ color: '#fff', float: 'right' }} to="/forgot-password">Quên mật khẩu</Link>
                         </LoginExtends>
-                        <div style={{ textAlign: 'right' }}>
-                            <Submit>Đăng nhập</Submit>
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <div style={{ flexGrow: 1 }}>
+                                <Link to="/register" style={{ color: '#fff', fontWeight: 'bold' }}>
+                                    Đăng ký tài khoản
+                                </Link>
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                                <Submit>Đăng nhập</Submit>
+                            </div>
                         </div>
+
                     </Login>
                     <div style={{ padding: 30 }}>
                         <Img className="w-100 wm-100" file="/static/assets/login-banner.png" />

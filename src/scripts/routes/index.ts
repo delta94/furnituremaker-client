@@ -12,3 +12,5 @@ export * from './route-notification';
 export * from './route-favorite-poduct';
 export * from './route-register';
 export * from './route-account-verify';
+export * from './route-register-success';
+export * from './route-forgot-password';

@@ -2,6 +2,7 @@ import { Resource, ResourceType } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
+import { AccountRequest } from './accountRequest';
 import { Agency } from './agency';
 import { Role } from './role';
 
@@ -20,6 +21,7 @@ export interface User {
     readonly gender: 'male' | 'famale';
     readonly fullName?: string;
     readonly confirmed?: boolean;
+    readonly accountRequest?: AccountRequest;
 }
 
 export const userResourceType = new ResourceType<User>({

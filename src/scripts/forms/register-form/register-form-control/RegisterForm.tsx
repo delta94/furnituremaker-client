@@ -30,12 +30,30 @@ class RegisterFormComponent extends React.PureComponent<
                 <RegisterSteps current={0} />
                 <FormError error={error} />
                 <Field
+                    name={nameof<RegisterFormValue>(o => o.fullName)}
+                    component={renderInput}
+                    inputProps={{
+                        placeholder: 'Họ và tên',
+                        size: 'large',
+                        prefix: <AntdIcon type="idcard" />
+                    }}
+                />
+                <Field
                     name={nameof<RegisterFormValue>(o => o.email)}
                     component={renderInput}
                     inputProps={{
                         placeholder: 'Email',
                         size: 'large',
                         prefix: <AntdIcon type="mail" />
+                    }}
+                />
+                <Field
+                    name={nameof<RegisterFormValue>(o => o.phone)}
+                    component={renderInput}
+                    inputProps={{
+                        placeholder: 'Điện thoại',
+                        size: 'large',
+                        prefix: <AntdIcon type="phone" />
                     }}
                 />
                 <Field

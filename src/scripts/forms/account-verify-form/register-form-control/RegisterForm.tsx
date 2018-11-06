@@ -9,6 +9,10 @@ import {
     RegisterSteps,
     renderInput
 } from '@/components';
+import { UploadedFile } from '@/restful';
+import { AccountRequest } from '@/restful/resources/accountRequest';
+
+import { BussinessLicenseField } from './register-form';
 
 const AccountVerifyFormControlWrapper = styled.div`
     width: 100%;
@@ -34,11 +38,8 @@ export interface AccountVerifyFormProps {
 
 }
 
-export interface AccountVerifyFormValue {
-    readonly createdBy: string;
-    readonly companyName: string;
-    readonly businessAreas: string;
-    readonly businessLicense: string;
+export interface AccountVerifyFormValue extends AccountRequest {
+
 }
 
 class AccountVerifyFormComponent extends React.PureComponent<
@@ -55,13 +56,24 @@ class AccountVerifyFormComponent extends React.PureComponent<
                         name={nameof<AccountVerifyFormValue>(o => o.companyName)}
                         component={renderInput}
                         inputProps={{
-                            placeholder: 'Email',
-                            size: 'large',
-                            prefix: <AntdIcon type="mail" />
+                            placeholder: 'Tên công ty',
+                            size: 'large'
                         }}
                     />
+                    <Field
+                        name={nameof<AccountVerifyFormValue>(o => o.businessAreas)}
+                        component={renderInput}
+                        inputProps={{
+                            placeholder: 'Lĩnh vực hoạt động',
+                            size: 'large',
+                        }}
+                    />
+                    <Field
+                        name={nameof<AccountVerifyFormValue>(o => o.businessLicense)}
+                        component={BussinessLicenseField}
+                    />
                     <div style={{ textAlign: 'right' }}>
-                        <AntdButton loading={submitting} htmlType="submit">Đăng ký</AntdButton>
+                        <AntdButton loading={submitting} htmlType="submit">Gởi</AntdButton>
                     </div>
                 </Form>
             </AccountVerifyFormControlWrapper>

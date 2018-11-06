@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import { AppPage, AppPageProps, Auth, PageProps, withStoreValues } from '@/app';
 import { LoginHeader, Page } from '@/components';
-import { clearToken, CommonStoreProps } from '@/configs';
-import { AccountVerifyFormControl } from '@/forms/account-verify-form';
+import { CommonStoreProps } from '@/configs';
+import { ForgotPasswordControl } from '@/forms/forgot-password';
 
 import { RouteParams } from '../route-product/RouteProduct';
 
@@ -24,17 +24,13 @@ type RouteLoginProps = Pick<CommonStoreProps, 'setStore'> &
     PageProps;
 
 @withStoreValues()
-export class RouteAccountVerity extends AppPage<RouteLoginProps & AppPageProps> {
+export class RouteForgotPassword extends AppPage<RouteLoginProps & AppPageProps> {
     render() {
-        if (!Auth.instance.currentUser) {
-            return null;
-        }
-
         return (
             <Page backgound="#FFC12E">
                 <RegisterWrapper>
                     <LoginHeader />
-                    <AccountVerifyFormControl />
+                    <ForgotPasswordControl />
                 </RegisterWrapper>
             </Page>
         );
