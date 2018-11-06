@@ -19,7 +19,7 @@ export interface OrderDetail extends Record {
     readonly id?: string;
     readonly quantity: number;
     readonly productModulesCode: string;
-    readonly productType: ProductType | string;
+    readonly producttype: ProductType | string;
     readonly design: ProductDesign | string;
     readonly subTotalPrice: number;
     readonly totalPrice: number;
@@ -49,7 +49,7 @@ export const orderDetailResourceType = new ResourceType<OrderDetail>({
         type: 'FK'
     }, {
         resourceType: nameof<ProductType>(),
-        field: nameof<OrderDetail>(o => o.productType),
+        field: nameof<OrderDetail>(o => o.producttype),
         type: 'FK'
     }]
 });
@@ -176,10 +176,10 @@ export const orderDetailUtils = {
     ),
     getTotalWeight: (orderDetails: OrderDetail[]) => orderDetails.reduce(
         (totalVolumeValue, orderDetail) => {
-            if (!orderDetail.productType || typeof orderDetail.productType === 'string') {
+            if (!orderDetail.producttype || typeof orderDetail.producttype === 'string') {
                 return totalVolumeValue;
             }
-            const orderDetailVolume = (orderDetail.productType.weight || 0) * (orderDetail.quantity || 0);
+            const orderDetailVolume = (orderDetail.producttype.weight || 0) * (orderDetail.quantity || 0);
             return totalVolumeValue += roundTo(orderDetailVolume, 2);
         },
         0

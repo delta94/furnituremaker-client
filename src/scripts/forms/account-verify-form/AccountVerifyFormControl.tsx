@@ -18,7 +18,7 @@ export class AccountVerifyFormControl extends React.PureComponent<RegisterFormCo
             <AccountVerifyForm
                 onSubmit={this.onRegisterSubmit}
                 initialValues={{
-                    user: Auth.instance.currentUser.id
+                    createdBy: Auth.instance.currentUser.id
                 }}
             />
         );

@@ -200,10 +200,10 @@ export const orderUtils = {
 
         const totalVolume = orderDetails.reduce(
             (totalVolumeValue, orderDetail) => {
-                if (typeof orderDetail.productType === 'string') {
+                if (typeof orderDetail.producttype === 'string') {
                     return 0;
                 }
-                const orderDetailVolume = orderDetail.productType.volume * orderDetail.quantity;
+                const orderDetailVolume = orderDetail.producttype.volume * orderDetail.quantity;
                 return totalVolumeValue += (orderDetailVolume || 0);
             },
             0
