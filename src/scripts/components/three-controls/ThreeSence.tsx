@@ -138,18 +138,23 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
             }
 
             if (productModule.component.fbx) {
-                const callbackOnLoadFBX = (object) => {
-                    for (const child of object.children) {
-                        child.castShadow = true;
-                        child.receiveShadow = true;
-                        child.name = productModule.component.id;
-                    }
-                    this.scene.add(object);
-                };
-
                 const fbxLoader = new THREE.FBXLoader();
                 const fbxFile = uploadedFileUtils.getUrl(productModule.component.fbx);
-                fbxLoader.load(fbxFile, callbackOnLoadFBX);
+                fbxLoader.load(
+                    fbxFile,
+                    (object) => {
+                        for (const child of object.children) {
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                            child.name = productModule.component.id;
+                        }
+                        this.scene.add(object);
+                    },
+                    undefined,
+                    (error) => {
+                        console.log(error);
+                    }
+                );
             }
         }
     }
@@ -200,7 +205,11 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
             return;
         }
 
-        const top3DComponent = this.loaded3DComponents.find(o => o.name === top.component.id);
+        const top3DComponent = this.scene.children.find(o => o.name === top.component.id);
+        if (!top3DComponent) {
+            return;
+        }
+
         for (const child of top3DComponent.children) {
             child.position.setY(leg.component.height * 0.1);
         }

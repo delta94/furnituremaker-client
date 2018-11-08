@@ -1,12 +1,5 @@
 import { UploadFile } from 'antd/lib/upload/interface';
-import * as React from 'react';
-import {
-    Record,
-    Resource,
-    ResourceType,
-    Store,
-    withRestfulData
-} from 'react-restful';
+import { Record, Resource, ResourceType, withRestfulData } from 'react-restful';
 
 import { apiEntry, restfulStore } from '@/restful/environment';
 
