@@ -3,6 +3,7 @@ import { RestfulRender } from 'react-restful';
 
 import { CommonStoreProps } from '@/configs';
 import {
+    ProductDesignGroup,
     productTypeGroupResources,
     restfulFetcher,
     restfulStore
@@ -16,7 +17,6 @@ export class ProductTypeGroupContainer extends React.Component<CommonStoreProps>
             <RestfulRender
                 fetcher={restfulFetcher}
                 resource={productTypeGroupResources.find}
-                parameters={[]}
                 render={(renderProps) => {
                     if (renderProps.data && !renderProps.fetching) {
                         return (

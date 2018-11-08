@@ -16,6 +16,7 @@ export interface ProductDesign extends Record {
     readonly coverPhoto?: UploadedFile;
     readonly coverPhotoShape?: 'square' | 'rectangle';
     readonly photos: UploadedFile[];
+    readonly order?: number;
 }
 
 export const productDesign = new ResourceType<ProductDesign>({

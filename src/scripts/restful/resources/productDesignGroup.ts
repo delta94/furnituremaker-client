@@ -4,6 +4,7 @@ export interface ProductDesignGroup {
     readonly id?: string;
     readonly name: string;
     readonly productDesigns: ProductDesign[];
+    readonly order?: number;
 }
 
 export const productDesignGroupUtils = {
@@ -15,7 +16,19 @@ export const productDesignGroupUtils = {
     },
     fromDesigns: (productDesigns: ProductDesign[]): ProductDesignGroup[] => {
         const productDesignGroups = productDesigns
-            .reduce(productDesignGroupUtils._productDesignGroupsReducer, []);
+            .reduce(productDesignGroupUtils._productDesignGroupsReducer, [])
+            .sort((i1, i2) => {
+                if (i1.order < i2.order) {
+                    return -1;
+                }
+
+                if (i1.order > i2.order) {
+                    return 1;
+                }
+
+                return 0;
+            });
+        
         return productDesignGroups;
     },
     /**

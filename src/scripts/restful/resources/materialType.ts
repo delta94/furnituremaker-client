@@ -47,7 +47,14 @@ export const materialTypeResources = {
 };
 
 export const materialTypeUtils = {
-    getDefaultMaterial: (materialType: MaterialType) => (materialType.materials ? materialType.materials[0] : null)
+    getDefaultMaterial: (materialType: MaterialType) => {
+        if (!materialType.materials) {
+            return null;
+        }
+        const defaultMaterial = materialType.materials.find(o => o.isDefault === true);
+
+        return (defaultMaterial || materialType.materials[0]);
+    }
 };
 
 export interface WithMaterialTypesProps {

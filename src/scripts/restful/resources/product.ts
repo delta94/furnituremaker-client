@@ -94,9 +94,17 @@ export const productUtils = {
 
         const modules: ProductModule[] = furnitureComponentTypes.map(furnitureComponentType => {
             const defaultComponent = defaultGroup ?
-                furnitureComponentType.components.find(o => o.componentGroup &&
-                    o.componentGroup.id === defaultGroup.id) :
-                furnitureComponentType.components[0];
+                // Get default component in group by isDefaut
+                (furnitureComponentType
+                    .components
+                    .find(o => o.componentGroup && o.componentGroup.id === defaultGroup.id && o.isDefault === true) ||
+                    // Get default component in group (first item)
+                    furnitureComponentType
+                        .components
+                        .find(o => o.componentGroup && o.componentGroup.id === defaultGroup.id)) :
+                // Get default component(no group)
+                furnitureComponentType.components
+                    .find(o => o.isDefault === true) || furnitureComponentType.components[0];
 
             const defaultComponentMaterialType = defaultComponent.materialTypes[0];
 

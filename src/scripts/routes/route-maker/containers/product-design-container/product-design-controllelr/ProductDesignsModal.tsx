@@ -1,11 +1,14 @@
 import * as React from 'react';
 
 import { withStoreValues } from '@/app';
-import { ProductDesign, ProductDesignGroup } from '@/restful';
 import { FullScreenModal, FullScreenModalProps } from '@/components';
 import { CommonStoreProps } from '@/configs';
+import { ProductDesign, ProductDesignGroup } from '@/restful';
 
-import { ProductDesignList, ProductDesignGroupList } from './product-designs-modal';
+import {
+    ProductDesignGroupList,
+    ProductDesignList
+} from './product-designs-modal';
 
 export interface DesignModalProps extends CommonStoreProps {
     readonly showDesignsModal?: boolean;
@@ -18,12 +21,14 @@ export interface DesignModalProps extends CommonStoreProps {
 @withStoreValues(nameof<DesignModalProps>(o => o.showDesignsModal))
 export class DesignModal extends React.Component<DesignModalProps> {
     render() {
-        const { productDesignGroups,
+        const {
+            productDesignGroups,
             productDesigns,
             showDesignsModal,
             onModalClose,
             onDesignClick
         } = this.props;
+
         return (
             <FullScreenModal
                 visibled={showDesignsModal}

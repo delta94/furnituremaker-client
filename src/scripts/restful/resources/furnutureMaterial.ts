@@ -16,6 +16,7 @@ export interface FurnitureMaterial extends Record {
     readonly code: string;
     readonly description?: string;
     readonly view_normalMap?: UploadedFile;
+    readonly isDefault?: boolean;
 }
 
 export const furnitureMaterialResouceType = new ResourceType<FurnitureMaterial>({
