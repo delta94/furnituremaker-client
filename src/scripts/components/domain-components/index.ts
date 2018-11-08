@@ -1,3 +1,4 @@
+export * from './AccountFormWrapper';
 export * from './LoginHeader';
 export * from './RegisterSteps';
 export * from './generic';

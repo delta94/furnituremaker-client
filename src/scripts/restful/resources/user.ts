@@ -63,7 +63,7 @@ export const userResources = {
             if (key === 'email') {
                 return undefined;
             }
-            
+
             if (key === 'agency' || key === 'role') {
                 return val.id;
             }
@@ -75,8 +75,12 @@ export const userResources = {
         url: apiEntry('/auth/local/register'),
         method: 'POST'
     }),
-    forgotPassword: new Resource<User>({
+    forgotPassword: new Resource({
         url: apiEntry('/auth/forgot-password'),
+        method: 'POST'
+    }),
+    resetPassword: new Resource({
+        url: apiEntry('/auth/reset-password'),
         method: 'POST'
     })
 };

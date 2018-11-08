@@ -57,7 +57,8 @@ export class Root extends React.Component<RootProps> {
                 if (
                     location.pathname.startsWith('/register') ||
                     location.pathname.startsWith('/account-verity') || 
-                    location.pathname.startsWith('/forgot-password')
+                    location.pathname.startsWith('/forgot-password') ||
+                    location.pathname.startsWith('/reset-password')
                 ) {
                     throw '!';
                 }

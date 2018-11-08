@@ -5,37 +5,41 @@ import styled from 'styled-components';
 import { AccountFormWrapper, AntdModal, fetchErrorHandler } from '@/components';
 import { loginPath } from '@/configs';
 import { restfulFetcher, userResources } from '@/restful';
+import { getUrlSearchParam } from '@/utilities';
 
 import {
-    ForgotPasswordForm,
-    ForgotPasswordFormValue
-} from './forgot-password-form';
+    ResetPasswordForm,
+    ResetPasswordFormValue
+} from './reset-password-form';
 
-export interface ForgotPasswordControlProps {
+export interface ResetPasswordControlProps {
 }
 
-export class ForgotPasswordControl extends React.PureComponent<ForgotPasswordControlProps> {
+export class ResetPasswordControl extends React.PureComponent<ResetPasswordControlProps> {
     public render() {
+        const code = getUrlSearchParam('code', location.search);
         return (
             <AccountFormWrapper>
-                <ForgotPasswordForm
-                    onSubmit={this.onForgotPasswordSubmit}
+                <ResetPasswordForm
+                    onSubmit={this.onResetPasswordSubmit}
                     initialValues={{
-                        url: `${location.origin}/reset-password`
+                        code: code
                     }}
                 />
             </AccountFormWrapper>
         );
     }
 
-    readonly onForgotPasswordSubmit = async (values: ForgotPasswordFormValue) => {
-        if (!values.email) {
+    readonly onResetPasswordSubmit = async (values: ResetPasswordFormValue) => {
+        if (!values.password) {
             throw new SubmissionError({ _error: 'Vui lòng cung cấp email' });
+        } else if (values.password !== values.passwordConfirmation) {
+            throw new SubmissionError({ _error: 'Mật khẩu nhập lại ko trùng khớp' });
         }
 
         try {
             await restfulFetcher.fetchResource(
-                userResources.forgotPassword,
+                userResources.resetPassword,
                 [{
                     type: 'body',
                     value: values
@@ -44,8 +48,7 @@ export class ForgotPasswordControl extends React.PureComponent<ForgotPasswordCon
 
             AntdModal.success({
                 title: 'Thành công',
-                // tslint:disable-next-line:max-line-length
-                content: 'Yêu cầu của bạn được thực hiện thành công, vui lòng kiểm tra email!',
+                content: 'Mật khẩu của bạn đã được thay đổi, vui lòng đăng nhập lại!',
                 onOk: () => {
                     location.href = loginPath;
                 }

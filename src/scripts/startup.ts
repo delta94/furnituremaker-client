@@ -25,7 +25,8 @@ import {
     RouteProductLoadable,
     RouteProfileLoadable,
     RouteRegisterLoadable,
-    RouteRegisterSuccessLoadable
+    RouteRegisterSuccessLoadable,
+    RouteResetPasswordLoadable
 } from '@/routes';
 
 export function startup() {
@@ -45,7 +46,8 @@ export function startup() {
         RouteAddressBookLoadable,
         RouteNotificationLoadable,
         RouteFavoriteProductLoadable,
-        RouteRegisterSuccessLoadable
+        RouteRegisterSuccessLoadable,
+        RouteResetPasswordLoadable
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);

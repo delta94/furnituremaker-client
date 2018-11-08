@@ -3,31 +3,11 @@ import { SubmissionError } from 'redux-form';
 import styled from 'styled-components';
 
 import { Auth } from '@/app';
-import { AntdModal, fetchErrorHandler } from '@/components';
+import { AccountFormWrapper, AntdModal, fetchErrorHandler } from '@/components';
 import { saveToken } from '@/configs';
 import { restfulFetcher, userResources } from '@/restful';
 
 import { RegisterForm, RegisterFormValue } from './register-form-control';
-
-const RegisterFormControlWrapper = styled.div`
-    width: 100%;
-    max-width: 340px;
-    .ant-form-item {
-        margin-bottom: 10px;
-    }
-    
-    .ant-btn {
-        background: #FFFFFF;
-        border-radius: 5px;
-        color: #000;
-        border-width: 0;
-        padding: 0 20px;
-    }
-
-    .ant-alert {
-        margin-bottom: 10px!important;
-    }
-`;
 
 export interface RegisterFormControlProps {
 }
@@ -35,14 +15,14 @@ export interface RegisterFormControlProps {
 export class RegisterFormControl extends React.PureComponent<RegisterFormControlProps> {
     public render() {
         return (
-            <RegisterFormControlWrapper>
+            <AccountFormWrapper>
                 <RegisterForm
                     onSubmit={this.onRegisterSubmit}
                     initialValues={{
                         gender: 'male'
                     }}
                 />
-            </RegisterFormControlWrapper>
+            </AccountFormWrapper>
         );
     }
 
