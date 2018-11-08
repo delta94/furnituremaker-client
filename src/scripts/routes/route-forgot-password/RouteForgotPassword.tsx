@@ -9,7 +9,7 @@ import { ForgotPasswordControl } from '@/forms/forgot-password';
 
 import { RouteParams } from '../route-product/RouteProduct';
 
-const RegisterWrapper = styled.div`
+const ForgotPasswordWrapper = styled.div`
     height: 100%;
     min-height: inherit;
     padding: 30px;
@@ -28,10 +28,10 @@ export class RouteForgotPassword extends AppPage<RouteLoginProps & AppPageProps>
     render() {
         return (
             <Page backgound="#FFC12E">
-                <RegisterWrapper>
+                <ForgotPasswordWrapper>
                     <LoginHeader />
                     <ForgotPasswordControl />
-                </RegisterWrapper>
+                </ForgotPasswordWrapper>
             </Page>
         );
     }

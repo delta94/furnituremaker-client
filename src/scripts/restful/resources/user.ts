@@ -74,5 +74,9 @@ export const userResources = {
     register: new Resource<User>({
         url: apiEntry('/auth/local/register'),
         method: 'POST'
+    }),
+    forgotPassword: new Resource<User>({
+        url: apiEntry('/auth/forgot-password'),
+        method: 'POST'
     })
 };

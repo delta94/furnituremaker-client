@@ -1,1 +1,1 @@
-export * from './ForgotPasswordControl';
+export * from './ForgotPasswordFormControl';
