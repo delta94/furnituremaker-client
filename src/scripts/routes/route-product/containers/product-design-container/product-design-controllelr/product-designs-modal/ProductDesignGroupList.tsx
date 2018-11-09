@@ -1,15 +1,14 @@
 import * as React from 'react';
+import { RestfulRenderChildProps } from 'react-restful';
 import styled from 'styled-components';
-import { RestfulComponentRenderProps } from 'react-restful';
 
-import { CommonStoreProps } from '@/configs';
-import { ProductDesign, ProductDesignGroup } from '@/restful';
 import { withStoreValues } from '@/app';
 import { AntdButton } from '@/components';
+import { CommonStoreProps } from '@/configs';
+import { ProductDesign, ProductDesignGroup } from '@/restful';
 
 interface ProductDesignListProps extends
-    CommonStoreProps,
-    RestfulComponentRenderProps<ProductDesign[]> {
+    CommonStoreProps {
     readonly productDesignGroups: ProductDesignGroup[];
 }
 

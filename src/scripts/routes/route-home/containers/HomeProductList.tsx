@@ -2,8 +2,8 @@ import { Location, UnregisterCallback } from 'history';
 import * as React from 'react';
 import {
     RequestParameter,
-    RestfulComponentRenderProps,
-    RestfulRender
+    RestfulRender,
+    RestfulRenderChildProps
 } from 'react-restful';
 
 import { withStoreValues } from '@/app';
@@ -124,7 +124,7 @@ export class HomeProductList extends React.PureComponent<HomeProductListProps, H
         });
     }
 
-    readonly renderComponent = (renderProps: RestfulComponentRenderProps<Product[]>) => {
+    readonly renderComponent = (renderProps: RestfulRenderChildProps<Product[]>) => {
         const { fetchedProducts, prevFetchedProducts, fetchParams } = this.state;
 
         return (

@@ -271,10 +271,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         const { productType } = this.props;
         const cameraX = productType.view_rotateX || 0;
 
-        // const canvas = this.renderer.domElement;
-        // const width = canvas.clientWidth;
-        // const height = canvas.clientHeight;
-        this.cameraDefaults.posCamera = new THREE.Vector3(cameraX, 70, 180);
+        this.cameraDefaults.posCamera = new THREE.Vector3(cameraX, 70, productType.view_cameraFar || 180);
 
         this.camera.position.copy(this.cameraDefaults.posCamera);
         this.cameraTarget.copy(this.cameraDefaults.posCameraTarget);

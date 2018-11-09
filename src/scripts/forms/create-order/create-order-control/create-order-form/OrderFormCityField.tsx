@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RestfulComponentRenderProps, RestfulRender } from 'react-restful';
+import { RestfulRender, RestfulRenderChildProps } from 'react-restful';
 import { Field } from 'redux-form';
 
 import { AntdCascaderOptionType, renderCascader, required } from '@/components';
@@ -92,7 +92,7 @@ export class OrderFormCityField extends React.PureComponent<OrderFormCityFieldPr
         });
     }
 
-    readonly restFulRender = (renderProps: RestfulComponentRenderProps<City[]>) => {
+    readonly restFulRender = (renderProps: RestfulRenderChildProps<City[]>) => {
         const { fieldName, onCityChange } = this.props;
         const { cities, counties, options } = this.state;
         return (

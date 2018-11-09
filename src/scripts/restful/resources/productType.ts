@@ -34,6 +34,7 @@ export interface ProductType extends Record {
     readonly view_senceHeight: number;
     readonly view_rotateX: number;
     readonly view_rotateY: number;
+    readonly view_cameraFar: number;
 }
 
 export const productType = new ResourceType<ProductType>({

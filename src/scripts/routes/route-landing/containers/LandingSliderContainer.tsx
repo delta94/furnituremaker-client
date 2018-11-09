@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RestfulComponentRenderProps, RestfulRender } from 'react-restful';
+import { RestfulRender, RestfulRenderChildProps } from 'react-restful';
 
 import { restfulFetcher, Slide, slideResources } from '@/restful';
 
@@ -20,7 +20,7 @@ export class LandingSliderContainer extends React.PureComponent<LandingSliderCon
         );
     }
 
-    readonly renderSlider = (renderProps: RestfulComponentRenderProps<Slide[]>) => {
+    readonly renderSlider = (renderProps: RestfulRenderChildProps<Slide[]>) => {
         const { data } = renderProps;
         if (!data) {
             return null;

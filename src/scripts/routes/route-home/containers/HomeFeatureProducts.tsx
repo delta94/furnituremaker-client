@@ -2,8 +2,8 @@ import { Location, UnregisterCallback } from 'history';
 import * as React from 'react';
 import {
     RequestParameter,
-    RestfulComponentRenderProps,
     RestfulRender,
+    RestfulRenderChildProps,
     RestfulRenderProps
 } from 'react-restful';
 
@@ -112,7 +112,7 @@ export class HomeFeatureProducts extends React.PureComponent<HomeFeatureProducts
         });
     }
 
-    readonly renderComponent = (renderProps: RestfulComponentRenderProps<Product[]>) => {
+    readonly renderComponent = (renderProps: RestfulRenderChildProps<Product[]>) => {
         if (
             !renderProps.data ||
             !renderProps.data.length
