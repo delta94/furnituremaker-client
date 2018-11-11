@@ -8,7 +8,7 @@ import { Order, orderResources, restfulFetcher, restfulStore } from '@/restful';
 
 import { OrderListControl } from './order-list-container';
 
-export class OrderListContainer extends React.PureComponent {
+export class OrderListContainer extends React.Component {
     readonly getFetchParams = () => {
         const searchParams = new URLSearchParams(location.search);
         const searchEntries = searchParams.entries();
