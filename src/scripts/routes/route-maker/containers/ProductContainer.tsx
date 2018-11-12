@@ -39,6 +39,10 @@ export class ProductContainer extends React.PureComponent<ProductContainerProps>
                     type: 'query',
                     parameter: nameof<FurnitureComponent>(o => o.design),
                     value: selectedProductDesign.id
+                }, {
+                    type: 'query',
+                    parameter: '_sort',
+                    value: `name:asc`
                 }]}
                 resource={furnitureComponentResources.find}
                 render={(renderProps) => {

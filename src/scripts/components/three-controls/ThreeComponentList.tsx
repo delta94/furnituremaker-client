@@ -70,6 +70,7 @@ export class ThreeComponentList extends React.PureComponent<ThreeComponentListPr
             nextSelectComponent: null
         };
     }
+
     readonly renderPopover = (component: FurnitureComponent) => {
         const updatePageHref = `${this.componentUpdatePage}/${component.id}?source=content-manager`;
         return (

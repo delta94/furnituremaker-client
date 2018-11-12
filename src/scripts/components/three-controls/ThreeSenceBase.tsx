@@ -33,9 +33,9 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     cameraDefaults = {
         posCamera: new THREE.Vector3(0, 70, 150),
         posCameraTarget: new THREE.Vector3(0, 30, 0),
-        near: 0.1,
+        near: 1,
         far: 10000,
-        fov: 50
+        fov: 25
     };
     scene: THREE.Scene;
     raycaster: THREE.Raycaster = new THREE.Raycaster();
@@ -136,9 +136,14 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     initCamera() {
+        const canvas = this.renderer.domElement;
+        // look up the size the canvas is being displayed
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+
         this.camera = new THREE.PerspectiveCamera(
             this.cameraDefaults.fov,
-            this.aspectRatio,
+            width / height,
             this.cameraDefaults.near,
             this.cameraDefaults.far
         );
@@ -149,16 +154,16 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
     initControls() {
         const { productType } = this.props;
-        this.camera.position.x = productType.view_rotateX || 0;
 
+        this.camera.position.x = productType.view_rotateX || 0;
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.target = this.cameraTarget;
 
         const polarAngle = ((productType.view_rotateY || 140) * 0.01);
 
-        this.controls.minDistance = 0;
-        this.controls.maxDistance = 500;
-        this.controls.maxPolarAngle =  polarAngle;
+        this.controls.minDistance = productType.view_cameraFar || 450;
+        this.controls.maxDistance = productType.view_cameraFar || 450;
+        this.controls.maxPolarAngle = polarAngle;
         this.controls.minPolarAngle = polarAngle;
         this.controls.enablePan = false;
         this.controls.enableZoom = false;
@@ -176,7 +181,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         const baseShadowCamera = 150;
         // * Directional
         const dirLightLeft = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightLeft.intensity = 1.5;
+        dirLightLeft.intensity = 1;
         dirLightLeft.position.set(-120, 120, 45);
         dirLightLeft.castShadow = true;
         dirLightLeft.shadow.camera.left = -baseShadowCamera;
@@ -189,7 +194,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * Directional
         const dirLightright = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightright.intensity = 1.5;
+        dirLightright.intensity = 1;
         dirLightright.position.set(120, 120, 45);
         dirLightright.castShadow = true;
         dirLightright.shadow.camera.left = -baseShadowCamera;
@@ -271,7 +276,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         const { productType } = this.props;
         const cameraX = productType.view_rotateX || 0;
 
-        this.cameraDefaults.posCamera = new THREE.Vector3(cameraX, 70, productType.view_cameraFar || 180);
+        this.cameraDefaults.posCamera = new THREE.Vector3(cameraX, 70, 180);
 
         this.camera.position.copy(this.cameraDefaults.posCamera);
         this.cameraTarget.copy(this.cameraDefaults.posCameraTarget);
