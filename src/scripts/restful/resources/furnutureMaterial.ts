@@ -62,6 +62,11 @@ export const withMaterialsByType = <T extends Required<WithMaterialByTypeOwnProp
             }
 
             const { selectedMaterialType } = ownProps;
+            if (!selectedMaterialType) {
+                return {
+                    materials: data
+                };
+            }
             return {
                 materials: data.filter(o => o.materialType.id === selectedMaterialType.id)
             };

@@ -66,20 +66,25 @@ export interface ProductInfoProps extends
     nameof<ThreeComponentListProps>(o => o.selectedObject)
 )
 export class ProductInfo extends React.PureComponent<ProductInfoProps> {
+    componentWillUnmount() {
+        this.props.setStore({
+            selectedObject: null
+        });
+    }
+
     render() {
         const {
             product,
             selectedProductType,
-            showDesignModal } = this.props;
+            showDesignModal
+        } = this.props;
 
         return (
             <React.Fragment>
                 <ProductInfoCardHoler id="productInfoCardHoler">
                     <div>
                         <Topbar />
-
                         <AntdCard>
-
                             {
                                 this.props.selectedObject ? (
                                     <ProductInfoWrapper>

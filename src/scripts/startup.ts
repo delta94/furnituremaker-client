@@ -17,6 +17,7 @@ import {
     RouteForgotPasswordLoadable,
     RouteHomeLoadable,
     RouteLandingLoadable,
+    RouteLibraryLoadable,
     RouteLoginLoadable,
     RouteMakerLoadable,
     RouteNotificationLoadable,
@@ -47,7 +48,8 @@ export function startup() {
         RouteNotificationLoadable,
         RouteFavoriteProductLoadable,
         RouteRegisterSuccessLoadable,
-        RouteResetPasswordLoadable
+        RouteResetPasswordLoadable,
+        RouteLibraryLoadable
     ];
 
     const middlewares = applyMiddleware(storeValuesMiddleware);

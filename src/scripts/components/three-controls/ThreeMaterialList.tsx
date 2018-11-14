@@ -2,6 +2,7 @@ import './ThreeMaterialList.scss';
 
 import * as classNames from 'classnames';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { withStoreValues } from '@/app';
 import { AntdList, AntdTabs, AntdTooltip } from '@/components/antd-component';
@@ -52,8 +53,12 @@ class ThreeMaterialListComponent extends React.PureComponent<ThreeMaterialListPr
         const { loading, nextSelectMaterial } = this.state;
         return (
             <div className="three-material-list">
-                <AntdTabs>
-                    <AntdTabs.TabPane tab="Vật liệu">
+                <AntdTabs
+                    tabBarExtraContent={<Link to="/library">Thư viện vật liệu</Link>}
+                >
+                    <AntdTabs.TabPane
+                        tab="Vật liệu"
+                    >
                         <AntdList
                             dataSource={materials}
                             grid={{ gutter: 16, column: 3 }}

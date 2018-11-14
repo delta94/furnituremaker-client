@@ -1,9 +1,9 @@
 import autobind from 'autobind-decorator';
 import * as React from 'react';
-import styled from 'styled-components';
+import * as Sticky from 'sticky-js';
 
 import { withStoreValues } from '@/app';
-import { AntdAffix, ThreeMaterialListProps, ThreeSence } from '@/components';
+import { ThreeMaterialListProps, ThreeSence } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
     ProductExtended,
@@ -13,24 +13,6 @@ import {
     WithMaterialProps,
     withMaterials
 } from '@/restful';
-import {
-    ProductDetailSectionLablel
-} from '@/routes/route-product/containers/product-container';
-import {
-    ProductTypeInfo
-} from '@/routes/route-product/containers/product-container/product-detail';
-
-const ProductSenceWrapper = styled.div`
-    padding: 0 0 0 0;
-    transition: all 0.2s;
-`;
-
-const ProductTypeInfoWrapper = styled.div`
-    margin-right: 4px;
-    border-left: 1px solid #e8e8e8;
-    border-right: 1px solid #e8e8e8;
-    border-bottom: 1px solid #e8e8e8;
-`;
 
 interface ProductSenceProps extends
     CommonStoreProps,
@@ -41,22 +23,6 @@ interface ProductSenceProps extends
     readonly product: ProductExtended;
 }
 
-var visibleInViewPort = (element) => {
-    var bounding = element.getBoundingClientRect();
-    return (
-        bounding.top >= 0 &&
-        bounding.left >= 0 &&
-        bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-};
-
-const getDocumentScrollTop = () => {
-    var doc = document.documentElement;
-    var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    return top;
-};
-
 @withComponents()
 @withMaterials()
 @withStoreValues(
@@ -64,6 +30,9 @@ const getDocumentScrollTop = () => {
     nameof<ProductSenceProps>(o => o.selectedProduct),
 )
 export class ProductSence extends React.PureComponent<ProductSenceProps> {
+    // tslint:disable-next-line:readonly-keyword
+    sticky: Sticky;
+
     readonly state: {
         readonly affix: boolean;
         readonly staticTop: number;
@@ -73,94 +42,30 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
         };
 
     componentDidMount() {
-        const productInfoStaticEnd = document.getElementById('productInfoStaticEnd');
-        const productSenceStaticStart = document.getElementById('productSenceStaticStart');
-        const productSenceStaticEnd = document.getElementById('productSenceStaticEnd');
-
-        const productInfoCardHoler = document.getElementById('productInfoCardHoler');
-        const productInfoCard = productInfoCardHoler.children[0] as HTMLElement;
-
-        var static1Bounding = productSenceStaticStart.getBoundingClientRect();
-
-        window.addEventListener('scroll', (e) => {
-            const isInfoMarkerHidden = !visibleInViewPort(productInfoStaticEnd);
-            const productSenceStaticEndVisible = visibleInViewPort(productSenceStaticEnd);
-
-            const documentScrollTop = getDocumentScrollTop();
-
-            const staticTop = this.state.affix ? (documentScrollTop - static1Bounding.top) + 60 : this.state.staticTop;
-
-            if (isInfoMarkerHidden) {
-                productInfoCard.style.position = 'static';
-            } else {
-                const productSenceStaticEndBounding = productSenceStaticEnd.getBoundingClientRect();
-                const productInfoCardBounding = productInfoCard.getBoundingClientRect();
-
-                productInfoCardHoler.style.height = `${productInfoCardBounding.height}px`;
-                productInfoCard.style.position = 'fixed';
-
-                if (productSenceStaticEndVisible) {
-                    const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-                    // tslint:disable-next-line:no-string-literal
-                    const currentViewPortY = productSenceStaticEndBounding['y'];
-
-                    const bottom = viewportHeight - currentViewPortY;
-                    productInfoCard.style.bottom = `${bottom}px`;
-                } else {
-                    productInfoCard.style.bottom = '0';
-                }
-                productInfoCard.style.width = `${productInfoCardBounding.width}px`;
-            }
-
-            this.setState({
-                affix: isInfoMarkerHidden,
-                staticTop: staticTop > 0 ? staticTop : 0
-            });
-        });
+        this.sticky = new Sticky('.sticky');
     }
 
     render() {
         const { setStore, selectedProduct, selectedObject, product } = this.props;
-
         return (
-            <React.Fragment>
-                <span id="productSenceStaticStart" />
-                <AntdAffix
-                    offsetTop={70}
-                    target={() =>
-                        this.state.affix ?
-                            window : document.body}
-                >
-                    <div
-                        id="productSenceWrapper"
-                        style={{
-                            position: 'relative',
-                            paddingTop: this.state.affix ? 0 : this.state.staticTop
-                        }}
-                    >
-                        <ProductSenceWrapper>
-                            <ThreeSence
-                                onObjectSelect={this.onObjectSelect}
-                                selectedObject={selectedObject}
-                                productModules={product.modules}
-                                productType={selectedProduct.productType}
-                                setSence={(threeScreen) => {
-                                    setStore({
-                                        [nameof<CommonStoreProps>(o => o.product3Dsence)]: threeScreen
-                                    });
-                                }}
-                            />
-                        </ProductSenceWrapper>
-                        <ProductTypeInfoWrapper>
-                            <ProductDetailSectionLablel marginTop={0}>
-                                Xem thông số kỹ thuật
-                            </ProductDetailSectionLablel>
-                            <ProductTypeInfo />
-                        </ProductTypeInfoWrapper>
+            <div style={{ height: '100%' }} data-sticky-container={true}>
+                <div className="sticky" data-margin-top={120}>
+                    <div style={{ paddingTop: 120 }}>
+                        <ThreeSence
+                            onObjectSelect={this.onObjectSelect}
+                            selectedObject={selectedObject}
+                            productModules={product.modules}
+                            productType={selectedProduct.productType}
+                            setSence={(threeScreen) => {
+                                setStore({
+                                    [nameof<CommonStoreProps>(o => o.product3Dsence)]: threeScreen
+                                });
+                            }}
+                        />
                     </div>
-                </AntdAffix>
-                <span id="productSenceStaticEnd" />
-            </React.Fragment>
+
+                </div>
+            </div>
         );
     }
 
