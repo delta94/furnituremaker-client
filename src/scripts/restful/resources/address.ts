@@ -12,7 +12,7 @@ export interface Address extends Record {
     readonly county: County;
     readonly phone?: number;
     readonly name?: string;
-    readonly createdBy?: User;
+    readonly created_by?: User;
     readonly type?: 'apartment' | 'home';
 }
 

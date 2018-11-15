@@ -47,10 +47,6 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     mouseHoldTimeout: number | NodeJS.Timer;
     isMouseHold: boolean;
 
-    static reportProgress = function (event: ReportProgressEvent) {
-        console.log('Progress: ' + Validator.verifyInput(event.text, ''));
-    };
-
     initSence() {
         // * Sence
         this.scene = new THREE.Scene();
