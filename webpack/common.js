@@ -1,13 +1,12 @@
 const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const tsImportPluginFactory = require('ts-import-plugin')
 
 module.exports = {
     lessLoaderOptions: {
         paths: [path.resolve(__dirname, "node_modules")],
         javascriptEnabled: true,
         modifyVars: {
-            '@blue-6': 'rgb(114, 46, 209)',
+            '@blue-6': '#EFB416',
             '@font-family': "'Open Sans', sans-serif",
             '@font-size-base': '13px',
             '@font-size-sm': '11px'
