@@ -31,10 +31,12 @@ module.exports = {
         new webpack.NamedChunksPlugin(),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
-            inject: 'body'
+            inject: 'body',
+            chunksSortMode: 'none'
         })
     ],
     module: {
+        strictExportPresence: true,
         rules: [
         {
             test: /\.(css|sass|scss|less)$/,

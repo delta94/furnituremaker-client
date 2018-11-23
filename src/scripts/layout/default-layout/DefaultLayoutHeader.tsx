@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Auth } from '@/app';
 import { AntdAffix, AntdIcon, AntdPopover, Container } from '@/components';
 import { colorPrimary } from '@/configs';
-import { getProfileRoutePath } from '@/routes';
+import { getProfileRoutePath } from '@/routes/desktop';
 
 import { HeaderCart, HeaderNotification } from './deafult-layout-header';
 

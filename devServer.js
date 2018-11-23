@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
-const config = require('./webpack.config')
+const config = require('./webpack/webpack.config.dev')
 
 const port = process.env.npm_package_config_port || 3000
 const host = process.env.npm_package_config_host || 'localhost'
@@ -11,7 +11,7 @@ new WebpackDevServer(webpack(config), {
     historyApiFallback: true,
     stats: {
         colors: true,
-        chunks: false,
+        chunks: false
     },
     overlay: true
 }).listen(port, host, function(err) {

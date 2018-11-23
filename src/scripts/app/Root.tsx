@@ -30,7 +30,7 @@ import { changeAppStateToReady } from './readyState';
 
 export interface RootProps {
     readonly store: Store<string, AnyAction>;
-    readonly children: JSX.Element[];
+    readonly children: JSX.Element;
     readonly loginPath: string;
 }
 
@@ -56,7 +56,7 @@ export class Root extends React.Component<RootProps> {
             .catch((toLoginPage: Function) => {
                 if (
                     location.pathname.startsWith('/register') ||
-                    location.pathname.startsWith('/account-verity') || 
+                    location.pathname.startsWith('/account-verity') ||
                     location.pathname.startsWith('/forgot-password') ||
                     location.pathname.startsWith('/reset-password')
                 ) {
@@ -88,9 +88,7 @@ export class Root extends React.Component<RootProps> {
         return (
             <Provider store={store}>
                 <Router history={this.history}>
-                    <Switch>
-                        {this.props.children}
-                    </Switch>
+                    {this.props.children}
                 </Router>
             </Provider>
         );
