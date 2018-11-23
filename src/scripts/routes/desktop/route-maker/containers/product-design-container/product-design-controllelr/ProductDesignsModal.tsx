@@ -16,7 +16,7 @@ export type DesignModalProps = CommonStoreProps & {
     readonly productDesignGroups: ProductDesignGroup[];
     readonly onModalClose: FullScreenModalProps['onClose'];
     readonly onDesignClick: (productDesign: ProductDesign) => void;
-}
+};
 
 @withStoreValues(nameof<DesignModalProps>(o => o.showDesignsModal))
 export class DesignModal extends React.Component<DesignModalProps> {

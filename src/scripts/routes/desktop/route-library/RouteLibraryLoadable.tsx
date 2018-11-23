@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Loadable from 'react-loadable';
 
 export const RouteLibraryLoadable = Loadable({
-    loader: () => import('./RouteLibrary').then(o => o.RouteLibrary),
+    loader: () => import(/* webpackPrefetch: true */ './RouteLibrary').then(o => o.RouteLibrary),
     loading: () => <div>Loading...</div>
 });
 

@@ -12,7 +12,7 @@ export const getProductLink = (product: Partial<Product>) => {
 };
 
 export const RouteProductLoadable = Loadable({
-    loader: () => import('./RouteProduct').then(o => o.RouteProduct),
+    loader: () => import(/* webpackPrefetch: true */ './RouteProduct').then(o => o.RouteProduct),
     loading: () => <div>Loading...</div>
 });
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Loadable from 'react-loadable';
 
 export const RouteOrdersLoadable = Loadable({
-    loader: () => import('./RouteOrders').then(o => o.RouteOrders),
+    loader: () => import(/* webpackPrefetch: true */ './RouteOrders').then(o => o.RouteOrders),
     loading: () => <div>Loading...</div>
 });
 
