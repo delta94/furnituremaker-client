@@ -1,11 +1,12 @@
 {
     "config": {
-        "host": "localhost",
+        "host": "0.0.0.0",
         "port": 3000
     },
     "dependencies": {
         "ant-design-pro": "^2.1.1",
         "antd": "^3.10.8",
+        "antd-mobile": "^2.2.6",
         "classnames": "2.2.6",
         "core-decorators": "^0.20.0",
         "firebase": "^5.5.9",
@@ -51,6 +52,7 @@
         "@types/react-slick": "^0.23.2",
         "@types/react-transition-group": "^2.0.14",
         "@types/redux-form": "^7.4.12",
+        "@types/styled-components": "^4.1.1",
         "@types/three": "^0.93.10",
         "@types/webpack-env": "^1.13.6",
         "compression-webpack-plugin": "^2.0.0",

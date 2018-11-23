@@ -1,24 +1,35 @@
 import * as React from 'react';
-import { Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 
 import { route } from '@/app';
-import { RouteMakerLoadable } from '@/routes/desktop';
+import { DefaultLayoutMobile } from '@/layout/DefaultLayoutMobile';
+import { RouteLoginLoadable } from '@/routes/desktop';
+import { RouteMakerLoadable } from '@/routes/mobile';
 
 const appRoutes = [
     RouteMakerLoadable,
+].reduce(
+    (currenValue, Component) => {
+        return [...currenValue, route(Component)];
+    },
+    [] as JSX.Element[]
+);
+
+const authRoutes = [
+    route(RouteLoginLoadable)
 ];
 
 export const MobileRoot = () => {
     return (
         <Switch>
-            {
-                appRoutes.reduce(
-                    (currenValue, Component) => {
-                        return [...currenValue, route(Component)];
-                    },
-                    [] as JSX.Element[]
-                )
-            }
+            {authRoutes}
+            <Route>
+                <DefaultLayoutMobile>
+                    {
+                        appRoutes
+                    }
+                </DefaultLayoutMobile>
+            </Route>
         </Switch>
     );
 };

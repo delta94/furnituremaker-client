@@ -1,65 +1,30 @@
 import * as React from 'react';
-import styled from 'styled-components';
 
-import { AntdBackTop, AntdButton, AntdLayout, Container } from '@/components';
+import { MobileHeader, MobileTabbar } from './default-layout-mobile';
+import { MobileDrawer } from './default-layout-mobile';
 
-import {
-    DefaultLayoutFooter,
-    DefaultLayoutHeader,
-    DefaultLayoutTopbar
-} from './default-layout';
-
-const Breadcrumb = styled.div`
-    margin: 20px 0;
-`;
-
-interface DefaultLayoutProps {
+interface DefaultLayoutMobileProps {
     readonly breadcrumb: JSX.Element;
 }
 
-export class DefaultLayout extends React.Component<DefaultLayoutProps> {
-    static readonly defaultProps: Partial<DefaultLayoutProps> = {
+export class DefaultLayoutMobile extends React.Component<DefaultLayoutMobileProps> {
+    static readonly defaultProps: Partial<DefaultLayoutMobileProps> = {
         breadcrumb: null
     };
 
     render() {
-        const { breadcrumb } = this.props;
 
         return (
-            <AntdLayout
+            <div
                 style={{
                     minHeight: 'inherit',
                     background: '#fff'
                 }}
             >
-                <DefaultLayoutHeader />
-                {
-                    breadcrumb && (
-                        <Container>
-                            <Breadcrumb>
-                                {breadcrumb}
-                            </Breadcrumb>
-                        </Container>
-                    )
-                }
-                <AntdLayout.Content
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        marginBottom: 30
-                    }}
-                >
+                <MobileDrawer>
                     {this.props.children}
-                </AntdLayout.Content>
-                <DefaultLayoutFooter />
-                <AntdBackTop>
-                    <AntdButton
-                        type="primary"
-                        shape="circle"
-                        icon="up"
-                    />
-                </AntdBackTop>
-            </AntdLayout>
+                </MobileDrawer>
+            </div>
         );
     }
 }

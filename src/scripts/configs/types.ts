@@ -47,6 +47,7 @@ export interface CommonStoreValues extends InitAppStoreProps {
     readonly submitOrderForm?: () => void;
 
     readonly cartAddressBookVisibleToggle?: () => void;
+    readonly drawerVisibled?: boolean;
 }
 
 export type CommonStoreProps = ExtendWithStoreValuesProps<CommonStoreValues>;
