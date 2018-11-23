@@ -5,13 +5,12 @@ import { reducer as formReducer } from 'redux-form';
 import {
     render,
     RootProps,
-    route,
     storeValuesMiddleware,
     storeValuesRecuder
 } from '@/app';
-import { loginPath } from '@/configs';
+import { loginPath, mobileSize } from '@/configs';
 
-import { DesktopRoot } from './routes';
+import { DesktopRoot, MobileRoot } from './routes';
 
 export function startup() {
     const middlewares = applyMiddleware(storeValuesMiddleware);
@@ -25,7 +24,7 @@ export function startup() {
             }),
             composeEnhancers(middlewares)
         ),
-        children: <DesktopRoot />,
+        children: window.innerWidth <= mobileSize ? <MobileRoot /> : <DesktopRoot />,
         loginPath: loginPath
     };
     return render(configuration);

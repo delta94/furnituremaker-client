@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Loadable from 'react-loadable';
 
-import { RouteMakerBaseRouterProps } from '@/routes/shared';
+import { RouteMakerBaseRouterProps } from '../../desktop/shared';
 
 export const RouteMakerLoadable = Loadable({
     loader: () => import(/* webpackPrefetch: true */ './RouteMaker').then(o => o.RouteMaker),
