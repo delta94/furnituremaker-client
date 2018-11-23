@@ -10,10 +10,6 @@ import {
     ProductTypeListStoreProps
 } from './product-type-controller';
 
-export {
-    ProductTypeListStoreProps
-};
-
 interface ProductTypeContainerProps extends
     Pick<CommonStoreProps, 'setStore'>,
     Pick<CommonStoreProps, 'hoveredProductTypeGroup'>,

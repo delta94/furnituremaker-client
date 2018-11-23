@@ -9,10 +9,6 @@ import {
     HomeProductTypeListStoreProps
 } from './home-product-type-controller';
 
-export {
-    HomeProductTypeListStoreProps
-};
-
 interface HomeProductTypeContainerProps extends
     Pick<CommonStoreProps, 'setStore'>,
     Pick<CommonStoreProps, 'hoveredProductTypeGroup'>,

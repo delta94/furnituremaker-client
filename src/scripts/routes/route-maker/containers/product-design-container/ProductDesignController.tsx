@@ -11,10 +11,6 @@ import {
 
 import { DesignModal, DesignModalProps } from './product-design-controllelr';
 
-export {
-    DesignModalProps
-};
-
 interface ProductDesignControllerProps extends
     Pick<CommonStoreProps, 'setStore'>,
     Pick<DesignModalProps, 'showDesignsModal'> {

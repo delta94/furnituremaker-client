@@ -2,10 +2,14 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/scripts/*"]
+            "@/*": [
+                "src/scripts/*"
+            ]
         },
         "plugins": [
-            { "name": "tslint-language-service"}
+            {
+                "name": "tslint-language-service"
+            }
         ],
         "allowJs": false,
         "jsx": "react",
@@ -18,11 +22,12 @@
             "esnext.asynciterable"
         ],
         "moduleResolution": "node",
-        "module": "commonjs",
+        "module": "esNext",
         "noImplicitAny": false,
         "removeComments": true,
         "sourceMap": true,
-        "target": "es2016",
+        "strictNullChecks": false,
+        "target": "es2015",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "skipLibCheck": true,
@@ -32,6 +37,7 @@
         ]
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "dist"
     ]
 }
