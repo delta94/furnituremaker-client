@@ -1,4 +1,3 @@
-import autobind from 'autobind-decorator';
 import * as React from 'react';
 import * as Sticky from 'sticky-js';
 
@@ -69,8 +68,7 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
         );
     }
 
-    @autobind
-    onObjectSelect(object: THREE.Group) {
+    readonly onObjectSelect = (object: THREE.Group) => {
         if (!object) {
             return this.props.setStore({
                 materials: [],

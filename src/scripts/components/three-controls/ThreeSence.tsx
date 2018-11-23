@@ -3,7 +3,6 @@
 // tslint:disable:no-array-mutation
 import './ThreeSence.scss';
 
-import autobind from 'autobind-decorator';
 import * as React from 'react';
 import styled from 'styled-components';
 import { Material } from 'three';
