@@ -56,7 +56,7 @@ export class ProductTypeController extends React.PureComponent<ProductTypeContai
                 productTypes={productTypes}
                 onTypeClick={(productType) => {
                     setStore({
-                        [nameof<DesignModalProps>(o => o.showDesignsModal)]: true,
+                        showProductTypeList: false,
                         [nameof<CommonStoreProps>(o => o.selectedProductType)]: productType
                     });
                 }}

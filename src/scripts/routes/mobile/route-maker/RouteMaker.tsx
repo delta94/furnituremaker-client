@@ -4,6 +4,18 @@ import { readyState, withStoreValues } from '@/app';
 import { Page } from '@/components';
 import { RouteMakerBase } from '@/routes/shared';
 
+import {
+    ProductContainer,
+    ProductDesignContainer,
+    ProductTypeContainer,
+    ProductTypeGroupContainer
+} from './containers';
+
+const tabs = [
+    { title: 'First Tab' },
+    { title: 'Second Tab' },
+    { title: 'Third Tab' },
+];
 @readyState()
 @withStoreValues()
 export class RouteMaker extends RouteMakerBase {
@@ -14,7 +26,10 @@ export class RouteMaker extends RouteMakerBase {
 
         return (
             <Page>
-                {null}
+                <ProductTypeGroupContainer />
+                <ProductTypeContainer />
+                <ProductDesignContainer />
+                <ProductContainer />
             </Page >
         );
     }

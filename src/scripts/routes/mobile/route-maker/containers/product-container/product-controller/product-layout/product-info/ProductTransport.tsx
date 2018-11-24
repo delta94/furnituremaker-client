@@ -35,7 +35,7 @@ export class ProductTransport extends React.PureComponent<ProductTransportProps>
                     />
                 </ProductTransportIcon>
                 <ProductTransportContent>
-                    Đặt hàng hôm nay dự kiến giao hàng vào {formatDate(shippingDate, 'DD/MM/YYYY')}
+                    Dự kiến giao hàng vào {formatDate(shippingDate, 'DD/MM/YYYY')}
                     <div style={{ fontSize: 18 }}>
                         Nhận hàng trong <b>15 ngày</b>
                     </div>

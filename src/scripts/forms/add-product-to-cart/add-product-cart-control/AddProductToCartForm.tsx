@@ -24,7 +24,7 @@ import { formatCurrency } from '@/utilities';
 const orderBy = require('lodash/orderBy');
 
 const FormBody = styled.div`
-    margin: 0 0 50px 0;
+    margin: 0 0 30px 0;
 `;
 
 const FormActions = styled.div`
@@ -204,38 +204,43 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                         }}
                     />
                     <AntdRow gutter={10}>
-                        {(discountByQuantities && discountByQuantities.length) &&
-                            <AntdCol span={17}>
+                        {(discountByQuantities && discountByQuantities.length) ?
+                            (<AntdCol span={24}>
                                 <Field
                                     name={nameof<AddToCartFormValues>(o => o.quantityWithDiscount)}
                                     component={renderSelectField}
-                                    label="Giá khuyến mãi"
+                                    label="Chọn số lượng"
                                     items={discountByQuantitySelectItems}
                                     selectProps={{
                                         className: 'w-100',
-                                        placeholder: 'chọn số lượng'
+                                        placeholder: 'chọn số lượng',
+                                        size: 'large'
                                     }}
                                     onChange={(prevenDefault, value) => {
                                         change(nameof<AddToCartFormValues>(o => o.selectQuantity), value);
                                     }}
                                 />
-                            </AntdCol>
+                            </AntdCol>)
+                            :
+                            (
+                                <AntdCol span={24}>
+                                    <Field
+                                        name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
+                                        component={renderInputNumber}
+                                        label="Nhập số lượng"
+                                        inputProps={{
+                                            className: 'w-100',
+                                            min: 1,
+                                            max: this.getMaxProductCanBuy(),
+                                            size: 'large'
+                                        }}
+                                        onChange={(event, value) => {
+                                            this.changeDiscountSelectValue(value);
+                                        }}
+                                    />
+                                </AntdCol>
+                            )
                         }
-                        <AntdCol span={7}>
-                            <Field
-                                name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
-                                component={renderInputNumber}
-                                label="Số lượng"
-                                inputProps={{
-                                    className: 'w-100',
-                                    min: 1,
-                                    max: this.getMaxProductCanBuy()
-                                }}
-                                onChange={(event, value) => {
-                                    this.changeDiscountSelectValue(value);
-                                }}
-                            />
-                        </AntdCol>
                         <AntdCol span={24}>
                             <div>
                                 <Field
@@ -312,14 +317,11 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                 </FormBody>
                 <FormActions>
                     <AntdRow>
-                        <AntdCol span={12}>
+                        <AntdCol span={24} lg={12}>
                             <Field
                                 name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
                                 component={this.renderSubmitButton}
                             />
-                        </AntdCol>
-                        <AntdCol span={12}>
-                            {null}
                         </AntdCol>
                     </AntdRow>
                 </FormActions>

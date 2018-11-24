@@ -3,7 +3,7 @@ import Slider, { Settings } from 'react-slick';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { Img } from '@/components';
+import { Container, Img } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { ProductDesign, productDesignUtils } from '@/restful';
 
@@ -24,6 +24,10 @@ const ThumbnailWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    img {
+        width: auto;
+        height: 75px;
+    }
 `;
 
 const Label = styled.span`
@@ -48,11 +52,12 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
     };
 
     static readonly slickSettings: Settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 1,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        centerMode: false
     };
 
     constructor(props: ProductDesignListProps) {
@@ -87,24 +92,26 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
             designs;
 
         return (
-            <Slider {...ProductDesignList.slickSettings}>
-                {
-                    filterdDesigns.map((productDesign: ProductDesign) => {
-                        return (
-                            <Item
-                                key={productDesign.id}
-                                isSelected={selectedProductDesign && selectedProductDesign.id === productDesign.id}
-                                onClick={() => onDesignClick(productDesign)}
-                            >
-                                <ThumbnailWrapper>
-                                    <Img className="mw-100" file={productDesign.thumbnail} />
-                                </ThumbnailWrapper>
-                                <Label>{productDesign.name}</Label>
-                            </Item>
-                        );
-                    })
-                }
-            </Slider>
+            <Container>
+                <Slider {...ProductDesignList.slickSettings}>
+                    {
+                        filterdDesigns.map((productDesign: ProductDesign) => {
+                            return (
+                                <Item
+                                    key={productDesign.id}
+                                    isSelected={selectedProductDesign && selectedProductDesign.id === productDesign.id}
+                                    onClick={() => onDesignClick(productDesign)}
+                                >
+                                    <ThumbnailWrapper>
+                                        <Img file={productDesign.thumbnail} />
+                                    </ThumbnailWrapper>
+                                    <Label>{productDesign.title || productDesign.name}</Label>
+                                </Item>
+                            );
+                        })
+                    }
+                </Slider>
+            </Container>
         );
     }
 }

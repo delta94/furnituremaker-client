@@ -2,12 +2,11 @@ import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
 import { withStoreValues } from '@/app';
-import { CommonStoreProps, CommonStoreValues } from '@/configs';
+import { CommonStoreProps } from '@/configs';
 import {
     FurnitureComponent,
     furnitureComponentResources,
     restfulFetcher,
-    restfulStore,
     withMaterialTypes,
     WithMaterialTypesProps
 } from '@/restful';

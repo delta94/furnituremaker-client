@@ -7,18 +7,20 @@ import * as React from 'react';
 import { ProductType } from '@/restful';
 
 const { THREE } = window;
-const Validator = THREE.LoaderSupport.Validator;
-
-interface ReportProgressEvent {
-    text: string;
-}
 
 export interface ThreeSenceBaseProps {
     readonly productType: ProductType;
+    readonly clearColor?: string;
+    readonly sampleLevel?: number;
     onObjectSelect: (object: THREE.Group) => void;
 }
 
 export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.PureComponent<TProps> {
+    static defaultProps = {
+        sampleLevel: 1,
+        clearColor: '#fff'
+    };
+
     animationFrameId: number;
     renderer: THREE.WebGLRenderer;
     composer: THREE.EffectComposer;
@@ -85,6 +87,21 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             clearTimeout(this.mouseHoldTimeout as number);
             this.isMouseHold = false;
         };
+        this.container.ontouchstart = (e) => {
+            this.mouseHoldTimeout = setTimeout(() => {
+                this.isMouseHold = true;
+            }, 250);
+        };
+
+        this.container.ontouchend = (e) => {
+            e.preventDefault();
+            this.mouse.x = (e.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+            this.mouse.y = -(e.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+
+            this.onClick();
+            clearTimeout(this.mouseHoldTimeout as number);
+            this.isMouseHold = false;
+        };
 
         window.addEventListener('resize', resizeWindow, false);
     }
@@ -95,10 +112,10 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * SSAA Render
         const renderPass = new THREE.SSAARenderPass(this.scene, this.camera);
-        renderPass.clearColor = '#fff';
+        renderPass.clearColor = this.props.clearColor;
         renderPass.clearAlpha = 1;
 
-        renderPass.sampleLevel = 1;
+        renderPass.sampleLevel = this.props.sampleLevel;
         this.composer.addPass(renderPass);
 
         // * Outline
@@ -156,7 +173,6 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.controls.target = this.cameraTarget;
 
         const polarAngle = ((productType.view_rotateY || 140) * 0.01);
-
         this.controls.minDistance = productType.view_cameraFar || 450;
         this.controls.maxDistance = productType.view_cameraFar || 450;
         this.controls.maxPolarAngle = polarAngle;
@@ -171,13 +187,13 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     initLights() {
         // * Environtment
         const hemiLight = new THREE.AmbientLight(0xffffff, 0xffffff, 1);
-        hemiLight.intensity = 1;
+        hemiLight.intensity = .9;
         this.scene.add(hemiLight);
 
         const baseShadowCamera = 150;
         // * Directional
         const dirLightLeft = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightLeft.intensity = 1;
+        dirLightLeft.intensity = .8;
         dirLightLeft.position.set(-120, 120, 45);
         dirLightLeft.castShadow = true;
         dirLightLeft.shadow.camera.left = -baseShadowCamera;
@@ -190,7 +206,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * Directional
         const dirLightright = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightright.intensity = 1;
+        dirLightright.intensity = .8;
         dirLightright.position.set(120, 120, 45);
         dirLightright.castShadow = true;
         dirLightright.shadow.camera.left = -baseShadowCamera;
@@ -203,7 +219,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * Directional
         const dirLightBack = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightBack.intensity = 1;
+        dirLightBack.intensity = .8;
         dirLightBack.position.set(0, 60, -160);
         dirLightBack.castShadow = true;
         dirLightBack.shadow.camera.left = -baseShadowCamera;
@@ -216,7 +232,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * Directional
         const dirLightTop = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightTop.intensity = 1;
+        dirLightTop.intensity = .8;
         dirLightTop.position.set(0, 40, 100);
         dirLightTop.castShadow = true;
         dirLightTop.shadow.camera.left = -baseShadowCamera;
@@ -242,7 +258,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         }
     }
 
-    resizeDisplayGL() {
+    resizeDisplayGL = () => {
         const canvas = this.renderer.domElement;
         // look up the size the canvas is being displayed
         const width = canvas.clientWidth;
@@ -257,7 +273,11 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         }
     }
 
-    recalcAspectRatio() {
+    recalcAspectRatio = () => {
+        if (!this.container) {
+            return 1;
+        }
+
         this.aspectRatio = (this.container.offsetHeight === 0) ? 1 :
             this.container.offsetWidth / this.container.offsetHeight;
     }
@@ -350,15 +370,19 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             return;
         }
         const { onObjectSelect } = this.props;
+
         this.raycaster.setFromCamera(this.mouse, this.camera);
         var intersects = this.raycaster.intersectObjects([this.scene], true);
         if (intersects.length > 0) {
+
             let selectedObject = intersects[0].object;
+
             if (selectedObject === this.selectedObject) {
                 selectedObject = null;
             }
+
             this.selectObject(selectedObject);
-            if (onObjectSelect) {
+            if (onObjectSelect && selectedObject) {
                 onObjectSelect(selectedObject.parent as THREE.Group);
             }
         } else {

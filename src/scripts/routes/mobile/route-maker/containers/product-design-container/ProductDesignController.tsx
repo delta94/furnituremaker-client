@@ -40,8 +40,7 @@ export class ProductDesignController extends React.Component<ProductDesignContro
                         [nameof<CommonStoreProps>(o => o.selectedProductTypeGroup)]: productTypeGroup,
                         [nameof<CommonStoreProps>(o => o.selectedProductType)]: productDesign.productType,
                         [nameof<CommonStoreProps>(o => o.selectedProductDesign)]: productDesign,
-                        [nameof<CommonStoreProps>(o => o.selectedProduct)]: null,
-                        [nameof<DesignModalProps>(o => o.showDesignsModal)]: false
+                        [nameof<CommonStoreProps>(o => o.selectedProduct)]: null
                     });
                 }}
             />

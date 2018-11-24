@@ -1,8 +1,14 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import * as Sticky from 'sticky-js';
+import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { ThreeMaterialListProps, ThreeSence } from '@/components';
+import { AntdTabs, ThreeMaterialListProps, ThreeSence } from '@/components';
+import {
+    ThreeComponentListMobile,
+    ThreeMaterialListMobile
+} from '@/components/three-controls';
 import { CommonStoreProps } from '@/configs';
 import {
     ProductExtended,
@@ -13,6 +19,15 @@ import {
     withMaterials
 } from '@/restful';
 
+import { SenceProductInfo } from './product-sence';
+
+const ProductSenceWrapper = styled.div`
+    height: 100%;
+    .ant-tabs-bar {
+        margin: 0 0 10px 0;
+    }
+`;
+
 interface ProductSenceProps extends
     CommonStoreProps,
     WithComponentsProps,
@@ -22,23 +37,23 @@ interface ProductSenceProps extends
     readonly product: ProductExtended;
 }
 
+interface ProductSenceState {
+    readonly selectedTab: string;
+}
+
 @withComponents()
 @withMaterials()
 @withStoreValues(
     nameof<ProductSenceProps>(o => o.selectedObject),
     nameof<ProductSenceProps>(o => o.selectedProduct),
 )
-export class ProductSence extends React.PureComponent<ProductSenceProps> {
+export class ProductSence extends React.PureComponent<ProductSenceProps, ProductSenceState> {
     // tslint:disable-next-line:readonly-keyword
     sticky: Sticky;
 
-    readonly state: {
-        readonly affix: boolean;
-        readonly staticTop: number;
-    } = {
-            affix: true,
-            staticTop: 0
-        };
+    readonly state = {
+        selectedTab: 'vl'
+    };
 
     componentDidMount() {
         this.sticky = new Sticky('.sticky');
@@ -47,10 +62,12 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
     render() {
         const { setStore, selectedProduct, selectedObject, product } = this.props;
         return (
-            <div style={{ height: '100%' }} data-sticky-container={true}>
+            <ProductSenceWrapper data-sticky-container={true}>
                 <div className="sticky">
-                    <div style={{ paddingTop: 120 }}>
+                    <div>
                         <ThreeSence
+                            clearColor="#f1f1f1"
+                            sampleLevel={0}
                             onObjectSelect={this.onObjectSelect}
                             selectedObject={selectedObject}
                             productModules={product.modules}
@@ -61,10 +78,36 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
                                 });
                             }}
                         />
-                    </div>
 
+                        {
+                            selectedObject && (
+                                <React.Fragment>
+                                    <AntdTabs
+                                        tabBarExtraContent={<Link to="/library">Thư viện vật liệu</Link>}
+                                        onChange={(key) => this.setState({ selectedTab: key })}
+                                        activeKey={this.state.selectedTab}
+                                    >
+                                        <AntdTabs.TabPane
+                                            key="ck"
+                                            tab="Cấu kiện"
+                                        >
+                                            <ThreeComponentListMobile />
+                                        </AntdTabs.TabPane>
+                                        <AntdTabs.TabPane
+                                            key="vl"
+                                            tab="Vật liệu"
+                                        >
+                                            <ThreeMaterialListMobile />
+                                        </AntdTabs.TabPane>
+                                    </AntdTabs>
+                                    <SenceProductInfo />
+                                </React.Fragment>
+
+                            )
+                        }
+                    </div>
                 </div>
-            </div>
+            </ProductSenceWrapper>
         );
     }
 

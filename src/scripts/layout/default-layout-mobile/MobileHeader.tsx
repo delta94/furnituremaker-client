@@ -7,10 +7,11 @@ import { AntdAffix, Container } from '@/components';
 import { DrawerControl } from './mobile-header';
 
 const HeaderWrapper = styled.div`
-    background-color: rgb(239, 180, 22);
+    background-color: #3D3D3D;
     height: 54px;
     display: flex;
     align-items: center;
+    box-shadow: 0 1px 5px rgba(57, 63, 72, 0.3);
 `;
 
 const HeaderContent = styled.div`

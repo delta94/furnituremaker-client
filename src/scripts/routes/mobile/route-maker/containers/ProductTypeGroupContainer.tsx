@@ -18,12 +18,13 @@ export class ProductTypeGroupContainer extends React.Component<CommonStoreProps>
                 fetcher={restfulFetcher}
                 resource={productTypeGroupResources.find}
                 render={(renderProps) => {
-                    if (renderProps.data && !renderProps.fetching) {
-                        return (
-                            <TypeGroupController productTypeGroups={renderProps.data} />
-                        );
+                    if (!renderProps.data) {
+                        return null;
                     }
-                    return null;
+
+                    return (
+                        <TypeGroupController productTypeGroups={renderProps.data} />
+                    );
                 }}
             />
         );

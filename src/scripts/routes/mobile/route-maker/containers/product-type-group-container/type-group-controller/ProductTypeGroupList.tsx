@@ -33,11 +33,12 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
     };
 
     static readonly slickSettings: Settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
-        slidesToShow: 8,
-        slidesToScroll: 1
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        arrows: true
     };
 
     render() {
@@ -53,19 +54,6 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
             <Container>
                 <ProductTypeGroupWrapper>
                     <Slider {...ProductTypeGroupList.slickSettings}>
-                        <ProductTypeGroupItem
-                            isSelected={false}
-                            canClick={false}
-                            onMouseOver={() => null}
-                            onMouseLeave={() => null}
-                        >
-                            <ProductTypeGroupItemContent canClick={false} isSelected={false}>
-                                <ProductTypeGroupThumbnailWrapper>
-                                    <Img file="/static/assets/make-to-order.png" />
-                                </ProductTypeGroupThumbnailWrapper>
-                                <ProductTypeGroupLabel>Make To Order</ProductTypeGroupLabel>
-                            </ProductTypeGroupItemContent>
-                        </ProductTypeGroupItem>
                         {
                             this.props.productTypeGroups.map(productTypeGroup => {
                                 const isSelected = hoveredProductTypeGroup ?

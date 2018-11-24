@@ -3,6 +3,7 @@ import * as Sticky from 'sticky-js';
 
 import { withStoreValues } from '@/app';
 import { ThreeMaterialListProps, ThreeSence } from '@/components';
+import { SenceProductInfo } from '@/components/three-controls/three-sence';
 import { CommonStoreProps } from '@/configs';
 import {
     ProductExtended,
@@ -61,8 +62,10 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
                                 });
                             }}
                         />
+                        <SenceProductInfo
+                            selectedObject={selectedObject}
+                        />
                     </div>
-
                 </div>
             </div>
         );

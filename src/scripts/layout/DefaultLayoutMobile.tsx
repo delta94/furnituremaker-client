@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { MobileHeader, MobileTabbar } from './default-layout-mobile';
-import { MobileDrawer } from './default-layout-mobile';
 
 interface DefaultLayoutMobileProps {
     readonly breadcrumb: JSX.Element;
@@ -21,9 +20,9 @@ export class DefaultLayoutMobile extends React.Component<DefaultLayoutMobileProp
                     background: '#fff'
                 }}
             >
-                <MobileDrawer>
-                    {this.props.children}
-                </MobileDrawer>
+                <MobileHeader />
+                {this.props.children}
+                <MobileTabbar />
             </div>
         );
     }

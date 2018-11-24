@@ -2,27 +2,24 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { withStoreValues, WithStoreValuesDispatchs } from '@/app';
+import { ThreeComponentListProps } from '@/components';
 import { AntdButton } from '@/components/antd-component';
 import { CommonStoreValues } from '@/configs';
 import { formatCurrency } from '@/utilities';
 
-import { ThreeComponentListProps } from '../ThreeComponentListBase';
-
 const SenceProductInfoWrapper = styled.div`
-    max-width: 340px;
-    margin: 0 auto;
     padding: 15px;
-    text-align: center;
-    background: #FCFCFC;
+    background-color: #EFB416;
     margin-bottom: 15px;
+    color: #fff;
 `;
 
 const Price = styled.span`
     font-weight: bold;
     line-height: normal;
-    font-size: 32px;
+    font-size: 20px;
     text-align: center;
-    color: #EFB416;
+    color: #FFF;
     display: inline-block;
     margin-right: 15px;
     vertical-align: middle;
@@ -47,12 +44,11 @@ export class SenceProductInfo extends React.PureComponent<SenceProductInfoProps>
 
         return (
             <SenceProductInfoWrapper>
-                <p>
+                <div>
                 Giá sẽ thay đổi khi thay đổi cấu kiện và vật liệu
-                </p>
+                </div>
                 <Price> {formatCurrency(selectedProduct.totalPrice)}</Price>
                 <AntdButton
-                    size="large"
                     onClick={() => {
                         setStore({ selectedObject: null });
                     }}

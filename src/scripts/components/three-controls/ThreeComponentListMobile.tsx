@@ -2,13 +2,12 @@ import './ThreeComponentList.scss';
 
 import * as classNames from 'classnames';
 import * as React from 'react';
-import styled from 'styled-components';
+import Slider, { Settings } from 'react-slick';
 
 import { AccessControl, withStoreValues } from '@/app';
-import { AntdList, Img } from '@/components';
+import { Img } from '@/components';
 import { AntdTooltip } from '@/components/antd-component';
-import { Loading } from '@/components/domain-components';
-import { CreateComponentFormControl } from '@/forms/create-component';
+import { Container, Loading } from '@/components/domain-components';
 import { FurnitureComponent } from '@/restful';
 
 import {
@@ -16,9 +15,14 @@ import {
     ThreeComponentListProps
 } from './ThreeComponentListBase';
 
-const ListHeader = styled.div`
-    margin: 15px 0;
-`;
+const slickSettings: Settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    arrows: false
+};
 
 @withStoreValues<ThreeComponentListProps>(
     'selectedProduct',
@@ -29,7 +33,7 @@ const ListHeader = styled.div`
     'components',
     'allComponents'
 )
-export class ThreeComponentList extends ThreeComponentListBase {
+export class ThreeComponentListMobile extends ThreeComponentListBase {
     render() {
         const { selectedObject, components, selectedComponentGroup } = this.props;
         const selectedComponent = components.find(o => o.id === selectedObject.name);
@@ -48,29 +52,14 @@ export class ThreeComponentList extends ThreeComponentListBase {
 
         const { loading, nextSelectComponent } = this.state;
         return (
-            <React.Fragment>
-                <ListHeader>
-                    Cấu kiện thay thế
-                    {
-                        <AccessControl allowRoles="root">
-                            <CreateComponentFormControl />
-                        </AccessControl>
-                    }
-                </ListHeader>
-                <AntdList
-                    dataSource={filteredComponentByGroup}
-                    grid={{ gutter: 16, column: 3 }}
-                    pagination={{
-                        pageSize: 6,
-                        simple: true,
-                        style: { textAlign: 'center' }
-                    }}
-                    renderItem={(component: FurnitureComponent) => {
+            <Slider {...slickSettings}>
+                {
+                    filteredComponentByGroup.map((component: FurnitureComponent) => {
                         const isSelected = (selectedComponent.id === component.id);
                         const isNextSelected = nextSelectComponent && (nextSelectComponent.id === component.id);
 
                         return (
-                            <AntdList.Item key={component.id}>
+                            <div key={component.id}>
                                 <AntdTooltip
                                     title={component.displayName}
                                 >
@@ -85,15 +74,17 @@ export class ThreeComponentList extends ThreeComponentListBase {
                                             size="img256x256"
                                             onClick={() => this.onComponentSelect(component)}
                                         />
+                                        <AccessControl allowRoles="root">
+                                            {this.renderPopover(component)}
+                                        </AccessControl>
                                         {(loading && isNextSelected) && (<Loading />)}
                                     </div>
                                 </AntdTooltip>
-                            </AntdList.Item>
+                            </div>
                         );
-                    }}
-                />
-
-            </React.Fragment>
+                    })
+                }
+            </Slider>
         );
     }
 } 

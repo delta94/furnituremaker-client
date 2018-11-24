@@ -1,3 +1,6 @@
+import 'antd-mobile/lib/tabs/style/css';
+
+import Tabs from 'antd-mobile/lib/tabs';
 import * as React from 'react';
 
 import { withStoreValues } from '@/app';
@@ -30,16 +33,10 @@ export class DesignModal extends React.Component<DesignModalProps> {
         } = this.props;
 
         return (
-            <FullScreenModal
-                visibled={showDesignsModal}
-                onClose={onModalClose}
-            >
-                <ProductDesignGroupList productDesignGroups={productDesignGroups} />
-                <ProductDesignList
-                    designs={productDesigns}
-                    onDesignClick={onDesignClick}
-                />
-            </FullScreenModal>
+            <ProductDesignList
+                designs={productDesigns}
+                onDesignClick={onDesignClick}
+            />
         );
     }
 }

@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 
+import { mobileSize } from '@/configs';
+
 export const ProductTypeGroupWrapper = styled.div`
     margin: 0 auto;
     padding-top: 15px;
     width: 100%;
-    .slick-slider {
-        margin: 0 0px;
-    }
-    .slick-slide {
-        padding-right: 4px;
+    @media screen and (max-width: ${mobileSize}px){
+        padding-top: 5px;
     }
 `;
 
@@ -27,6 +26,9 @@ export const ProductTypeGroupItem: ItemType = styled.div`
     position: relative;
     transition: all .2s;
     background: #fff;
+    @media screen and (max-width: ${mobileSize}px){
+        height:  130px; 
+    }
 `;
 
 export const ProductTypeGroupItemContent: ItemType = styled.div`
@@ -42,6 +44,14 @@ export const ProductTypeGroupItemContent: ItemType = styled.div`
         height: 165px;
         border: 3px solid #FFC12E;
         border-bottom-width: 15px;
+        @media screen and (max-width: ${mobileSize}px){
+            height:  130px; 
+            border-bottom-width: 10px;
+        }
+    }
+    @media screen and (max-width: ${mobileSize}px){
+        height: ${(props: ItemProps) => props.isSelected ? '130px' : '120px'};
+        border-bottom-width: ${(props: ItemProps) => props.isSelected ? '10px' : '1px'};
     }
 `;
 
@@ -54,6 +64,9 @@ export const ProductTypeGroupThumbnailWrapper = styled.div`
     img {
         max-width: 90%!important;
         transition: all .2s;
+        @media screen and (max-width: ${mobileSize}px) {
+            max-width: 80%!important;
+        }
     }
 `;
 
@@ -64,4 +77,8 @@ export const ProductTypeGroupLabel = styled.span`
     position: absolute;
     bottom: 15px;
     transition: all .2s;
+    @media screen and (max-width: ${mobileSize}px){
+        font-size: 12px;
+        bottom: 10px;
+    }
 `;

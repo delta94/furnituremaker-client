@@ -11,7 +11,6 @@ import { WithStoreValuesDispatchs } from '@/app';
 import { FurnitureMaterial, ProductModule, uploadedFileUtils } from '@/restful';
 
 import { AntdSpin } from '../antd-component';
-import { SenceProductInfo } from './three-sence';
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 
 const { THREE } = window;
@@ -74,29 +73,24 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
     }
 
     render() {
-        const { productType, selectedObject } = this.props;
+        const { productType } = this.props;
 
         return (
-            <React.Fragment>
-                <div style={{position: 'relative'}}>
-                    {!this.state.loaded &&
-                        <Overlay>
-                            <AntdSpin />
-                        </Overlay>
-                    }
-                    <div
-                        id="threeViewWindow"
-                        ref={(element) => this.container = element}
-                        style={{
-                            width: '100%',
-                            height: productType.view_senceHeight
-                        }}
-                    />
-                </div>
-                <SenceProductInfo
-                    selectedObject={selectedObject}
+            <div style={{ position: 'relative' }}>
+                {!this.state.loaded &&
+                    <Overlay>
+                        <AntdSpin />
+                    </Overlay>
+                }
+                <div
+                    id="threeViewWindow"
+                    ref={(element) => this.container = element}
+                    style={{
+                        width: '100%',
+                        height: productType.view_senceHeight
+                    }}
                 />
-            </React.Fragment>
+            </div>
         );
     }
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { AntdCol, AntdRow, Container } from '@/components';
+import { Container } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
     FurnitureComponentType,
@@ -10,7 +10,7 @@ import {
     WithMaterialTypesProps
 } from '@/restful';
 
-import { ProductInfo, ProductInfoProps, ProductSence } from './product-layout';
+import { ProductInfo, ProductSence } from './product-layout';
 
 const ProductLayoutContent = styled.div`
     padding: 0;
@@ -19,8 +19,7 @@ const ProductLayoutContent = styled.div`
 
 interface ProductLayoutProps extends
     CommonStoreProps,
-    WithMaterialTypesProps,
-    Pick<ProductInfoProps, 'showDesignModal'> {
+    WithMaterialTypesProps {
     readonly furnitureComponentTypes: FurnitureComponentType[];
 }
 
@@ -50,7 +49,7 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
     }
 
     render() {
-        const { selectedProduct, showDesignModal } = this.props;
+        const { selectedProduct } = this.props;
         if (!selectedProduct) {
             return null;
         }
@@ -58,19 +57,10 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
         return (
             <Container id="senceContainer">
                 <ProductLayoutContent>
-                    <AntdRow type="flex" gutter={4}>
-                        <AntdCol span={15}>
-                            <ProductSence
-                                product={selectedProduct}
-                            />
-                        </AntdCol>
-                        <AntdCol span={9}>
-                            <ProductInfo
-                                product={selectedProduct}
-                                showDesignModal={showDesignModal}
-                            />
-                        </AntdCol>
-                    </AntdRow>
+                    <ProductSence
+                        product={selectedProduct}
+                    />
+                    <ProductInfo product={selectedProduct} />
                 </ProductLayoutContent>
             </Container>
         );

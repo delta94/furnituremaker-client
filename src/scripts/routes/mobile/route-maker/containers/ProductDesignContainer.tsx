@@ -30,10 +30,11 @@ export class ProductDesignContainer extends React.Component<CommonStoreProps> {
                     value: selectedProductType.id
                 }]}
                 render={(renderProps) => {
-                    if (renderProps.data && !renderProps.fetching) {
-                        return (<ProductDesignController productDesigns={renderProps.data} />);
+                    if (!renderProps.data) {
+                        return null;
                     }
-                    return null;
+                    
+                    return (<ProductDesignController productDesigns={renderProps.data} />);
                 }}
             />
         );

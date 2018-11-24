@@ -20,23 +20,9 @@ export class MobileDrawer extends React.PureComponent<MobileDrawerProps> {
     render() {
         const { drawerVisibled, setStore } = this.props;
         return (
-            <Drawer
-                className="my-drawer"
-                style={{ minHeight: document.documentElement.clientHeight}}
-                contentStyle={{
-                    color: '#A6A6A6',
-                    textAlign: 'center',
+            <div>
 
-                }}
-                sidebar={<MobileSiderbar />}
-                position="right"
-                open={drawerVisibled}
-                onOpenChange={() => setStore({ drawerVisibled: !drawerVisibled })}
-            >
-                <MobileHeader />
-                {this.props.children}
-                <MobileTabbar />
-            </Drawer>
+            </div>
         );
     }
 }
