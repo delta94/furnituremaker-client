@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AntdCol, AntdRow, Container, Img } from '@/components';
+import { mobileSize } from '@/configs';
 
 const Header = styled.div`
     border-bottom: 1px solid #AFAFAF;
@@ -14,11 +15,21 @@ const Header = styled.div`
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: #3D3D3D;
+    @media screen and (max-width: ${mobileSize}px) {
+        height: auto;
+        line-height: 1.5;
+        padding: 24px;
+        letter-spacing: 0;
+    }
 `;
 
 const LandingFeature2Wrapper = styled.div`
     display: 'block';
     padding: 50px 0;
+    @media screen and (max-width: ${mobileSize}px) {
+        padding: 24px 0;
+        padding-bottom: 50px;
+    }
 `;
 
 const Item = styled.div`
@@ -27,6 +38,9 @@ const Item = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    @media screen and (max-width: ${mobileSize}px) {
+        margin-bottom: 24px;
+    }
     .index {
         height: 28px;
         width: 28px;
@@ -47,6 +61,9 @@ const ImgWrapper = styled.div`
     align-items: center;
     justify-content: center;
     margin-bottom: 30px;
+    @media screen and (max-width: ${mobileSize}px) {
+        margin-bottom: 0;
+    }
 `;
 
 const Title = styled.span`
@@ -89,7 +106,11 @@ const features = [{
 export function LandingFeature2() {
     return (
         <React.Fragment>
-            <Header>BẠN THIẾT KẾ - CHÚNG TÔI SẢN XUẤT</Header>
+            {
+                window.innerWidth <= mobileSize ?
+                    <Header>BẠN THIẾT KẾ<br /> CHÚNG TÔI SẢN XUẤT</Header> :
+                    <Header>BẠN THIẾT KẾ - CHÚNG TÔI SẢN XUẤT</Header>
+            }
             <Container>
                 <LandingFeature2Wrapper>
                     <AntdRow>
@@ -97,7 +118,7 @@ export function LandingFeature2() {
                             features.map((o, index) => {
                                 const i = index + 1;
                                 return (
-                                    <AntdCol key={o.img} span={8}>
+                                    <AntdCol key={o.img} span={24} lg={8}>
                                         <Item>
                                             <span className="index">{i}</span>
                                             <Title>{o.title}</Title>
@@ -111,7 +132,7 @@ export function LandingFeature2() {
                             })
                         }
                     </AntdRow>
-                    <div style={{textAlign: 'center', marginTop: 30}}>
+                    <div style={{ textAlign: 'center', marginTop: 30 }}>
                         <Link className="link-btn" to="/">KHÁM PHÁ NGAY</Link>
                     </div>
                 </LandingFeature2Wrapper>

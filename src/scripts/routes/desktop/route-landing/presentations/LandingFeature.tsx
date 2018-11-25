@@ -2,10 +2,18 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { AntdCol, AntdRow, Container, Img } from '@/components';
+import { mobileSize } from '@/configs';
 
 const LandingFeatureWrapper = styled.div`
     display: 'block';
     padding: 50px 0;
+    .item-wrapper {
+        &:not(:last-child) {
+            @media screen and (max-width: ${mobileSize}px) {
+                margin-bottom: 24px;
+            }
+        }
+    }
 `;
 
 const Item = styled.div`
@@ -29,6 +37,9 @@ const ImgWrapper = styled.div`
     border: 1px solid lightgray;
     border-radius: 50%;
     margin-bottom: 30px;
+    @media screen and (max-width: ${mobileSize}px) {
+        margin-bottom: 15px;
+    }
 `;
 
 const Title = styled.span`
@@ -68,7 +79,7 @@ export function LandingFeature() {
                     {
                         features.map(o => {
                             return (
-                                <AntdCol key={o.img} span={6}>
+                                <AntdCol className="item-wrapper" key={o.img} span={24} lg={6}>
                                     <Item>
                                         <ImgWrapper>
                                             <Img width={o.width} file={`/static/assets/${o.img}`} />

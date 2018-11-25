@@ -6,10 +6,8 @@ export const ProductTypeWrapper = styled.div`
     position: relative;
     width: 100%;
     z-index: 1;
-    .slick-track {
-        > .slick-slide {
-            padding-right: 4px;
-        }
+    .slick-slide {
+        padding-right: 4px;
     }
 `;
 

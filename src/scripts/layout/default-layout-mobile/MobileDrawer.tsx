@@ -21,7 +21,7 @@ export class MobileDrawer extends React.PureComponent<MobileDrawerProps> {
         const { drawerVisibled, setStore } = this.props;
         return (
             <div>
-
+                {null}
             </div>
         );
     }

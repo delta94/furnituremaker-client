@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { AntdCol, AntdRow, Container, Img } from '@/components';
+import { mobileSize } from '@/configs';
 
 const Header = styled.div`
     border-top: 1px solid #AFAFAF;
@@ -14,6 +15,14 @@ const Header = styled.div`
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: #3D3D3D;
+    @media screen and (max-width: ${mobileSize}px) {
+        border-bottom: 0;
+        height: auto;
+        line-height: 1.5;
+        padding: 24px;
+        padding-bottom: 0;
+        letter-spacing: 0;
+    }
 `;
 
 const LandingProgressWrapper = styled.div`
@@ -25,6 +34,9 @@ const LandingProgressWrapper = styled.div`
         top: 15px;
         background: #EEEEEE;
         height: 10px;
+        @media screen and (max-width: ${mobileSize}px) {
+            display: none;
+        }
     }
 `;
 
@@ -47,6 +59,9 @@ const Item = styled.div`
         color: white;
         margin-bottom: 15px;
     }
+    @media screen and (max-width: ${mobileSize}px) {
+        margin-bottom: 24px;
+    }
 `;
 
 const Title = styled.span`
@@ -58,6 +73,9 @@ const Title = styled.span`
     text-transform: uppercase;
     color: #3D3D3D;
     margin-bottom: 15px;
+    @media screen and (max-width: ${mobileSize}px) {
+        margin-bottom: 0;
+    }
 `;
 
 const Description = styled.p`
@@ -90,7 +108,11 @@ const features = [{
 export function LandingProgress() {
     return (
         <React.Fragment>
-            <Header>BẠN THIẾT KẾ - CHÚNG TÔI SẢN XUẤT</Header>
+            {
+                window.innerWidth <= mobileSize ?
+                    <Header>BẠN THIẾT KẾ<br /> CHÚNG TÔI SẢN XUẤT</Header> :
+                    <Header>BẠN THIẾT KẾ - CHÚNG TÔI SẢN XUẤT</Header>
+            }
             <Container>
                 <LandingProgressWrapper>
                     <AntdRow>
@@ -101,7 +123,7 @@ export function LandingProgress() {
                             features.map((o, index) => {
                                 const i = index + 1;
                                 return (
-                                    <AntdCol key={i} span={6}>
+                                    <AntdCol key={i} span={24} lg={6}>
                                         <Item>
                                             <span className="index">{i}</span>
                                             <Title>{o.title}</Title>

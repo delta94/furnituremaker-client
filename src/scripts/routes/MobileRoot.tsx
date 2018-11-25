@@ -4,10 +4,16 @@ import { Route, Switch } from 'react-router';
 import { route } from '@/app';
 import { DefaultLayoutMobile } from '@/layout/DefaultLayoutMobile';
 import { RouteLoginLoadable } from '@/routes/desktop';
-import { RouteMakerLoadable } from '@/routes/mobile';
+import {
+    RouteHomeLoadable,
+    RouteLandingLoadable,
+    RouteMakerLoadable
+} from '@/routes/mobile';
 
 const appRoutes = [
     RouteMakerLoadable,
+    RouteHomeLoadable,
+    RouteLandingLoadable
 ].reduce(
     (currenValue, Component) => {
         return [...currenValue, route(Component)];

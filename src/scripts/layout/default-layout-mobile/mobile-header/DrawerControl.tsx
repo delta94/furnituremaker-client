@@ -5,11 +5,7 @@ import { withStoreValues } from '@/app';
 import { AntdIcon } from '@/components';
 import { CommonStoreProps } from '@/configs';
 
-const DrawerControlWrapper = styled.div`
-    font-size: 30px;
-    color: #fff;
-    line-height: 40px;
-`;
+import { IconWrapper } from './IconWrapper';
 
 type MobileDrawerProps =
     Pick<CommonStoreProps, 'setStore'> &
@@ -20,11 +16,11 @@ export class DrawerControl extends React.PureComponent<MobileDrawerProps> {
     public render() {
         const { setStore, drawerVisibled } = this.props;
         return (
-            <DrawerControlWrapper
+            <IconWrapper
                 onClick={() => setStore({ drawerVisibled: !drawerVisibled })}
             >
                 <AntdIcon type="ellipsis" />
-            </ DrawerControlWrapper >
+            </ IconWrapper >
         );
     }
 }

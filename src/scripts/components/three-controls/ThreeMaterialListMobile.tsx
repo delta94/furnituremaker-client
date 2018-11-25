@@ -15,14 +15,6 @@ import {
     ThreeMaterialListProps
 } from './ThreeMaterialListBase';
 
-export const ProductTypeItem = styled.div`
-    text-align: center;
-    transition: all .3s;
-    background: #FFC12E;
-    cursor: pointer;
-    height: 100px;
-`;
-
 const slickSettings: Settings = {
     dots: false,
     infinite: false,

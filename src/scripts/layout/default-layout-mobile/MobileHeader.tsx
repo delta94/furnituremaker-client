@@ -2,9 +2,10 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { AntdAffix, Container } from '@/components';
+import { AntdAffix, AntdIcon, Container } from '@/components';
 
 import { DrawerControl } from './mobile-header';
+import { IconWrapper } from './mobile-header/IconWrapper';
 
 const HeaderWrapper = styled.div`
     background-color: #3D3D3D;
@@ -49,6 +50,9 @@ export class MobileHeader extends React.PureComponent {
                             <HeaderDescription>
                                 <h1 className="header-text">Furniture Maker</h1>
                             </HeaderDescription>
+                            <IconWrapper>
+                                <Link to="/maker"><AntdIcon type="shopping" /></Link>
+                            </IconWrapper>
                             <DrawerControl />
                         </HeaderContent>
                     </Container>

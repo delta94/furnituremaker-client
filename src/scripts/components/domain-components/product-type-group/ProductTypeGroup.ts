@@ -3,9 +3,13 @@ import styled from 'styled-components';
 import { mobileSize } from '@/configs';
 
 export const ProductTypeGroupWrapper = styled.div`
-    margin: 0 auto;
     padding-top: 15px;
     width: 100%;
+    margin-right: -4px;
+    margin-left: 0px;
+    .slick-slide {
+        padding-right: 4px;
+    }
     @media screen and (max-width: ${mobileSize}px){
         padding-top: 5px;
     }
