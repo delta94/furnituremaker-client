@@ -9,7 +9,6 @@ import {
     WithMaterialTypesProps
 } from '@/restful';
 
-import { DesignModalProps } from '../product-design-container';
 import { ProductLayout } from './product-controller';
 
 interface ProductContainerProps extends
@@ -42,11 +41,6 @@ export class ProductController extends React.PureComponent<ProductContainerProps
                 furnitureComponentTypes={furnitureComponentTypes}
                 materialTypes={materialTypes}
                 selectedProductDesign={selectedProductDesign}
-                showDesignModal={() => {
-                    setStore({
-                        [nameof<DesignModalProps>(o => o.showDesignsModal)]: true
-                    });
-                }}
             />
         );
     }
