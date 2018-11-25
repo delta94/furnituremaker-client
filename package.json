@@ -32,6 +32,7 @@
         "slick-carousel": "^1.8.1",
         "sticky-js": "^1.2.0",
         "styled-components": "^4.1.1",
+        "toposort": "^1.0.4",
         "uuid": "^3.1.0"
     },
     "devDependencies": {
@@ -63,7 +64,7 @@
         "error-overlay-webpack-plugin": "^0.1.5",
         "file-loader": "^2.0.0",
         "fork-ts-checker-webpack-plugin": "^0.4.15",
-        "html-webpack-plugin": "^3.1.0",
+        "html-webpack-plugin": "^4.0.0-beta.4",
         "inline-manifest-webpack-plugin": "^4.0.2",
         "less": "^3.8.1",
         "less-loader": "^4.1.0",

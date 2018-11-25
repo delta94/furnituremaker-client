@@ -47,12 +47,9 @@ module.exports = function getBuildConfig(options) {
 
     plugins.push(new HtmlWebpackPlugin({
         template: 'src/index.html',
-        inject: 'body',
-        chunksSortMode: 'none'
+        inject: 'body'
     }));
     
-    plugins.push(new InlineManifestWebpackPlugin())
-
     plugins.push(new CopyWebpackPlugin([
         { from: './static' },
     ]));
