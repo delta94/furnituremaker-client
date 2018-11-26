@@ -1,5 +1,8 @@
 .order-detail-item {
     padding: 15px 50px;
+    @media screen and (max-width: 768px){
+        padding: 10px;
+    }
     .ant-list-item-extra {
         margin-left: 0;
     }

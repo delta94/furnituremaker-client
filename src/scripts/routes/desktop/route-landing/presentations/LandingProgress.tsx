@@ -27,7 +27,6 @@ const Header = styled.div`
 
 const LandingProgressWrapper = styled.div`
     display: block;
-    padding: 50px 0;
     .bar {
         position: absolute;
         width: 100%;

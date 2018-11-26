@@ -4,7 +4,9 @@ import { TabBar } from 'antd-mobile';
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { withStoreValues } from '@/app';
 import { AntdIcon } from '@/components';
+import { CommonStoreProps } from '@/configs';
 
 const MobileTabbarWrapper = styled.div`
     position: fixed;
@@ -22,9 +24,10 @@ const MobileTabbarWrapper = styled.div`
     }
 `;
 
-export interface MobileTabbarProps {
+export interface MobileTabbarProps extends Pick<CommonStoreProps, 'history'> {
 }
 
+@withStoreValues('history')
 export class MobileTabbar extends React.PureComponent<MobileTabbarProps> {
     public render() {
         return (
@@ -52,6 +55,7 @@ export class MobileTabbar extends React.PureComponent<MobileTabbarProps> {
                         key="Life"
                         icon={<AntdIcon type="shopping-cart" />}
                         selectedIcon={<AntdIcon type="shopping-cart" />}
+                        onPress={() => this.props.history.push('/cart')}
                     />
                 </TabBar>
             </MobileTabbarWrapper>

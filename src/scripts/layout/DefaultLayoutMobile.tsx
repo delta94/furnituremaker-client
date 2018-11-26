@@ -21,7 +21,13 @@ export class DefaultLayoutMobile extends React.Component<DefaultLayoutMobileProp
                 }}
             >
                 <MobileHeader />
-                {this.props.children}
+                <div
+                    style={{
+                        paddingBottom: 70,
+                    }}
+                >
+                    {this.props.children}
+                </div>
                 <MobileTabbar />
             </div>
         );

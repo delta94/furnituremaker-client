@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { AntdCol, AntdProgress, AntdRow } from '@/components';
+import { mobileSize } from '@/configs';
 import {
     orderDetailUtils,
     withTempOrderDetails,
@@ -12,6 +13,10 @@ const CartDrawerHeaderWrapper = styled.div`
     background: #EFB416;
     padding: 30px 50px;
     font-size: 14px;
+    @media screen and (max-width: ${mobileSize}px) {
+        padding: 10px 1px;
+        font-size: 11px;
+    }
 `;
 
 const CartDrawerHeaderLabel = styled.span`

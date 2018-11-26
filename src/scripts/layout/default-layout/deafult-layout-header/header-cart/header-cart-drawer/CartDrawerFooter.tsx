@@ -2,6 +2,17 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { mobileSize } from '@/configs';
+
+const CartDrawerFooterWrapper = styled.div`
+    width: 244px;
+    margin: 0 auto;
+    @media screen and (max-width: ${mobileSize}px) {
+        width: auto;
+        padding: 0 10px;
+    }
+`;
+
 const LinkContent = styled.div`
     height: 60px;
     line-height: 60px;
@@ -22,9 +33,11 @@ interface CartDrawerFooterProps {
 export class CartDrawerFooter extends React.Component<CartDrawerFooterProps> {
     render() {
         return (
-            <Link to="/send-order" style={{ width: 244, display: 'block', margin: '0 auto' }}>
-                <LinkContent>Tiến hành đặt hàng</LinkContent>
-            </Link>
+            <CartDrawerFooterWrapper>
+                <Link to="/send-order" style={{ display: 'block' }}>
+                    <LinkContent>Tiến hành đặt hàng</LinkContent>
+                </Link>
+            </CartDrawerFooterWrapper>
         );
     }
 }

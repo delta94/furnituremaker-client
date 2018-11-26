@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { AntdCol, AntdDivider, AntdList, AntdRow } from '@/components';
+import { mobileSize } from '@/configs';
 import {
     OrderDetail,
     orderDetailUtils,
@@ -11,6 +12,13 @@ import {
 import { formatCurrency } from '@/utilities';
 
 import { OrderDetailItem } from './cart-drawer-content';
+
+const PriceWrapper = styled.div`
+    padding: 0 50px;
+    @media screen and (max-width: ${mobileSize}px) {
+        padding: 0 10px;
+    }
+`;
 
 const DiscountLabel = styled.span`
     color: #7EA233;
@@ -48,7 +56,7 @@ export class CartDrawerContent extends React.PureComponent<CartDrawerContentProp
                     }}
                 />
                 <AntdDivider />
-                <div style={{ padding: '0 50px' }}>
+                <PriceWrapper>
                     <AntdRow style={{ margin: '0 0 10px 0' }}>
                         <AntdCol span={12} style={{ color: '#7EA233' }}>
                             <DiscountLabel>
@@ -77,7 +85,7 @@ export class CartDrawerContent extends React.PureComponent<CartDrawerContentProp
                             </div>
                         </AntdCol>
                     </AntdRow>
-                </div>
+                </PriceWrapper>
             </div>
         );
     }

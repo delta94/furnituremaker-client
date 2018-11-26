@@ -41,7 +41,7 @@ const ProductCode = styled.small`
 
 const ProductInfoWrapper = styled.div`
     margin: 0 0 0 0;
-    padding: 0 10px 40px 10px;
+    padding: 0 10px 0 10px;
     min-height: 500px;
 `;
 
