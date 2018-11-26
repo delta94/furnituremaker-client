@@ -4,11 +4,12 @@
 // tslint:disable:readonly-keyword
 import * as React from 'react';
 
-import { ProductType } from '@/restful';
+import { ProductModule, ProductType } from '@/restful';
 
 const { THREE } = window;
 
 export interface ThreeSenceBaseProps {
+    readonly productModules: ProductModule[];
     readonly productType: ProductType;
     readonly clearColor?: string;
     readonly sampleLevel?: number;
@@ -193,7 +194,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         const baseShadowCamera = 150;
         // * Directional
         const dirLightLeft = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightLeft.intensity = .8;
+        dirLightLeft.intensity = 1;
         dirLightLeft.position.set(-120, 120, 45);
         dirLightLeft.castShadow = true;
         dirLightLeft.shadow.camera.left = -baseShadowCamera;
@@ -206,7 +207,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * Directional
         const dirLightright = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightright.intensity = .8;
+        dirLightright.intensity = 1;
         dirLightright.position.set(120, 120, 45);
         dirLightright.castShadow = true;
         dirLightright.shadow.camera.left = -baseShadowCamera;
@@ -219,7 +220,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * Directional
         const dirLightBack = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightBack.intensity = .8;
+        dirLightBack.intensity = 1;
         dirLightBack.position.set(0, 60, -160);
         dirLightBack.castShadow = true;
         dirLightBack.shadow.camera.left = -baseShadowCamera;
@@ -232,7 +233,7 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
         // * Directional
         const dirLightTop = new THREE.DirectionalLight(0xffffff, 1, 1);
-        dirLightTop.intensity = .8;
+        dirLightTop.intensity = 1;
         dirLightTop.position.set(0, 40, 100);
         dirLightTop.castShadow = true;
         dirLightTop.shadow.camera.left = -baseShadowCamera;
@@ -323,6 +324,11 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
             }
             const selectedObject = intersects[0].object;
 
+            const canSelect = this.canSelect(selectedObject);
+            if (!canSelect) {
+                return;
+            }
+
             if (this.outlinePass.selectedObjects[0] !== selectedObject) {
                 this.container.style.cursor = 'default';
                 if (this.selectedObject) {
@@ -365,6 +371,19 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
         this.checkIntersection();
     }
 
+    canSelect = (object) => {
+        let furnitureModule = this.props.productModules.find(o => o.component.id === object.name);
+        if (!furnitureModule) {
+            furnitureModule = this.props.productModules.find(o => o.component.id === object.parent.name);
+        }
+
+        if (furnitureModule.component.noSelection) {
+            return;
+        }
+
+        return true;
+    }
+
     onClick() {
         if (this.isMouseHold || !this.props.onObjectSelect) {
             return;
@@ -379,6 +398,11 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
 
             if (selectedObject === this.selectedObject) {
                 selectedObject = null;
+            }
+
+            const canSelect = this.canSelect(selectedObject);
+            if (!canSelect) {
+                return;
             }
 
             this.selectObject(selectedObject);

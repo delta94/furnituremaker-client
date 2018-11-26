@@ -28,7 +28,6 @@ const Overlay = styled.div`
 `;
 
 interface ThreeSenceProps extends ThreeSenceBaseProps, WithStoreValuesDispatchs {
-    readonly productModules: ProductModule[];
     readonly selectedObject: THREE.Group;
     readonly setSence: (threeSence: ThreeSence) => void;
 }
