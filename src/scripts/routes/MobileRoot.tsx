@@ -6,6 +6,7 @@ import { DefaultLayoutMobile } from '@/layout/DefaultLayoutMobile';
 import { RouteLoginLoadable } from '@/routes/desktop';
 import {
     RouteCartLoadable,
+    RouteCheckoutLoadable,
     RouteHomeLoadable,
     RouteLandingLoadable,
     RouteMakerLoadable
@@ -15,7 +16,8 @@ const appRoutes = [
     RouteMakerLoadable,
     RouteHomeLoadable,
     RouteLandingLoadable,
-    RouteCartLoadable
+    RouteCartLoadable,
+    RouteCheckoutLoadable
 ].reduce(
     (currenValue, Component) => {
         return [...currenValue, route(Component)];

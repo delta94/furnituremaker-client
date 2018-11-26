@@ -28,7 +28,15 @@ export interface MobileTabbarProps extends Pick<CommonStoreProps, 'history'> {
 }
 
 @withStoreValues('history')
-export class MobileTabbar extends React.PureComponent<MobileTabbarProps> {
+export class MobileTabbar extends React.Component<MobileTabbarProps> {
+    readonly historyUnregister = this.props.history.listen(o => {
+        this.forceUpdate();
+    });
+    
+    readonly onItemSelect = (key: string) => {
+        this.props.history.push(key);
+    }
+
     public render() {
         return (
             <MobileTabbarWrapper>
@@ -42,20 +50,24 @@ export class MobileTabbar extends React.PureComponent<MobileTabbarProps> {
                         key="Life"
                         icon={<AntdIcon type="user" />}
                         selectedIcon={<AntdIcon type="user" />}
-                        selected={true}
+                        onPress={() => this.onItemSelect('/user')}
+                        selected={location.pathname === '/user'}
                     />
                     <TabBar.Item
                         title="Thông báo"
                         key="Life"
                         icon={<AntdIcon type="notification" />}
                         selectedIcon={<AntdIcon type="notification" />}
+                        onPress={() => this.onItemSelect('/notification')}
+                        selected={location.pathname === '/notification'}
                     />
                     <TabBar.Item
                         title="Giỏ hàng"
                         key="Life"
                         icon={<AntdIcon type="shopping-cart" />}
                         selectedIcon={<AntdIcon type="shopping-cart" />}
-                        onPress={() => this.props.history.push('/cart')}
+                        onPress={() => this.onItemSelect('/cart')}
+                        selected={location.pathname === '/cart'}
                     />
                 </TabBar>
             </MobileTabbarWrapper>

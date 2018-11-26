@@ -88,7 +88,7 @@ class CreateOrderFormComponent extends React.Component<
                     {
                         part === 'shiping-info' ? (
                             <AntdRow gutter={15}>
-                                <AntdCol span={12}>
+                                <AntdCol span={12} lg={12}>
                                     <FormWrapper>
                                         <Field
                                             name={nameof.full<CreateOrderFormValues>(o => o.order.phone)}
@@ -102,7 +102,7 @@ class CreateOrderFormComponent extends React.Component<
                                         />
                                     </FormWrapper>
                                 </AntdCol>
-                                <AntdCol span={12}>
+                                <AntdCol span={12} lg={12}>
                                     <FormWrapper>
                                         <Field
                                             name={nameof.full<CreateOrderFormValues>(o => o.order.email)}
@@ -116,7 +116,7 @@ class CreateOrderFormComponent extends React.Component<
                                         />
                                     </FormWrapper>
                                 </AntdCol>
-                                <AntdCol span={12}>
+                                <AntdCol span={24} lg={12}>
                                     <FormWrapper>
                                         <OrderFormCityField
                                             initCity={initialValues.order.shippingToCity}
@@ -126,7 +126,7 @@ class CreateOrderFormComponent extends React.Component<
                                         />
                                     </FormWrapper>
                                 </AntdCol>
-                                <AntdCol span={12}>
+                                <AntdCol span={24} lg={12}>
                                     <FormWrapper>
                                         <Field
                                             name={nameof.full<CreateOrderFormValues>(o => o.order.shippingAddress)}
@@ -140,7 +140,7 @@ class CreateOrderFormComponent extends React.Component<
                                         />
                                     </FormWrapper>
                                 </AntdCol>
-                                <AntdCol span={12}>
+                                <AntdCol span={24} lg={12}>
                                     <Field
                                         name={nameof.full<CreateOrderFormValues>(o => o.order.addressType)}
                                         component={renderRadioGroup}

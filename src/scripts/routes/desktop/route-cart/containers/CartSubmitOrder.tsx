@@ -3,10 +3,15 @@ import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
 import { AntdButton } from '@/components';
-import { CommonStoreProps } from '@/configs';
+import { CommonStoreProps, mobileSize } from '@/configs';
 
 const CartSubmitOrderWrapper = styled.div`
     text-align: right;
+    .ant-btn {
+        @media screen and (max-width: ${mobileSize}px) {
+            width: 100%;
+        }
+    }
 `;
 
 @withStoreValues(

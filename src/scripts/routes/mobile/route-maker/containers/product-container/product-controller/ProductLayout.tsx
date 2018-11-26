@@ -14,7 +14,6 @@ import { ProductInfo, ProductSence } from './product-layout';
 
 const ProductLayoutContent = styled.div`
     padding: 0;
-    margin-bottom: 30px;
 `;
 
 interface ProductLayoutProps extends
