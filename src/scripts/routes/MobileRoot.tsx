@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
 
-import { route } from '@/app';
+import { route, withStoreValues } from '@/app';
+import { CommonStoreProps } from '@/configs';
 import { DefaultLayoutMobile } from '@/layout/DefaultLayoutMobile';
 import { RouteLoginLoadable } from '@/routes/desktop';
 import {
@@ -29,17 +30,21 @@ const authRoutes = [
     route(RouteLoginLoadable)
 ];
 
-export const MobileRoot = () => {
+export const MobileRoot = withStoreValues<CommonStoreProps>('appState')(({ appState }) => {
     return (
         <Switch>
             {authRoutes}
-            <Route>
-                <DefaultLayoutMobile>
-                    {
-                        appRoutes
-                    }
-                </DefaultLayoutMobile>
-            </Route>
+            {
+                appState === 'READY' && (
+                    <Route>
+                        <DefaultLayoutMobile>
+                        {
+                            appRoutes
+                        }
+                        </DefaultLayoutMobile>
+                    </Route>
+                )
+            }
         </Switch>
     );
-};
+});

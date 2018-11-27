@@ -12,7 +12,6 @@ export class DefaultLayoutMobile extends React.Component<DefaultLayoutMobileProp
     };
 
     render() {
-
         return (
             <div
                 style={{

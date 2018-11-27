@@ -29,9 +29,18 @@ export interface MobileTabbarProps extends Pick<CommonStoreProps, 'history'> {
 
 @withStoreValues('history')
 export class MobileTabbar extends React.Component<MobileTabbarProps> {
-    readonly historyUnregister = this.props.history.listen(o => {
-        this.forceUpdate();
-    });
+    readonly historyUnregister;
+
+    constructor(props: MobileTabbarProps) {
+        super(props);
+        this.historyUnregister = this.props.history.listen(o => {
+            this.forceUpdate();
+        });
+    }
+
+    componentWillUnmount() {
+        this.historyUnregister();
+    }
     
     readonly onItemSelect = (key: string) => {
         this.props.history.push(key);
