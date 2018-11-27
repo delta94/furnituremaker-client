@@ -30,7 +30,7 @@ import { changeAppStateToReady } from './readyState';
 
 export interface RootProps {
     readonly store: Store<string, AnyAction>;
-    readonly children: React.ComponentType;
+    readonly children: React.ComponentType<{ readonly history: History }>;
     readonly loginPath: string;
 }
 
@@ -87,7 +87,7 @@ export class Root extends React.Component<RootProps> {
 
         return (
             <Provider store={store}>
-                <this.props.children />
+                <this.props.children history={this.history} />
             </Provider>
         );
     }

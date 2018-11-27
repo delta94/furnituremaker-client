@@ -30,8 +30,8 @@ const authRoutes = [
     route(RouteLoginLoadable)
 ];
 
-export const MobileRoot = withStoreValues<CommonStoreProps>('appState', 'history')(({ history }) => {
-    if(!history) {
+export const MobileRoot = ({ history }) => {
+    if (!history) {
         return null;
     }
     
@@ -49,4 +49,4 @@ export const MobileRoot = withStoreValues<CommonStoreProps>('appState', 'history
             </Switch>
         </Router>
     );
-});
+};

@@ -45,7 +45,7 @@ const appRoutes = [
     RouteLibraryLoadable
 ];
 
-export const DesktopRoot = withStoreValues<CommonStoreProps>('appState', 'history')(({ history }) => {
+export const DesktopRoot = ({ history }) => {
     if (!history) {
         return null;
     }
@@ -64,4 +64,4 @@ export const DesktopRoot = withStoreValues<CommonStoreProps>('appState', 'histor
             </Switch>
         </Router>
     );
-});
+};
