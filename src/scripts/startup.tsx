@@ -24,7 +24,7 @@ export function startup() {
             }),
             composeEnhancers(middlewares)
         ),
-        children: window.innerWidth <= mobileSize ? <MobileRoot /> : <DesktopRoot />,
+        children: window.innerWidth <= mobileSize ? MobileRoot : DesktopRoot,
         loginPath: loginPath
     };
     return render(configuration);

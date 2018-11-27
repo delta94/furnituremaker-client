@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import { Route, Router, Switch } from 'react-router';
 
 import { route, withStoreValues } from '@/app';
 import { CommonStoreProps } from '@/configs';
@@ -30,21 +30,23 @@ const authRoutes = [
     route(RouteLoginLoadable)
 ];
 
-export const MobileRoot = withStoreValues<CommonStoreProps>('appState')(({ appState }) => {
+export const MobileRoot = withStoreValues<CommonStoreProps>('appState', 'history')(({ history }) => {
+    if(!history) {
+        return null;
+    }
+    
     return (
-        <Switch>
-            {authRoutes}
-            {
-                appState === 'READY' && (
-                    <Route>
-                        <DefaultLayoutMobile>
+        <Router history={history}>
+            <Switch>
+                {authRoutes}
+                <Route>
+                    <DefaultLayoutMobile>
                         {
                             appRoutes
                         }
-                        </DefaultLayoutMobile>
-                    </Route>
-                )
-            }
-        </Switch>
+                    </DefaultLayoutMobile>
+                </Route>
+            </Switch>
+        </Router>
     );
 });

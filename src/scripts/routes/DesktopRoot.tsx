@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Switch } from 'react-router';
+import { Router, Switch } from 'react-router';
 
-import { route } from '@/app';
+import { route, withStoreValues } from '@/app';
+import { CommonStoreProps } from '@/configs';
 import {
     RouteAccountVeriryLoadable,
     RouteAddressBookLoadable,
@@ -44,17 +45,23 @@ const appRoutes = [
     RouteLibraryLoadable
 ];
 
-export const DesktopRoot = () => {
+export const DesktopRoot = withStoreValues<CommonStoreProps>('appState', 'history')(({ history }) => {
+    if (!history) {
+        return null;
+    }
+
     return (
-        <Switch>
-            {
-                appRoutes.reduce(
-                    (currenValue, Component) => {
-                        return [...currenValue, route(Component)];
-                    },
-                    [] as JSX.Element[]
-                )
-            }
-        </Switch>
+        <Router history={history}>
+            <Switch>
+                {
+                    appRoutes.reduce(
+                        (currenValue, Component) => {
+                            return [...currenValue, route(Component)];
+                        },
+                        [] as JSX.Element[]
+                    )
+                }
+            </Switch>
+        </Router>
     );
-};
+});
