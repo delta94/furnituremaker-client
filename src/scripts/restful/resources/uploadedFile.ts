@@ -31,6 +31,10 @@ export const uploadedFileUtils = {
             }
         }
 
+        if (!uploadedFile) {
+            return '';
+        }
+
         // to fix some time url start with http://localhost:1337/...
         const url = (uploadedFile.url && uploadedFile.url.startsWith('http://')) ?
             (new URL(uploadedFile.url)).pathname :

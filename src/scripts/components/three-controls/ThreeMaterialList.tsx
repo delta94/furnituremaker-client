@@ -9,25 +9,32 @@ import { AntdList, AntdTabs, AntdTooltip } from '@/components/antd-component';
 import { Img, Loading } from '@/components/domain-components';
 import { FurnitureMaterial, withMaterialsByType } from '@/restful';
 
+import { MaterialTypeSelect } from './three-material-list-base';
 import {
     ThreeMaterialListBase,
     ThreeMaterialListProps
 } from './ThreeMaterialListBase';
 
-@withStoreValues<ThreeMaterialListProps>('selectedMaterialType')
 @withMaterialsByType()
 @withStoreValues<ThreeMaterialListProps>(
     'selectedMaterial',
-    'selectedProduct'
+    'selectedProduct',
+    'components'
 )
 class ThreeMaterialListComponent extends ThreeMaterialListBase {
     render() {
-        const { selectedMaterial, materials } = this.props;
+        const { selectedMaterial, materials, selectedMaterialType } = this.props;
         const { loading, nextSelectMaterial } = this.state;
+
         return (
             <div className="three-material-list">
                 <AntdTabs
-                    tabBarExtraContent={<Link to="/library">Thư viện vật liệu</Link>}
+                    tabBarExtraContent={
+                        <MaterialTypeSelect
+                            selectedMaterialType={selectedMaterialType}
+                            materialTypes={this.getMetarialTypes()}
+                        />
+                    }
                 >
                     <AntdTabs.TabPane
                         tab="Vật liệu"

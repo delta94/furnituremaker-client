@@ -109,7 +109,7 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
             selectedMaterial: selectedMaterial,
             components: sameTypeComponents,
             allComponents: components,
-            selectedMaterialType: componentData.materialTypes[0],
+            selectedMaterialType: selectedMaterial.materialType,
             selectedComponent: selectedComponent
         });
     }

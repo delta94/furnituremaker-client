@@ -39,6 +39,10 @@ export const furnitureMaterialResources = {
         method: 'GET',
         mapDataToStore: (items, resourceType, store) => {
             for (const item of items) {
+                if (!item.materialType) {
+                    continue;
+                }
+                
                 store.dataMapping(resourceType, item);
             }
         }

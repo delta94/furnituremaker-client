@@ -372,6 +372,10 @@ export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.Pu
     }
 
     canSelect = (object) => {
+        if (!object) {
+            return;
+        }
+        
         let furnitureModule = this.props.productModules.find(o => o.component.id === object.name);
         if (!furnitureModule) {
             furnitureModule = this.props.productModules.find(o => o.component.id === object.parent.name);

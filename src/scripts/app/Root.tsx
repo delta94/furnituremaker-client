@@ -12,6 +12,7 @@ import {
     Agency,
     agencyResources,
     discountByQuantitiesResources,
+    FurnitureMaterial,
     furnitureMaterialResources,
     OrderDetail,
     orderDetailResources,
@@ -106,7 +107,14 @@ export class Root extends React.Component<RootProps> {
                         }
                     ]
                 ),
-                restfulFetcher.fetchResource(furnitureMaterialResources.find, []),
+                restfulFetcher.fetchResource(
+                    furnitureMaterialResources.find,
+                    [{
+                        type: 'query',
+                        parameter: '_limit',
+                        value: 999
+                    }]
+                ),
                 restfulFetcher.fetchResource(productTypeResources.find, []),
                 restfulFetcher.fetchResource(discountByQuantitiesResources.find, []),
                 restfulFetcher.fetchResource(productDiscountResources.find, [{

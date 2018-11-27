@@ -1,13 +1,10 @@
 import './ThreeMaterialList.scss';
 
-import * as classNames from 'classnames';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 
-import { AntdList, AntdTabs, AntdTooltip } from '@/components/antd-component';
-import { Img, Loading } from '@/components/domain-components';
 import { CommonStoreProps } from '@/configs';
 import {
+    FurnitureComponent,
     FurnitureMaterial,
     ProductExtended,
     uploadedFileUtils,
@@ -24,6 +21,7 @@ export interface ThreeMaterialListProps extends
     readonly materials: FurnitureMaterial[];
     readonly selectedObject: THREE.Group;
     readonly selectedMaterial: FurnitureMaterial;
+    readonly components: FurnitureComponent[];
 }
 
 export class ThreeMaterialListBase extends React.PureComponent<ThreeMaterialListProps> {
@@ -40,56 +38,11 @@ export class ThreeMaterialListBase extends React.PureComponent<ThreeMaterialList
         };
     }
 
-    render() {
-        const { selectedMaterial, materials } = this.props;
-        const { loading, nextSelectMaterial } = this.state;
-        return (
-            <div className="three-material-list">
-                <AntdTabs
-                    tabBarExtraContent={<Link to="/library">Thư viện vật liệu</Link>}
-                >
-                    <AntdTabs.TabPane
-                        tab="Vật liệu"
-                    >
-                        <AntdList
-                            dataSource={materials}
-                            grid={{ gutter: 16, column: 3 }}
-                            pagination={{
-                                pageSize: 6,
-                                simple: true,
-                                style: { textAlign: 'center' }
-                            }}
-                            renderItem={(material: FurnitureMaterial) => {
-                                const isSelected = (selectedMaterial.id === material.id);
-                                const isNextSelected = nextSelectMaterial && (nextSelectMaterial.id === material.id);
+    readonly getMetarialTypes = () => {
+        const { components, selectedObject } = this.props;
+        const component = components.find(o => o.id === selectedObject.name);
 
-                                return (
-                                    <AntdList.Item key={material.id}>
-                                        <AntdTooltip
-                                            title={material.description || material.name}
-                                        >
-                                            <div
-                                                className={classNames(
-                                                    'three-material-list-material',
-                                                    { selected: isSelected }
-                                                )}
-                                            >
-                                                <Img
-                                                    file={material.texture}
-                                                    size="img256x256"
-                                                    onClick={() => this.onMaterialSelect(material)}
-                                                />
-                                                {(loading && isNextSelected) && (<Loading />)}
-                                            </div>
-                                        </AntdTooltip>
-                                    </AntdList.Item>
-                                );
-                            }}
-                        />
-                    </AntdTabs.TabPane>
-                </AntdTabs>
-            </div>
-        );
+        return component.materialTypes;
     }
 
     onMaterialSelect(material: FurnitureMaterial) {
