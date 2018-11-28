@@ -27,6 +27,10 @@ export interface MaterialTypeSelectProps extends
 export class MaterialTypeSelect extends React.PureComponent<MaterialTypeSelectProps> {
     public render() {
         const { materialTypes, selectedMaterialType, setStore } = this.props;
+        if (!selectedMaterialType) {
+            return null;
+        }
+        
         if (materialTypes.length === 1) {
             return null;
         }

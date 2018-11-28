@@ -38,6 +38,17 @@ export class ThreeMaterialListBase extends React.PureComponent<ThreeMaterialList
         };
     }
 
+    componentDidUpdate(prevProps: ThreeMaterialListProps) {
+        const { selectedMaterial } = this.props;
+        if (!prevProps.selectedMaterial || !selectedMaterial) {
+            return;
+        }
+
+        if (prevProps.selectedMaterial.materialType !== selectedMaterial.materialType) {
+            this.onMaterialSelect(selectedMaterial);
+        }
+    }
+
     readonly getMetarialTypes = () => {
         const { components, selectedObject } = this.props;
         const component = components.find(o => o.id === selectedObject.name);

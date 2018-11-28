@@ -7,7 +7,7 @@ import Slider, { Settings } from 'react-slick';
 import { AccessControl, withStoreValues } from '@/app';
 import { Img } from '@/components';
 import { AntdTooltip } from '@/components/antd-component';
-import { Container, Loading } from '@/components/domain-components';
+import { Loading } from '@/components/domain-components';
 import { FurnitureComponent } from '@/restful';
 
 import {

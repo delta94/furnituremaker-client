@@ -51,11 +51,6 @@ export class ThreeComponentList extends ThreeComponentListBase {
             <React.Fragment>
                 <ListHeader>
                     Cấu kiện thay thế
-                    {
-                        <AccessControl allowRoles="root">
-                            <CreateComponentFormControl />
-                        </AccessControl>
-                    }
                 </ListHeader>
                 <AntdList
                     dataSource={filteredComponentByGroup}
@@ -85,6 +80,10 @@ export class ThreeComponentList extends ThreeComponentListBase {
                                             size="img256x256"
                                             onClick={() => this.onComponentSelect(component)}
                                         />
+
+                                        <AccessControl allowRoles="root">
+                                            {this.renderPopover(component)}
+                                        </AccessControl>
                                         {(loading && isNextSelected) && (<Loading />)}
                                     </div>
                                 </AntdTooltip>

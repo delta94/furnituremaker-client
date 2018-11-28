@@ -13,8 +13,11 @@ import {
 import { CommonStoreProps } from '@/configs';
 import {
     FurnitureComponent,
+    FurnitureMaterial,
+    furnitureMaterialResouceType,
     ProductExtended,
     productUtils,
+    restfulStore,
     uploadedFileUtils
 } from '@/restful';
 import { apiEntry } from '@/restful';
@@ -30,7 +33,7 @@ const { THREE } = window;
 export interface ThreeComponentListProps extends CommonStoreProps {
     readonly components?: FurnitureComponent[];
     readonly selectedObject?: THREE.Group;
-    readonly selectedMaterial?: string;
+    readonly selectedMaterial?: FurnitureMaterial;
     readonly sence?: THREE.Scene;
 }
 
@@ -94,7 +97,7 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
             selectedComponent,
             setStore,
             selectedProduct,
-            product3Dsence
+            product3Dsence,
         } = this.props;
 
         const targetComponentGroup = targetComponent.componentGroup;
@@ -107,8 +110,9 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
             JSON.stringify(selectedComponent.materialTypes) !==
             JSON.stringify(targetComponent.materialTypes)
         ) {
+            const nextSelectMaterialType = targetComponent.materialTypes[0];
             setStore<CommonStoreProps>({
-                selectedMaterialType: targetComponent.materialTypes[0]
+                selectedMaterialType: nextSelectMaterialType
             });
         }
 
@@ -169,8 +173,22 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
                     });
                 }
 
+                let nextMaterial = productModule.material;
+                let diff = nextComponent.materialTypes.find(o =>
+                    o.id === productModule.material.materialType.id
+                );
+
+                if (!diff) {
+                    nextMaterial = restfulStore.findOneRecord(
+                        furnitureMaterialResouceType,
+                        // tslint:disable-next-line:no-any
+                        (o) => (o.materialType as any) === nextComponent.materialTypes[0].id
+                    );
+                }
+
                 return {
-                    ...productModule,
+                    material: nextMaterial,
+                    materialPrice: nextMaterial.price,
                     component: nextComponent,
                     componentPrice: nextComponent.price
                 };
@@ -186,7 +204,8 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
                 selectedObject: event.detail.loaderRootNode,
                 selectedProduct: nextSelectedProduct,
                 selectedComponent: targetComponent,
-                selectedComponentGroup: targetComponentGroup
+                selectedComponentGroup: targetComponentGroup,
+                selectedMaterial: nextModules.find(o => o.component.id === targetComponent.id).material
             });
 
             this.setState({

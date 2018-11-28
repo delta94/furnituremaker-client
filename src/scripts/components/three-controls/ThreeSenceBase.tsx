@@ -18,7 +18,7 @@ export interface ThreeSenceBaseProps {
 
 export class ThreeSenceBase<TProps extends ThreeSenceBaseProps> extends React.PureComponent<TProps> {
     static defaultProps = {
-        sampleLevel: 1,
+        sampleLevel: 2,
         clearColor: '#fff'
     };
 
