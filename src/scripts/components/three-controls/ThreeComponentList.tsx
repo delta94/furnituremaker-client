@@ -8,7 +8,6 @@ import { AccessControl, withStoreValues } from '@/app';
 import { AntdList, Img } from '@/components';
 import { AntdTooltip } from '@/components/antd-component';
 import { Loading } from '@/components/domain-components';
-import { CreateComponentFormControl } from '@/forms/create-component';
 import { FurnitureComponent } from '@/restful';
 
 import {
@@ -18,6 +17,13 @@ import {
 
 const ListHeader = styled.div`
     margin: 15px 0;
+`;
+
+const ThreeComponentListWrapper = styled.div`
+    .ant-row {
+        display: flex;
+        flex-flow: row wrap;
+    }
 `;
 
 @withStoreValues<ThreeComponentListProps>(
@@ -48,7 +54,7 @@ export class ThreeComponentList extends ThreeComponentListBase {
 
         const { loading, nextSelectComponent } = this.state;
         return (
-            <React.Fragment>
+            <ThreeComponentListWrapper>
                 <ListHeader>
                     Cấu kiện thay thế
                 </ListHeader>
@@ -91,8 +97,7 @@ export class ThreeComponentList extends ThreeComponentListBase {
                         );
                     }}
                 />
-
-            </React.Fragment>
+            </ThreeComponentListWrapper>
         );
     }
 } 
