@@ -17,6 +17,7 @@ export interface ThreeMaterialListProps extends
     Pick<CommonStoreProps, 'setStore'>,
     Required<Pick<CommonStoreProps, 'selectedProduct'>>,
     Required<Pick<CommonStoreProps, 'selectedMaterialType'>>,
+    Pick<CommonStoreProps, 'selectedComponentHeight'>,
     WithMaterialProps {
     readonly materials: FurnitureMaterial[];
     readonly selectedObject: THREE.Group;

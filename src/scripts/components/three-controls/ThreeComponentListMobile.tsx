@@ -35,17 +35,10 @@ const slickSettings: Settings = {
 )
 export class ThreeComponentListMobile extends ThreeComponentListBase {
     render() {
-        const { selectedObject, components, selectedComponentGroup } = this.props;
+        const { selectedObject, components } = this.props;
         const selectedComponent = components.find(o => o.id === selectedObject.name);
 
-        let filteredComponentByGroup: FurnitureComponent[];
-        if (selectedComponent.componentType.isBase) {
-            filteredComponentByGroup = components;
-        } else {
-            filteredComponentByGroup = selectedComponentGroup ?
-                components.filter(o => o.componentGroup && o.componentGroup.id === selectedComponentGroup.id) :
-                components;
-        }
+        let filteredComponentByGroup = this.getFilteredComponents();
 
         const child = selectedObject.children[0] as THREE.Mesh;
         (child.material as THREE.MeshPhongMaterial).map.needsUpdate = true;

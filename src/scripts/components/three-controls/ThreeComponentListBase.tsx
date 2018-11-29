@@ -52,6 +52,39 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
             nextSelectComponent: null
         };
     }
+    
+    readonly getFilteredComponents = () => {
+        const {
+            selectedObject,
+            components,
+            selectedComponentGroup,
+            selectedComponentHeight
+        } = this.props;
+
+        const selectedComponent = components.find(o => o.id === selectedObject.name);
+
+        let filteredComponentByGroup: FurnitureComponent[];
+        if (selectedComponent.componentType.isBase) {
+            filteredComponentByGroup = components;
+        } else {
+            filteredComponentByGroup = selectedComponentGroup ?
+                components.filter(o => o.componentGroup && o.componentGroup.id === selectedComponentGroup.id) :
+                components;
+        }
+
+        if (selectedComponentHeight) {
+            filteredComponentByGroup = filteredComponentByGroup.filter(o => o.height === +selectedComponentHeight);
+        }
+
+        return filteredComponentByGroup;
+    }
+    
+    componentDidUpdate(prevProps: ThreeComponentListProps) {
+        if (this.props.selectedComponentHeight !== prevProps.selectedComponentHeight) {
+            const filteredCOmponents = this.getFilteredComponents();
+            this.onComponentSelect(filteredCOmponents[0]);
+        }
+    }
 
     readonly renderPopover = (component: FurnitureComponent) => {
         const updatePageHref = `${this.componentUpdatePage}/${component.id}?source=content-manager`;

@@ -11,6 +11,9 @@ import { WithStoreValuesDispatchs } from '@/app';
 import { FurnitureMaterial, ProductModule, uploadedFileUtils } from '@/restful';
 
 import { AntdSpin } from '../antd-component';
+import {
+    SenceComponentVariantFilter
+} from './three-sence/SenceComponentVariantFilter';
 import { ThreeSenceBase, ThreeSenceBaseProps } from './ThreeSenceBase';
 
 const { THREE } = window;
@@ -89,6 +92,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                         height: productType.view_senceHeight
                     }}
                 />
+                <SenceComponentVariantFilter/>
             </div>
         );
     }

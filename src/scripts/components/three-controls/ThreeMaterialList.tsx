@@ -23,7 +23,11 @@ import {
 )
 class ThreeMaterialListComponent extends ThreeMaterialListBase {
     render() {
-        const { selectedMaterial, materials, selectedMaterialType } = this.props;
+        const {
+            selectedMaterial,
+            materials,
+            selectedMaterialType
+        } = this.props;
         const { loading, nextSelectMaterial } = this.state;
 
         return (
