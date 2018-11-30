@@ -32,6 +32,8 @@ export interface FurnitureComponent extends Record {
     readonly componentGroup?: ComponentGroup;
     readonly isDefault?: boolean;
     readonly noSelection?: boolean;
+    readonly diameter?: number;
+    readonly variantIndex?: number;
 }
 
 export const furnitureComponentResourceType = new ResourceType<FurnitureComponent>({

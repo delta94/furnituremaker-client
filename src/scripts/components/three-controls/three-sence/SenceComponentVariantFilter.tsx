@@ -24,13 +24,15 @@ interface SenceComponentVariantFilterProps extends
     Pick<WithStoreValuesDispatchs, 'setStore'>,
     Pick<CommonStoreProps, 'selectedComponent'>,
     Pick<CommonStoreProps, 'selectedComponentHeight'>,
+    Pick<CommonStoreProps, 'selectedComponentDiameter'>,
     Pick<ThreeComponentListProps, 'components'> {
 }
 
 @withStoreValues<SenceComponentVariantFilterProps>(
     'components',
     'selectedComponent',
-    'selectedComponentHeight'
+    'selectedComponentHeight',
+    'selectedComponentDiameter'
 )
 export class SenceComponentVariantFilter extends React.PureComponent<SenceComponentVariantFilterProps> {
     render() {
@@ -38,6 +40,7 @@ export class SenceComponentVariantFilter extends React.PureComponent<SenceCompon
             components,
             selectedComponent,
             selectedComponentHeight,
+            selectedComponentDiameter,
             setStore
         } = this.props;
 
@@ -49,10 +52,14 @@ export class SenceComponentVariantFilter extends React.PureComponent<SenceCompon
         const heightGroups = groupBy(heightVariantComponents, 'height');
         const avaliableHeights = Object.keys(heightGroups);
 
+        const diameterVariantComponents = components.filter(o => !!o.diameter);
+        const diameterGroups = groupBy(diameterVariantComponents, 'diameter');
+        const avaliableDiameters = Object.keys(diameterGroups);
+
         return (
             <SenceComponentVariantFilterWrapper>
                 <SenceComponentVariantFilterContent>
-                    <div>
+                    <div style={{ marginRight: 15 }}>
                         {
                             avaliableHeights.map(height => {
                                 return (
@@ -62,11 +69,32 @@ export class SenceComponentVariantFilter extends React.PureComponent<SenceCompon
                                             value={height}
                                             onChange={() => {
                                                 setStore({
-                                                    selectedComponentHeight: height
+                                                    selectedComponentHeight: height || null
                                                 });
                                             }}
                                         >
-                                            H: {height} mm
+                                            H={height}mm
+                                        </AntdCheckbox>
+                                    </div>
+                                );
+                            })
+                        }
+                    </div>
+                    <div>
+                        {
+                            avaliableDiameters.map(diameter => {
+                                return (
+                                    <div className="checkbox-wrapper" key={diameter}>
+                                        <AntdCheckbox
+                                            checked={selectedComponentDiameter === diameter}
+                                            value={diameter}
+                                            onChange={() => {
+                                                setStore({
+                                                    selectedComponentDiameter: diameter || null
+                                                });
+                                            }}
+                                        >
+                                            Ø={diameter}mm
                                         </AntdCheckbox>
                                     </div>
                                 );

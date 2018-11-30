@@ -58,7 +58,8 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
             selectedObject,
             components,
             selectedComponentGroup,
-            selectedComponentHeight
+            selectedComponentHeight,
+            selectedComponentDiameter
         } = this.props;
 
         const selectedComponent = components.find(o => o.id === selectedObject.name);
@@ -73,16 +74,36 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
         }
 
         if (selectedComponentHeight) {
-            filteredComponentByGroup = filteredComponentByGroup.filter(o => o.height === +selectedComponentHeight);
+            const heightFiltered = filteredComponentByGroup.filter(o => o.height === +selectedComponentHeight);
+            if (heightFiltered.length) {
+                filteredComponentByGroup = heightFiltered;
+            }
+        }
+
+        if (selectedComponentDiameter) {
+            const diameterFiltered = filteredComponentByGroup.filter(o => o.diameter === +selectedComponentDiameter);
+            if (diameterFiltered.length) {
+                filteredComponentByGroup = diameterFiltered;
+            }
         }
 
         return filteredComponentByGroup;
     }
 
     componentDidUpdate(prevProps: ThreeComponentListProps) {
-        if (this.props.selectedComponentHeight !== prevProps.selectedComponentHeight) {
-            const filteredCOmponents = this.getFilteredComponents();
-            this.onComponentSelect(filteredCOmponents[0]);
+        const {
+            selectedComponent,
+            selectedComponentHeight,
+            selectedComponentDiameter
+        } = this.props;
+
+        if (
+            selectedComponentHeight !== prevProps.selectedComponentHeight ||
+            selectedComponentDiameter !== prevProps.selectedComponentDiameter
+        ) {
+            const filteredComponents = this.getFilteredComponents();
+            const nextSelectComponent = filteredComponents[selectedComponent.variantIndex || 0];
+            this.onComponentSelect(nextSelectComponent);
         }
     }
 
@@ -119,8 +140,15 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
     componentWillUnmount() {
         const { setStore } = this.props;
         setStore<ThreeComponentListProps>({
-            selectedComponent: null
+            selectedComponent: null,
+            selectedComponentDiameter: null,
+            selectedComponentHeight: null
         });
+    }
+
+    readonly findComponentIndex = (component: FurnitureComponent) => {
+        const filteredComponents = this.getFilteredComponents();
+        return filteredComponents.findIndex(o => o.id === component.id);
     }
 
     onComponentSelect(targetComponent: FurnitureComponent) {

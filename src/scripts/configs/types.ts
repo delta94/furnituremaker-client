@@ -39,7 +39,8 @@ export interface CommonStoreValues extends InitAppStoreProps {
     readonly selectedComponent?: FurnitureComponent;
     readonly selectedComponentGroup?: ComponentGroup;
     readonly selectedComponentHeight?: string;
-
+    readonly selectedComponentDiameter?: string;
+    
     readonly drawerVisible?: boolean;
     readonly product3Dsence?: ThreeSence;
 

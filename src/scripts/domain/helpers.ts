@@ -19,5 +19,5 @@ export const getNotificationTyleLabel = (notification) => {
 
 export const notificationMapToArray = (notifications: Map<string, {}>): Array<AppNotification> => {
     const array = Array.from(notifications.values());
-    return orderBy(array, 'time', 'desc');
+    return orderBy(array, 'time', 'DESC');
 };

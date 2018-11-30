@@ -30,8 +30,8 @@ export class HomeProductFilter extends React.PureComponent<HomeProductFilterProp
                             history.push(`?${currentSearchParams.toString()}`);
                         }}
                     >
-                        <AntdSelect.Option value="totalPrice:asc">Giá cao đến thấp</AntdSelect.Option>
-                        <AntdSelect.Option value="totalPrice:desc">Giá thấp đến cao</AntdSelect.Option>
+                        <AntdSelect.Option value="totalPrice:ASC">Giá cao đến thấp</AntdSelect.Option>
+                        <AntdSelect.Option value="totalPrice:DESC">Giá thấp đến cao</AntdSelect.Option>
                     </AntdSelect>
                 </Container>
             </HomeProductFilterWrapper>
