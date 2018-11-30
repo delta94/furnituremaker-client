@@ -22,8 +22,8 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            'API_ENTRY': JSON.stringify('http://localhost:1337'),
-            // 'API_ENTRY': JSON.stringify('http://v2-api.furnituremaker.vn'),
+            // 'API_ENTRY': JSON.stringify('http://localhost:1337'),
+            'API_ENTRY': JSON.stringify('http://v2-api.furnituremaker.vn'),
             'FILE_HOST': JSON.stringify('http://v2-api.furnituremaker.vn')
         }),
         new ErrorOverlayPlugin(),

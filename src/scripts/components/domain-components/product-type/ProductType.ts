@@ -9,6 +9,18 @@ export const ProductTypeWrapper = styled.div`
     .slick-slide {
         padding-right: 4px;
     }
+
+    .slick-prev, .slick-next  {
+        color: #000;
+    }
+
+    .slick-prev {
+        left: 0;
+        z-index: 1;
+    }
+    .slick-next {
+        right: 0;
+    }
 `;
 
 interface ContentProps extends React.DOMAttributes<HTMLDivElement> {

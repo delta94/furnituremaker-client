@@ -36,7 +36,7 @@ export class HomeProductTypeList extends React.Component<HomeProductTypeListProp
     };
 
     static readonly slickSettings: Settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 4,

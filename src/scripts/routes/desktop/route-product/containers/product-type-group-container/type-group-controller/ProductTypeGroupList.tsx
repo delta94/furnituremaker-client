@@ -33,7 +33,7 @@ export class ProductTypeGroupList extends React.Component<ProductTypeGroupListPr
     };
 
     static readonly slickSettings: Settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 8,

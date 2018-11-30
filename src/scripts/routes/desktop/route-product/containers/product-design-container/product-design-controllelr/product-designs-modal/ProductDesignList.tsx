@@ -47,7 +47,7 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
     };
 
     static readonly slickSettings: Settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 5,

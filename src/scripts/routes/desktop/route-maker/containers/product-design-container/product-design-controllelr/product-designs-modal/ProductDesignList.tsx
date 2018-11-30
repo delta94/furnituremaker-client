@@ -3,7 +3,7 @@ import Slider, { Settings } from 'react-slick';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { Img } from '@/components';
+import { Img, ProductDesignWrapper } from '@/components';
 import { CommonStoreProps } from '@/configs';
 import { ProductDesign, productDesignUtils } from '@/restful';
 
@@ -48,7 +48,7 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
     };
 
     static readonly slickSettings: Settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 5,
@@ -87,24 +87,26 @@ export class ProductDesignList extends React.Component<ProductDesignListProps> {
             designs;
 
         return (
-            <Slider {...ProductDesignList.slickSettings}>
-                {
-                    filterdDesigns.map((productDesign: ProductDesign) => {
-                        return (
-                            <Item
-                                key={productDesign.id}
-                                isSelected={selectedProductDesign && selectedProductDesign.id === productDesign.id}
-                                onClick={() => onDesignClick(productDesign)}
-                            >
-                                <ThumbnailWrapper>
-                                    <Img className="mw-100" file={productDesign.thumbnail} />
-                                </ThumbnailWrapper>
-                                <Label>{productDesign.name}</Label>
-                            </Item>
-                        );
-                    })
-                }
-            </Slider>
+            <ProductDesignWrapper>
+                <Slider {...ProductDesignList.slickSettings}>
+                    {
+                        filterdDesigns.map((productDesign: ProductDesign) => {
+                            return (
+                                <Item
+                                    key={productDesign.id}
+                                    isSelected={selectedProductDesign && selectedProductDesign.id === productDesign.id}
+                                    onClick={() => onDesignClick(productDesign)}
+                                >
+                                    <ThumbnailWrapper>
+                                        <Img className="mw-100" file={productDesign.thumbnail} />
+                                    </ThumbnailWrapper>
+                                    <Label>{productDesign.name}</Label>
+                                </Item>
+                            );
+                        })
+                    }
+                </Slider>
+            </ProductDesignWrapper>
         );
     }
 }
