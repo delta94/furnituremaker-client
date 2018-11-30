@@ -52,7 +52,7 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
             nextSelectComponent: null
         };
     }
-    
+
     readonly getFilteredComponents = () => {
         const {
             selectedObject,
@@ -63,7 +63,7 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
 
         const selectedComponent = components.find(o => o.id === selectedObject.name);
 
-        let filteredComponentByGroup: FurnitureComponent[];
+        let filteredComponentByGroup: FurnitureComponent[] = components;
         if (selectedComponent.componentType.isBase) {
             filteredComponentByGroup = components;
         } else {
@@ -78,7 +78,7 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
 
         return filteredComponentByGroup;
     }
-    
+
     componentDidUpdate(prevProps: ThreeComponentListProps) {
         if (this.props.selectedComponentHeight !== prevProps.selectedComponentHeight) {
             const filteredCOmponents = this.getFilteredComponents();
