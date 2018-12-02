@@ -18,6 +18,9 @@ const Item: React.ComponentType<ItemProps> = styled.div`
     transition: all .3s;
     opacity: ${(props: ItemProps) => props.isSelected ? 1 : 0.5};
     cursor: pointer;
+    &:hover {
+        opacity: .8;
+    }
 `;
 
 const ThumbnailWrapper = styled.div`

@@ -28,7 +28,6 @@ const ThumbnailWrapper: React.ComponentType<ItemProps> = styled.div`
     cursor: pointer;
     transition: all .3s;
     height: 220px;
-    overflow: hidden;
     background: #4B4B4B;
     &:hover {
         opacity: 1;

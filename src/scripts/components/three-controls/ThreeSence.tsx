@@ -92,7 +92,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
                         height: productType.view_senceHeight
                     }}
                 />
-                <SenceComponentVariantFilter/>
+                <SenceComponentVariantFilter />
             </div>
         );
     }
@@ -177,6 +177,10 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
 
     readonly callbackOnLoadObj = (productModule: ProductModule, materials: Material[]) => (event) => {
         const root = event.detail.loaderRootNode;
+
+        const { component } = productModule;
+        const componentScale = component.scale ? component.scale * 0.1 : 0.1;
+
         for (const child of root.children) {
             // if child has multi material, we need set child's material to first material in the list
             if (Array.isArray(child.material)) {
@@ -193,10 +197,10 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
             }
             child.castShadow = true;
             child.receiveShadow = true;
-            child.scale.set(0.1, 0.1, 0.1);
+            child.scale.set(componentScale, componentScale, componentScale);
         }
 
-        root.name = productModule.component.id;
+        root.name = component.id;
 
         this.scene.add(root);
         this.loaded3DComponents.push(root);

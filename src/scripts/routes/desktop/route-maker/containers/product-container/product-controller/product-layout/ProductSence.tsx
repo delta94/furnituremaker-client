@@ -50,7 +50,7 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
         return (
             <div style={{ height: '100%' }} data-sticky-container={true}>
                 <div className="sticky">
-                    <div style={{ paddingTop: 120 }}>
+                    <div style={{ paddingTop: 80 }}>
                         <ThreeSence
                             onObjectSelect={this.onObjectSelect}
                             selectedObject={selectedObject}

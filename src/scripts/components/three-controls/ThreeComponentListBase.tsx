@@ -151,6 +151,11 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
         return filteredComponents.findIndex(o => o.id === component.id);
     }
 
+    readonly getComponentScale = (component: FurnitureComponent) => {
+        const { scale } = component;
+        return scale ? scale * 0.1 : 0.1;
+    }
+
     onComponentSelect(targetComponent: FurnitureComponent) {
         const {
             allComponents,
@@ -185,6 +190,7 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
         const objLoader = new THREE.OBJLoader2();
         const callbackOnLoad = (event) => {
             const child = selectedObject.children[0] as THREE.Mesh;
+            const componentScale = this.getComponentScale(targetComponent);
 
             for (const mesh of event.detail.loaderRootNode.children) {
                 mesh.castShadow = true;
@@ -288,10 +294,12 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
         objLoader.load(objFile, (event) => {
             const child = oldObj.children[0] as THREE.Mesh;
 
+            const componentScale = this.getComponentScale(newComponent);
+
             for (const mesh of event.detail.loaderRootNode.children) {
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
-                mesh.scale.set(0.1, 0.1, 0.1);
+                mesh.scale.set(componentScale, componentScale, componentScale);
                 mesh.material = child.material;
             }
             event.detail.loaderRootNode.name = newComponent.id;
