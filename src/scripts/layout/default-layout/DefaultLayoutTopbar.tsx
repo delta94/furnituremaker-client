@@ -50,6 +50,9 @@ export class DefaultLayoutTopbar extends React.Component {
                             <Link to="/orders" className="link">
                                 Đơn hàng
                             </Link>
+                            <Link to="/library" className="link">
+                                Thư viện vật liệu FM
+                            </Link>
                         </Menu>
                     </DefaultLayoutTopbarContent>
                 </Container>
