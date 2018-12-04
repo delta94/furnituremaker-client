@@ -45,9 +45,9 @@ class ThreeMaterialListComponent extends ThreeMaterialListBase {
                     >
                         <AntdList
                             dataSource={materials}
-                            grid={{ gutter: 16, column: 4 }}
+                            grid={{ gutter: 16, column: 6 }}
                             pagination={{
-                                pageSize: 8,
+                                pageSize: 12,
                                 simple: true,
                                 style: { textAlign: 'center' }
                             }}

@@ -13,7 +13,7 @@ const ModalWrapper: ModalWrapperType = styled.div`
     display: flex;
     justify-content:center;
     align-items: center;
-    z-index: 9;
+    z-index: 99;
     overflow: auto;
     transition: visibility 0s, opacity 0.5s;
     visibility : ${(props: ModalWrapperProps) => props.visibled ? 'visible' : 'hidden'};

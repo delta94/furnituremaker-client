@@ -1,9 +1,17 @@
 import List from 'antd/lib/list';
+import { number } from 'prop-types';
 import * as React from 'react';
 import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
-import { AntdCard, Img } from '@/components';
+import {
+    AntdCard,
+    AntdCol,
+    AntdRow,
+    Container,
+    FullScreenModal,
+    Img
+} from '@/components';
 import { CommonStoreProps } from '@/configs';
 import {
     FurnitureMaterial,
@@ -20,11 +28,28 @@ const MetarialListWrapper = styled.div`
     .ant-list {
         width: 100%;
     }
+    .material-info {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        &-header {
+            text-transform: uppercase;
+        }
+        &-spec {
+            color: gray;
+            font-size: 13px;
+        }
+        &-description {
+            color: black;
+        }
+    }
 `;
 
 const MaterialItem = styled.div`
     display: block;
     .ant-card {
+        cursor: pointer;
         &-body {
             padding: 16px 8px;
         }
@@ -45,8 +70,13 @@ export interface MetarialListProps extends WithMaterialProps {
 @withStoreValues<CommonStoreProps>('selectedMaterialType')
 @withMaterialsByType()
 export class MetarialList extends React.PureComponent<MetarialListProps> {
+    readonly state: {
+        readonly selectedMaterial?: FurnitureMaterial
+    } = {};
+
     public render() {
         const { materials } = this.props;
+        const { selectedMaterial } = this.state;
         const filteredMaterials = materials.filter(o => !o.hideInLibrary);
 
         return (
@@ -59,7 +89,7 @@ export class MetarialList extends React.PureComponent<MetarialListProps> {
                     renderItem={(material: FurnitureMaterial) => {
                         return (
                             <List.Item key={material.id}>
-                                <MaterialItem>
+                                <MaterialItem onClick={() => this.setState({ selectedMaterial: material })}>
                                     <AntdCard
                                         cover={<Img file={material.texture} />}
                                     >
@@ -79,6 +109,39 @@ export class MetarialList extends React.PureComponent<MetarialListProps> {
                         );
                     }}
                 />
+                {
+                    selectedMaterial && (
+                        <FullScreenModal
+                            visibled={true}
+                            onClose={() => this.setState({ selectedMaterial: null })}
+                        >
+                            <Container>
+                                <AntdRow type="flex" gutter={30}>
+                                    <AntdCol span={8}>
+                                        <div>
+                                            <Img className="mw-100 w-100" file={selectedMaterial.texture} />
+                                        </div>
+                                    </AntdCol>
+                                    <AntdCol span={12}>
+                                        <div className="material-info">
+                                            <h2 className="material-info-header">
+                                                {selectedMaterial.displayName || selectedMaterial.name}
+                                            </h2>
+                                            <p className="material-info-spec">
+                                                Loại: {selectedMaterial.materialType.name}
+                                                <br />
+                                                Giá: {formatCurrency(selectedMaterial.price)}
+                                            </p>
+                                            <p className="material-info-description">
+                                                {selectedMaterial.description || 'Không có mô tả'}
+                                            </p>
+                                        </div>
+                                    </AntdCol>
+                                </AntdRow>
+                            </Container>
+                        </FullScreenModal>
+                    )
+                }
             </MetarialListWrapper>
         );
     }
