@@ -47,10 +47,12 @@ export interface MetarialListProps extends WithMaterialProps {
 export class MetarialList extends React.PureComponent<MetarialListProps> {
     public render() {
         const { materials } = this.props;
+        const filteredMaterials = materials.filter(o => !o.hideInLibrary);
+
         return (
             <MetarialListWrapper>
                 <List
-                    dataSource={materials}
+                    dataSource={filteredMaterials}
                     grid={{
                         gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6,
                     }}

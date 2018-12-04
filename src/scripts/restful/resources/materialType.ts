@@ -11,6 +11,7 @@ export interface MaterialType extends Record {
     readonly materials?: FurnitureMaterial[];
     readonly view_normalMap: UploadFile;
     readonly view_shiny?: number;
+    readonly hideInLibrary?: boolean;
 }
 
 export const materialTypeResourceType = new ResourceType<MaterialType>({

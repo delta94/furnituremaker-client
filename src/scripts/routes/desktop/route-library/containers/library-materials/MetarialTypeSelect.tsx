@@ -25,15 +25,19 @@ export interface MetarialTypeSelectProps extends
 export class MetarialTypeSelect extends React.PureComponent<MetarialTypeSelectProps> {
     public render() {
         const { materialTypes, setStore } = this.props;
+        const filteredMaterialTypes = materialTypes.filter(o => !o.hideInLibrary);
+
         return (
             <MetarialTypeSelectWrapper>
                 <AntdSelect
                     placeholder="Chọn loại vật liệu"
                     onSelect={(value) =>
-                        setStore<CommonStoreProps>({ selectedMaterialType: materialTypes.find(o => o.id === value) })
+                        setStore<CommonStoreProps>({
+                            selectedMaterialType: filteredMaterialTypes.find(o => o.id === value)
+                        })
                     }
                 >
-                    {materialTypes.map(o => {
+                    {filteredMaterialTypes.map(o => {
                         return (
                             <AntdSelect.Option key={o.id} value={o.id}>
                                 {o.name}
