@@ -27,10 +27,6 @@ export const furnitureMaterialResouceType = new ResourceType<FurnitureMaterial>(
     schema: [{
         field: 'id',
         type: 'PK'
-    }, {
-        field: nameof<FurnitureMaterial>(o => o.materialType),
-        resourceType: 'materialtype',
-        type: 'FK'
     }]
 });
 
@@ -41,10 +37,6 @@ export const furnitureMaterialResources = {
         method: 'GET',
         mapDataToStore: (items, resourceType, store) => {
             for (const item of items) {
-                if (!item.materialType) {
-                    continue;
-                }
-                
                 store.dataMapping(resourceType, item);
             }
         }
@@ -74,7 +66,7 @@ export const withMaterialsByType = <T extends Required<WithMaterialByTypeOwnProp
                 };
             }
             return {
-                materials: data.filter(o => o.materialType.id === selectedMaterialType.id)
+                materials: data.filter(o => o.materialType && o.materialType.id === selectedMaterialType.id)
             };
         }
     });

@@ -101,15 +101,22 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
             }
             return uploadedFileUtils.getUrl(material.texture) === objectMaterial.map.image.src;
         });
-        const selectedComponent = components.find(o => o.id === object.name);
 
+        const selectedComponent = components.find(o => o.id === object.name);
+        let selectedMaterialType = selectedMaterial.materialType;
+        if (!selectedMaterialType) {
+            selectedMaterialType = selectedComponent.materialTypes[0];
+        }
         return this.props.setStore<ProductSenceProps>({
             materials: [],
             selectedObject: object,
-            selectedMaterial: selectedMaterial,
+            selectedMaterial: {
+                ...selectedMaterial,
+                materialType: selectedMaterialType
+            },
             components: sameTypeComponents,
             allComponents: components,
-            selectedMaterialType: selectedMaterial.materialType,
+            selectedMaterialType: selectedMaterialType,
             selectedComponent: selectedComponent
         });
     }

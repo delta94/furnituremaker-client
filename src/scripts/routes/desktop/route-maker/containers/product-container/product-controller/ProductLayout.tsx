@@ -7,6 +7,8 @@ import { CommonStoreProps } from '@/configs';
 import {
     FurnitureComponentType,
     productUtils,
+    WithMaterialProps,
+    withMaterials,
     WithMaterialTypesProps
 } from '@/restful';
 
@@ -20,13 +22,15 @@ const ProductLayoutContent = styled.div`
 interface ProductLayoutProps extends
     CommonStoreProps,
     WithMaterialTypesProps,
+    WithMaterialProps,
     Pick<ProductInfoProps, 'showDesignModal'> {
     readonly furnitureComponentTypes: FurnitureComponentType[];
 }
 
+@withMaterials()
 @withStoreValues(
     nameof<CommonStoreProps>(o => o.selectedProductType),
-    nameof<ProductLayoutProps>(o => o.selectedProduct),
+    nameof<ProductLayoutProps>(o => o.selectedProduct)
 )
 export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
     constructor(props: ProductLayoutProps) {
@@ -37,7 +41,7 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
                 props.selectedProductDesign,
                 props.selectedProductType,
                 props.furnitureComponentTypes,
-                props.materialTypes
+                props.materials
             );
 
             const selectedComponentGroup = productUtils.getComponentGroup(defaultProduct);

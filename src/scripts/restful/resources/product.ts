@@ -88,7 +88,7 @@ export const productUtils = {
         design: ProductDesign,
         productType: ProductType,
         furnitureComponentTypes: FurnitureComponentType[],
-        materialTypes: MaterialType[]
+        materials: FurnitureMaterial[]
     ): ProductExtended => {
         let defaultGroup;
 
@@ -106,24 +106,21 @@ export const productUtils = {
                 furnitureComponentType.components
                     .find(o => o.isDefault === true) || furnitureComponentType.components[0];
 
-            const defaultComponentMaterialType = defaultComponent.materialTypes[0];
-
             if (defaultGroup === undefined) {
                 defaultGroup = defaultComponent.componentGroup;
             } else {
                 defaultGroup = null;
             }
-
-            const defaultMaterialType = defaultComponentMaterialType &&
-                materialTypes.find(o => o.id === defaultComponentMaterialType.id);
-
-            const defaultMaterial = defaultMaterialType &&
-                materialTypeUtils.getDefaultMaterial(defaultMaterialType);
+            const filteredMaterials = materials.filter(o => o.materialType === null);
+            const defaultMaterial = filteredMaterials.find(o => o.code === '999');
 
             return {
                 component: defaultComponent,
                 componentPrice: defaultComponent.price,
-                material: defaultMaterial,
+                material: {
+                    ...defaultMaterial,
+                    materialType: defaultComponent.materialTypes[0]
+                },
                 materialPrice: defaultMaterial ? defaultMaterial.price : 0
             };
         });

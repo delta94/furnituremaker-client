@@ -17,7 +17,8 @@ import {
     OrderDetail,
     ProductDiscount,
     productDiscountUtils,
-    ProductExtended
+    ProductExtended,
+    productUtils
 } from '@/restful';
 import { formatCurrency } from '@/utilities';
 
@@ -28,7 +29,7 @@ const FormBody = styled.div`
 `;
 
 const FormActions = styled.div`
-    text-align: right;
+    text-align: left;
 `;
 
 const PriceAfterDiscount = styled.div`
@@ -317,12 +318,10 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                 </FormBody>
                 <FormActions>
                     <AntdRow>
-                        <AntdCol span={24} lg={12}>
-                            <Field
-                                name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
-                                component={this.renderSubmitButton}
-                            />
-                        </AntdCol>
+                        <Field
+                            name={nameof.full<AddToCartFormValues>(o => o.selectQuantity)}
+                            component={this.renderSubmitButton}
+                        />
                     </AntdRow>
                 </FormActions>
             </Form>
@@ -330,7 +329,14 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
     }
 
     readonly renderSubmitButton = () => {
-        const { submitting } = this.props;
+        const { submitting, product } = this.props;
+
+        const code = productUtils.getProductModulesCode(product);
+        const disabled = code.includes('999');
+
+        if (disabled) {
+            return <i>Vui lòng chọn vật liệu trước khi thêm vào giỏ</i>;
+        }
 
         return (
             <AntdButton
@@ -339,7 +345,7 @@ class AddProductToCartFormComponent extends React.Component<AddProductToCartForm
                 type="primary"
                 htmlType="submit"
             >
-                {`Thêm vào giỏ`}
+                Thêm vào giỏ
             </AntdButton>
         );
     }
