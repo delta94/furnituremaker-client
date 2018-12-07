@@ -32,7 +32,7 @@ const LoginWrapper = styled.div`
 
 const LoginContent = styled.div`
     width: 100%;
-    max-width: 340px;
+    max-width: 360px;
 `;
 
 const LoginExtends = styled.div`
