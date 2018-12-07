@@ -20,10 +20,6 @@ export const materialTypeResourceType = new ResourceType<MaterialType>({
     schema: [{
         field: 'id',
         type: 'PK'
-    }, {
-        type: 'MANY',
-        field: nameof<MaterialType>(o => o.materials),
-        resourceType: 'material'
     }]
 });
 

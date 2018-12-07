@@ -77,7 +77,7 @@ export class MetarialList extends React.PureComponent<MetarialListProps> {
     public render() {
         const { materials } = this.props;
         const { selectedMaterial } = this.state;
-        const filteredMaterials = materials.filter(o => !o.hideInLibrary);
+        const filteredMaterials = materials.filter(o => !o.hideInLibrary && o.materialType);
 
         return (
             <MetarialListWrapper>
