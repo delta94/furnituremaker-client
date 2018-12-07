@@ -48,7 +48,7 @@ export function LoginHeader() {
             <LoginLogo src="/static/assets/logo.svg" />
             <LoginSiteDescription>
                 <LoginBranchName>Furniture Maker</LoginBranchName>
-                <LoginBranchSlogan>Chọn mua sofa theo phong cách riêng của bạn</LoginBranchSlogan>
+                <LoginBranchSlogan>Chọn mua furniture theo phong cách riêng của bạn</LoginBranchSlogan>
             </LoginSiteDescription>
         </LoginHeaderWrapper>
     );
