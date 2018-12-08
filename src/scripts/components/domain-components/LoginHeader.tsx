@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { mobileSize } from '@/configs';
 
 const LoginHeaderWrapper = styled.div`
-    max-width: 380px;
+    max-width: 387px;
     margin-bottom: 25px;
     @media screen and (max-width: ${mobileSize}px) {
         text-align: center;

@@ -62,7 +62,7 @@ export function DefaultLayoutFooter() {
                             <ul className="page-menu">
                                 <li>
                                     <Link to="/pages/chinh-sach-bao-hanh">
-                                        Vảo hành
+                                        Bảo hành
                                     </Link>
                                 </li>
                                 <li>
