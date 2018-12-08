@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Router, Switch } from 'react-router';
 
-import { route, withStoreValues } from '@/app';
-import { CommonStoreProps } from '@/configs';
+import { route } from '@/app';
 import {
     RouteAccountVeriryLoadable,
     RouteAddressBookLoadable,
@@ -17,6 +16,7 @@ import {
     RouteNotificationLoadable,
     RouteOrderDetailLoadable,
     RouteOrdersLoadable,
+    RoutePagesLoadable,
     RouteProductLoadable,
     RouteProfileLoadable,
     RouteRegisterLoadable,
@@ -42,7 +42,8 @@ const appRoutes = [
     RouteFavoriteProductLoadable,
     RouteRegisterSuccessLoadable,
     RouteResetPasswordLoadable,
-    RouteLibraryLoadable
+    RouteLibraryLoadable,
+    RoutePagesLoadable
 ];
 
 export const DesktopRoot = ({ history }) => {

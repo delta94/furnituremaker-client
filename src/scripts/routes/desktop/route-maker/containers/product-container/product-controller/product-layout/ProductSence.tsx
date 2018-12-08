@@ -33,16 +33,12 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
     // tslint:disable-next-line:readonly-keyword
     sticky: Sticky;
 
-    readonly state: {
-        readonly affix: boolean;
-        readonly staticTop: number;
-    } = {
-            affix: true,
-            staticTop: 0
-        };
-
     componentDidMount() {
         this.sticky = new Sticky('.sticky');
+    }
+
+    componentWillUnmount() {
+        this.sticky.destroy();
     }
 
     render() {
@@ -50,7 +46,7 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
         return (
             <div style={{ height: '100%' }} data-sticky-container={true}>
                 <div className="sticky">
-                    <div style={{ paddingTop: 80 }}>
+                    <div style={{ paddingTop: 150 }}>
                         <ThreeSence
                             onObjectSelect={this.onObjectSelect}
                             selectedObject={selectedObject}

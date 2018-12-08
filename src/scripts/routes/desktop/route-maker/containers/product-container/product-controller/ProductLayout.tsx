@@ -11,6 +11,13 @@ import {
     withMaterials,
     WithMaterialTypesProps
 } from '@/restful';
+import {
+    ProductDetailSectionLablel
+} from '@/routes/desktop/route-product/containers/product-container';
+import {
+    InventoryProductPhotos,
+    ProductTypeInfo
+} from '@/routes/desktop/route-product/containers/product-container/product-detail';
 
 import { ProductInfo, ProductInfoProps, ProductSence } from './product-layout';
 
@@ -62,7 +69,7 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
         return (
             <Container id="senceContainer">
                 <ProductLayoutContent>
-                    <AntdRow type="flex">
+                    <AntdRow type="flex" style={{ marginBottom: 60 }}>
                         <AntdCol span={15}>
                             <ProductSence
                                 product={selectedProduct}
@@ -75,6 +82,11 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
                             />
                         </AntdCol>
                     </AntdRow>
+                    <ProductDetailSectionLablel>
+                        Xem thông số kỹ thuật
+                    </ProductDetailSectionLablel>
+                    <ProductTypeInfo />
+                    <InventoryProductPhotos />
                 </ProductLayoutContent>
             </Container>
         );

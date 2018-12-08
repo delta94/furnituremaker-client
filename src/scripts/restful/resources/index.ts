@@ -12,6 +12,7 @@ export * from './materialType';
 export * from './order';
 export * from './orderDetail';
 export * from './orderTransaction';
+export * from './page';
 export * from './product';
 export * from './productDesign';
 export * from './productDesignGroup';
