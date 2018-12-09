@@ -255,7 +255,7 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
 
                 return {
                     material: nextMaterial,
-                    materialPrice: nextMaterial.price,
+                    materialPrice: nextMaterial ? nextMaterial.price : 0 ,
                     component: nextComponent,
                     componentPrice: nextComponent.price
                 };

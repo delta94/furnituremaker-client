@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Sticky from 'sticky-js';
+import styled from 'styled-components';
 
 import { withStoreValues } from '@/app';
 import { ThreeMaterialListProps, ThreeSence } from '@/components';
@@ -13,6 +14,14 @@ import {
     WithMaterialProps,
     withMaterials
 } from '@/restful';
+
+const ProductSenceWrapper = styled.div`
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+`;
 
 interface ProductSenceProps extends
     CommonStoreProps,
@@ -34,40 +43,38 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
     sticky: Sticky;
 
     componentDidMount() {
-        this.sticky = new Sticky('.sticky');
+        // this.sticky = new Sticky('.sticky');
     }
 
     componentWillUnmount() {
-        this.sticky.destroy();
+        // this.sticky.destroy();
     }
 
     render() {
         const { setStore, selectedProduct, selectedObject, product } = this.props;
         return (
-            <div style={{ height: '100%' }} data-sticky-container={true}>
-                <div className="sticky">
-                    <div style={{ paddingTop: 150 }}>
-                        <ThreeSence
-                            onObjectSelect={this.onObjectSelect}
-                            selectedObject={selectedObject}
-                            productModules={product.modules}
-                            productType={selectedProduct.productType}
-                            setSence={(threeScreen) => {
-                                setStore({
-                                    [nameof<CommonStoreProps>(o => o.product3Dsence)]: threeScreen
-                                });
-                            }}
-                        />
-                        <SenceProductInfo
-                            selectedObject={selectedObject}
-                        />
-                    </div>
-                </div>
-            </div>
+            <ProductSenceWrapper>
+                <ThreeSence
+                    onObjectSelect={this.onObjectSelect}
+                    selectedObject={selectedObject}
+                    productModules={product.modules}
+                    productType={selectedProduct.productType}
+                    setSence={(threeScreen) => {
+                        setStore({
+                            [nameof<CommonStoreProps>(o => o.product3Dsence)]: threeScreen
+                        });
+                    }}
+                />
+                <SenceProductInfo
+                    selectedObject={selectedObject}
+                />
+            </ProductSenceWrapper>
         );
     }
 
     readonly onObjectSelect = (object: THREE.Group) => {
+        // this.sticky.destroy();
+
         if (!object) {
             return this.props.setStore({
                 materials: [],
@@ -103,6 +110,9 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
         if (!selectedMaterialType) {
             selectedMaterialType = selectedComponent.materialTypes[0];
         }
+
+        // this.sticky = new Sticky('.sticky');
+
         return this.props.setStore<ProductSenceProps>({
             materials: [],
             selectedObject: object,

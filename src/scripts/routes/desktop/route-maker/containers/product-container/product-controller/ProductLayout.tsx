@@ -69,7 +69,7 @@ export class ProductLayout extends React.PureComponent<ProductLayoutProps> {
         return (
             <Container id="senceContainer">
                 <ProductLayoutContent>
-                    <AntdRow type="flex" style={{ marginBottom: 60 }}>
+                    <AntdRow type="flex" style={{ marginBottom: 24 }}>
                         <AntdCol span={15}>
                             <ProductSence
                                 product={selectedProduct}

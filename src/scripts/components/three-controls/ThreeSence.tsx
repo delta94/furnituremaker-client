@@ -78,7 +78,7 @@ export class ThreeSence extends ThreeSenceBase<ThreeSenceProps> {
         const { productType } = this.props;
 
         return (
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
                 {!this.state.loaded &&
                     <Overlay>
                         <AntdSpin />
