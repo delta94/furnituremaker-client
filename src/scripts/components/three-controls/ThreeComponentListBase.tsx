@@ -233,16 +233,18 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
                         return false;
                     });
 
-                    product3Dsence.scene.traverse(o => {
-                        if (o.name === oldComponent) {
-                            this.loadNewComponentObj(o as THREE.Group, nextComponent);
-                        }
-                    });
+                    if (nextComponent) {
+                        product3Dsence.scene.traverse(o => {
+                            if (o.name === oldComponent) {
+                                this.loadNewComponentObj(o as THREE.Group, nextComponent);
+                            }
+                        });
+                    }
                 }
 
                 let nextMaterial = productModule.material;
                 let diff = nextComponent.materialTypes.find(o =>
-                    o.id === productModule.material.materialType.id
+                    o.id === (nextMaterial && nextMaterial.materialType.id)
                 );
 
                 if (!diff) {
@@ -255,7 +257,7 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
 
                 return {
                     material: nextMaterial,
-                    materialPrice: nextMaterial ? nextMaterial.price : 0 ,
+                    materialPrice: nextMaterial ? nextMaterial.price : 0,
                     component: nextComponent,
                     componentPrice: nextComponent.price
                 };

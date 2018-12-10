@@ -30,6 +30,8 @@ class ThreeMaterialListComponent extends ThreeMaterialListBase {
         } = this.props;
         const { loading, nextSelectMaterial } = this.state;
 
+        const selectedMaterialId = (selectedMaterial && selectedMaterial.id);
+
         return (
             <div className="three-material-list">
                 <AntdTabs
@@ -52,7 +54,7 @@ class ThreeMaterialListComponent extends ThreeMaterialListBase {
                                 style: { textAlign: 'center' }
                             }}
                             renderItem={(material: FurnitureMaterial) => {
-                                const isSelected = (selectedMaterial.id === material.id);
+                                const isSelected = (selectedMaterialId === material.id);
                                 const isNextSelected = nextSelectMaterial && (nextSelectMaterial.id === material.id);
 
                                 return (
