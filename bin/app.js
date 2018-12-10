@@ -31,7 +31,7 @@ app.get('*.css', encodeResToGzip('text/css'));
 
 app.use('/static', express.static(publicFolder));
 
-app.use(function () {
+app.use(function (req, res) {
   res.sendFile('index.html', { root: publicFolder });
 });
 
