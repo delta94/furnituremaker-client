@@ -1,11 +1,11 @@
-FROM node:8
+FROM node:carbon
 
 WORKDIR /usr/src/app
 
-RUN npm install
-
 COPY . .
 
-EXPOSE 8080
+RUN npm install
 
-CMD [ "npm", "start" ]
+EXPOSE 3000
+
+CMD ["npm", "start"]

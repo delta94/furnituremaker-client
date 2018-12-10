@@ -6,9 +6,7 @@ const fs = require('fs');
 
 const app = express();
 
-const staticCacheAge = 2592000000;    // 1 month cache!
-const publicFolder = path.join(__dirname, 'static')
-app.use('/static', express.static(publicFolder));
+const publicFolder = path.join(__dirname, 'static');
 
 const encodeResToGzip = contentType => (req, res, next) => {
   const gzFile = req.url + '.gz';
@@ -20,16 +18,22 @@ const encodeResToGzip = contentType => (req, res, next) => {
   req.url = gzFile;
   res.set('Content-Encoding', 'gzip');
   res.set('Content-Type', contentType);
-  res.set('Cache-Control', `public, max-age=${staticCacheAge}`);
   res.sendFile(req.url, { root: __dirname });
 };
 
-app.get("*.js", encodeResToGzip('text/javascript'));
-app.get("*.css", encodeResToGzip('text/css'));
+app.get('*/service-worker.js', function (req, res) {
+  res.set('Service-Worker-Allowed', '/');
+  res.sendFile(req.url, { root: __dirname });
+});
 
-app.all('/*', function (req, res) {
+app.get('*.js', encodeResToGzip('text/javascript'));
+app.get('*.css', encodeResToGzip('text/css'));
+
+app.use('/static', express.static(publicFolder));
+
+app.use(function () {
   res.sendFile('index.html', { root: publicFolder });
-})
+});
 
 app.set('port', process.env.PORT || 3000);
 

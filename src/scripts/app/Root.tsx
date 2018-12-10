@@ -3,8 +3,6 @@ import './Root.scss';
 import { createBrowserHistory, History } from 'history';
 import * as React from 'react';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
-import { Switch } from 'react-router-dom';
 import { AnyAction, Store } from 'redux';
 
 import { queryNotifications } from '@/firebase/firebaseNotificationDB';
@@ -12,8 +10,8 @@ import {
     Agency,
     agencyResources,
     discountByQuantitiesResources,
-    FurnitureMaterial,
     furnitureMaterialResources,
+    materialTypeResources,
     OrderDetail,
     orderDetailResources,
     orderDetailUtils,
@@ -77,10 +75,10 @@ export class Root extends React.Component<RootProps> {
                 return user;
             })
             .then(this.appInit)
-            .then((user) => {
-                notificationSubscriber(store, this.authHelper.currentUser);
-                changeAppStateToReady(store);
-            });
+            .then(() => {
+                    notificationSubscriber(store, this.authHelper.currentUser);
+                    changeAppStateToReady(store);
+                });
     }
 
     render() {
@@ -115,6 +113,7 @@ export class Root extends React.Component<RootProps> {
                         value: 999
                     }]
                 ),
+                restfulFetcher.fetchResource(materialTypeResources.find),
                 restfulFetcher.fetchResource(productTypeResources.find, []),
                 restfulFetcher.fetchResource(discountByQuantitiesResources.find, []),
                 restfulFetcher.fetchResource(productDiscountResources.find, [{

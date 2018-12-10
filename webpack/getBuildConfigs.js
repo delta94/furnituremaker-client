@@ -49,14 +49,14 @@ module.exports = function getBuildConfig(options) {
         template: 'src/index.html',
         inject: 'body'
     }));
-    
+
     plugins.push(new CopyWebpackPlugin([
         { from: './static' },
     ]));
 
     if (options.compression) {
         plugins.push(new CompressionPlugin({
-            test: /\.(js|css)/,
+            test: /\.(js$|css)/,
             exclude: /\.map/,
             deleteOriginalAssets: true,
             cache: true
@@ -64,8 +64,15 @@ module.exports = function getBuildConfig(options) {
     }
 
     plugins.push(new WorkboxPlugin.GenerateSW({
+        navigateFallback: '/static/index.html',
+        runtimeCaching: [
+            {
+                urlPattern: /\.*/,
+                handler: 'networkFirst'
+            }
+        ],
         clientsClaim: true,
-        skipWaiting: true
+        skipWaiting: true,
     }));
 
     return ({
