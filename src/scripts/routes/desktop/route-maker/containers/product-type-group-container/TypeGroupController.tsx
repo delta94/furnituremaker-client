@@ -50,11 +50,6 @@ export class TypeGroupController extends React.Component<TypeGroupControllerProp
                     });
                 }}
                 onProductTypeGroupHover={(productTypeGroup: ProductTypeGroup) => {
-                    const onlyATypeInGroup = (productTypeGroup.productTypes.length <= 1);
-                    if (onlyATypeInGroup) {
-                        return;
-                    }
-
                     if (leaveProductTypeGroupTimeout) {
                         clearTimeout(leaveProductTypeGroupTimeout);
                         setStore<TypeGroupControllerProps>({

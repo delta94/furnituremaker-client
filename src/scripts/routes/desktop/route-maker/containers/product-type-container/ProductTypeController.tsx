@@ -51,6 +51,10 @@ export class ProductTypeController extends React.PureComponent<ProductTypeContai
             setStore
         } = this.props;
 
+        if (productTypes.length <= 1) {
+            return null;
+        }
+        
         return (
             <ProductTypeList
                 productTypes={productTypes}
