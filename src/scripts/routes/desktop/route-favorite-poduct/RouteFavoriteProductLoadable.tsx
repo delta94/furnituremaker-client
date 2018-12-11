@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Loadable from 'react-loadable';
 
 export const RouteFavoriteProductLoadable = Loadable({
-    loader: () => import(/* webpackPrefetch: true */ './RouteFavoriteProduct').then(o => o.RouteFavoriteProduct),
+    loader: () => import(/* webpackPreload: true */ './RouteFavoriteProduct').then(o => o.RouteFavoriteProduct),
     loading: () => <div>Loading...</div>
 });
 

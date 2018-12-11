@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Loadable from 'react-loadable';
 
 export const RouteHomeLoadable = Loadable({
-    loader: () => import(/* webpackPrefetch: true */ './RouteHome').then(o => o.RouteHome),
+    loader: () => import(/* webpackPreload: true */ './RouteHome').then(o => o.RouteHome),
     loading: () => <div>Loading...</div>
 });
 

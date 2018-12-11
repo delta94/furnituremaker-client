@@ -30,18 +30,16 @@ export class RegisterFormControl extends React.PureComponent<RegisterFormControl
         let error: string;
         if (!values.fullName) {
             error = 'Vui lòng cho biết tiên của bạn';
+        } else if (!values.phone) {
+            error = 'Vui lòng nhập số điện thoại';
         } else if (!values.email) {
             error = 'Vui lòng nhập Email';
-        } else if (!values.email) {
-            error = 'Vui lòng nhập số điện thoại';
-        } else if (!values.username) {
-            error = 'Vui lòng nhập tên đăng nhập';
         } else if (!values.password) {
             error = 'Vui lòng nhập mật khẩu';
         } else if (values.password !== values.rePassword) {
             error = 'Mật khẩu không trùng khớp';
         }
-
+        
         if (error) {
             throw new SubmissionError({ _error: error });
         }
@@ -51,7 +49,10 @@ export class RegisterFormControl extends React.PureComponent<RegisterFormControl
                 userResources.register,
                 [{
                     type: 'body',
-                    value: values
+                    value: {
+                        ...values,
+                        username: values.email
+                    }
                 }]
             );
 

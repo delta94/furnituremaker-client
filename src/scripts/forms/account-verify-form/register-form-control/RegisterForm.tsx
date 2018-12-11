@@ -16,7 +16,7 @@ import { BussinessLicenseField } from './register-form';
 
 const AccountVerifyFormControlWrapper = styled.div`
     width: 100%;
-    max-width: 340px;
+    max-width: 387px;
     .ant-form-item {
         margin-bottom: 10px;
     }

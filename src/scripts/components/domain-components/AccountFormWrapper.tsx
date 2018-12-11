@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const AccountFormWrapper = styled.div`
     width: 100%;
-    max-width: 340px;
+    max-width: 387px;
     .ant-form-item {
         margin-bottom: 10px;
     }

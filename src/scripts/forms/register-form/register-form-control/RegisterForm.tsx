@@ -39,15 +39,6 @@ class RegisterFormComponent extends React.PureComponent<
                     }}
                 />
                 <Field
-                    name={nameof<RegisterFormValue>(o => o.email)}
-                    component={renderInput}
-                    inputProps={{
-                        placeholder: 'Email',
-                        size: 'large',
-                        prefix: <AntdIcon type="mail" />
-                    }}
-                />
-                <Field
                     name={nameof<RegisterFormValue>(o => o.phone)}
                     component={renderInput}
                     inputProps={{
@@ -57,12 +48,12 @@ class RegisterFormComponent extends React.PureComponent<
                     }}
                 />
                 <Field
-                    name={nameof<RegisterFormValue>(o => o.username)}
+                    name={nameof<RegisterFormValue>(o => o.email)}
                     component={renderInput}
                     inputProps={{
-                        placeholder: 'Tên đăng nhập',
+                        placeholder: 'Email',
                         size: 'large',
-                        prefix: <AntdIcon type="user" />
+                        prefix: <AntdIcon type="mail" />
                     }}
                 />
                 <Field

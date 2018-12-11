@@ -4,7 +4,7 @@ import * as Loadable from 'react-loadable';
 export const getProfileRoutePath = () => '/profile';
 
 export const RouteProfileLoadable = Loadable({
-    loader: () => import(/* webpackPrefetch: true */ './RouteProfile').then(o => o.RouteProfile),
+    loader: () => import(/* webpackPreload: true */ './RouteProfile').then(o => o.RouteProfile),
     loading: () => <div>Loading...</div>
 });
 

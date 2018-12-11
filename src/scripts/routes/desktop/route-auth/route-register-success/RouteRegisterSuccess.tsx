@@ -6,8 +6,6 @@ import { AppPage, AppPageProps, Auth, PageProps, withStoreValues } from '@/app';
 import { LoginHeader, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
 
-import { RouteParams } from '../route-product/RouteProduct';
-
 const RegisterWrapper = styled.div`
     height: 100%;
     min-height: inherit;
@@ -28,7 +26,7 @@ const RegisterWrapper = styled.div`
 `;
 
 type RouteLoginProps = Pick<CommonStoreProps, 'setStore'> &
-    RouteComponentProps<RouteParams> &
+    RouteComponentProps<{}> &
     PageProps;
 
 @withStoreValues()

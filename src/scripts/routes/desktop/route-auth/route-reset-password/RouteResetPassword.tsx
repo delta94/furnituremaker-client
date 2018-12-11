@@ -5,10 +5,7 @@ import styled from 'styled-components';
 import { AppPage, AppPageProps, Auth, PageProps, withStoreValues } from '@/app';
 import { LoginHeader, Page } from '@/components';
 import { CommonStoreProps } from '@/configs';
-import { ForgotPasswordControl } from '@/forms/forgot-password';
 import { ResetPasswordControl } from '@/forms/reset-password';
-
-import { RouteParams } from '../route-product/RouteProduct';
 
 const ForgotPasswordWrapper = styled.div`
     height: 100%;
@@ -21,7 +18,7 @@ const ForgotPasswordWrapper = styled.div`
 `;
 
 type RouteLoginProps = Pick<CommonStoreProps, 'setStore'> &
-    RouteComponentProps<RouteParams> &
+    RouteComponentProps<{}> &
     PageProps;
 
 @withStoreValues()

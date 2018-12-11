@@ -2,12 +2,17 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import styled from 'styled-components';
 
-import { AppPage, AppPageProps, Auth, PageProps, withStoreValues } from '@/app';
+import {
+    AppPage,
+    AppPageProps,
+    Auth,
+    PageProps,
+    readyState,
+    withStoreValues
+} from '@/app';
 import { LoginHeader, Page } from '@/components';
-import { clearToken, CommonStoreProps } from '@/configs';
+import { CommonStoreProps } from '@/configs';
 import { AccountVerifyFormControl } from '@/forms/account-verify-form';
-
-import { RouteParams } from '../route-product/RouteProduct';
 
 const RegisterWrapper = styled.div`
     height: 100%;
@@ -20,9 +25,10 @@ const RegisterWrapper = styled.div`
 `;
 
 type RouteLoginProps = Pick<CommonStoreProps, 'setStore'> &
-    RouteComponentProps<RouteParams> &
+    RouteComponentProps<{}> &
     PageProps;
 
+@readyState()
 @withStoreValues()
 export class RouteAccountVerity extends AppPage<RouteLoginProps & AppPageProps> {
     render() {

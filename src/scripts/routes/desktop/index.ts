@@ -1,6 +1,5 @@
 export * from './route-home';
 export * from './route-library';
-export * from './route-login';
 export * from './route-orders';
 export * from './route-order-detail';
 export * from './route-maker';
@@ -11,9 +10,5 @@ export * from './route-landing';
 export * from './route-address-book';
 export * from './route-notification';
 export * from './route-favorite-poduct';
-export * from './route-register';
-export * from './route-account-verify';
-export * from './route-register-success';
-export * from './route-forgot-password';
-export * from './route-reset-password';
 export * from './route-pages';
+export * from './route-auth';
