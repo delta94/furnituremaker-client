@@ -244,7 +244,7 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
 
                 let nextMaterial = productModule.material;
                 let diff = nextComponent.materialTypes.find(o =>
-                    o.id === (nextMaterial && nextMaterial.materialType.id)
+                    o.id === (nextMaterial && nextMaterial.materialType && nextMaterial.materialType.id)
                 );
 
                 if (!diff) {
@@ -252,6 +252,13 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
                         furnitureMaterialResouceType,
                         // tslint:disable-next-line:no-any
                         (o) => (o.materialType as any) === nextComponent.materialTypes[0].id
+                    );
+                }
+
+                if (!nextMaterial) {
+                    nextMaterial = nextMaterial = restfulStore.findOneRecord(
+                        furnitureMaterialResouceType,
+                        (o) => o.code === '999'
                     );
                 }
 
