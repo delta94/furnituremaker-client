@@ -195,7 +195,7 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
             for (const mesh of event.detail.loaderRootNode.children) {
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
-                mesh.scale.set(0.1, 0.1, 0.1);
+                mesh.scale.set(componentScale, componentScale, componentScale);
                 mesh.material = child.material;
             }
 
