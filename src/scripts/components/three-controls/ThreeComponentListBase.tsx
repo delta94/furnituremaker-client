@@ -59,7 +59,8 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
             components,
             selectedComponentGroup,
             selectedComponentHeight,
-            selectedComponentDiameter
+            selectedComponentDiameter,
+            selectedComponentLengthinesss
         } = this.props;
 
         const selectedComponent = components.find(o => o.id === selectedObject.name);
@@ -87,6 +88,15 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
             }
         }
 
+        if (selectedComponentLengthinesss) {
+            const diameterFiltered = filteredComponentByGroup.filter(o =>
+                o.lengthiness === +selectedComponentLengthinesss
+            );
+            if (diameterFiltered.length) {
+                filteredComponentByGroup = diameterFiltered;
+            }
+        }
+
         return filteredComponentByGroup;
     }
 
@@ -94,12 +104,14 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
         const {
             selectedComponent,
             selectedComponentHeight,
-            selectedComponentDiameter
+            selectedComponentDiameter,
+            selectedComponentLengthinesss
         } = this.props;
 
         if (
             selectedComponentHeight !== prevProps.selectedComponentHeight ||
-            selectedComponentDiameter !== prevProps.selectedComponentDiameter
+            selectedComponentDiameter !== prevProps.selectedComponentDiameter ||
+            selectedComponentLengthinesss !== prevProps.selectedComponentLengthinesss
         ) {
             const filteredComponents = this.getFilteredComponents();
             const nextSelectComponent = filteredComponents[selectedComponent.variantIndex || 0];

@@ -25,6 +25,7 @@ interface SenceComponentVariantFilterProps extends
     Pick<CommonStoreProps, 'selectedComponent'>,
     Pick<CommonStoreProps, 'selectedComponentHeight'>,
     Pick<CommonStoreProps, 'selectedComponentDiameter'>,
+    Pick<CommonStoreProps, 'selectedComponentLengthinesss'>,
     Pick<ThreeComponentListProps, 'components'> {
 }
 
@@ -32,7 +33,8 @@ interface SenceComponentVariantFilterProps extends
     'components',
     'selectedComponent',
     'selectedComponentHeight',
-    'selectedComponentDiameter'
+    'selectedComponentDiameter',
+    'selectedComponentLengthinesss'
 )
 export class SenceComponentVariantFilter extends React.PureComponent<SenceComponentVariantFilterProps> {
     render() {
@@ -41,6 +43,7 @@ export class SenceComponentVariantFilter extends React.PureComponent<SenceCompon
             selectedComponent,
             selectedComponentHeight,
             selectedComponentDiameter,
+            selectedComponentLengthinesss,
             setStore
         } = this.props;
 
@@ -111,11 +114,11 @@ export class SenceComponentVariantFilter extends React.PureComponent<SenceCompon
                                 return (
                                     <div className="checkbox-wrapper" key={lengthinesss}>
                                         <AntdCheckbox
-                                            checked={selectedComponentDiameter === lengthinesss}
+                                            checked={selectedComponentLengthinesss === lengthinesss}
                                             value={lengthinesss}
                                             onChange={() => {
                                                 setStore({
-                                                    selectedComponentDiameter: lengthinesss || null
+                                                    selectedComponentLengthinesss: lengthinesss || null
                                                 });
                                             }}
                                         >

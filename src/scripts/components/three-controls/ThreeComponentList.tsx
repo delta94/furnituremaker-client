@@ -35,7 +35,8 @@ const ThreeComponentListWrapper = styled.div`
     'components',
     'allComponents',
     'selectedComponentHeight',
-    'selectedComponentDiameter'
+    'selectedComponentDiameter',
+    'selectedComponentLengthinesss'
 )
 export class ThreeComponentList extends ThreeComponentListBase {
     render() {
