@@ -154,7 +154,8 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
         setStore<ThreeComponentListProps>({
             selectedComponent: null,
             selectedComponentDiameter: null,
-            selectedComponentHeight: null
+            selectedComponentHeight: null,
+            selectedComponentLengthinesss: null
         });
     }
 
