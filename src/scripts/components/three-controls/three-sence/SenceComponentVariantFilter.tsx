@@ -56,6 +56,10 @@ export class SenceComponentVariantFilter extends React.PureComponent<SenceCompon
         const diameterGroups = groupBy(diameterVariantComponents, 'diameter');
         const avaliableDiameters = Object.keys(diameterGroups);
 
+        const lengthinessVariantComponents = components.filter(o => !!o.lengthiness);
+        const lengthinessGroups = groupBy(lengthinessVariantComponents, 'lengthiness');
+        const avaliableLengthinesss = Object.keys(lengthinessGroups);
+
         return (
             <SenceComponentVariantFilterWrapper>
                 <SenceComponentVariantFilterContent>
@@ -95,6 +99,27 @@ export class SenceComponentVariantFilter extends React.PureComponent<SenceCompon
                                             }}
                                         >
                                             Ø={diameter}mm
+                                        </AntdCheckbox>
+                                    </div>
+                                );
+                            })
+                        }
+                    </div>
+                    <div>
+                        {
+                            avaliableLengthinesss.map(lengthinesss => {
+                                return (
+                                    <div className="checkbox-wrapper" key={lengthinesss}>
+                                        <AntdCheckbox
+                                            checked={selectedComponentDiameter === lengthinesss}
+                                            value={lengthinesss}
+                                            onChange={() => {
+                                                setStore({
+                                                    selectedComponentDiameter: lengthinesss || null
+                                                });
+                                            }}
+                                        >
+                                            L={lengthinesss}mm
                                         </AntdCheckbox>
                                     </div>
                                 );

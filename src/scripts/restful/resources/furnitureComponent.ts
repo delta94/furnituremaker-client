@@ -35,6 +35,7 @@ export interface FurnitureComponent extends Record {
     readonly diameter?: number;
     readonly variantIndex?: number;
     readonly scale?: number;
+    readonly lengthiness?: number;
 }
 
 export const furnitureComponentResourceType = new ResourceType<FurnitureComponent>({
