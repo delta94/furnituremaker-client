@@ -31,6 +31,7 @@ const ProductInfoCardHoler = styled.div`
 `;
 
 const ProductName = styled.h1`
+    margin-top: 0;
     margin-bottom: 0px;
     font-size: 18px;
 `;

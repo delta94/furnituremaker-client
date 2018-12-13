@@ -123,7 +123,10 @@ export class ProductSence extends React.PureComponent<ProductSenceProps> {
             components: sameTypeComponents,
             allComponents: components,
             selectedMaterialType: selectedMaterialType,
-            selectedComponent: selectedComponent
+            selectedComponent: selectedComponent,
+            selectedComponentDiameter: String(selectedComponent.diameter),
+            selectedComponentLengthinesss: String(selectedComponent.lengthiness),
+            selectedComponentHeight: String(selectedComponent.height),
         });
     }
 }

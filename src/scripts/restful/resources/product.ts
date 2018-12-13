@@ -157,7 +157,7 @@ export const productUtils = {
         }
 
         const moduleCodes = product.modules.map(o => {
-            return o.component.code + o.material.code;
+            return o.component.code + '-' + o.material.code;
         });
         return moduleCodes.join('-');
     },
