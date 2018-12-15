@@ -12,3 +12,4 @@ export * from './route-notification';
 export * from './route-favorite-poduct';
 export * from './route-pages';
 export * from './route-auth';
+export * from './route-contact';

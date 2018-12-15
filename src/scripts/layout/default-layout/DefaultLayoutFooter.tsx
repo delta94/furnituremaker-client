@@ -82,6 +82,21 @@ export function DefaultLayoutFooter() {
                                 </li>
                             </ul>
                         </div>
+                        <div style={{ flexGrow: 1 }}>
+                            <span className="page-menu-title">THÔNG TIN</span>
+                            <ul className="page-menu">
+                                <li>
+                                    <Link to="/about-us">
+                                        Về chúng tôi
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/contact">
+                                        Liên hệ
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </FooterWrapperRow>
             </Container>

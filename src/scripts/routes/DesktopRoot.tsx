@@ -6,6 +6,7 @@ import {
     RouteAccountVeriryLoadable,
     RouteAddressBookLoadable,
     RouteCartLoadable,
+    RouteContactLoadable,
     RouteFavoriteProductLoadable,
     RouteForgotPasswordLoadable,
     RouteHomeLoadable,
@@ -43,6 +44,7 @@ const appRoutes = [
     RouteRegisterSuccessLoadable,
     RouteResetPasswordLoadable,
     RouteLibraryLoadable,
+    RouteContactLoadable,
     RoutePagesLoadable
 ];
 
