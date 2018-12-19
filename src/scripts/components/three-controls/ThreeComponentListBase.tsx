@@ -74,21 +74,21 @@ export class ThreeComponentListBase extends React.PureComponent<ThreeComponentLi
                 components;
         }
 
-        if (selectedComponentHeight) {
+        if (+selectedComponentHeight) {
             const heightFiltered = filteredComponentByGroup.filter(o => o.height === +selectedComponentHeight);
             if (heightFiltered.length) {
                 filteredComponentByGroup = heightFiltered;
             }
         }
 
-        if (selectedComponentDiameter) {
+        if (+selectedComponentDiameter) {
             const diameterFiltered = filteredComponentByGroup.filter(o => o.diameter === +selectedComponentDiameter);
             if (diameterFiltered.length) {
                 filteredComponentByGroup = diameterFiltered;
             }
         }
 
-        if (selectedComponentLengthinesss) {
+        if (+selectedComponentLengthinesss) {
             const diameterFiltered = filteredComponentByGroup.filter(o =>
                 o.lengthiness === +selectedComponentLengthinesss
             );
