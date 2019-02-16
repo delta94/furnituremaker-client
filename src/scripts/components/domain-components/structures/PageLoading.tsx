@@ -1,10 +1,10 @@
 import * as React from 'react';
-
-import { AntdSpin, AntdIcon } from '@/components/antd-component';
-import { Condition } from './Condition';
-
 import styled from 'styled-components';
+
 import { withStoreValues } from '@/app';
+import { AntdIcon, AntdSpin } from '@/components/antd-component';
+
+import { Condition } from './Condition';
 
 const LoadingWrapper = styled.div`
     position: fixed;

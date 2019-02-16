@@ -4,4 +4,4 @@ import { UploadProps as AntdUploadProps } from 'antd/lib/upload';
 
 export { AntdUploadProps };
 
-export const AntdUpload: typeof Upload['default'] = Upload as any;
+export const AntdUpload: typeof Upload['default'] = Upload.default as any;

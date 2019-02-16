@@ -1,4 +1,4 @@
 // tslint:disable:no-any
 import * as Affix from 'antd/lib/affix';
 
-export const AntdAffix: typeof Affix['default'] = Affix as any;
+export const AntdAffix: typeof Affix['default'] = Affix.default as any;

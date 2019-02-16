@@ -3,4 +3,4 @@
 import * as notification from 'antd/lib/notification';
 import MotificationType from 'antd/lib/notification';
 
-export const AntdMotification: typeof MotificationType = notification as any;
+export const AntdMotification: typeof MotificationType = notification.default as any;

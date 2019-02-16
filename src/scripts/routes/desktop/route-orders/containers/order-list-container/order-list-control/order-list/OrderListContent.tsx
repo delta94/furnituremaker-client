@@ -18,20 +18,20 @@ interface OrderListContentProps extends WithOrdersProps {
 const columns: AntdColumnProps<Order>[] = [
     {
         title: 'Mã đơn hàng',
-        dataIndex: nameof<Order>(o => o.id),
+        dataIndex: 'id',
         render: (id: string, order) => {
             return (<Link to={`/orders/${id}`}>{order.code}</Link>);
         }
     }, {
         title: 'Ngày Đặt',
-        dataIndex: nameof<Order>(o => o.createdAt),
+        dataIndex: 'createdAt',
         key: nameof<Order>(o => o.createdAt),
         render: (createdAt: string) => {
             return formatDate(createdAt, 'DD/MM/YYYY');
         }
     }, {
         title: 'Dự kiến giao hàng',
-        dataIndex: nameof<Order>(o => o.shippingDate),
+        dataIndex: 'shippingDate',
         key: 'shippingDate',
         render: (shippingDate: Order['shippingDate']) => {
             return shippingDate ?
@@ -40,20 +40,20 @@ const columns: AntdColumnProps<Order>[] = [
         }
     }, {
         title: 'Đại lý',
-        dataIndex: nameof<Order>(o => o.agencyOrderer),
+        dataIndex: 'agencyOrderer',
         render: (agencyOrderer: Order['agencyOrderer']) => {
             return agencyOrderer.name;
         }
     }, {
         title: 'Tổng tiền',
-        dataIndex: nameof<Order>(o => o.totalOfPayment),
+        dataIndex: 'totalOfPayment',
         key: 'totalOfPayment',
         render: (totalOfPayment: Order['totalOfPayment']) => {
             return formatCurrency(totalOfPayment);
         }
     }, {
         title: <div style={{ textAlign: 'right' }}>Tình trạng</div>,
-        dataIndex: nameof<Order>(o => o.status),
+        dataIndex: 'status',
         key: 'status',
         render: (status: Order['status'], order: Order) => {
             const statusInfo = orderUtils.getStatusInfo(order);

@@ -89,7 +89,7 @@ export class OrderTransactions extends React.PureComponent<OrderTransactionsProp
                     />
                     <AntdTable.Column
                         width={50}
-                        dataIndex={nameof<OrderTransaction>(o => o.id)}
+                        dataIndex="id"
                         key={nameof<OrderTransaction>(o => o.id)}
                         render={(id: OrderTransaction['id'], orderTransaction: OrderTransaction) => {
                             return (

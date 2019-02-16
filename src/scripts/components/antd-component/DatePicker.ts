@@ -7,4 +7,4 @@ import {
 
 export { AntdDatePickerProps };
 
-export const AntdDatePicker: typeof DatePickerType = DatePicker as any;
+export const AntdDatePicker: typeof DatePickerType = DatePicker.default as any;

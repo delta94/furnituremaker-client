@@ -12,7 +12,7 @@ export interface OrderDetailProductTableProps {
 
 const columns: AntdColumnProps<OrderDetail>[] = [{
     title: 'Hình ảnh',
-    dataIndex: nameof<OrderDetail>(o => o.previewImg),
+    dataIndex: 'previewImg',
     key: nameof.full<OrderDetail>(o => o.previewImg),
     width: 112,
     render: (previewImg: OrderDetail['previewImg']) => {
@@ -20,9 +20,9 @@ const columns: AntdColumnProps<OrderDetail>[] = [{
     }
 }, {
     title: 'Loại sản phẩm',
-    dataIndex: nameof<OrderDetail>(o => o.product_type),
+    dataIndex: 'product_type',
     key: nameof<OrderDetail>(o => o.product_type),
-        render: (productType: ProductType, orderDetail) => {
+    render: (productType: ProductType, orderDetail) => {
         return (
             <div>
                 <label>
@@ -38,7 +38,7 @@ const columns: AntdColumnProps<OrderDetail>[] = [{
     }
 }, {
     title: 'Mã sản phẩm',
-    dataIndex: nameof<OrderDetail>(o => o.productCode),
+    dataIndex: 'productCode',
     key: nameof<OrderDetail>(o => o.productCode),
     render: (produceCode: string) => {
         if (!produceCode) {
@@ -50,22 +50,22 @@ const columns: AntdColumnProps<OrderDetail>[] = [{
     }
 }, {
     title: 'Số lượng',
-    dataIndex: nameof<OrderDetail>(o => o.quantity),
+    dataIndex: 'quantity',
     key: nameof<OrderDetail>(o => o.quantity),
     render: (quantity: number) => `${quantity} sản phẩm`
 }, {
     title: 'Đơn giá',
-    dataIndex: nameof<OrderDetail>(o => o.productPrice),
+    dataIndex: 'productPrice',
     key: nameof<OrderDetail>(o => o.productPrice),
     render: (productPrice: number) => formatCurrency(productPrice)
 }, {
     title: 'Giảm giá/sản phẩm',
-    dataIndex: nameof<OrderDetail>(o => o.totalDiscountPerProduct),
+    dataIndex: 'totalDiscountPerProduct',
     key: nameof<OrderDetail>(o => o.totalDiscountPerProduct),
     render: (productDiscount: number) => formatCurrency(productDiscount)
 }, {
     title: 'Tổng tiền',
-    dataIndex: nameof<OrderDetail>(o => o.totalPrice),
+    dataIndex: 'totalPrice',
     key: nameof<OrderDetail>(o => o.totalPrice),
     render: (totalPrice: number) => formatCurrency(totalPrice)
 }];

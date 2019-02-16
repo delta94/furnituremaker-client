@@ -8,4 +8,4 @@ export {
     RadioGroupProps
 };
     
-export const AntdRadio: typeof RadioType = Radio as any;
+export const AntdRadio: typeof RadioType = Radio.default as any;

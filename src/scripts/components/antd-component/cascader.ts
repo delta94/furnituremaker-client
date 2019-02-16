@@ -9,4 +9,4 @@ export {
     AntdCascaderProps,
     AntdCascaderOptionType
 };
-export const AntdCascader: typeof CascaderType = Cascader as any;
+export const AntdCascader: typeof CascaderType = Cascader.default as any;

@@ -4,4 +4,4 @@ import FormType from 'antd/lib/form';
 
 export { FormItemProps as AntdFormItemProps } from 'antd/lib/form';
 
-export const AntdForm: typeof FormType = Form as any;
+export const AntdForm: typeof FormType = Form.default as any;

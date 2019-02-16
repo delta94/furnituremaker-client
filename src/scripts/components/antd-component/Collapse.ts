@@ -2,4 +2,4 @@
 import * as Collapse from 'antd/lib/collapse';
 import CollapseType from 'antd/lib/collapse';
 
-export const AntdCollapse: typeof CollapseType = Collapse as any;
+export const AntdCollapse: typeof CollapseType = Collapse.default as any;

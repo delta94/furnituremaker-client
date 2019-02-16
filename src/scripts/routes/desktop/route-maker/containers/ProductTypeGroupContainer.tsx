@@ -2,12 +2,7 @@ import * as React from 'react';
 import { RestfulRender } from 'react-restful';
 
 import { CommonStoreProps } from '@/configs';
-import {
-    ProductDesignGroup,
-    productTypeGroupResources,
-    restfulFetcher,
-    restfulStore
-} from '@/restful';
+import { productTypeGroupResources, restfulFetcher } from '@/restful';
 
 import { TypeGroupController } from './product-type-group-container';
 
